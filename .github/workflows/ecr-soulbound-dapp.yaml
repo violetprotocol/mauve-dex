@@ -1,0 +1,21 @@
+# Documentation: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+name: Build and push Soulbound Dapp image
+
+on:
+  push:
+    branches:
+      - po-review
+      - main
+      - staging
+      - sandbox
+
+jobs:
+  build_and_push:
+    uses: ./.github/workflows/ecr-build-and-push-images.yaml
+    with:
+      unit: soulbound-dapp
+      repo: violetprotocol/soulbound-dapp
+      dockerfile: ./Dockerfile
+      service_name: Soulbound Dapp
+    secrets: inherit

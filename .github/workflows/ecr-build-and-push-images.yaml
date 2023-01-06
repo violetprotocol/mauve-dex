@@ -1,0 +1,195 @@
+# Documentation: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+
+name: Build and push service image
+
+on:
+  workflow_call:
+    inputs:
+      unit:
+        description: Name of the unit in the product-infa repository
+        required: true
+        type: string
+      service_name:
+        description: Service name used in notification, e.g. Assessment Service
+        required: true
+        type: string
+      # Copied from violetprotocol/product-infra-images/.github/workflows/build-and-push-image-to-aws-ecr.yaml@main
+      # due to the workflow depth limit of 2, see https://github.com/github/feedback/discussions/8488
+      repo:
+        description: Repository name in the registry, e.g. violetprotocol/example
+        required: true
+        type: string
+      dockerfile:
+        description: Path to Dockerfile, e.g. examples/Dockerfile
+        required: false
+        type: string
+        default: Dockerfile
+      path:
+        description: Path of docker context, e.g. examples/
+        required: false
+        type: string
+        default: .
+      region:
+        description: AWS region of the container registry
+        required: false
+        type: string
+        default: eu-central-1
+    secrets:
+      PUSH_IMAGES_ECR_AWS_ACCESS_KEY_ID:
+        required: true
+      PUSH_IMAGES_ECR_AWS_SECRET_ACCESS_KEY:
+        required: true
+      PUSH_IMAGES_ECR_AWS_ACCOUNT_ID:
+        required: true
+
+jobs:
+  set_environment:
+    runs-on: ubuntu-latest # included software: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+    outputs:
+      short_sha: ${{ steps.git.outputs.short_sha }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Short SHA
+        id: git
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+      - name: Determine environment of image
+        id: env
+        run: |
+          case ${{ github.ref }} in
+              refs/heads/main)
+                echo "::set-output name=environment::prod"
+              ;;
+              refs/heads/po-review)
+                echo "::set-output name=environment::dev"
+              ;;
+              refs/heads/staging)
+                echo "::set-output name=environment::staging"
+              ;;
+              refs/heads/sandbox)
+                echo "::set-output name=environment::sandbox"
+              ;;
+              refs/heads/feat/*)
+                # INFO: This case allows feature branches to create dev images.
+                # However, the run on feature branches needs to be activated
+                # manually in the workflows' `on:` section, see: ecr-assessment.yaml
+                echo "::set-output name=environment::dev"
+              ;;
+              *)
+                exit 1
+                # echo "::set-output name=environment::test" # TODO: disable when done debugging
+              ;;
+          esac
+
+  build:
+    needs: set_environment
+    runs-on: ubuntu-latest # included software: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1.0.2 # https://github.com/marketplace/actions/docker-setup-buildx
+        with:
+         driver-opts: image=moby/buildkit:buildx-stable-1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1 # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
+        with:
+          aws-access-key-id: ${{ secrets.PUSH_IMAGES_ECR_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.PUSH_IMAGES_ECR_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ inputs.region }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1 # https://github.com/marketplace/actions/amazon-ecr-login-action-for-github-actions
+
+      - name: Build and export
+        id: docker-build
+        uses: docker/build-push-action@v2 # https://github.com/marketplace/actions/build-and-push-docker-images
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: ${{ inputs.path }}
+          file: ${{ inputs.dockerfile }}
+          push: true
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repo }}:${{ needs.set_environment.outputs.environment }}-${{ github.run_number }}-${{ needs.set_environment.outputs.short_sha }}
+          target: release # TODO: future selection of the build target once the multiple Dockerfiles have been converged into one
+          build-args: ENVIRONMENT=${{ needs.set_environment.outputs.environment }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Checkout product-infra repository
+        uses: actions/checkout@v3 # https://github.com/marketplace/actions/checkout
+        with:
+          repository: violetprotocol/product-infra
+          token: ${{ secrets.PRODUCT_INFRA_GITHUB_TOKEN }}
+          path: product-infra
+
+      - name: Tag image in product-infra
+        id: tag
+        env:
+          UNIT: ${{ inputs.unit }}
+          ENVIRONMENT: ${{ needs.set_environment.outputs.environment }}
+          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repo }}
+          TAG: ${{ needs.set_environment.outputs.environment }}-${{ github.run_number }}-${{ needs.set_environment.outputs.short_sha }}
+          GH_TOKEN: ${{ secrets.PRODUCT_INFRA_GITHUB_TOKEN }}
+        run: |
+          cd "product-infra/units/${UNIT}/components/${ENVIRONMENT}_image/"
+          git config user.name github-actions
+          git config user.email no-reply+github-actions@violet.co
+          yq e 'with(.images.[]; . | select(.name == strenv(IMAGE)) | .newTag = strenv(TAG)) | .' -i kustomization.yaml
+          git add kustomization.yaml
+          git commit -m "${ENVIRONMENT} chore(ci): set ${UNIT} image tag to ${TAG}"
+          if [ "${ENVIRONMENT}" = "prod" ]; then
+            git branch -m "${ENVIRONMENT}_${UNIT}_${TAG}"
+            git push origin HEAD
+            gh pr create --title "${ENVIRONMENT} chore(ci): set ${UNIT} image tag to ${TAG}" --body "bump image tag" --base main --assignee sudoFerraz
+          else
+          for i in $(seq 5); do
+            if ! git push origin HEAD; then
+              sleep $((RANDOM % 5)) && git pull --rebase
+            else
+              break
+            fi
+          done
+          fi
+
+  notify-always:
+    needs: [set_environment, build]
+    if: always()
+    runs-on: ubuntu-latest # included software: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
+    steps:
+      - name: Variables
+        id: vars
+        run: |
+          case "${{ job.status }}" in
+              cancelled)
+                echo "::set-output name=status::cancelled"
+                echo "::set-output name=color::0xFFFF00"
+                echo "::set-output name=avatar_url::https://avatars.githubusercontent.com/u/11693724?v=4"
+              ;;
+              failure)
+                echo "::set-output name=status::failure"
+                echo "::set-output name=color::0xFF0000"
+                echo "::set-output name=avatar_url::https://www.pngkey.com/png/detail/192-1923064_new-github-octocat-github-octocat.png"
+              ;;
+              success)
+                echo "::set-output name=status::success"
+                echo "::set-output name=color::0x00FF00"
+                echo "::set-output name=avatar_url::https://avatars.githubusercontent.com/u/11693724?v=4"
+              ;;
+              *) exit 1
+              ;;
+          esac
+      - name: Send Discord notification on ${{ steps.vars.outputs.status }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.ALL_DISCORD_DEPLOYMENT_WEBHOOK }}
+          title: "`${{ inputs.service_name }}` Build"
+          description: "The ${{ inputs.service_name }} build: ${{ steps.vars.outputs.status }}"
+          username: "GH Actions"
+          color: ${{ steps.vars.outputs.color }}
+          avatar_url: ${{ steps.vars.outputs.avatar_url }}
+          url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
