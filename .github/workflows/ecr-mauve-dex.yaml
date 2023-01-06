@@ -8,14 +8,13 @@ on:
       - po-review
       - main
       - staging
-      - sandbox
 
 jobs:
   build_and_push:
     uses: ./.github/workflows/ecr-build-and-push-images.yaml
     with:
-      unit: soulbound-dapp
+      unit: mauve-dex
       repo: violetprotocol/soulbound-dapp
       dockerfile: ./Dockerfile
-      service_name: Soulbound Dapp
+      service_name: Mauve Dex
     secrets: inherit

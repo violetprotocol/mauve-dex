@@ -67,9 +67,6 @@ jobs:
               refs/heads/staging)
                 echo "::set-output name=environment::staging"
               ;;
-              refs/heads/sandbox)
-                echo "::set-output name=environment::sandbox"
-              ;;
               refs/heads/feat/*)
                 # INFO: This case allows feature branches to create dev images.
                 # However, the run on feature branches needs to be activated
