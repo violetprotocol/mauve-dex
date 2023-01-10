@@ -67,11 +67,11 @@ jobs:
               refs/heads/staging)
                 echo "::set-output name=environment::staging"
               ;;
-              refs/heads/feat/*)
-                # INFO: This case allows feature branches to create dev images.
-                # However, the run on feature branches needs to be activated
-                # manually in the workflows' `on:` section, see: ecr-assessment.yaml
-                echo "::set-output name=environment::dev"
+              # refs/heads/feat/*)
+              #   # INFO: This case allows feature branches to create dev images.
+              #   # However, the run on feature branches needs to be activated
+              #   # manually in the workflows' `on:` section, see: ecr-assessment.yaml
+              #   echo "::set-output name=environment::dev"
               ;;
               *)
                 exit 1
