@@ -72,7 +72,7 @@ jobs:
               #   # However, the run on feature branches needs to be activated
               #   # manually in the workflows' `on:` section, see: ecr-assessment.yaml
               #   echo "::set-output name=environment::dev"
-              ;;
+              # ;;
               *)
                 exit 1
                 # echo "::set-output name=environment::test" # TODO: disable when done debugging
