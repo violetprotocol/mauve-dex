@@ -4,6 +4,12 @@ import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@uniswap/v3-sdk'
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'
 
+// Re-Deployments
+const GOERLI_FACTORY_ADDRESS = '0x3CdAC3e7b58Fe315bA9A5575628f79794d8Df836'
+const GOERLI_SWAP_ROUTER = '0xb884E43C3fDFE09c5afAE8549EAFA4d59F190b36'
+const GOERLI_POSITION_MANAGER = '0xC4516CBe35Dd828c942074552E14c655f81d0Cea'
+const GOERLI_QUOTER_V2 = '0xb17246CA83CA7A83788A55faC2E2e6e8F8b679b7'
+
 type AddressMap = { [chainId: number]: string }
 
 export const UNI_ADDRESS: AddressMap = constructSameAddressMap('0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984')
@@ -24,14 +30,20 @@ const CELO_TICK_LENS_ADDRESSES = '0x5f115D9113F88e0a0Db1b5033D90D4a9690AcD3D'
 
 /* V3 Contract Addresses */
 export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap(V3_FACTORY_ADDRESS, [
-    SupportedChainId.OPTIMISM,
-    SupportedChainId.OPTIMISM_GOERLI,
-    SupportedChainId.ARBITRUM_ONE,
-    SupportedChainId.ARBITRUM_RINKEBY,
-    SupportedChainId.POLYGON_MUMBAI,
-    SupportedChainId.POLYGON,
-  ]),
+  ...constructSameAddressMap(
+    V3_FACTORY_ADDRESS,
+    [
+      SupportedChainId.OPTIMISM,
+      SupportedChainId.OPTIMISM_GOERLI,
+      SupportedChainId.ARBITRUM_ONE,
+      SupportedChainId.ARBITRUM_RINKEBY,
+      SupportedChainId.POLYGON_MUMBAI,
+      SupportedChainId.POLYGON,
+    ],
+    {
+      [SupportedChainId.GOERLI]: GOERLI_FACTORY_ADDRESS,
+    }
+  ),
   [SupportedChainId.CELO]: CELO_V3_CORE_FACTORY_ADDRESSES,
   [SupportedChainId.CELO_ALFAJORES]: CELO_V3_CORE_FACTORY_ADDRESSES,
 }
@@ -61,14 +73,20 @@ export const MULTICALL_ADDRESS: AddressMap = {
 }
 
 export const SWAP_ROUTER_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45', [
-    SupportedChainId.OPTIMISM,
-    SupportedChainId.OPTIMISM_GOERLI,
-    SupportedChainId.ARBITRUM_ONE,
-    SupportedChainId.ARBITRUM_RINKEBY,
-    SupportedChainId.POLYGON,
-    SupportedChainId.POLYGON_MUMBAI,
-  ]),
+  ...constructSameAddressMap(
+    '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
+    [
+      SupportedChainId.OPTIMISM,
+      SupportedChainId.OPTIMISM_GOERLI,
+      SupportedChainId.ARBITRUM_ONE,
+      SupportedChainId.ARBITRUM_RINKEBY,
+      SupportedChainId.POLYGON,
+      SupportedChainId.POLYGON_MUMBAI,
+    ],
+    {
+      [SupportedChainId.GOERLI]: GOERLI_SWAP_ROUTER,
+    }
+  ),
   [SupportedChainId.CELO]: CELO_ROUTER_ADDRESS,
   [SupportedChainId.CELO_ALFAJORES]: CELO_ROUTER_ADDRESS,
 }
@@ -103,27 +121,39 @@ export const ARGENT_WALLET_DETECTOR_ADDRESS: AddressMap = {
 }
 
 export const QUOTER_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6', [
-    SupportedChainId.OPTIMISM,
-    SupportedChainId.OPTIMISM_GOERLI,
-    SupportedChainId.ARBITRUM_ONE,
-    SupportedChainId.ARBITRUM_RINKEBY,
-    SupportedChainId.POLYGON_MUMBAI,
-    SupportedChainId.POLYGON,
-  ]),
+  ...constructSameAddressMap(
+    '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    [
+      SupportedChainId.OPTIMISM,
+      SupportedChainId.OPTIMISM_GOERLI,
+      SupportedChainId.ARBITRUM_ONE,
+      SupportedChainId.ARBITRUM_RINKEBY,
+      SupportedChainId.POLYGON_MUMBAI,
+      SupportedChainId.POLYGON,
+    ],
+    {
+      [SupportedChainId.GOERLI]: GOERLI_QUOTER_V2,
+    }
+  ),
   [SupportedChainId.CELO]: CELO_QUOTER_ADDRESSES,
   [SupportedChainId.CELO_ALFAJORES]: CELO_QUOTER_ADDRESSES,
 }
 
 export const NONFUNGIBLE_POSITION_MANAGER_ADDRESSES: AddressMap = {
-  ...constructSameAddressMap('0xC36442b4a4522E871399CD717aBDD847Ab11FE88', [
-    SupportedChainId.OPTIMISM,
-    SupportedChainId.OPTIMISM_GOERLI,
-    SupportedChainId.ARBITRUM_ONE,
-    SupportedChainId.ARBITRUM_RINKEBY,
-    SupportedChainId.POLYGON_MUMBAI,
-    SupportedChainId.POLYGON,
-  ]),
+  ...constructSameAddressMap(
+    '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    [
+      SupportedChainId.OPTIMISM,
+      SupportedChainId.OPTIMISM_GOERLI,
+      SupportedChainId.ARBITRUM_ONE,
+      SupportedChainId.ARBITRUM_RINKEBY,
+      SupportedChainId.POLYGON_MUMBAI,
+      SupportedChainId.POLYGON,
+    ],
+    {
+      [SupportedChainId.GOERLI]: GOERLI_POSITION_MANAGER,
+    }
+  ),
   [SupportedChainId.CELO]: CELO_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
   [SupportedChainId.CELO_ALFAJORES]: CELO_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
 }
