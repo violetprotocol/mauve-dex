@@ -22,6 +22,7 @@ function getRouter(chainId: ChainId): AlphaRouter {
   const supportedChainId = toSupportedChainId(chainId)
   if (supportedChainId) {
     const provider = RPC_PROVIDERS[supportedChainId]
+    // @ts-ignore
     const router = new AlphaRouter({ chainId, provider })
     routers.set(chainId, router)
     return router
@@ -35,7 +36,7 @@ const API_QUERY_PARAMS = {
   protocols: 'v2,v3,mixed',
 }
 const CLIENT_PARAMS = {
-  protocols: [Protocol.V2, Protocol.V3, Protocol.MIXED],
+  protocols: [Protocol.V3],
 }
 // Price queries are tuned down to minimize the required RPCs to respond to them.
 // TODO(zzmp): This will be used after testing router caching.
