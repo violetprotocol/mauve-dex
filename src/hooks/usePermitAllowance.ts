@@ -21,6 +21,7 @@ function toDeadline(expiration: number): number {
 
 export function usePermitAllowance(token?: Token, spender?: string) {
   const { account, provider } = useWeb3React()
+  // @ts-ignore
   const allowanceProvider = useMemo(() => provider && new AllowanceProvider(provider, PERMIT2_ADDRESS), [provider])
   const [allowanceData, setAllowanceData] = useState<AllowanceData>()
 
