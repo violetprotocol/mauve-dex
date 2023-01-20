@@ -5,10 +5,11 @@ import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'
 
 // Re-Deployments
-const GOERLI_FACTORY_ADDRESS = '0x3CdAC3e7b58Fe315bA9A5575628f79794d8Df836'
-const GOERLI_SWAP_ROUTER = '0xb884E43C3fDFE09c5afAE8549EAFA4d59F190b36'
-const GOERLI_POSITION_MANAGER = '0xC4516CBe35Dd828c942074552E14c655f81d0Cea'
-const GOERLI_QUOTER_V2 = '0xb17246CA83CA7A83788A55faC2E2e6e8F8b679b7'
+const GOERLI_FACTORY_ADDRESS = '0x1EA6C6917e5b707aFfA07e00B7c6CD8dC346bB36'
+const GOERLI_SWAP_ROUTER = '0x9A119a53cb065202d631ba01d55e3850eDcf3EAa'
+const GOERLI_POSITION_MANAGER = '0xaa8e717846745B6E7174A1bbd22e53500d767c21'
+// const GOERLI_QUOTER_V2 = '0xEc53699651FA98b967a08670055478BE6e99FbF5'
+const GOERLI_QUOTER = '0x5dED7B5753488229fF3D46147Bcc02579af5480c'
 
 type AddressMap = { [chainId: number]: string }
 
@@ -132,7 +133,7 @@ export const QUOTER_ADDRESSES: AddressMap = {
       SupportedChainId.POLYGON,
     ],
     {
-      [SupportedChainId.GOERLI]: GOERLI_QUOTER_V2,
+      [SupportedChainId.GOERLI]: GOERLI_QUOTER,
     }
   ),
   [SupportedChainId.CELO]: CELO_QUOTER_ADDRESSES,
