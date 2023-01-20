@@ -1,49 +1,24 @@
-# Description
+Your PR title must follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary), and should start with one of the following [types](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type):
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+- build: Changes that affect the build system or external dependencies (example scopes: yarn, eslint, typescript)
+- ci: Changes to our CI configuration files and scripts (example scopes: vercel, github, cypress)
+- docs: Documentation only changes
+- feat: A new feature
+- fix: A bug fix
+- perf: A code change that improves performance
+- refactor: A code change that neither fixes a bug nor adds a feature
+- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- test: Adding missing tests or correcting existing tests
 
-Fixes # (issue)
+Example commit messages:
 
-## Related Issues
+- feat: adds support for gnosis safe wallet
+- fix: removes a polling memory leak
+- chore: bumps redux version
 
-- VIOL-57
-- VIOL-52
+Other things to note:
 
-## Type of change
-
-Please delete options that are not relevant.
-
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
-
-# How Has This Been Tested?
-
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
-
-- [ ] Test A
-- [ ] Test B
-
-**Test Configuration**:
-* Firmware version:
-* Hardware:
-* Toolchain:
-* SDK:
-
-# Checklist:
-
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-
-
-### Screenshots
-
-| Before | After |
-| ------ | ----- |
-| _gif/png before_ | _gif/png after_ |
-
+- Please describe the change using verb statements (ex: Removes X from Y)
+- PRs with multiple changes should use a list of verb statements
+- Add any relevant unit / integration tests
+- Changes will be previewable via vercel. Non-obvious changes should include instructions for how to reproduce them
