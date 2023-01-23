@@ -20,8 +20,10 @@ runs:
         path: node_modules/
         key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
     - name: Authenticate with private NPM package
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       shell: bash
-      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
     - if: steps.install-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile --ignore-scripts
       shell: bash
