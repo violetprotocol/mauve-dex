@@ -1,4 +1,8 @@
 name: Setup
+on:
+  secrets:
+    NPM_TOKEN:
+      required: true
 runs:
   using: composite
   steps:
