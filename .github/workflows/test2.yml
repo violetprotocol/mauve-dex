@@ -4,6 +4,13 @@ defaults:
   run:
     working-directory: .
 
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches: [ '*' ]
+
 jobs:
   testHere:
     runs-on: ubuntu-latest
