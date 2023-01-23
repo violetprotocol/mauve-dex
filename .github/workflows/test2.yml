@@ -48,10 +48,12 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         shell: bash
-        run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
-      - if: steps.install-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile --ignore-scripts
-        shell: bash
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Test if logged correctly
+        run: npm whoami
+      # - if: steps.install-cache.outputs.cache-hit != 'true'
+      #   run: yarn install --frozen-lockfile --ignore-scripts
+      #   shell: bash
 
 
 # runs:
