@@ -1,29 +1,29 @@
-name: Setup
-on:
-  secrets:
-    NPM_TOKEN:
-      required: true
-runs:
-  using: composite
-  steps:
-    - uses: actions/checkout@v3
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 14
-        registry-url: https://registry.npmjs.org
-        cache: yarn
-
-    - uses: actions/cache@v3
-      id: install-cache
-      with:
-        path: node_modules/
-        key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
-    - name: Authenticate with private NPM package
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      shell: bash
-      run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
-    - if: steps.install-cache.outputs.cache-hit != 'true'
-      run: yarn install --frozen-lockfile --ignore-scripts
-      shell: bash
+# name: Setup
+# on:
+#   secrets:
+#     NPM_TOKEN:
+#       required: true
+# runs:
+#   using: composite
+#   steps:
+#     - uses: actions/checkout@v3
+#
+#     - uses: actions/setup-node@v3
+#       with:
+#         node-version: 14
+#         registry-url: https://registry.npmjs.org
+#         cache: yarn
+#
+#     - uses: actions/cache@v3
+#       id: install-cache
+#       with:
+#         path: node_modules/
+#         key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
+#     - name: Authenticate with private NPM package
+#       env:
+#         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#       shell: bash
+#       run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > ~/.npmrc
+#     - if: steps.install-cache.outputs.cache-hit != 'true'
+#       run: yarn install --frozen-lockfile --ignore-scripts
+#       shell: bash
