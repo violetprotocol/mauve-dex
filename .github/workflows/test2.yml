@@ -38,10 +38,16 @@ jobs:
           node-version: 14
           registry-url: https://registry.npmjs.org
           cache: yarn
-      - run: npm ci --ignore-scripts
+
+      - name: Setup .yarnrc.yml
+        run: |
+          yarn config set npmScopes.my-org.npmRegistryServer "https://npm.pkg.github.com"
+          yarn config set npmScopes.my-org.npmAlwaysAuth true
+          yarn config set npmScopes.my-org.npmAuthToken $NPM_AUTH_TOKEN
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn install --frozen-lockfile --ignore-scripts
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: yarn install --immutable
 
       # - uses: actions/cache@v3
       #   id: install-cache
