@@ -14,7 +14,7 @@ on:
 jobs:
   testHere:
     runs-on: ubuntu-latest
-  
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -41,6 +41,7 @@ jobs:
 
       - name: Setup .yarnrc.yml
         run: |
+          yarn config set registry https://registry.npmjs.org/
           yarn config set npmScopes.my-org.npmRegistryServer "https://npm.pkg.github.com"
           yarn config set npmScopes.my-org.npmAlwaysAuth true
           yarn config set npmScopes.my-org.npmAuthToken $NPM_AUTH_TOKEN
