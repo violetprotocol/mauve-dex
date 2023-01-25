@@ -60,12 +60,11 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         shell: bash
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}\nalways-auth=true\n@violetprotocol:registry=https://registry.npmjs.org/\n" > ~/.npmrc
-      # - name: Test if logged correctly
-      #   run: npm whoami
-      - name: Install deps
-        run: yarn install --frozen-lockfile --ignore-scripts
-        shell: bash
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}\nalways-auth=true\n@violetprotocol:registry=https://registry.npmjs.org/\n" > ~/.npmrc && yarn install --frozen-lockfile --ignore-scripts
+      - name: Test if logged correctly
+        run: npm config list
+      # - name: Install deps
+        # shell: bash
 
 
 # runs:
