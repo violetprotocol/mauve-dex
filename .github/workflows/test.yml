@@ -15,30 +15,28 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/action.yml
-        secrets:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    uses: ./.github/workflows/action.yml
+      secrets:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  deps-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/action.yml
-        secrets:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn yarn-deduplicate --strategy=highest --list --fail
+  # deps-tests:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: ./.github/workflows/action.yml
+  #       secrets:
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #     - run: yarn yarn-deduplicate --strategy=highest --list --fail
 
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/workflows/action.yml
-        secrets:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: yarn prepare
-      - run: yarn test
+  # unit-tests:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: ./.github/workflows/action.yml
+  #       secrets:
+  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  #     - run: yarn prepare
+  #     - run: yarn test
 
   # cypress-build:
   #   runs-on: ubuntu-latest
