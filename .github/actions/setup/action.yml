@@ -27,3 +27,4 @@ runs:
       run: yarn install --frozen-lockfile --ignore-scripts
       env:
         NODE_AUTH_TOKEN: ${{ inputs.token }}
+      shell: bash
