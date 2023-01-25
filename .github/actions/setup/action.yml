@@ -1,5 +1,15 @@
 name: Setup
 
+defaults:
+  run:
+    working-directory: .
+
+on:
+  workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+
 runs:
   using: composite
   steps:
