@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        secrets: inherit
       - run: yarn lint
 
   deps-tests:
@@ -21,6 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        secrets: inherit
       - run: yarn yarn-deduplicate --strategy=highest --list --fail
 
   unit-tests:
@@ -28,6 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        secrets: inherit
       - run: yarn prepare
       - run: yarn test
 
