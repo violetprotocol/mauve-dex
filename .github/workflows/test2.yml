@@ -48,24 +48,24 @@ jobs:
           yarn config set npmScopes.my-org.npmAuthToken $NPM_AUTH_TOKEN
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Install dependencies
-        run: yarn install --immutable
+      # - name: Install dependencies
+      #   run: yarn install --immutable
 
       # - uses: actions/cache@v3
       #   id: install-cache
       #   with:
       #     path: node_modules/
       #     key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
-      # - name: Authenticate with private NPM package
-      #   env:
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   shell: bash
-      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      # # - name: Test if logged correctly
-      # #   run: npm whoami
-      # - if: steps.install-cache.outputs.cache-hit != 'true'
-      #   run: yarn install --frozen-lockfile --ignore-scripts
-      #   shell: bash
+      - name: Authenticate with private NPM package
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}\nalways-auth=true" > ~/.npmrc
+      # - name: Test if logged correctly
+      #   run: npm whoami
+      - name: Install deps
+        run: yarn install --frozen-lockfile --ignore-scripts
+        shell: bash
 
 
 # runs:
