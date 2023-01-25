@@ -1,4 +1,9 @@
 name: Setup
+
+inputs:
+  token:
+    required: true
+
 runs:
   using: composite
   steps:
@@ -9,6 +14,8 @@ runs:
         node-version: 14
         registry-url: https://registry.npmjs.org
         cache: yarn
+        scope: "@violetprotocol"
+        always-auth: true
 
     - uses: actions/cache@v3
       id: install-cache
@@ -18,4 +25,5 @@ runs:
 
     - if: steps.install-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile --ignore-scripts
-      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.token }}

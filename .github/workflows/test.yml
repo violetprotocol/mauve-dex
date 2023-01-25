@@ -36,6 +36,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
       - run: yarn prepare
 
       - run: yarn build
