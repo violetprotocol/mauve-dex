@@ -39,15 +39,16 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: yarn
           scope: "@violetprotocol"
+          always-auth: true
 
-      - name: Setup .yarnrc.yml
-        run: |
-          yarn config set registry https://registry.npmjs.org/
-          yarn config set npmScopes.my-org.npmRegistryServer "https://npm.pkg.github.com"
-          yarn config set npmScopes.my-org.npmAlwaysAuth true
-          yarn config set npmScopes.my-org.npmAuthToken $NPM_AUTH_TOKEN
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Setup .yarnrc.yml
+      #   run: |
+      #     yarn config set registry https://registry.npmjs.org/
+      #     yarn config set npmScopes.my-org.npmRegistryServer "https://npm.pkg.github.com"
+      #     yarn config set npmScopes.my-org.npmAlwaysAuth true
+      #     yarn config set npmScopes.my-org.npmAuthToken $NPM_AUTH_TOKEN
+      #   env:
+      #     NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - name: Install dependencies
       #   run: yarn install --immutable
 
@@ -56,17 +57,18 @@ jobs:
       #   with:
       #     path: node_modules/
       #     key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
-      - name: Authenticate with private NPM package
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        shell: bash
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}\nalways-auth=true\n@violetprotocol:registry=https://registry.npmjs.org/\n" > /home/runner/work/_temp/.npmrc
+      # - name: Authenticate with private NPM package
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   shell: bash
+      #   run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}\nalways-auth=true\n@violetprotocol:registry=https://registry.npmjs.org/\n" > /home/runner/work/_temp/.npmrc
       - name: Test if logged correctly
         run: npm config list
       - name: Install deps
         shell: bash
         run: yarn install --frozen-lockfile --ignore-scripts
-
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 # runs:
 #   using: composite
