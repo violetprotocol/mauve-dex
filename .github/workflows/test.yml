@@ -10,13 +10,14 @@ on:
       - dev
   pull_request:
     branches: [ '*' ]
+  workflow_dispatch:
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup/action.yml
+      - uses: ./.github/workflows/action.yml
         secrets:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -24,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
+      - uses: ./.github/workflows/action.yml
         secrets:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn yarn-deduplicate --strategy=highest --list --fail
@@ -33,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
+      - uses: ./.github/workflows/action.yml
         secrets:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn prepare
@@ -43,7 +44,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - uses: actions/checkout@v3
-  #     - uses: ./.github/actions/setup
+  #     - uses: ./.github/workflows/action.yml
   #     - run: yarn prepare
 
   #     - run: yarn build
@@ -70,7 +71,7 @@ jobs:
   #       containers: [1, 2, 3, 4]
   #   steps:
   #     - uses: actions/checkout@v3
-  #     - uses: ./.github/actions/setup
+  #     - uses: ./.github/workflows/action.yml
 
   #     - uses: actions/download-artifact@v2
   #       with:
