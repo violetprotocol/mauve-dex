@@ -59,13 +59,13 @@ jobs:
         run: |
           case ${{ github.ref }} in
               refs/heads/main)
-                echo "::set-output name=environment::prod"
+                echo "::set-output name=environment::mauve-prod"
               ;;
               refs/heads/po-review)
-                echo "::set-output name=environment::dev"
+                echo "::set-output name=environment::mauve-dev"
               ;;
               refs/heads/staging)
-                echo "::set-output name=environment::staging"
+                echo "::set-output name=environment::mauve-staging"
               ;;
               # refs/heads/feat/*)
               #   # INFO: This case allows feature branches to create dev images.
