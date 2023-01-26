@@ -13,7 +13,7 @@ COPY package.json yarn.lock /app/
 ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 COPY .npmrc /app/.npmrc
-RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ./.npmrc
 RUN yarn install --ignore-scripts --frozen-lockfile --prod
 
 ############################## dev_package ##############################
@@ -44,10 +44,12 @@ RUN yarn build
 ############################## compile_release_kubernetes ##############################
 FROM base AS compile_release_kubernetes
 
-RUN apk add git
 WORKDIR /app
 COPY tsconfig.json /app/tsconfig.json
 COPY --from=build_kubernetes /app/. /app/
+COPY --from=build_kubernetes /app/.git /app/.git
+RUN apk add git
+RUN git config --global --add safe.directory /app
 
 
 ############################## release ##############################
