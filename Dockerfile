@@ -49,7 +49,6 @@ COPY tsconfig.json /app/tsconfig.json
 COPY --from=build_kubernetes /app/. /app/
 COPY --from=build_kubernetes /app/.git /app/.git
 RUN apk add git
-RUN git config --global --add safe.directory /app
 
 
 ############################## release ##############################
@@ -58,4 +57,5 @@ FROM compile_release_kubernetes AS release
 
 EXPOSE 3000
 USER node
+RUN git config --global --add safe.directory /app
 CMD ["yarn", "start"]
