@@ -13,7 +13,7 @@ COPY package.json yarn.lock /app/
 ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 COPY .npmrc /app/.npmrc
-RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+# RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 RUN yarn install --ignore-scripts --frozen-lockfile --prod
 
 ############################## dev_package ##############################
@@ -37,7 +37,7 @@ ENV ENVIRONMENT=${ENVIRONMENT}
 
 # Next.js expects the environment variables to be present at build time so they can be compiled into the build.
 # See https://nextjs.org/docs/basic-features/environment-variables#exposing-environment-variables-to-the-browser
-COPY .env.k8s.${ENVIRONMENT} /app/.env
+# COPY .env.k8s.${ENVIRONMENT} /app/.env
 RUN yarn prepare
 RUN yarn build
 

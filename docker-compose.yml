@@ -1,0 +1,27 @@
+version: '3'
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: release
+    # command: >
+    #   sh -c "yarn prepare &&
+    #          yarn build &&
+    #          yarn start"
+    networks:
+      - mauve-dex-app
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./.env
+    ports:
+      - 8080:8080
+    # volumes:
+    #   - ./:/app/
+
+volumes:
+  mongodata:
+
+networks:
+  mauve-dex-app:
