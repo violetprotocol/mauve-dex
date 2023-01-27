@@ -44,7 +44,7 @@ RUN yarn build
 ############################## nginx ##############################
 # Kubernetes build target for the release
 # nginx state for serving content
-FROM nginx:1.23.2-alpine
+FROM nginx:1.23.2-alpine as release
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build_kubernetes /app/build /usr/share/nginx/html
 RUN touch /var/run/nginx.pid
