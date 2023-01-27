@@ -13,7 +13,7 @@ COPY package.json yarn.lock /app/
 ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN}
 COPY .npmrc /app/.npmrc
-RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ./.npmrc
+RUN echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 RUN yarn install --ignore-scripts --frozen-lockfile --prod
 
 ############################## dev_package ##############################
@@ -41,21 +41,15 @@ COPY .env.k8s.${ENVIRONMENT} /app/.env
 RUN yarn prepare
 RUN yarn build
 
-############################## compile_release_kubernetes ##############################
-FROM base AS compile_release_kubernetes
-
-WORKDIR /app
-COPY tsconfig.json /app/tsconfig.json
-COPY --from=build_kubernetes /app/. /app/
-COPY --from=build_kubernetes /app/.git /app/.git
-RUN apk add git
-
-
-############################## release ##############################
+############################## nginx ##############################
 # Kubernetes build target for the release
-FROM compile_release_kubernetes AS release
+# nginx state for serving content
+FROM nginx:1.23.2-alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build_kubernetes /app/build /usr/share/nginx/html
+RUN touch /var/run/nginx.pid
+RUN chown -R nginx:nginx /var/run/nginx.pid /usr/share/nginx/html /var/cache/nginx /var/log/nginx /etc/nginx/conf.d
+USER nginx
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]
 
-EXPOSE 3000
-USER node
-RUN git config --global --add safe.directory /app
-CMD ["yarn", "start"]
