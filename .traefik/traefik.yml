@@ -1,0 +1,17 @@
+entryPoints:
+  dashboard:
+    address: :8081
+  web:
+    address: :8080
+api:
+  # insecure: true
+  dashboard: true
+  # debug: true
+log:
+  level: INFO
+accessLog: true
+providers:
+  #file:
+  #  filename: /etc/traefik/traefik.dyn.yml
+  docker:
+    exposedbydefault: false

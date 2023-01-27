@@ -43,3 +43,6 @@ cypress/videos
 cypress/screenshots
 
 .vercel
+.npmrc
+
+docker-compose.local.yml
