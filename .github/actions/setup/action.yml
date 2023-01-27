@@ -1,7 +1,7 @@
 name: Setup
 
 inputs:
-  token:
+  NPM_AUTH_TOKEN:
     required: true
 
 runs:
@@ -26,5 +26,5 @@ runs:
     - if: steps.install-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile --ignore-scripts
       env:
-        NODE_AUTH_TOKEN: ${{ inputs.token }}
+        NODE_AUTH_TOKEN: ${{ inputs.NPM_AUTH_TOKEN }}
       shell: bash

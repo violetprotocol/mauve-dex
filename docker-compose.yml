@@ -22,12 +22,11 @@ services:
   ui:
     build:
       context: .
+      args:
+        - NPM_TOKEN=$NPM_TOKEN
+        - ENVIRONMENT=local
       dockerfile: ./Dockerfile
       target: release
-    # command: >
-    #   sh -c "yarn prepare &&
-    #          yarn build &&
-    #          yarn start"
     networks:
       - mauve-dex-app
     environment:
