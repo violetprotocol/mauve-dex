@@ -59,13 +59,13 @@ jobs:
         run: |
           case ${{ github.ref }} in
               refs/heads/main)
-                echo "::set-output name=environment::prod"
+                echo "::set-output name=environment::mauve-prod"
               ;;
               refs/heads/po-review)
-                echo "::set-output name=environment::dev"
+                echo "::set-output name=environment::mauve-dev"
               ;;
               refs/heads/staging)
-                echo "::set-output name=environment::staging"
+                echo "::set-output name=environment::mauve-staging"
               ;;
               # refs/heads/feat/*)
               #   # INFO: This case allows feature branches to create dev images.
@@ -113,7 +113,9 @@ jobs:
           push: true
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repo }}:${{ needs.set_environment.outputs.environment }}-${{ github.run_number }}-${{ needs.set_environment.outputs.short_sha }}
           target: release # TODO: future selection of the build target once the multiple Dockerfiles have been converged into one
-          build-args: ENVIRONMENT=${{ needs.set_environment.outputs.environment }}
+          build-args: |
+            NPM_TOKEN=${{ secrets.NPM_TOKEN }}
+            ENVIRONMENT=${{ needs.set_environment.outputs.environment }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

@@ -1,0 +1,45 @@
+version: '3'
+services:
+  reverse-proxy:
+    image: traefik:v2.9
+    networks:
+      - mauve-dex-app
+    ports:
+      - 4081:8081
+      - 4080:8080
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock:z
+      - ./.traefik:/etc/traefik:ro
+    security_opt:
+      - "label=disable"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.entryPoints=dashboard
+      - traefik.http.routers.dashboard.rule=(PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      - traefik.http.routers.dashboard.service=api@internal
+
+  ui:
+    build:
+      context: .
+      args:
+        - NPM_TOKEN=$NPM_TOKEN
+        - ENVIRONMENT=local
+      dockerfile: ./Dockerfile
+      target: release
+    networks:
+      - mauve-dex-app
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./.env
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.to-ui.entryPoints=web
+      - traefik.http.routers.to-ui.rule=PathPrefix(`/`)
+      - traefik.http.services.to-ui.loadbalancer.server.port=8080
+
+networks:
+  mauve-dex-app:

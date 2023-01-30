@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn lint
 
   deps-tests:
@@ -21,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn yarn-deduplicate --strategy=highest --list --fail
 
   unit-tests:
@@ -28,6 +32,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn prepare
       - run: yarn test
 
@@ -36,6 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn prepare
 
       - run: yarn build
@@ -63,6 +71,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - uses: actions/download-artifact@v2
         with:
