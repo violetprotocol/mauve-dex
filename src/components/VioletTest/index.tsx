@@ -65,8 +65,6 @@ const getHumanBoundContractAddressByNetworkId = (chainId: number) => {
   }
 }
 
-// 0x13881
-
 export default function VioletTestButton() {
   const { chainId, account, connector } = useWeb3React()
 
