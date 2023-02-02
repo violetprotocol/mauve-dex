@@ -18,11 +18,11 @@ const baseUrlByEnvironment = (environment: string) => {
     case 'local':
       return 'http://localhost:8080'
     case 'staging':
-      return 'https://staging.k8s.app.violet.co/'
+      return 'https://staging.k8s.app.violet.co'
     case 'development':
-      return 'https://dev.k8s.app.violet.co/'
+      return 'https://dev.k8s.app.violet.co'
     case 'production':
-      return 'https://app.violet.co/'
+      return 'https://app.violet.co'
     default:
       throw new Error('Invalid environment')
   }
