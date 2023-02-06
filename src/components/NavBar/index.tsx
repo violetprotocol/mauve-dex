@@ -105,7 +105,6 @@ const Navbar = () => {
             <Box>
               <VioletTestButton/>
             </Box>
-            <VioletRegisterButton/>
             {!isNftPage && (
               <Box display={{ sm: 'flex', lg: 'none' }}>
                 <ChainSelector leftAlign={true} />
@@ -119,6 +118,7 @@ const Navbar = () => {
             <SearchBar />
           </Box>
           <Box className={styles.rightSideContainer}>
+            <VioletRegisterButton/>
             <Row gap="12">
               <Box position="relative" display={{ sm: 'flex', xl: 'none' }}>
                 <SearchBar />
