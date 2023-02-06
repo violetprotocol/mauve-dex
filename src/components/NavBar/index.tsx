@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
+import VioletRegisterButton from 'components/RegisterVioletID'
 import VioletTestButton from 'components/VioletTest'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
@@ -102,8 +103,9 @@ const Navbar = () => {
               />
             </Box>
             <Box>
-              <VioletTestButton></VioletTestButton>
+              <VioletTestButton/>
             </Box>
+            <VioletRegisterButton/>
             {!isNftPage && (
               <Box display={{ sm: 'flex', lg: 'none' }}>
                 <ChainSelector leftAlign={true} />
