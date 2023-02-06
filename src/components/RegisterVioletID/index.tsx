@@ -76,8 +76,8 @@ export default function VioletRegisterButton() {
     const baseApiUrl = baseUrlByEnvironment(environment.toString())
     const authorizationRedirectUrl = `${baseApiUrl}/api/onchain/mint`
 
-    const content = JSON.stringify({ accountId: `eip155:${chainId}:${account}` });
-    const contentLength = content.length;
+    const content = JSON.stringify({ accountId: `eip155:${chainId}:${account}` })
+    const contentLength = content.length
     const headers = new Headers({ 'Content-Type': 'application/json', 'Content-Length': `${contentLength}` })
     fetch(authorizationRedirectUrl, {
       method: 'POST',
@@ -86,7 +86,7 @@ export default function VioletRegisterButton() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data)
       })
       .catch((e) => alert(e.message))
   }
@@ -96,8 +96,6 @@ export default function VioletRegisterButton() {
   }
 
   return (
-    <ResponsiveButtonPrimary onClick={() => register(chainId, account)}>
-      Register with Violet
-    </ResponsiveButtonPrimary>
+    <ResponsiveButtonPrimary onClick={() => register(chainId, account)}>Register with Violet</ResponsiveButtonPrimary>
   )
 }
