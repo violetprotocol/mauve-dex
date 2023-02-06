@@ -9,8 +9,6 @@ import { lazy } from 'react'
 import { useModalIsOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/reducer'
 
-const Bag = lazy(() => import('nft/components/bag/Bag'))
-const TransactionCompleteModal = lazy(() => import('nft/components/collection/TransactionCompleteModal'))
 const AirdropModal = lazy(() => import('components/AirdropModal'))
 
 export default function TopLevelModals() {
@@ -26,8 +24,6 @@ export default function TopLevelModals() {
     <>
       <AddressClaimModal isOpen={addressClaimOpen} onDismiss={addressClaimToggle} />
       <ConnectedAccountBlocked account={account} isOpen={accountBlocked} />
-      <Bag />
-      <TransactionCompleteModal />
       <AirdropModal />
       {fiatOnrampFlagEnabled && <FiatOnrampModal />}
     </>
