@@ -39,21 +39,6 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
 
-export function FindPoolTabs({ origin }: { origin: string }) {
-  return (
-    <Tabs>
-      <RowBetween style={{ padding: '1rem 1rem 0 1rem', position: 'relative' }}>
-        <HistoryLink to={origin}>
-          <StyledArrowLeft />
-        </HistoryLink>
-        <ActiveText style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-          <Trans>Import V2 Pool</Trans>
-        </ActiveText>
-      </RowBetween>
-    </Tabs>
-  )
-}
-
 export function AddRemoveTabs({
   adding,
   creating,
@@ -113,6 +98,7 @@ export function AddRemoveTabs({
     </Tabs>
   )
 }
+
 // TODO-MAUVE: Remove?
 // export function CreateProposalTabs() {
 //   return (

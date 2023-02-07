@@ -1,5 +1,5 @@
 import { darken } from 'polished'
-import { Check, ChevronDown } from 'react-feather'
+import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
 import styled, { DefaultTheme, useTheme } from 'styled-components/macro'
 
@@ -323,27 +323,29 @@ export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProp
   }
 }
 
-export function ButtonDropdown({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
-  return (
-    <ButtonPrimary {...rest} disabled={disabled}>
-      <RowBetween>
-        <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
-        <ChevronDown size={24} />
-      </RowBetween>
-    </ButtonPrimary>
-  )
-}
+// [MAUVE-DISABLED]
+// export function ButtonDropdown({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
+//   return (
+//     <ButtonPrimary {...rest} disabled={disabled}>
+//       <RowBetween>
+//         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
+//         <ChevronDown size={24} />
+//       </RowBetween>
+//     </ButtonPrimary>
+//   )
+// }
 
-export function ButtonDropdownLight({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
-  return (
-    <ButtonOutlined {...rest} disabled={disabled}>
-      <RowBetween>
-        <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
-        <ChevronDown size={24} />
-      </RowBetween>
-    </ButtonOutlined>
-  )
-}
+// [MAUVE-DISABLED]
+// export function ButtonDropdownLight({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
+//   return (
+//     <ButtonOutlined {...rest} disabled={disabled}>
+//       <RowBetween>
+//         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
+//         <ChevronDown size={24} />
+//       </RowBetween>
+//     </ButtonOutlined>
+//   )
+// }
 
 const ActiveOutlined = styled(ButtonOutlined)`
   border: 1px solid;

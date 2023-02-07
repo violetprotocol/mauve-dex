@@ -14,7 +14,7 @@ export const Column = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement
 
 Column.displayName = 'Column'
 
-export const Center = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) => {
+const Center = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) => {
   return <Box ref={ref} display="flex" justifyContent="center" alignItems="center" {...props} />
 })
 

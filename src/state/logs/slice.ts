@@ -27,15 +27,15 @@ const slice = createSlice({
   name: 'logs',
   initialState: {} as LogsState,
   reducers: {
-    addListener(state, { payload: { chainId, filter } }: PayloadAction<{ chainId: number; filter: Filter }>) {
-      if (!state[chainId]) state[chainId] = {}
-      const key = filterToKey(filter)
-      if (!state[chainId][key])
-        state[chainId][key] = {
-          listeners: 1,
-        }
-      else state[chainId][key].listeners++
-    },
+    // addListener(state, { payload: { chainId, filter } }: PayloadAction<{ chainId: number; filter: Filter }>) {
+    //   if (!state[chainId]) state[chainId] = {}
+    //   const key = filterToKey(filter)
+    //   if (!state[chainId][key])
+    //     state[chainId][key] = {
+    //       listeners: 1,
+    //     }
+    //   else state[chainId][key].listeners++
+    // },
     fetchingLogs(
       state,
       {
@@ -76,14 +76,14 @@ const slice = createSlice({
         error: true,
       }
     },
-    removeListener(state, { payload: { chainId, filter } }: PayloadAction<{ chainId: number; filter: Filter }>) {
-      if (!state[chainId]) return
-      const key = filterToKey(filter)
-      if (!state[chainId][key]) return
-      state[chainId][key].listeners--
-    },
+    // removeListener(state, { payload: { chainId, filter } }: PayloadAction<{ chainId: number; filter: Filter }>) {
+    //   if (!state[chainId]) return
+    //   const key = filterToKey(filter)
+    //   if (!state[chainId][key]) return
+    //   state[chainId][key].listeners--
+    // },
   },
 })
 
 export default slice.reducer
-export const { addListener, removeListener, fetchedLogs, fetchedLogsError, fetchingLogs } = slice.actions
+export const { fetchedLogs, fetchedLogsError, fetchingLogs } = slice.actions
