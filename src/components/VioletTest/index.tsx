@@ -33,11 +33,11 @@ const redirectUrlByEnvironment = (environment: string) => {
     case 'local':
       return 'http://localhost:3000/swap'
     case 'staging':
-      return 'https://staging.k8s.mauve.org/swap'
+      return 'https://staging.k8s.app.mauve.org/swap'
     case 'development':
-      return 'https://dev.k8s.mauve.org/swap'
+      return 'https://dev.k8s.app.mauve.org/swap'
     case 'production':
-      return 'https://mauve.org/swap'
+      return 'https://app.mauve.org/swap'
     default:
       throw new Error('Invalid environment')
   }
