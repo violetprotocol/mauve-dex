@@ -1,3 +1,4 @@
+// [MAUVE-DISABLED]
 export {}
 // import { Trans } from '@lingui/macro'
 // import { Trace } from '@uniswap/analytics'

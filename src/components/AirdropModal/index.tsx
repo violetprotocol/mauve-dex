@@ -1,4 +1,4 @@
-// No airdrop for you!
+// [MAUVE-DISABLED]: No airdrop for you!
 export {}
 // import { BigNumber } from '@ethersproject/bignumber'
 // import type { TransactionResponse } from '@ethersproject/providers'

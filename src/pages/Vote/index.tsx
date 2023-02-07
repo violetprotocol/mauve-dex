@@ -1,4 +1,4 @@
-// Governance is disabled
+// [MAUVE-DISABLED]: Governance is disabled
 export {}
 // import CreateProposal from 'pages/CreateProposal'
 // import { Route, Routes } from 'react-router-dom'

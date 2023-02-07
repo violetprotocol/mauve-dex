@@ -28,8 +28,6 @@ import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
 import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
 import Landing from './Landing'
-import MigrateV2 from './MigrateV2'
-import MigrateV2Pair from './MigrateV2/MigrateV2Pair'
 import NotFound from './NotFound'
 import Pool from './Pool'
 import { PositionPage } from './Pool/PositionPage'
@@ -239,50 +237,6 @@ export default function App() {
 
                 <Route path="remove/v2/:currencyIdA/:currencyIdB" element={<RemoveLiquidity />} />
                 <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
-
-                <Route path="migrate/v2" element={<MigrateV2 />} />
-                <Route path="migrate/v2/:address" element={<MigrateV2Pair />} />
-
-                {/* <Route
-                  path="/nfts"
-                  element={
-                    <Suspense fallback={null}>
-                      <NftExplore />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/nfts/asset/:contractAddress/:tokenId"
-                  element={
-                    <Suspense fallback={null}>
-                      <Asset />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/nfts/profile"
-                  element={
-                    <Suspense fallback={null}>
-                      <Profile />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/nfts/collection/:contractAddress"
-                  element={
-                    <Suspense fallback={null}>
-                      <Collection />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/nfts/collection/:contractAddress/activity"
-                  element={
-                    <Suspense fallback={null}>
-                      <Collection />
-                    </Suspense>
-                  }
-                /> */}
 
                 <Route path="*" element={<Navigate to="/not-found" replace />} />
                 <Route path="/not-found" element={<NotFound />} />
