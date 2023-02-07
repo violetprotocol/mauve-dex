@@ -84,9 +84,9 @@ export default function VioletRegisterButton() {
       headers,
       body: content,
     })
-      .then((res) => res.json())
+      .then((res) => res.text())
       .then((data) => {
-        console.log(data)
+        alert(data)
       })
       .catch((e) => alert(e.message))
   }
