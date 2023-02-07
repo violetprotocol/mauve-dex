@@ -1,4 +1,3 @@
-export * from './useBag'
 export * from './useCollectionFilters'
 export * from './useIsMobile'
 export * from './useIsTablet'
