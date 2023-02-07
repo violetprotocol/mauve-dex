@@ -187,6 +187,7 @@ export const COMMON_BASES: ChainCurrencyList = {
   ],
 }
 
+// [MAUVE-DISABLED]
 // used to construct the list of all pairs we consider by default in the frontend
 // export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 //   ...WRAPPED_NATIVE_CURRENCIES_ONLY,
@@ -198,6 +199,7 @@ export const COMMON_BASES: ChainCurrencyList = {
 //     WBTC,
 //   ],
 // }
+// [MAUVE-DISABLED]
 // export const PINNED_PAIRS: { readonly [chainId: number]: [Token, Token][] } = {
 //   [SupportedChainId.MAINNET]: [
 //     [

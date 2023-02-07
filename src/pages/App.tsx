@@ -35,6 +35,7 @@ import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
+// [MAUVE-DISABLED]
 // const Vote = lazy(() => import('./Vote'))
 
 // Placeholder API key. Actual API key used in the proxy server
@@ -190,11 +191,11 @@ export default function App() {
             {isLoaded ? (
               <Routes>
                 <Route path="/" element={<Landing />} />
-
                 <Route path="tokens" element={<Tokens />}>
                   <Route path=":chainName" />
                 </Route>
                 <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
+                {/* // [MAUVE-DISABLED] */}
                 {/* <Route
                   path="vote/*"
                   element={
@@ -204,29 +205,23 @@ export default function App() {
                   }
                 /> */}
                 {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
-
                 <Route path="send" element={<RedirectPathToSwapOnly />} />
                 <Route path="swap" element={<Swap />} />
-
                 <Route path="pool" element={<Pool />} />
                 <Route path="pool/:tokenId" element={<PositionPage />} />
-
                 <Route path="add" element={<RedirectDuplicateTokenIds />}>
                   {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
                   <Route path=":currencyIdA" />
                   <Route path=":currencyIdA/:currencyIdB" />
                   <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
                 </Route>
-
                 <Route path="increase" element={<AddLiquidity />}>
                   <Route path=":currencyIdA" />
                   <Route path=":currencyIdA/:currencyIdB" />
                   <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
                   <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
                 </Route>
-
                 <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
-
                 <Route path="*" element={<Navigate to="/not-found" replace />} />
                 <Route path="/not-found" element={<NotFound />} />
               </Routes>
