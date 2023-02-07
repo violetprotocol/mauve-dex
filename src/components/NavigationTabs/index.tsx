@@ -99,7 +99,7 @@ export function AddRemoveTabs({
   )
 }
 
-// TODO-MAUVE: Remove?
+// [MAUVE-DISABLED]
 // export function CreateProposalTabs() {
 //   return (
 //     <Tabs>
