@@ -10,7 +10,6 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useIsDarkMode } from 'state/user/hooks'
 import styled from 'styled-components/macro'
-import { SpinnerSVG } from 'theme/components'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { isProductionEnv } from 'utils/env'
@@ -26,14 +25,10 @@ import { useIsExpertMode } from '../state/user/hooks'
 import DarkModeQueryParamReader from '../theme/components/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
-import { RedirectDuplicateTokenIdsV2 } from './AddLiquidityV2/redirects'
 import Landing from './Landing'
 import NotFound from './NotFound'
 import Pool from './Pool'
 import { PositionPage } from './Pool/PositionPage'
-import PoolV2 from './Pool/v2'
-import PoolFinder from './PoolFinder'
-import RemoveLiquidity from './RemoveLiquidity'
 import RemoveLiquidityV3 from './RemoveLiquidity/V3'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
@@ -118,17 +113,18 @@ function getCurrentPageFromLocation(locationPathname: string): InterfacePageName
 
 // this is the same svg defined in assets/images/blue-loader.svg
 // it is defined here because the remote asset may not have had time to load when this file is executing
-const LazyLoadSpinner = () => (
-  <SpinnerSVG width="94" height="94" viewBox="0 0 94 94" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M92 47C92 22.1472 71.8528 2 47 2C22.1472 2 2 22.1472 2 47C2 71.8528 22.1472 92 47 92"
-      stroke="#2172E5"
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </SpinnerSVG>
-)
+// [MAUVE-DISABLED]: Unused
+// const LazyLoadSpinner = () => (
+//   <SpinnerSVG width="94" height="94" viewBox="0 0 94 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+//     <path
+//       d="M92 47C92 22.1472 71.8528 2 47 2C22.1472 2 2 22.1472 2 47C2 71.8528 22.1472 92 47 92"
+//       stroke="#2172E5"
+//       strokeWidth="3"
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//     />
+//   </SpinnerSVG>
+// )
 
 export default function App() {
   const isLoaded = useFeatureFlagsIsLoaded()
@@ -212,15 +208,9 @@ export default function App() {
                 <Route path="send" element={<RedirectPathToSwapOnly />} />
                 <Route path="swap" element={<Swap />} />
 
-                <Route path="pool/v2/find" element={<PoolFinder />} />
-                <Route path="pool/v2" element={<PoolV2 />} />
                 <Route path="pool" element={<Pool />} />
                 <Route path="pool/:tokenId" element={<PositionPage />} />
 
-                <Route path="add/v2" element={<RedirectDuplicateTokenIdsV2 />}>
-                  <Route path=":currencyIdA" />
-                  <Route path=":currencyIdA/:currencyIdB" />
-                </Route>
                 <Route path="add" element={<RedirectDuplicateTokenIds />}>
                   {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
                   <Route path=":currencyIdA" />
@@ -235,7 +225,6 @@ export default function App() {
                   <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
                 </Route>
 
-                <Route path="remove/v2/:currencyIdA/:currencyIdB" element={<RemoveLiquidity />} />
                 <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
 
                 <Route path="*" element={<Navigate to="/not-found" replace />} />
