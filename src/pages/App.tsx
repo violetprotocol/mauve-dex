@@ -42,7 +42,7 @@ import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
-const Vote = lazy(() => import('./Vote'))
+// const Vote = lazy(() => import('./Vote'))
 
 // Placeholder API key. Actual API key used in the proxy server
 const ANALYTICS_DUMMY_KEY = '00000000000000000000000000000000'
@@ -201,15 +201,15 @@ export default function App() {
                   <Route path=":chainName" />
                 </Route>
                 <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
-                <Route
+                {/* <Route
                   path="vote/*"
                   element={
                     <Suspense fallback={<LazyLoadSpinner />}>
                       <Vote />
                     </Suspense>
                   }
-                />
-                <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} />
+                /> */}
+                {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
 
                 <Route path="send" element={<RedirectPathToSwapOnly />} />
                 <Route path="swap" element={<Swap />} />
