@@ -5,10 +5,10 @@ import FiatOnrampModal from 'components/FiatOnrampModal'
 import { BaseVariant } from 'featureFlags'
 import { useFiatOnrampFlag } from 'featureFlags/flags/fiatOnramp'
 import useAccountRiskCheck from 'hooks/useAccountRiskCheck'
-// import { lazy } from 'react'
 import { useModalIsOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/reducer'
 
+// [MAUVE-DISABLED]
 // const AirdropModal = lazy(() => import('components/AirdropModal'))
 
 export default function TopLevelModals() {
@@ -24,6 +24,7 @@ export default function TopLevelModals() {
     <>
       <AddressClaimModal isOpen={addressClaimOpen} onDismiss={addressClaimToggle} />
       <ConnectedAccountBlocked account={account} isOpen={accountBlocked} />
+      {/* // [MAUVE-DISABLED] */}
       {/* <AirdropModal /> */}
       {fiatOnrampFlagEnabled && <FiatOnrampModal />}
     </>
