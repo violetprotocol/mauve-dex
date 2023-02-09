@@ -129,17 +129,6 @@ const userSlice = createSlice({
       state.tokens[serializedToken.chainId][serializedToken.address] = serializedToken
       state.timestamp = currentTimestamp()
     },
-    addSerializedPair(state, { payload: { serializedPair } }) {
-      if (
-        serializedPair.token0.chainId === serializedPair.token1.chainId &&
-        serializedPair.token0.address !== serializedPair.token1.address
-      ) {
-        const chainId = serializedPair.token0.chainId
-        state.pairs[chainId] = state.pairs[chainId] || {}
-        state.pairs[chainId][pairKey(serializedPair.token0.address, serializedPair.token1.address)] = serializedPair
-      }
-      state.timestamp = currentTimestamp()
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(updateVersion, (state) => {
@@ -179,7 +168,6 @@ const userSlice = createSlice({
 })
 
 export const {
-  addSerializedPair,
   addSerializedToken,
   updateFiatOnrampAcknowledgments,
   updateSelectedWallet,

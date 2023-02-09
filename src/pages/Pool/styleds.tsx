@@ -1,18 +1,17 @@
 import { LoadingRows as BaseLoadingRows } from 'components/Loader/styled'
-import { Text } from 'rebass'
 import styled from 'styled-components/macro'
 
-export const Wrapper = styled.div`
-  position: relative;
-  padding: 20px;
-`
+// export const Wrapper = styled.div`
+//   position: relative;
+//   padding: 20px;
+// `
 
-export const ClickableText = styled(Text)`
-  :hover {
-    cursor: pointer;
-  }
-  color: ${({ theme }) => theme.accentAction};
-`
+// export const ClickableText = styled(Text)`
+//   :hover {
+//     cursor: pointer;
+//   }
+//   color: ${({ theme }) => theme.accentAction};
+// `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
   background-color: ${({ theme }) => theme.deprecated_primary5};

@@ -14,7 +14,7 @@ import { isAddress } from '../../utils'
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
  */
-export function useNativeCurrencyBalances(uncheckedAddresses?: (string | undefined)[]): {
+function useNativeCurrencyBalances(uncheckedAddresses?: (string | undefined)[]): {
   [address: string]: CurrencyAmount<Currency> | undefined
 } {
   const { chainId } = useWeb3React()
@@ -91,7 +91,7 @@ export function useTokenBalancesWithLoadingIndicator(
   )
 }
 
-export function useTokenBalances(
+function useTokenBalances(
   address?: string,
   tokens?: (Token | undefined)[]
 ): { [tokenAddress: string]: CurrencyAmount<Token> | undefined } {
@@ -99,15 +99,17 @@ export function useTokenBalances(
 }
 
 // get the balance for a single token/account combo
-export function useTokenBalance(account?: string, token?: Token): CurrencyAmount<Token> | undefined {
-  const tokenBalances = useTokenBalances(
-    account,
-    useMemo(() => [token], [token])
-  )
-  if (!token) return undefined
-  return tokenBalances[token.address]
-}
+// [MAUVE-DISABLED]
+// function useTokenBalance(account?: string, token?: Token): CurrencyAmount<Token> | undefined {
+//   const tokenBalances = useTokenBalances(
+//     account,
+//     useMemo(() => [token], [token])
+//   )
+//   if (!token) return undefined
+//   return tokenBalances[token.address]
+// }
 
+// TODO-MAUVE: Figure out why eslint complains it is not imported when it is, in src/state/swap via /state/connection
 export function useCurrencyBalances(
   account?: string,
   currencies?: (Currency | undefined)[]
