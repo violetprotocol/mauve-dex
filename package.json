@@ -1,7 +1,7 @@
 {
-  "name": "@uniswap/interface",
-  "version": "1.0.7",
-  "description": "Uniswap Interface",
+  "name": "@violetprotocol/mauve-dex",
+  "version": "1.0.8",
+  "description": "Mauve Interface",
   "homepage": ".",
   "license": "GPL-3.0-or-later",
   "scripts": {
