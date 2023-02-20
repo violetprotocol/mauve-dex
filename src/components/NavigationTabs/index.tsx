@@ -30,11 +30,6 @@ const StyledHistoryLink = styled(HistoryLink)<{ flex: string | undefined }>`
   `};
 `
 
-const ActiveText = styled.div`
-  font-weight: 500;
-  font-size: 20px;
-`
-
 const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
