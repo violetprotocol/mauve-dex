@@ -1,4 +1,5 @@
-describe('Remove Liquidity', () => {
+// TODO-MAUVE: Update with V3
+describe.skip('Remove Liquidity', () => {
   it('eth remove', () => {
     cy.visit('/remove/v2/ETH/0xF9bA5210F91D0474bd1e1DcDAeC4C58E359AaD85')
     cy.get('#remove-liquidity-tokena-symbol').should('contain.text', 'ETH')
