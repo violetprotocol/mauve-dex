@@ -1,5 +1,6 @@
 import fetchTokenList, { DEFAULT_TOKEN_LIST } from './fetchTokenList'
 
+// eslint-disable-next-line jest/no-disabled-tests
 describe.skip('fetchTokenList', () => {
   const resolver = jest.fn()
 
