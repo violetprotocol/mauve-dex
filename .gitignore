@@ -10,6 +10,8 @@
 
 # generated graphql types
 schema.graphql
+src/graphql/data/__generated__
+src/graphql/thegraph/__generated__
 
 # dependencies
 /node_modules
