@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { formatCurrencyAmount, NumberType } from '@uniswap/conedison/format'
-import { Currency, SupportedChainId } from '@uniswap/sdk-core'
+import { Currency, SupportedChainId } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { getChainInfo } from 'constants/chainInfo'
@@ -66,14 +66,16 @@ const StyledNetworkLabel = styled.div`
 export default function BalanceSummary({ token }: { token: Currency }) {
   const { account, chainId } = useWeb3React()
   const theme = useTheme()
-  const { label, color } = getChainInfo(isSupportedChain(chainId) ? chainId : SupportedChainId.MAINNET)
+  const chainInfo = getChainInfo(isSupportedChain(chainId) ? chainId : SupportedChainId.MAINNET)
   const balance = useCurrencyBalance(account, token)
   const formattedBalance = formatCurrencyAmount(balance, NumberType.TokenNonTx)
   const formattedUsdValue = formatCurrencyAmount(useStablecoinValue(balance), NumberType.FiatTokenStats)
 
-  if (!account || !balance) {
+  if (!account || !balance || !chainInfo) {
     return null
   }
+  const { label, color } = chainInfo
+
   return (
     <BalancesCard>
       <BalanceSection>

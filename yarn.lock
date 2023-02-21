@@ -3300,11 +3300,6 @@
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.4.2-solc-0.7.tgz#38f4dbab672631034076ccdf2f3201fab1726635"
   integrity sha512-W6QmqgkADuFcTLzHL8vVoNBtkwjvQRpYIAom7KiUNoLKghyx3FgH0GBjt8NRvigV1ZmMOBllvE1By1C+bi8WpA==
 
-"@openzeppelin/contracts@4.7.0":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.7.0.tgz#3092d70ea60e3d1835466266b1d68ad47035a2d5"
-  integrity sha512-52Qb+A1DdOss8QvJrijYYPSf32GUg2pGaG/yCxtaA3cu4jduouTdg4XZSMLW9op54m1jH7J8hoajhHKOPsoJFw==
-
 "@peculiar/asn1-schema@^2.1.6", "@peculiar/asn1-schema@^2.3.0":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@peculiar/asn1-schema/-/asn1-schema-2.3.3.tgz#21418e1f3819e0b353ceff0c2dad8ccb61acd777"
@@ -5006,53 +5001,6 @@
   resolved "https://registry.yarnpkg.com/@uniswap/redux-multicall/-/redux-multicall-1.1.8.tgz#9cc5090305b10df68fb6162eb1ba7c2c762f5e7f"
   integrity sha512-LttOBVJuoRNC6N4MHsb5dF2GszLsj1ddPKKccEw1XOX17bGrFdm2A6GwKgES+v+Hj3lluDbQL6atcQtymP21iw==
 
-"@uniswap/router-sdk@^1.3.0", "@uniswap/router-sdk@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/router-sdk/-/router-sdk-1.4.0.tgz#0e8d49f37b36e74b6a70ec257ec0561bf1f249c3"
-  integrity sha512-GyUX8x+hnwnh89DHyA/yKWUwhU3Eukx3B76vfvMMWfr++GA4CW6PzT5j4JgNZDrsBTOSJWxTdU5YbgOuwU2XGg==
-  dependencies:
-    "@ethersproject/abi" "^5.5.0"
-    "@uniswap/sdk-core" "^3.0.1"
-    "@uniswap/swap-router-contracts" "1.1.0"
-    "@uniswap/v2-sdk" "^3.0.1"
-    "@uniswap/v3-sdk" "^3.8.3"
-
-"@uniswap/sdk-core@^3.0.0-alpha.3", "@uniswap/sdk-core@^3.0.1", "@uniswap/sdk-core@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/sdk-core/-/sdk-core-3.1.0.tgz#595b6396763fd2553531423c8eec83bfb4840a27"
-  integrity sha512-YRrp6vYAbYmi3uDXQGkvj2eT8BMpNnUdCFb8GifDG0Ei+ohIpC4RNAB+5/ru3zR2Byhx8VahGrSKuvdd6BVMyA==
-  dependencies:
-    "@ethersproject/address" "^5.0.2"
-    big.js "^5.2.2"
-    decimal.js-light "^2.5.0"
-    jsbi "^3.1.4"
-    tiny-invariant "^1.1.0"
-    toformat "^2.0.0"
-
-"@uniswap/smart-order-router@^2.10.0":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/smart-order-router/-/smart-order-router-2.10.0.tgz#f9f13bd9a940fc2ee123a6dbe6c64a6fab19a365"
-  integrity sha512-7dfFlPbg36goZOWlRowTDDrRc1vWwKLhAuhftf6sN+ECJ4CeqRgDDZgxw/ZJhfDSl1RC6IYN71CfEcmhnbRDlw==
-  dependencies:
-    "@uniswap/default-token-list" "^2.0.0"
-    "@uniswap/router-sdk" "^1.3.0"
-    "@uniswap/swap-router-contracts" "^1.3.0"
-    "@uniswap/token-lists" "^1.0.0-beta.25"
-    "@uniswap/v2-sdk" "^3.0.1"
-    "@uniswap/v3-sdk" "^3.7.0"
-    async-retry "^1.3.1"
-    await-timeout "^1.1.1"
-    axios "^0.21.1"
-    bunyan "^1.8.15"
-    bunyan-blackhole "^1.1.1"
-    ethers "^5.6.1"
-    graphql "^15.5.0"
-    graphql-request "^3.4.0"
-    lodash "^4.17.21"
-    mnemonist "^0.38.3"
-    node-cache "^5.1.2"
-    stats-lite "^2.2.0"
-
 "@uniswap/swap-router-contracts@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@uniswap/swap-router-contracts/-/swap-router-contracts-1.1.0.tgz#e027b14d4c172f231c53c48e1fd708a78d7d94d8"
@@ -5081,38 +5029,6 @@
   resolved "https://registry.yarnpkg.com/@uniswap/token-lists/-/token-lists-1.0.0-beta.30.tgz#2103ca23b8007c59ec71718d34cdc97861c409e5"
   integrity sha512-HwY2VvkQ8lNR6ks5NqQfAtg+4IZqz3KV1T8d2DlI8emIn9uMmaoFbIOg0nzjqAVKKnZSbMTRRtUoAh6mmjRvog==
 
-"@uniswap/universal-router-sdk@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/universal-router-sdk/-/universal-router-sdk-1.3.0.tgz#f44262eafe729651d383f46a647399658d45baf7"
-  integrity sha512-Q7/Gw059JQDO7exxV791QzghEOiWomdvxvqidozDvkiZE7paIlSWq1vDVF4H3zB2GYy5Hu7HM8krl2l0KS9X5g==
-  dependencies:
-    "@uniswap/permit2-sdk" "^1.2.0"
-    "@uniswap/router-sdk" "^1.4.0"
-    "@uniswap/sdk-core" "^3.1.0"
-    "@uniswap/universal-router" "1.2.1"
-    "@uniswap/v2-sdk" "^3.0.1"
-    "@uniswap/v3-sdk" "^3.9.0"
-    bignumber.js "^9.0.2"
-    ethers "^5.3.1"
-
-"@uniswap/universal-router@1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@uniswap/universal-router/-/universal-router-1.2.1.tgz#5fe4aa21d6bc89314d99f26407f28154f8e16f42"
-  integrity sha512-F3S1wKylncuvIG2qwC1ciXXc1z1QmKsalo4p6H2A90LSRylEEhNp7ITxs7qCcnfRh+ZNkGJ0yQ0zmuVJSBezOQ==
-  dependencies:
-    "@openzeppelin/contracts" "4.7.0"
-    "@uniswap/v2-core" "1.0.1"
-    "@uniswap/v3-core" "1.0.0"
-
-"@uniswap/universal-router@^1.0.1":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@uniswap/universal-router/-/universal-router-1.2.2.tgz#7b3704a307fad53ba2a80718362b1b7718ada4cc"
-  integrity sha512-ipQQpo3xO21EIS5pBjJazZbh9Vth6wzeta85Xva2HKoJ0uBvnugCjqvjkJMqiiz+osBnC12yemitjTOOxcqXjA==
-  dependencies:
-    "@openzeppelin/contracts" "4.7.0"
-    "@uniswap/v2-core" "1.0.1"
-    "@uniswap/v3-core" "1.0.0"
-
 "@uniswap/v2-core@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@uniswap/v2-core/-/v2-core-1.0.0.tgz"
@@ -5130,17 +5046,6 @@
   dependencies:
     "@uniswap/lib" "1.1.1"
     "@uniswap/v2-core" "1.0.0"
-
-"@uniswap/v2-sdk@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@uniswap/v2-sdk/-/v2-sdk-3.0.1.tgz#690c484104c1debd1db56a236e5497def53d698b"
-  integrity sha512-eSpm2gjo2CZh9FACH5fq42str/oSNyWcDxB27o5k44bEew4sxb+pld4gGIf/byJndLBvArR9PtH8c0n/goNOTw==
-  dependencies:
-    "@ethersproject/address" "^5.0.0"
-    "@ethersproject/solidity" "^5.0.0"
-    "@uniswap/sdk-core" "^3.0.0-alpha.3"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
 
 "@uniswap/v3-core@1.0.0":
   version "1.0.0"
@@ -5171,20 +5076,6 @@
     base64-sol "1.0.1"
     hardhat-watcher "^2.1.1"
 
-"@uniswap/v3-sdk@^3.7.0", "@uniswap/v3-sdk@^3.8.2", "@uniswap/v3-sdk@^3.8.3", "@uniswap/v3-sdk@^3.9.0":
-  version "3.9.0"
-  resolved "https://registry.yarnpkg.com/@uniswap/v3-sdk/-/v3-sdk-3.9.0.tgz#de93fa19f89c29d460996aa4d0b4bb6531641105"
-  integrity sha512-LuoF3UcY1DxSAQKJ3E4/1Eq4HaNp+x+7q9mvbpiu+/PBj+O1DjLforAMrKxu+RsA0aarmZtz7yBnAPy+akgfgQ==
-  dependencies:
-    "@ethersproject/abi" "^5.0.12"
-    "@ethersproject/solidity" "^5.0.9"
-    "@uniswap/sdk-core" "^3.0.1"
-    "@uniswap/swap-router-contracts" "^1.2.1"
-    "@uniswap/v3-periphery" "^1.1.1"
-    "@uniswap/v3-staker" "1.0.0"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-
 "@uniswap/v3-staker@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@uniswap/v3-staker/-/v3-staker-1.0.0.tgz#9a6915ec980852479dfc903f50baf822ff8fa66e"
@@ -5193,67 +5084,6 @@
     "@openzeppelin/contracts" "3.4.1-solc-0.7-2"
     "@uniswap/v3-core" "1.0.0"
     "@uniswap/v3-periphery" "^1.0.1"
-
-"@uniswap/widgets@2.22.11":
-  version "2.22.11"
-  resolved "https://registry.yarnpkg.com/@uniswap/widgets/-/widgets-2.22.11.tgz#d64179e58d3923af1b80f63bd8fb44804fc047bd"
-  integrity sha512-eBG7L/inLLHY2+cLKFsqqCK8rhoIzHWsUDm0glpLUyqs6NiZssoKHgIPWzjT2cNwupCYol08ruKM+JR1wBVdTQ==
-  dependencies:
-    "@babel/runtime" ">=7.17.0"
-    "@fontsource/ibm-plex-mono" "^4.5.1"
-    "@fontsource/inter" "^4.5.1"
-    "@popperjs/core" "^2.4.4"
-    "@reduxjs/toolkit" "^1.6.1"
-    "@uniswap/permit2-sdk" "^1.2.0"
-    "@uniswap/redux-multicall" "^1.1.8"
-    "@uniswap/router-sdk" "^1.3.0"
-    "@uniswap/sdk-core" "^3.0.1"
-    "@uniswap/smart-order-router" "^2.10.0"
-    "@uniswap/token-lists" "^1.0.0-beta.30"
-    "@uniswap/universal-router-sdk" "^1.3.0"
-    "@uniswap/v2-sdk" "^3.0.1"
-    "@uniswap/v3-sdk" "^3.8.2"
-    "@web3-react/core" "8.0.35-beta.0"
-    "@web3-react/eip1193" "8.0.26-beta.0"
-    "@web3-react/empty" "8.0.20-beta.0"
-    "@web3-react/metamask" "8.0.28-beta.0"
-    "@web3-react/network" "8.0.27-beta.0"
-    "@web3-react/types" "8.0.20-beta.0"
-    "@web3-react/url" "8.0.25-beta.0"
-    "@web3-react/walletconnect" "8.0.36-beta.0"
-    ajv "^8.11.0"
-    ajv-formats "^2.1.1"
-    cids "^1.0.0"
-    ethers "^5.6.1"
-    immer "^9.0.6"
-    jotai "^1.3.7"
-    jsbi "^3.1.4"
-    make-plural "^7.0.0"
-    ms.macro "^2.0.0"
-    multicodec "^3.0.1"
-    multihashes "^4.0.2"
-    node-vibrant "^3.2.1-alpha.1"
-    polished "^3.3.2"
-    popper-max-size-modifier "^0.2.0"
-    qrcode "^1.5.0"
-    react ">=17.0.1"
-    react-dom ">=17.0.1"
-    react-feather "^2.0.8"
-    react-popper "^2.2.3"
-    react-redux ">=7.2.2"
-    react-virtualized-auto-sizer "^1.0.2"
-    react-window "^1.8.5"
-    rebass "^4.0.7"
-    redux ">=4.1.2"
-    setimmediate "^1.0.5"
-    styled-components ">=5"
-    tiny-invariant "^1.2.0"
-    wcag-contrast "^3.0.0"
-    wicg-inert "^3.1.1"
-  optionalDependencies:
-    bufferutil "^4.0.6"
-    encoding "^0.1.13"
-    utf-8-validate "^5.0.8"
 
 "@vanilla-extract/babel-plugin@^1.1.7":
   version "1.1.7"
@@ -5414,20 +5244,41 @@
   dependencies:
     "@vibrant/types" "^3.2.1-alpha.1"
 
-"@violetprotocol/mauve-smart-order-router@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.0.tgz#a4669f6a61831f78dbcce74119ff97a5ee5237a7"
-  integrity sha512-AH5gMBIKBPBpjG2bTShHwa2IbhRc2ayI9YMBS6yFN2W4LH0p0zGP02SgIkVEb0Q+8bH2IleBiMQ49DZwlIeH3Q==
+"@violetprotocol/mauve-router-sdk@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.5.0.tgz#41b288eb03a608c51e9e9c7a5e89b41811394d66"
+  integrity sha512-1CjppsEk5P/ghkx9L7gQyGUDmsk8pFZRpXl3c4USIIEs269AyfcjuYi32MBJxm6jxecIJDPQX/4v+L9YbONKBQ==
+  dependencies:
+    "@ethersproject/abi" "^5.5.0"
+    "@uniswap/swap-router-contracts" "1.1.0"
+    "@violetprotocol/mauve-sdk-core" "3.2.0"
+    "@violetprotocol/mauve-v2-sdk" "3.1.0"
+    "@violetprotocol/mauve-v3-sdk" "4.0.0"
+
+"@violetprotocol/mauve-sdk-core@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-sdk-core/-/mauve-sdk-core-3.2.0.tgz#847747bd0cdfe025049c8187194ae7ba81447850"
+  integrity sha512-AORGalU8gNuS5Th0oigi78HwQHMe1wt/URpEooHVQFm3vUp+xBz0vsT6XfOaLwZfd+kWBfk9Ym/s4+6k2/zx/A==
+  dependencies:
+    "@ethersproject/address" "^5.0.2"
+    big.js "^5.2.2"
+    decimal.js-light "^2.5.0"
+    jsbi "^3.1.4"
+    tiny-invariant "^1.1.0"
+    toformat "^2.0.0"
+
+"@violetprotocol/mauve-smart-order-router@4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.1.tgz#e2ec6ecd9bf5ed6363353d4bd7e74d14edeb05d2"
+  integrity sha512-fg5t4jrJG5X18QTb2rrhDHDQCFS8465uvoIdWa7bQoVc62l18VJMW71+tH3fwiOBUbz21xrnt8Eagx66xsYPXg==
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
-    "@uniswap/router-sdk" "^1.3.0"
     "@uniswap/swap-router-contracts" "^1.3.0"
     "@uniswap/token-lists" "^1.0.0-beta.25"
-    "@uniswap/universal-router" "^1.0.1"
-    "@uniswap/universal-router-sdk" "^1.3.0"
-    "@uniswap/v2-sdk" "^3.0.1"
-    "@uniswap/v3-sdk" "^3.7.0"
+    "@violetprotocol/mauve-router-sdk" "1.5.0"
+    "@violetprotocol/mauve-v2-sdk" "3.1.0"
+    "@violetprotocol/mauve-v3-sdk" "4.0.0"
     async-retry "^1.3.1"
     await-timeout "^1.1.1"
     axios "^0.21.1"
@@ -5440,6 +5291,91 @@
     mnemonist "^0.38.3"
     node-cache "^5.1.2"
     stats-lite "^2.2.0"
+
+"@violetprotocol/mauve-v2-sdk@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-v2-sdk/-/mauve-v2-sdk-3.1.0.tgz#bbead7511ba5f75672e5f0e4fd5ac51a8ff88e54"
+  integrity sha512-QK0vUgglARFlYB5V6t2AS4jRGXyaax8t7YzeN0alNKTNQZmGRep5eqOaW6CsoNqpN3qwBkS5Enp9R/pEytSiqA==
+  dependencies:
+    "@ethersproject/address" "^5.0.0"
+    "@ethersproject/solidity" "^5.0.0"
+    "@violetprotocol/mauve-sdk-core" "3.2.0"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+
+"@violetprotocol/mauve-v3-sdk@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-v3-sdk/-/mauve-v3-sdk-4.0.0.tgz#5c2831ca759c8cdf40168694b5e9d2c003e2d43e"
+  integrity sha512-Ks8Q5CaELUIQGJKxK9UAeZaqUc6hf0gJ/W+vE7dnr1ScwTAjskboHi90ZKnPUYUrxGeDk4Q2SOCw9PtGDxoKKw==
+  dependencies:
+    "@ethersproject/abi" "^5.0.12"
+    "@ethersproject/solidity" "^5.0.9"
+    "@uniswap/swap-router-contracts" "^1.2.1"
+    "@uniswap/v3-periphery" "^1.1.1"
+    "@uniswap/v3-staker" "1.0.0"
+    "@violetprotocol/mauve-sdk-core" "3.2.0"
+    tiny-invariant "^1.1.0"
+    tiny-warning "^1.0.3"
+
+"@violetprotocol/mauve-widgets@3.0.0-alpha.0":
+  version "3.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-widgets/-/mauve-widgets-3.0.0-alpha.0.tgz#dd2801dd836e0c652ef45c2de4dca82c18c03d3c"
+  integrity sha512-2eLIggRKyBzIDeqEHBtJAtST+0lXLg5Y2XeX/m7aMFj5QawyojG0ZuqbMib2FpQVaSNm6Qt0tSvGX7BHpOeggw==
+  dependencies:
+    "@babel/runtime" ">=7.17.0"
+    "@fontsource/ibm-plex-mono" "^4.5.1"
+    "@fontsource/inter" "^4.5.1"
+    "@popperjs/core" "^2.4.4"
+    "@reduxjs/toolkit" "^1.6.1"
+    "@uniswap/permit2-sdk" "^1.2.0"
+    "@uniswap/redux-multicall" "^1.1.8"
+    "@uniswap/token-lists" "^1.0.0-beta.30"
+    "@violetprotocol/mauve-router-sdk" "1.5.0"
+    "@violetprotocol/mauve-sdk-core" "3.2.0"
+    "@violetprotocol/mauve-smart-order-router" "4.0.1"
+    "@violetprotocol/mauve-v2-sdk" "3.1.0"
+    "@violetprotocol/mauve-v3-sdk" "4.0.0"
+    "@web3-react/core" "8.0.35-beta.0"
+    "@web3-react/eip1193" "8.0.26-beta.0"
+    "@web3-react/empty" "8.0.20-beta.0"
+    "@web3-react/metamask" "8.0.28-beta.0"
+    "@web3-react/network" "8.0.27-beta.0"
+    "@web3-react/types" "8.0.20-beta.0"
+    "@web3-react/url" "8.0.25-beta.0"
+    "@web3-react/walletconnect" "8.0.36-beta.0"
+    ajv "^8.11.0"
+    ajv-formats "^2.1.1"
+    cids "^1.0.0"
+    ethers "^5.6.1"
+    immer "^9.0.6"
+    jotai "^1.3.7"
+    jsbi "^3.1.4"
+    make-plural "^7.0.0"
+    ms.macro "^2.0.0"
+    multicodec "^3.0.1"
+    multihashes "^4.0.2"
+    node-vibrant "^3.2.1-alpha.1"
+    polished "^3.3.2"
+    popper-max-size-modifier "^0.2.0"
+    qrcode "^1.5.0"
+    react ">=17.0.1"
+    react-dom ">=17.0.1"
+    react-feather "^2.0.8"
+    react-popper "^2.2.3"
+    react-redux ">=7.2.2"
+    react-virtualized-auto-sizer "^1.0.2"
+    react-window "^1.8.5"
+    rebass "^4.0.7"
+    redux ">=4.1.2"
+    setimmediate "^1.0.5"
+    styled-components ">=5"
+    tiny-invariant "^1.2.0"
+    wcag-contrast "^3.0.0"
+    wicg-inert "^3.1.1"
+  optionalDependencies:
+    bufferutil "^4.0.6"
+    encoding "^0.1.13"
+    utf-8-validate "^5.0.8"
 
 "@visx/axis@2.12.2", "@visx/axis@^2.12.2":
   version "2.12.2"
@@ -6970,7 +6906,7 @@ bignumber.js@^8.1.1:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.1.1.tgz#4b072ae5aea9c20f6730e4e5d529df1271c4d885"
   integrity sha512-QD46ppGintwPGuL1KqmwhR0O+N2cZUg8JG/VzwI2e28sM9TqHjQB10lI4QAaMHVbLzwVLLAwEglpKPViWX+5NQ==
 
-bignumber.js@^9.0.1, bignumber.js@^9.0.2:
+bignumber.js@^9.0.1:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.0.tgz#8d340146107fe3a6cb8d40699643c302e8773b62"
   integrity sha512-4LwHK4nfDOraBCtst+wOWIHbu1vhvAPJK8g8nROd4iuc3PSEjWif/qwbkh8jwCJz6yDBvtU4KPynETgrfh7y3A==

@@ -1,7 +1,7 @@
-import { MixedRouteSDK, Trade } from '@uniswap/router-sdk'
-import { Currency, CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core'
-import { Route as V2Route } from '@uniswap/v2-sdk'
-import { Route as V3Route } from '@uniswap/v3-sdk'
+import { MixedRouteSDK, Trade } from '@violetprotocol/mauve-router-sdk'
+import { Currency, CurrencyAmount, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { Route as V2Route } from '@violetprotocol/mauve-v2-sdk'
+import { Route as V3Route } from '@violetprotocol/mauve-v3-sdk'
 
 export enum TradeState {
   LOADING,

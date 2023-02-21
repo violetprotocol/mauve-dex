@@ -6,7 +6,7 @@ import {
   TransactionEventHandlers,
   TransactionInfo,
   TransactionType as WidgetTransactionType,
-} from '@uniswap/widgets'
+} from '@violetprotocol/mauve-widgets'
 import { useWeb3React } from '@web3-react/core'
 import { WrapType } from 'hooks/useWrapCallback'
 import { formatSwapSignedAnalyticsEventProperties, formatToDecimal, getTokenAddress } from 'lib/utils/analytics'

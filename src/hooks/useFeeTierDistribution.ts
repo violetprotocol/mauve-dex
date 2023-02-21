@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react'
-import { Currency, Token } from '@uniswap/sdk-core'
-import { FeeAmount } from '@uniswap/v3-sdk'
+import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
+import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import ms from 'ms.macro'
 import { useMemo } from 'react'

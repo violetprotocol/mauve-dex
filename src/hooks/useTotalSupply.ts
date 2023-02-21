@@ -1,6 +1,6 @@
 // [MAUVE-DISABLED]
 export {}
-// import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+// import { Currency, CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useSingleCallResult } from 'lib/hooks/multicall'
 // import { useMemo } from 'react'
 

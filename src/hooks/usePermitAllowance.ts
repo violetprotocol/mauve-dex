@@ -8,7 +8,7 @@ export {}
 //   PERMIT2_ADDRESS,
 //   PermitSingle,
 // } from '@uniswap/permit2-sdk'
-// import { Token } from '@uniswap/sdk-core'
+// import { Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import useBlockNumber from 'lib/hooks/useBlockNumber'
 // import ms from 'ms.macro'
