@@ -23,6 +23,7 @@ runs:
         path: node_modules/
         key: ${{ runner.os }}-install-${{ hashFiles('**/yarn.lock') }}
 
+    - run: yarn config set registry https://registry.npmjs.org
     - if: steps.install-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile --ignore-scripts
       env:
