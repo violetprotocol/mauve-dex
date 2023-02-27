@@ -156,6 +156,7 @@
     "@vanilla-extract/dynamic": "^2.0.2",
     "@vanilla-extract/sprinkles": "^1.4.1",
     "@violetprotocol/mauve-smart-order-router": "^4.0.0",
+    "@violetprotocol/sdk": "^0.0.3",
     "@visx/axis": "^2.12.2",
     "@visx/event": "^2.6.0",
     "@visx/glyph": "^2.10.0",

@@ -5441,6 +5441,13 @@
     node-cache "^5.1.2"
     stats-lite "^2.2.0"
 
+"@violetprotocol/sdk@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.3.tgz#511efc74b30ed4c2ee7a566f3f11702a05d91720"
+  integrity sha512-ls5X1PiJn2by4oNa8uaS/6hRizsUHb1O03HzLfkCdl3YPu57blBpAXI+gvmYcckaxEfRDa9OTmAEa1COu/D1sQ==
+  dependencies:
+    zustand "^4.3.3"
+
 "@visx/axis@2.12.2", "@visx/axis@^2.12.2":
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/@visx/axis/-/axis-2.12.2.tgz#0aa50ae35d0cd6d8a11c59ad0d874cfeea9e3b89"
@@ -20227,5 +20234,12 @@ zustand@^4.0.0-rc.0, zustand@^4.0.0-rc.1:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.0.0.tgz#739cba69209ffe67b31e7d6741c25b51496114a7"
   integrity sha512-OrsfQTnRXF1LZ9/vR/IqN9ws5EXUhb149xmPjErZnUrkgxS/gAHGy2dPNIVkVvoxrVe1sIydn4JjF0dYHmGeeQ==
+  dependencies:
+    use-sync-external-store "1.2.0"
+
+zustand@^4.3.3:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.3.4.tgz#55a1345656348218a690e437ee894dd042ac2440"
+  integrity sha512-QSV8MF80I4yM9UCcBhIBr5OcQkiTbZdxDofg5R5vyX49QsEia7sK1iwOhFyH/0hyNVg+h+OzARM76G8MgMno0g==
   dependencies:
     use-sync-external-store "1.2.0"
