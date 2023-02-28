@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Price, Token, TradeType } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount, Price, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
 import { useMemo, useRef } from 'react'

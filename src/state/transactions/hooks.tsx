@@ -1,5 +1,5 @@
 import type { TransactionResponse } from '@ethersproject/providers'
-import { Token } from '@uniswap/sdk-core'
+import { Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from 'state/hooks'

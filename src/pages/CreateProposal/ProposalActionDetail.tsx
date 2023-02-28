@@ -1,7 +1,7 @@
 // [MAUVE-DISABLED]
 export {}
 // import { Trans } from '@lingui/macro'
-// import { Currency } from '@uniswap/sdk-core'
+// import { Currency } from '@violetprotocol/mauve-sdk-core'
 // import AddressInputPanel from 'components/AddressInputPanel'
 // import CurrencyInputPanel from 'components/CurrencyInputPanel'
 // import React from 'react'

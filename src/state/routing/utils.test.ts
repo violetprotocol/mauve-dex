@@ -1,4 +1,4 @@
-import { Token, TradeType } from '@uniswap/sdk-core'
+import { Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 
 import { nativeOnChain } from '../../constants/tokens'
 import { computeRoutes } from './utils'

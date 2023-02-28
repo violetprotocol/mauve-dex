@@ -4,7 +4,7 @@ export {}
 // import { Trans } from '@lingui/macro'
 // import { Trace } from '@uniswap/analytics'
 // import { InterfacePageName } from '@uniswap/analytics-events'
-// import { CurrencyAmount, Fraction, Token } from '@uniswap/sdk-core'
+// import { CurrencyAmount, Fraction, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import ExecuteModal from 'components/vote/ExecuteModal'
 // import QueueModal from 'components/vote/QueueModal'

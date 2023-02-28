@@ -5,15 +5,15 @@ import {
   SwapEventName,
   SwapPriceUpdateUserResponse,
 } from '@uniswap/analytics-events'
-import { Trade } from '@uniswap/router-sdk'
-import { Currency, TradeType } from '@uniswap/sdk-core'
+import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
 import {
   AddEthereumChainParameter,
   EMPTY_TOKEN_LIST,
   OnReviewSwapClick,
   SwapWidget,
   SwapWidgetSkeleton,
-} from '@uniswap/widgets'
+} from '@violetprotocol/mauve-widgets'
 import { useWeb3React } from '@web3-react/core'
 import { useActiveLocale } from 'hooks/useActiveLocale'
 import {
@@ -136,8 +136,6 @@ export default function Widget({ token, onTokenChange, onReviewSwapClick }: Widg
     [initialQuoteDate, trace]
   )
 
-  const permit2Enabled = false
-
   if (!(inputs.value.INPUT || inputs.value.OUTPUT)) {
     return <WidgetSkeleton />
   }
@@ -147,7 +145,6 @@ export default function Widget({ token, onTokenChange, onReviewSwapClick }: Widg
       <SwapWidget
         hideConnectionUI
         brandedFooter={false}
-        permit2={permit2Enabled}
         routerUrl={WIDGET_ROUTER_URL}
         locale={locale}
         theme={theme}

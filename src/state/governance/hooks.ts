@@ -10,7 +10,7 @@ export {}
 // import { t } from '@lingui/macro'
 // import { abi as GOVERNANCE_ABI } from '@uniswap/governance/build/GovernorAlpha.json'
 // import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
-// import { CurrencyAmount, Token } from '@uniswap/sdk-core'
+// import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import GOVERNOR_BRAVO_ABI from 'abis/governor-bravo.json'
 // import {

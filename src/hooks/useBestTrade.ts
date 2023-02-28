@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, TradeType } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useMemo } from 'react'
 import { RouterPreference } from 'state/routing/slice'
 import { InterfaceTrade, TradeState } from 'state/routing/types'

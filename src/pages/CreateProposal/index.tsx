@@ -5,7 +5,7 @@ export {}
 // import { Trans } from '@lingui/macro'
 // import { Trace } from '@uniswap/analytics'
 // import { InterfacePageName } from '@uniswap/analytics-events'
-// import { Currency, CurrencyAmount, Token } from '@uniswap/sdk-core'
+// import { Currency, CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import { ButtonError } from 'components/Button'
 // import { BlueCard } from 'components/Card'
