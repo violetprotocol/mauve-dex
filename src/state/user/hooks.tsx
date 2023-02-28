@@ -1,4 +1,4 @@
-import { Percent, Token } from '@uniswap/sdk-core'
+import { Percent, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { L2_CHAIN_IDS } from 'constants/chains'
 import { SupportedLocale } from 'constants/locales'

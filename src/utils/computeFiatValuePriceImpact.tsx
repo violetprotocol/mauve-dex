@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Percent } from '@uniswap/sdk-core'
+import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import JSBI from 'jsbi'
 
 import { ONE_HUNDRED_PERCENT } from '../constants/misc'

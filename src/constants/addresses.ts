@@ -1,4 +1,4 @@
-import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@uniswap/v3-sdk'
+import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@violetprotocol/mauve-v3-sdk'
 
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'

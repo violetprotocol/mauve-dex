@@ -1,5 +1,5 @@
-import { Percent } from '@uniswap/sdk-core'
-import { Slippage, SwapController, SwapEventHandlers } from '@uniswap/widgets'
+import { Percent } from '@violetprotocol/mauve-sdk-core'
+import { Slippage, SwapController, SwapEventHandlers } from '@violetprotocol/mauve-widgets'
 import { DEFAULT_DEADLINE_FROM_NOW } from 'constants/misc'
 import { useCallback, useMemo, useState } from 'react'
 import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'

@@ -1,5 +1,5 @@
 // a list of tokens by chain
-import { Currency, Token } from '@uniswap/sdk-core'
+import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 
 import { SupportedChainId } from './chains'
 import {

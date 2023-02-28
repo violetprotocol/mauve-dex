@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jest/no-disabled-tests */
 import { BigNumber } from '@ethersproject/bignumber'
-import { CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 import JSBI from 'jsbi'
 
 import { ZERO_ADDRESS } from '../constants/misc'
