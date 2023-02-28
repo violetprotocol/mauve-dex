@@ -130,8 +130,6 @@ export default function VioletTestButton() {
       chainId,
     })
 
-    console.log('BBB')
-
     if (!response) return
 
     const [violet, error] = response

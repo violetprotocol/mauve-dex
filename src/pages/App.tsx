@@ -106,8 +106,6 @@ function getCurrentPageFromLocation(locationPathname: string): InterfacePageName
       return InterfacePageName.NFT_COLLECTION_PAGE
     case locationPathname.startsWith('/nfts'):
       return InterfacePageName.NFT_EXPLORE_PAGE
-    case locationPathname.startsWith('/callback'):
-      return InterfacePageName.VIOLET_CALLBACK_PAGE
     default:
       return undefined
   }
