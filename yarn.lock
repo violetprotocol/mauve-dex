@@ -5655,10 +5655,10 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@violetprotocol/mauve-widgets@3.0.0-alpha.0":
-  version "3.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-widgets/-/mauve-widgets-3.0.0-alpha.0.tgz#dd2801dd836e0c652ef45c2de4dca82c18c03d3c"
-  integrity sha512-2eLIggRKyBzIDeqEHBtJAtST+0lXLg5Y2XeX/m7aMFj5QawyojG0ZuqbMib2FpQVaSNm6Qt0tSvGX7BHpOeggw==
+"@violetprotocol/mauve-widgets@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-widgets/-/mauve-widgets-3.0.0.tgz#ade433ba9194f1f5b01eab5ce2c79e302711571b"
+  integrity sha512-gEZanIr4ytPz2XE7zdyUT45hFzonJa7qbNA8GSKPTt1uzPvlR/6UjoLLESiLww9I420LHXi5E1TdwSsxwHyZig==
   dependencies:
     "@babel/runtime" ">=7.17.0"
     "@fontsource/ibm-plex-mono" "^4.5.1"
