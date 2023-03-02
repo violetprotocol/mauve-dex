@@ -213,7 +213,7 @@
     "react-query": "^3.39.1",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
-    "react-spring": "^9.5.5",
+    "react-spring": "9.5.5",
     "react-table": "^7.8.0",
     "react-use-gesture": "^6.0.14",
     "react-virtualized-auto-sizer": "^1.0.2",
@@ -238,6 +238,9 @@
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
     "zustand": "^4.0.0-rc.1"
+  },
+  "resolutions": {
+    "@lingui/core": "3.14.0"
   },
   "engines": {
     "npm": "please-use-yarn",
