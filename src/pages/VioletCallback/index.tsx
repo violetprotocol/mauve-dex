@@ -1,4 +1,4 @@
-import { VIOLET_AUTHORIZE_KEY } from '@violetprotocol/sdk'
+import { VIOLET_AUTHORIZATION_JSON } from '@violetprotocol/sdk'
 import { useEffect } from 'react'
 
 const VioletCallback = () => {
@@ -12,7 +12,7 @@ const VioletCallback = () => {
     }
 
     if (params['tx_id']) {
-      localStorage.setItem(VIOLET_AUTHORIZE_KEY, JSON.stringify(params))
+      localStorage.setItem(VIOLET_AUTHORIZATION_JSON, JSON.stringify(params))
 
       window.close()
 

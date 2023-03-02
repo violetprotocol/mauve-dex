@@ -156,7 +156,7 @@
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
     "@violetprotocol/mauve-v3-sdk": "4.0.0",
     "@violetprotocol/mauve-widgets": "3.0.0",
-    "@violetprotocol/sdk": "0.0.4",
+    "@violetprotocol/sdk": "0.0.5",
     "@visx/axis": "^2.12.2",
     "@visx/event": "^2.6.0",
     "@visx/glyph": "^2.10.0",

@@ -5740,10 +5740,10 @@
     encoding "^0.1.13"
     utf-8-validate "^5.0.8"
 
-"@violetprotocol/sdk@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.4.tgz#287f5d2b12bfb5bb61601f55244fae1a10b2299b"
-  integrity sha512-WtWEtnzJfdeFLB1xCn/8k18NIx2WoVeezj5gEIBqD2YN9m8VEV+DjGDKK1xp4W73pOyy0hSrhGQG3i8u4uNHqA==
+"@violetprotocol/sdk@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.5.tgz#453812e2462c3b0603c3082a287dcf098de53c44"
+  integrity sha512-pjI3gdRm+7Lvpc2y0LeP2NC/AjUHzeiy5JVfj2yKrmaB5+0Nfr9MKvzfVBzGLWXLRjC5a7NzRUdp05Rr5nCWCw==
 
 "@visx/axis@2.18.0", "@visx/axis@^2.12.2":
   version "2.18.0"
