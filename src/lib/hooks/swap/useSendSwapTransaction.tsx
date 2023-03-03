@@ -4,8 +4,9 @@ import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/provid
 import { t, Trans } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
-import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { MulticallExtended, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { useVioletSDK } from 'hooks/useVioletSDK'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useMemo } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
@@ -42,14 +43,45 @@ export default function useSendSwapTransaction(
   trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
   swapCalls: SwapCall[]
 ): { callback: null | (() => Promise<TransactionResponse>) } {
+  const { authorize } = useVioletSDK()
+
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId) {
       return { callback: null }
     }
+
+    if (swapCalls.length == 0) {
+      return { callback: null }
+    }
+
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
+        // Keeping only the first one for now
+        const filteredSwapCalls = swapCalls.slice(0, 1)
+        const swapCall = filteredSwapCalls[0]
+        const multicallSigHash = MulticallExtended.INTERFACE.getSighash('multicall(uint256,bytes[])')
+        console.log('multicallSigHash', multicallSigHash)
+
+        try {
+          // TODO: Pass `value` once it's supported
+          const response = await authorize({
+            address: account,
+            transaction: {
+              targetContract: swapCall.address,
+              functionSignature: multicallSigHash,
+              data: swapCall.calldata,
+            },
+            chainId,
+          })
+          console.log('eatReponse', response)
+        } catch (error) {
+          console.error(error)
+        }
+
+        // Use util to reconstruct the multicall transaction, this time with the proper v,r,s & expiry received
+
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
-          swapCalls.map((call) => {
+          filteredSwapCalls.map((call) => {
             const { address, calldata, value } = call
 
             const tx =
