@@ -12,6 +12,7 @@ import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
 interface SwapCall {
+  // Address of the target contract being called, typically the SwapRouter
   address: string
   calldata: string
   value: string
