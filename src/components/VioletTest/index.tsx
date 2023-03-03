@@ -1,6 +1,6 @@
-import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ButtonPrimary } from 'components/Button'
+import { useVioletSDK } from 'hooks/useVioletSDK'
 import styled from 'styled-components/macro'
 
 const environment = process.env.REACT_APP_VIOLET_ENV
@@ -16,36 +16,6 @@ const ResponsiveButtonPrimary = styled(ButtonPrimary)`
     width: 100%;
   `};
 `
-
-const baseUrlByEnvironment = (environment: string) => {
-  switch (environment) {
-    case 'local':
-      return 'http://localhost:8080'
-    case 'staging':
-      return 'https://staging.k8s.app.violet.co'
-    case 'development':
-      return 'https://dev.k8s.app.violet.co'
-    case 'production':
-      return 'https://app.violet.co'
-    default:
-      throw new Error('Invalid environment')
-  }
-}
-
-const redirectUrlByEnvironment = (environment: string) => {
-  switch (environment) {
-    case 'local':
-      return 'http://localhost:3000/#/callback'
-    case 'staging':
-      return 'https://staging.k8s.app.mauve.org/#/callback'
-    case 'development':
-      return 'https://dev.k8s.app.mauve.org/#/callback'
-    case 'production':
-      return 'https://app.mauve.org/#/callback'
-    default:
-      throw new Error('Invalid environment')
-  }
-}
 
 const getHumanBoundContractAddressByNetworkId = (chainId: number) => {
   const parsedChainId = chainId.toString()
@@ -75,11 +45,7 @@ export default function VioletTestButton() {
   }
 
   const { chainId, account, connector } = useWeb3React()
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
-  })
+  const { authorize } = useVioletSDK()
 
   const switchNetwork = async () => {
     if (!connector.provider) return
@@ -112,7 +78,7 @@ export default function VioletTestButton() {
     }
   }
 
-  const redirectToVioletAuthentication = async (account: string) => {
+  const triggerTransactionAuthorization = async (account: string) => {
     // If on local or development environment, switch to test network (Polygon Mumbai)
     if (environment.toString() === 'local' || environment.toString() === 'development') {
       await switchNetwork()
@@ -142,7 +108,7 @@ export default function VioletTestButton() {
   }
 
   return (
-    <ResponsiveButtonPrimary onClick={() => redirectToVioletAuthentication(account)}>
+    <ResponsiveButtonPrimary onClick={() => triggerTransactionAuthorization(account)}>
       Transaction Authorization
     </ResponsiveButtonPrimary>
   )
