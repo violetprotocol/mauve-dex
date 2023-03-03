@@ -1,5 +1,5 @@
-import { initializeAnalytics, OriginApplication, sendAnalyticsEvent, Trace, user } from '@uniswap/analytics'
-import { CustomUserProperties, getBrowser, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
+import { initializeAnalytics, OriginApplication, Trace, user } from '@uniswap/analytics'
+import { CustomUserProperties, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import { MenuDropdown } from 'components/NavBar/MenuDropdown'
 import TopLevelModals from 'components/TopLevelModals'
@@ -13,9 +13,7 @@ import styled from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { isProductionEnv } from 'utils/env'
-import { getCLS, getFCP, getFID, getLCP, Metric } from 'web-vitals'
 
-import { useAnalyticsReporter } from '../components/analytics'
 import ErrorBoundary from '../components/ErrorBoundary'
 import { PageTabs } from '../components/NavBar'
 import NavBar from '../components/NavBar'
@@ -33,6 +31,7 @@ import RemoveLiquidityV3 from './RemoveLiquidity/V3'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import Tokens from './Tokens'
+import VioletCallback from './VioletCallback'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
 // [MAUVE-DISABLED]
@@ -136,26 +135,24 @@ export default function App() {
   const isExpertMode = useIsExpertMode()
   const [scrolledState, setScrolledState] = useState(false)
 
-  useAnalyticsReporter()
-
   useEffect(() => {
     window.scrollTo(0, 0)
     setScrolledState(false)
   }, [pathname])
 
-  useEffect(() => {
-    sendAnalyticsEvent(SharedEventName.APP_LOADED)
-    user.set(CustomUserProperties.USER_AGENT, navigator.userAgent)
-    user.set(CustomUserProperties.BROWSER, getBrowser())
-    user.set(CustomUserProperties.SCREEN_RESOLUTION_HEIGHT, window.screen.height)
-    user.set(CustomUserProperties.SCREEN_RESOLUTION_WIDTH, window.screen.width)
-    getCLS(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { cumulative_layout_shift: delta }))
-    getFCP(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_contentful_paint_ms: delta }))
-    getFID(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_input_delay_ms: delta }))
-    getLCP(({ delta }: Metric) =>
-      sendAnalyticsEvent(SharedEventName.WEB_VITALS, { largest_contentful_paint_ms: delta })
-    )
-  }, [])
+  // useEffect(() => {
+  //   sendAnalyticsEvent(SharedEventName.APP_LOADED)
+  //   user.set(CustomUserProperties.USER_AGENT, navigator.userAgent)
+  //   user.set(CustomUserProperties.BROWSER, getBrowser())
+  //   user.set(CustomUserProperties.SCREEN_RESOLUTION_HEIGHT, window.screen.height)
+  //   user.set(CustomUserProperties.SCREEN_RESOLUTION_WIDTH, window.screen.width)
+  //   getCLS(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { cumulative_layout_shift: delta }))
+  //   getFCP(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_contentful_paint_ms: delta }))
+  //   getFID(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_input_delay_ms: delta }))
+  //   getLCP(({ delta }: Metric) =>
+  //     sendAnalyticsEvent(SharedEventName.WEB_VITALS, { largest_contentful_paint_ms: delta })
+  //   )
+  // }, [])
 
   useEffect(() => {
     user.set(CustomUserProperties.DARK_MODE, isDarkMode)
@@ -222,6 +219,7 @@ export default function App() {
                   <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
                 </Route>
                 <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
+                <Route path="callback" element={<VioletCallback />} />
                 <Route path="*" element={<Navigate to="/not-found" replace />} />
                 <Route path="/not-found" element={<NotFound />} />
               </Routes>
