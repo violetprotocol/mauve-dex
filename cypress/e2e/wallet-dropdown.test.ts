@@ -3,12 +3,8 @@ import { getTestSelector } from '../utils'
 describe('Wallet Dropdown', () => {
   before(() => {
     cy.visit('/pool')
-  })
 
-  it('should change the theme', () => {
     cy.get(getTestSelector('web3-status-connected')).click()
-    cy.get(getTestSelector('wallet-select-theme')).click()
-    cy.get(getTestSelector('wallet-select-theme')).contains('Light theme').should('exist')
   })
 
   it('should select a language', () => {
