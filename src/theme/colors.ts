@@ -95,8 +95,6 @@ export const colors = {
   networkEthereumSoft: 'rgba(98, 126, 234, 0.16)',
 }
 
-type Theme = typeof darkTheme
-
 const commonTheme = {
   white: colors.white,
   black: colors.black,
@@ -120,59 +118,7 @@ const commonTheme = {
   hoverDefault: opacify(8, colors.gray200),
 }
 
-export const darkTheme = {
-  ...commonTheme,
-
-  userThemeColor: colors.magentaVibrant,
-
-  background: colors.gray800,
-  backgroundBackdrop: colors.gray950,
-  backgroundSurface: colors.gray900,
-  backgroundModule: colors.gray800,
-  backgroundInteractive: colors.gray700,
-  backgroundFloating: opacify(12, colors.black),
-  backgroundOutline: colors.gray750,
-  backgroundScrim: opacify(72, colors.gray900),
-  backgroundScrolledSurface: opacify(72, colors.gray900),
-
-  textPrimary: colors.white,
-  textSecondary: colors.gray300,
-  textTertiary: colors.gray500,
-
-  accentAction: colors.blue400,
-  accentActive: colors.blue400,
-  accentSuccess: colors.green200,
-  accentWarning: colors.gold200,
-  accentFailure: colors.red300,
-  accentCritical: colors.red300,
-
-  accentActionSoft: opacify(24, colors.blue400),
-  accentActiveSoft: opacify(24, colors.blue400),
-  accentSuccessSoft: opacify(24, colors.green400),
-  accentWarningSoft: opacify(24, colors.gold200),
-  accentFailureSoft: opacify(12, colors.red300),
-
-  accentTextDarkPrimary: opacify(80, colors.gray900),
-  accentTextDarkSecondary: opacify(60, colors.gray900),
-  accentTextDarkTertiary: opacify(24, colors.gray900),
-
-  accentTextLightPrimary: colors.gray50,
-  accentTextLightSecondary: opacify(72, colors.gray50),
-  accentTextLightTertiary: opacify(12, colors.gray50),
-
-  deepShadow: '12px 16px 24px rgba(0, 0, 0, 0.24), 12px 8px 12px rgba(0, 0, 0, 0.24), 4px 4px 8px rgba(0, 0, 0, 0.32);',
-  shallowShadow: '4px 4px 10px rgba(0, 0, 0, 0.24), 2px 2px 4px rgba(0, 0, 0, 0.12), 1px 2px 2px rgba(0, 0, 0, 0.12);',
-
-  networkDefaultShadow: `0px 40px 120px ${opacify(16, colors.blue400)}`,
-
-  stateOverlayHover: opacify(8, colors.gray300),
-  stateOverlayPressed: opacify(24, colors.gray200),
-
-  searchBackground: `rgba(255,255,255,0.07)`,
-  searchOutline: `rgba(255,255,255,0.07)`,
-}
-
-export const lightTheme: Theme = {
+export const lightTheme = {
   ...commonTheme,
 
   userThemeColor: colors.magentaVibrant,
@@ -224,4 +170,4 @@ export const lightTheme: Theme = {
 
   searchBackground: opacify(4, colors.white),
   searchOutline: opacify(1, colors.black),
-}
+} as const

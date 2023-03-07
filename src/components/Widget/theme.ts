@@ -1,4 +1,4 @@
-import { darkTheme, lightTheme } from 'theme/colors'
+import { lightTheme } from 'theme/colors'
 
 const fonts = {
   fontFamily: 'Inter custom',
@@ -20,26 +20,6 @@ export const LIGHT_THEME = {
   success: lightTheme.accentSuccess,
   warning: lightTheme.accentWarning,
   error: lightTheme.accentCritical,
-
-  ...fonts,
-}
-
-export const DARK_THEME = {
-  // surface
-  container: darkTheme.backgroundSurface,
-  interactive: darkTheme.backgroundInteractive,
-  module: darkTheme.backgroundModule,
-  accent: darkTheme.accentAction,
-  dialog: darkTheme.backgroundBackdrop,
-  outline: darkTheme.backgroundOutline,
-  // text
-  primary: darkTheme.textPrimary,
-  secondary: darkTheme.textSecondary,
-  onInteractive: darkTheme.accentTextLightPrimary,
-  // state
-  success: darkTheme.accentSuccess,
-  warning: darkTheme.accentWarning,
-  error: darkTheme.accentCritical,
 
   ...fonts,
 }

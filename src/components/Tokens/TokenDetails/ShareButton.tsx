@@ -60,7 +60,7 @@ const ShareAction = styled.div`
   color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   :hover {
-    background-color: ${({ theme }) => opacify(10, theme.darkMode ? colors.gray200 : colors.gray300)};
+    background-color: ${opacify(10, colors.gray300)};
   }
 `
 

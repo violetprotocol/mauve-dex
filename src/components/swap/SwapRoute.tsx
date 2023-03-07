@@ -16,13 +16,12 @@ import useAutoRouterSupported from 'hooks/useAutoRouterSupported'
 import { memo, useState } from 'react'
 import { Plus } from 'react-feather'
 import { InterfaceTrade } from 'state/routing/types'
-import { useDarkModeManager } from 'state/user/hooks'
 import styled from 'styled-components/macro'
 import { Separator, ThemedText } from 'theme'
 
 import { AutoRouterLabel, AutoRouterLogo } from './RouterLabel'
 
-const Wrapper = styled(AutoColumn)<{ darkMode?: boolean; fixedOpen?: boolean }>`
+const Wrapper = styled(AutoColumn)<{ fixedOpen?: boolean }>`
   padding: ${({ fixedOpen }) => (fixedOpen ? '12px' : '12px 8px 12px 12px')};
   border-radius: 16px;
   border: 1px solid ${({ theme, fixedOpen }) => (fixedOpen ? 'transparent' : theme.backgroundOutline)};
@@ -54,8 +53,6 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
   const [open, setOpen] = useState(false)
   const { chainId } = useWeb3React()
 
-  const [darkMode] = useDarkModeManager()
-
   const formattedGasPriceString = trade?.gasUseEstimateUSD
     ? trade.gasUseEstimateUSD.toFixed(2) === '0.00'
       ? '<$0.01'
@@ -63,7 +60,7 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
     : undefined
 
   return (
-    <Wrapper {...rest} darkMode={darkMode} fixedOpen={fixedOpen}>
+    <Wrapper {...rest} fixedOpen={fixedOpen}>
       <TraceEvent
         events={[BrowserEvent.onClick]}
         name={SwapEventName.SWAP_AUTOROUTER_VISUALIZATION_EXPANDED}
