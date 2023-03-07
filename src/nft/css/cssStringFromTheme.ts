@@ -1,4 +1,3 @@
-import { darkTheme } from 'nft/themes/darkTheme'
 import { lightTheme } from 'nft/themes/lightTheme'
 
 import { cssObjectFromTheme } from './cssObjectFromTheme'
@@ -10,6 +9,6 @@ function cssStringFromTheme(theme: Theme | (() => Theme), options: { extends?: T
     .join('')
 }
 
-export function rootCssString(isDarkMode: boolean) {
-  return isDarkMode ? cssStringFromTheme(darkTheme) : cssStringFromTheme(lightTheme)
+export function rootCssString() {
+  return cssStringFromTheme(lightTheme)
 }

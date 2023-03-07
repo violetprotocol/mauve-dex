@@ -25,13 +25,12 @@ import {
   getTokenAddress,
 } from 'lib/utils/analytics'
 import { useCallback, useState } from 'react'
-import { useIsDarkMode } from 'state/user/hooks'
 import { computeRealizedPriceImpact } from 'utils/prices'
 import { switchChain } from 'utils/switchChain'
 
 import { useSyncWidgetInputs } from './inputs'
 import { useSyncWidgetSettings } from './settings'
-import { DARK_THEME, LIGHT_THEME } from './theme'
+import { LIGHT_THEME } from './theme'
 import { useSyncWidgetTransactions } from './transactions'
 
 export const WIDGET_WIDTH = 360
@@ -39,7 +38,7 @@ export const WIDGET_WIDTH = 360
 const WIDGET_ROUTER_URL = 'https://api.uniswap.org/v1/'
 
 function useWidgetTheme() {
-  return useIsDarkMode() ? DARK_THEME : LIGHT_THEME
+  return LIGHT_THEME
 }
 
 interface WidgetProps {

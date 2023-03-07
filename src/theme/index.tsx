@@ -1,10 +1,9 @@
 import { rootCssString } from 'nft/css/cssStringFromTheme'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { createGlobalStyle, css, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components/macro'
 
-import { useIsDarkMode } from '../state/user/hooks'
-import { darkTheme, lightTheme } from './colors'
-import { darkDeprecatedTheme, lightDeprecatedTheme } from './deprecatedColors'
+import { lightTheme } from './colors'
+import { deprecatedColors } from './deprecatedColors'
 
 // todo - remove and replace imports with a new path
 export * from './components'
@@ -64,7 +63,7 @@ const fonts = {
   code: 'courier, courier new, serif',
 }
 
-function getSettings(darkMode: boolean) {
+function getSettings() {
   return {
     grids: {
       xs: '4px',
@@ -76,7 +75,7 @@ function getSettings(darkMode: boolean) {
     fonts,
 
     // shadows
-    shadow1: darkMode ? '#000' : '#2F80ED',
+    shadow1: '#2F80ED',
 
     // media queries
     deprecated_mediaWidth: deprecated_mediaWidthTemplates,
@@ -93,25 +92,23 @@ function getSettings(darkMode: boolean) {
 }
 
 // eslint-disable-next-line import/no-unused-modules -- used in styled.d.ts
-export function getTheme(darkMode: boolean) {
+export function getTheme() {
   return {
-    darkMode,
-    ...(darkMode ? darkTheme : lightTheme),
-    ...(darkMode ? darkDeprecatedTheme : lightDeprecatedTheme),
-    ...getSettings(darkMode),
+    ...lightTheme,
+    ...deprecatedColors,
+    ...getSettings(),
   }
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const darkMode = useIsDarkMode()
-  const themeObject = useMemo(() => getTheme(darkMode), [darkMode])
+  const themeObject = getTheme()
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
     color: ${({ theme }) => theme.textPrimary};
-    background-color: ${({ theme }) => theme.background} !important;
+    background-color: #FFFFFF;
   }
 
   summary::-webkit-details-marker {
@@ -123,6 +120,6 @@ export const ThemedGlobalStyle = createGlobalStyle`
   }
 
   :root {
-    ${({ theme }) => rootCssString(theme.darkMode)}
+    ${rootCssString()}
   }
 `

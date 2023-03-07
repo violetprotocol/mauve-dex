@@ -8,7 +8,6 @@ import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import { Box } from 'nft/components/Box'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { useIsDarkMode } from 'state/user/hooks'
 import styled from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
@@ -20,10 +19,8 @@ import NavBar from '../components/NavBar'
 import Polling from '../components/Polling'
 import Popups from '../components/Popups'
 import { useIsExpertMode } from '../state/user/hooks'
-import DarkModeQueryParamReader from '../theme/components/DarkModeQueryParamReader'
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
-import Landing from './Landing'
 import NotFound from './NotFound'
 import Pool from './Pool'
 import { PositionPage } from './Pool/PositionPage'
@@ -131,7 +128,6 @@ export default function App() {
 
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
-  const isDarkMode = useIsDarkMode()
   const isExpertMode = useIsExpertMode()
   const [scrolledState, setScrolledState] = useState(false)
 
@@ -155,10 +151,6 @@ export default function App() {
   // }, [])
 
   useEffect(() => {
-    user.set(CustomUserProperties.DARK_MODE, isDarkMode)
-  }, [isDarkMode])
-
-  useEffect(() => {
     user.set(CustomUserProperties.EXPERT_MODE, isExpertMode)
   }, [isExpertMode])
 
@@ -174,7 +166,6 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <DarkModeQueryParamReader />
       <ApeModeQueryParamReader />
       <Trace page={currentPage}>
         <HeaderWrapper transparent={isHeaderTransparent}>
@@ -187,7 +178,7 @@ export default function App() {
           <Suspense fallback={<Loader />}>
             {isLoaded ? (
               <Routes>
-                <Route path="/" element={<Landing />} />
+                <Route path="/" element={<Navigate to="/swap" replace />} />
                 <Route path="tokens" element={<Tokens />}>
                   <Route path=":chainName" />
                 </Route>

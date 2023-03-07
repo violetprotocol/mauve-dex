@@ -4,11 +4,9 @@ import { InterfacePageName } from '@uniswap/analytics-events'
 import { SmallButtonPrimary } from 'components/Button'
 import { useIsMobile } from 'nft/hooks'
 import { Link } from 'react-router-dom'
-import { useIsDarkMode } from 'state/user/hooks'
 import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
 
-import darkImage from '../../assets/images/404-page-dark.png'
 import lightImage from '../../assets/images/404-page-light.png'
 
 const Image = styled.img`
@@ -39,7 +37,6 @@ const PageWrapper = styled(Container)`
 `
 
 export default function NotFound() {
-  const isDarkMode = useIsDarkMode()
   const isMobile = useIsMobile()
 
   const Title = isMobile ? ThemedText.LargeHeader : ThemedText.Hero
@@ -55,7 +52,7 @@ export default function NotFound() {
               <Trans>Page not found!</Trans>
             </Paragraph>
           </Container>
-          <Image src={isDarkMode ? darkImage : lightImage} alt="Liluni" />
+          <Image src={lightImage} alt="Liluni" />
         </Header>
         <SmallButtonPrimary as={Link} to="/">
           <Trans>Oops, take me back to Swap</Trans>
