@@ -2,7 +2,6 @@
 import { t, Trans } from '@lingui/macro'
 import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
 import useDebounce from 'hooks/useDebounce'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useToggle from 'hooks/useToggle'
@@ -23,7 +22,7 @@ import { isAddress } from '../../utils'
 import Column from '../Column'
 import Row, { RowBetween } from '../Row'
 import CommonBases from './CommonBases'
-import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
+import { CurrencyRow } from './CurrencyList'
 import CurrencyList from './CurrencyList'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 
@@ -68,16 +67,6 @@ export function CurrencySearch({
   const isAddressSearch = isAddress(debouncedQuery)
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
-
-  useEffect(() => {
-    if (isAddressSearch) {
-      sendEvent({
-        category: 'Currency Select',
-        action: 'Search by address',
-        label: isAddressSearch,
-      })
-    }
-  }, [isAddressSearch])
 
   const defaultTokens = useAllTokens()
   const filteredTokens: Token[] = useMemo(() => {
@@ -211,13 +200,6 @@ export function CurrencySearch({
             onSelect={(hasWarning: boolean) => searchToken && handleCurrencySelect(searchToken, hasWarning)}
             otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
             showCurrencyAmount={showCurrencyAmount}
-            eventProperties={formatAnalyticsEventProperties(
-              searchToken,
-              0,
-              [searchToken],
-              searchQuery,
-              isAddressSearch
-            )}
           />
         </Column>
       ) : searchCurrencies?.length > 0 || filteredInactiveTokens?.length > 0 || isLoading ? (
@@ -234,8 +216,6 @@ export function CurrencySearch({
                 fixedListRef={fixedList}
                 showCurrencyAmount={showCurrencyAmount}
                 isLoading={isLoading}
-                searchQuery={searchQuery}
-                isAddressSearch={isAddressSearch}
               />
             )}
           </AutoSizer>

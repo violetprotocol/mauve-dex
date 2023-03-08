@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
+import { Currency, CurrencyAmount } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
 import { checkWarning } from 'constants/tokenSafety'
@@ -179,25 +179,6 @@ interface TokenRowProps {
   index: number
   style: CSSProperties
 }
-
-export const formatAnalyticsEventProperties = (
-  token: Token,
-  index: number,
-  data: any[],
-  searchQuery: string,
-  isAddressSearch: string | false
-) => ({
-  token_symbol: token?.symbol,
-  token_address: token?.address,
-  is_suggested_token: false,
-  is_selected_from_list: true,
-  scroll_position: '',
-  token_list_index: index,
-  token_list_length: data.length,
-  ...(isAddressSearch === false
-    ? { search_token_symbol_input: searchQuery }
-    : { search_token_address_input: isAddressSearch }),
-})
 
 const LoadingRow = () => (
   <LoadingRows>
