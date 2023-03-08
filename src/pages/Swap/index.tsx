@@ -446,6 +446,7 @@ export default function Swap({ className }: { className?: string }) {
                 otherCurrency={currencies[Field.OUTPUT]}
                 showCommonBases={true}
                 loading={independentField === Field.OUTPUT && routeIsSyncing}
+                id="swap-currency-input"
               />
             </SwapSection>
             <ArrowWrapper clickable={isSupportedChain(chainId)}>
@@ -481,6 +482,7 @@ export default function Swap({ className }: { className?: string }) {
                   otherCurrency={currencies[Field.INPUT]}
                   showCommonBases={true}
                   loading={independentField === Field.INPUT && routeIsSyncing}
+                  id="swap-currency-output"
                 />
 
                 {recipient !== null && !showWrap ? (

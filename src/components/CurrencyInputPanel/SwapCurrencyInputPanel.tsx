@@ -195,6 +195,7 @@ interface SwapCurrencyInputPanelProps {
   otherCurrency?: Currency | null
   fiatValue?: CurrencyAmount<Token> | null
   priceImpact?: Percent
+  id: string
   showCommonBases?: boolean
   showCurrencyAmount?: boolean
   disableNonToken?: boolean
@@ -217,6 +218,7 @@ export default function SwapCurrencyInputPanel({
   renderBalance,
   fiatValue,
   priceImpact,
+  id,
   hideBalance = false,
   pair = null, // used for double token logo
   hideInput = false,
@@ -241,7 +243,7 @@ export default function SwapCurrencyInputPanel({
   }, [fiatValueIsLoading, value, fiatValue])
 
   return (
-    <InputPanel hideInput={hideInput} {...rest}>
+    <InputPanel id={id} hideInput={hideInput} {...rest}>
       {locked && (
         <FixedContainer>
           <AutoColumn gap="sm" justify="center">
