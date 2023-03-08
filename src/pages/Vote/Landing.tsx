@@ -1,8 +1,6 @@
 // [MAUVE-DISABLED]
 export {}
 // import { Trans } from '@lingui/macro'
-// import { Trace } from '@uniswap/analytics'
-// import { InterfacePageName } from '@uniswap/analytics-events'
 // import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import { ButtonPrimary } from 'components/Button'
@@ -147,7 +145,6 @@ export {}
 //   )
 //   return (
 //     <>
-//       <Trace page={InterfacePageName.VOTE_PAGE} shouldLogImpression>
 //         <PageWrapper gap="lg" justify="center">
 //           <DelegateModal
 //             isOpen={showDelegateModal}
@@ -298,7 +295,6 @@ export {}
 //             <Trans>A minimum threshold of 0.25% of the total UNI supply is required to submit proposals</Trans>
 //           </ThemedText.DeprecatedSubHeader>
 //         </PageWrapper>
-//       </Trace>
 //       <SwitchLocaleLink />
 //     </>
 //   )

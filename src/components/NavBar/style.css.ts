@@ -35,18 +35,6 @@ export const leftSideContainer = style([
   }),
 ])
 
-export const searchContainer = style([
-  sprinkles({
-    flex: '1',
-    flexShrink: '1',
-    justifyContent: { lg: 'flex-end', xl: 'center' },
-    display: { sm: 'none', xl: 'flex' },
-    alignSelf: 'center',
-    height: '48',
-    alignItems: 'flex-start',
-  }),
-])
-
 export const rightSideContainer = style([
   baseSideContainer,
   sprinkles({

@@ -2,8 +2,7 @@
 export {}
 // import { BigNumber } from '@ethersproject/bignumber'
 // import { Trans } from '@lingui/macro'
-// import { Trace } from '@uniswap/analytics'
-// import { InterfacePageName } from '@uniswap/analytics-events'
+
 // import { CurrencyAmount, Fraction, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import ExecuteModal from 'components/vote/ExecuteModal'
@@ -273,7 +272,6 @@ export {}
 //   }
 
 //   return (
-//     <Trace page={InterfacePageName.VOTE_PAGE} shouldLogImpression>
 //       <>
 //         <PageWrapper gap="lg" justify="center">
 //           <VoteModal
@@ -506,6 +504,5 @@ export {}
 //         </PageWrapper>
 //         <SwitchLocaleLink />
 //       </>
-//     </Trace>
 //   )
 // }

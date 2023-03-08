@@ -1,5 +1,3 @@
-import { initializeAnalytics, OriginApplication, Trace, user } from '@uniswap/analytics'
-import { CustomUserProperties, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import { MenuDropdown } from 'components/NavBar/MenuDropdown'
 import TopLevelModals from 'components/TopLevelModals'
@@ -11,14 +9,12 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
-import { isProductionEnv } from 'utils/env'
 
 import ErrorBoundary from '../components/ErrorBoundary'
 import { PageTabs } from '../components/NavBar'
 import NavBar from '../components/NavBar'
 import Polling from '../components/Polling'
 import Popups from '../components/Popups'
-import { useIsExpertMode } from '../state/user/hooks'
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
 import NotFound from './NotFound'
@@ -33,17 +29,6 @@ import VioletCallback from './VioletCallback'
 const TokenDetails = lazy(() => import('./TokenDetails'))
 // [MAUVE-DISABLED]
 // const Vote = lazy(() => import('./Vote'))
-
-// Placeholder API key. Actual API key used in the proxy server
-const ANALYTICS_DUMMY_KEY = '00000000000000000000000000000000'
-const ANALYTICS_PROXY_URL = process.env.REACT_APP_AMPLITUDE_PROXY_URL
-const COMMIT_HASH = process.env.REACT_APP_GIT_COMMIT_HASH
-initializeAnalytics(ANALYTICS_DUMMY_KEY, OriginApplication.INTERFACE, {
-  proxyUrl: ANALYTICS_PROXY_URL,
-  defaultEventName: SharedEventName.PAGE_VIEWED,
-  commitHash: COMMIT_HASH,
-  isProductionEnv: isProductionEnv(),
-})
 
 const BodyWrapper = styled.div`
   display: flex;
@@ -85,29 +70,6 @@ const HeaderWrapper = styled.div<{ transparent?: boolean }>`
   z-index: ${Z_INDEX.dropdown};
 `
 
-function getCurrentPageFromLocation(locationPathname: string): InterfacePageName | undefined {
-  switch (true) {
-    case locationPathname.startsWith('/swap'):
-      return InterfacePageName.SWAP_PAGE
-    case locationPathname.startsWith('/vote'):
-      return InterfacePageName.VOTE_PAGE
-    case locationPathname.startsWith('/pool'):
-      return InterfacePageName.POOL_PAGE
-    case locationPathname.startsWith('/tokens'):
-      return InterfacePageName.TOKENS_PAGE
-    case locationPathname.startsWith('/nfts/profile'):
-      return InterfacePageName.NFT_PROFILE_PAGE
-    case locationPathname.startsWith('/nfts/asset'):
-      return InterfacePageName.NFT_DETAILS_PAGE
-    case locationPathname.startsWith('/nfts/collection'):
-      return InterfacePageName.NFT_COLLECTION_PAGE
-    case locationPathname.startsWith('/nfts'):
-      return InterfacePageName.NFT_EXPLORE_PAGE
-    default:
-      return undefined
-  }
-}
-
 // this is the same svg defined in assets/images/blue-loader.svg
 // it is defined here because the remote asset may not have had time to load when this file is executing
 // [MAUVE-DISABLED]: Unused
@@ -127,32 +89,12 @@ export default function App() {
   const isLoaded = useFeatureFlagsIsLoaded()
 
   const { pathname } = useLocation()
-  const currentPage = getCurrentPageFromLocation(pathname)
-  const isExpertMode = useIsExpertMode()
   const [scrolledState, setScrolledState] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
     setScrolledState(false)
   }, [pathname])
-
-  // useEffect(() => {
-  //   sendAnalyticsEvent(SharedEventName.APP_LOADED)
-  //   user.set(CustomUserProperties.USER_AGENT, navigator.userAgent)
-  //   user.set(CustomUserProperties.BROWSER, getBrowser())
-  //   user.set(CustomUserProperties.SCREEN_RESOLUTION_HEIGHT, window.screen.height)
-  //   user.set(CustomUserProperties.SCREEN_RESOLUTION_WIDTH, window.screen.width)
-  //   getCLS(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { cumulative_layout_shift: delta }))
-  //   getFCP(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_contentful_paint_ms: delta }))
-  //   getFID(({ delta }: Metric) => sendAnalyticsEvent(SharedEventName.WEB_VITALS, { first_input_delay_ms: delta }))
-  //   getLCP(({ delta }: Metric) =>
-  //     sendAnalyticsEvent(SharedEventName.WEB_VITALS, { largest_contentful_paint_ms: delta })
-  //   )
-  // }, [])
-
-  useEffect(() => {
-    user.set(CustomUserProperties.EXPERT_MODE, isExpertMode)
-  }, [isExpertMode])
 
   useEffect(() => {
     const scrollListener = () => {
@@ -167,24 +109,23 @@ export default function App() {
   return (
     <ErrorBoundary>
       <ApeModeQueryParamReader />
-      <Trace page={currentPage}>
-        <HeaderWrapper transparent={isHeaderTransparent}>
-          <NavBar />
-        </HeaderWrapper>
-        <BodyWrapper>
-          <Popups />
-          <Polling />
-          <TopLevelModals />
-          <Suspense fallback={<Loader />}>
-            {isLoaded ? (
-              <Routes>
-                <Route path="/" element={<Navigate to="/swap" replace />} />
-                <Route path="tokens" element={<Tokens />}>
-                  <Route path=":chainName" />
-                </Route>
-                <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
-                {/* // [MAUVE-DISABLED] */}
-                {/* <Route
+      <HeaderWrapper transparent={isHeaderTransparent}>
+        <NavBar />
+      </HeaderWrapper>
+      <BodyWrapper>
+        <Popups />
+        <Polling />
+        <TopLevelModals />
+        <Suspense fallback={<Loader />}>
+          {isLoaded ? (
+            <Routes>
+              <Route path="/" element={<Navigate to="/swap" replace />} />
+              <Route path="tokens" element={<Tokens />}>
+                <Route path=":chainName" />
+              </Route>
+              <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
+              {/* // [MAUVE-DISABLED] */}
+              {/* <Route
                   path="vote/*"
                   element={
                     <Suspense fallback={<LazyLoadSpinner />}>
@@ -192,40 +133,39 @@ export default function App() {
                     </Suspense>
                   }
                 /> */}
-                {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
-                <Route path="send" element={<RedirectPathToSwapOnly />} />
-                <Route path="swap" element={<Swap />} />
-                <Route path="pool" element={<Pool />} />
-                <Route path="pool/:tokenId" element={<PositionPage />} />
-                <Route path="add" element={<RedirectDuplicateTokenIds />}>
-                  {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
-                  <Route path=":currencyIdA" />
-                  <Route path=":currencyIdA/:currencyIdB" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
-                </Route>
-                <Route path="increase" element={<AddLiquidity />}>
-                  <Route path=":currencyIdA" />
-                  <Route path=":currencyIdA/:currencyIdB" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
-                </Route>
-                <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
-                <Route path="callback" element={<VioletCallback />} />
-                <Route path="*" element={<Navigate to="/not-found" replace />} />
-                <Route path="/not-found" element={<NotFound />} />
-              </Routes>
-            ) : (
-              <Loader />
-            )}
-          </Suspense>
-        </BodyWrapper>
-        <MobileBottomBar>
-          <PageTabs />
-          <Box marginY="4">
-            <MenuDropdown />
-          </Box>
-        </MobileBottomBar>
-      </Trace>
+              {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
+              <Route path="send" element={<RedirectPathToSwapOnly />} />
+              <Route path="swap" element={<Swap />} />
+              <Route path="pool" element={<Pool />} />
+              <Route path="pool/:tokenId" element={<PositionPage />} />
+              <Route path="add" element={<RedirectDuplicateTokenIds />}>
+                {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
+                <Route path=":currencyIdA" />
+                <Route path=":currencyIdA/:currencyIdB" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
+              </Route>
+              <Route path="increase" element={<AddLiquidity />}>
+                <Route path=":currencyIdA" />
+                <Route path=":currencyIdA/:currencyIdB" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
+              </Route>
+              <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
+              <Route path="callback" element={<VioletCallback />} />
+              <Route path="*" element={<Navigate to="/not-found" replace />} />
+              <Route path="/not-found" element={<NotFound />} />
+            </Routes>
+          ) : (
+            <Loader />
+          )}
+        </Suspense>
+      </BodyWrapper>
+      <MobileBottomBar>
+        <PageTabs />
+        <Box marginY="4">
+          <MenuDropdown />
+        </Box>
+      </MobileBottomBar>
     </ErrorBoundary>
   )
 }

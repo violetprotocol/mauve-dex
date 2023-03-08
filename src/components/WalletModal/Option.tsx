@@ -1,5 +1,3 @@
-import { TraceEvent } from '@uniswap/analytics'
-import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import React from 'react'
 import { Check } from 'react-feather'
 import styled from 'styled-components/macro'
@@ -114,12 +112,7 @@ export default function Option({
   id: string
 }) {
   const content = (
-    <TraceEvent
-      events={[BrowserEvent.onClick]}
-      name={InterfaceEventName.WALLET_SELECTED}
-      properties={{ wallet_type: header }}
-      element={InterfaceElementName.WALLET_TYPE_OPTION}
-    >
+    <>
       <OptionCardClickable
         id={id}
         onClick={onClick}
@@ -138,7 +131,7 @@ export default function Option({
         </OptionCardLeft>
         {isActive && <CheckIcon />}
       </OptionCardClickable>
-    </TraceEvent>
+    </>
   )
   if (link) {
     return <ExternalLink href={link}>{content}</ExternalLink>

@@ -1,5 +1,3 @@
-import { sendAnalyticsEvent } from '@uniswap/analytics'
-import { InterfaceEventName } from '@uniswap/analytics-events'
 import { formatUSDPrice } from '@uniswap/conedison/format'
 import { useWeb3React } from '@web3-react/core'
 import clsx from 'clsx'
@@ -50,17 +48,9 @@ interface CollectionRowProps {
   setHoveredIndex: (index: number | undefined) => void
   toggleOpen: () => void
   index: number
-  eventProperties: Record<string, unknown>
 }
 
-export const CollectionRow = ({
-  collection,
-  isHovered,
-  setHoveredIndex,
-  toggleOpen,
-  index,
-  eventProperties,
-}: CollectionRowProps) => {
+export const CollectionRow = ({ collection, isHovered, setHoveredIndex, toggleOpen, index }: CollectionRowProps) => {
   const [brokenImage, setBrokenImage] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const addToSearchHistory = useSearchHistory(
@@ -71,8 +61,7 @@ export const CollectionRow = ({
   const handleClick = useCallback(() => {
     addToSearchHistory(collection)
     toggleOpen()
-    sendAnalyticsEvent(InterfaceEventName.NAVBAR_RESULT_SELECTED, { ...eventProperties })
-  }, [addToSearchHistory, collection, toggleOpen, eventProperties])
+  }, [addToSearchHistory, collection, toggleOpen])
 
   useEffect(() => {
     const keyDownHandler = (event: KeyboardEvent) => {
@@ -145,10 +134,9 @@ interface TokenRowProps {
   setHoveredIndex: (index: number | undefined) => void
   toggleOpen: () => void
   index: number
-  eventProperties: Record<string, unknown>
 }
 
-export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index, eventProperties }: TokenRowProps) => {
+export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index }: TokenRowProps) => {
   const addToSearchHistory = useSearchHistory(
     (state: { addItem: (item: FungibleToken | GenieCollection) => void }) => state.addItem
   )
@@ -157,8 +145,7 @@ export const TokenRow = ({ token, isHovered, setHoveredIndex, toggleOpen, index,
   const handleClick = useCallback(() => {
     addToSearchHistory(token)
     toggleOpen()
-    sendAnalyticsEvent(InterfaceEventName.NAVBAR_RESULT_SELECTED, { ...eventProperties })
-  }, [addToSearchHistory, toggleOpen, token, eventProperties])
+  }, [addToSearchHistory, toggleOpen, token])
 
   const [bridgedAddress, bridgedChain, L2Icon] = useBridgedAddress(token)
   const tokenDetailsPath = getTokenDetailsURL(bridgedAddress ?? token.address, undefined, bridgedChain ?? token.chainId)

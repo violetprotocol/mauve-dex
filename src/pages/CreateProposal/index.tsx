@@ -3,8 +3,6 @@ export {}
 // import { defaultAbiCoder } from '@ethersproject/abi'
 // import { getAddress, isAddress } from '@ethersproject/address'
 // import { Trans } from '@lingui/macro'
-// import { Trace } from '@uniswap/analytics'
-// import { InterfacePageName } from '@uniswap/analytics-events'
 // import { Currency, CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import { ButtonError } from 'components/Button'
@@ -241,7 +239,6 @@ export {}
 //   }
 
 //   return (
-//     <Trace page={InterfacePageName.VOTE_PAGE} shouldLogImpression>
 //       <PageWrapper>
 //         <AppBody $maxWidth="800px">
 //           <CreateProposalTabs />
@@ -303,6 +300,5 @@ export {}
 //           <ProposalSubmissionModal isOpen={attempting} hash={hash} onDismiss={handleDismissSubmissionModal} />
 //         </AppBody>
 //       </PageWrapper>
-//     </Trace>
 //   )
 // }

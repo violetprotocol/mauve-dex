@@ -1,9 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { sendAnalyticsEvent } from '@uniswap/analytics'
-import { SwapEventName, SwapPriceUpdateUserResponse } from '@uniswap/analytics-events'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { getPriceUpdateBasisPoints } from 'lib/utils/analytics'
-import { useEffect, useState } from 'react'
 import { AlertTriangle, ArrowDown } from 'react-feather'
 import { Text } from 'rebass'
 import { InterfaceTrade } from 'state/routing/types'
@@ -41,33 +37,14 @@ const ArrowWrapper = styled.div`
   z-index: 2;
 `
 
-const formatAnalyticsEventProperties = (
-  trade: InterfaceTrade<Currency, Currency, TradeType>,
-  priceUpdate: number | undefined,
-  response: SwapPriceUpdateUserResponse
-) => ({
-  chain_id:
-    trade.inputAmount.currency.chainId === trade.outputAmount.currency.chainId
-      ? trade.inputAmount.currency.chainId
-      : undefined,
-  response,
-  token_in_symbol: trade.inputAmount.currency.symbol,
-  token_out_symbol: trade.outputAmount.currency.symbol,
-  price_update_basis_points: priceUpdate,
-})
-
 export default function SwapModalHeader({
   trade,
-  shouldLogModalCloseEvent,
-  setShouldLogModalCloseEvent,
   allowedSlippage,
   recipient,
   showAcceptChanges,
   onAcceptChanges,
 }: {
   trade: InterfaceTrade<Currency, Currency, TradeType>
-  shouldLogModalCloseEvent: boolean
-  setShouldLogModalCloseEvent: (shouldLog: boolean) => void
   allowedSlippage: Percent
   recipient: string | null
   showAcceptChanges: boolean
@@ -75,27 +52,8 @@ export default function SwapModalHeader({
 }) {
   const theme = useTheme()
 
-  const [lastExecutionPrice, setLastExecutionPrice] = useState(trade.executionPrice)
-  const [priceUpdate, setPriceUpdate] = useState<number | undefined>()
-
   const fiatValueInput = useStablecoinValue(trade.inputAmount)
   const fiatValueOutput = useStablecoinValue(trade.outputAmount)
-
-  useEffect(() => {
-    if (!trade.executionPrice.equalTo(lastExecutionPrice)) {
-      setPriceUpdate(getPriceUpdateBasisPoints(lastExecutionPrice, trade.executionPrice))
-      setLastExecutionPrice(trade.executionPrice)
-    }
-  }, [lastExecutionPrice, setLastExecutionPrice, trade.executionPrice])
-
-  useEffect(() => {
-    if (shouldLogModalCloseEvent && showAcceptChanges)
-      sendAnalyticsEvent(
-        SwapEventName.SWAP_PRICE_UPDATE_ACKNOWLEDGED,
-        formatAnalyticsEventProperties(trade, priceUpdate, SwapPriceUpdateUserResponse.REJECTED)
-      )
-    setShouldLogModalCloseEvent(false)
-  }, [shouldLogModalCloseEvent, showAcceptChanges, setShouldLogModalCloseEvent, trade, priceUpdate])
 
   return (
     <AutoColumn gap="4px" style={{ marginTop: '1rem' }}>

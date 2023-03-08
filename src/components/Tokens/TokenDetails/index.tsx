@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { Trace } from '@uniswap/analytics'
-import { InterfacePageName } from '@uniswap/analytics-events'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -175,11 +173,7 @@ export default function TokenDetails({
     return <InvalidTokenDetails chainName={address && getChainInfo(pageChainId)?.label} />
   }
   return (
-    <Trace
-      page={InterfacePageName.TOKEN_DETAILS_PAGE}
-      properties={{ tokenAddress: address, tokenName: token?.name }}
-      shouldLogImpression
-    >
+    <>
       <TokenDetailsLayout>
         {token && !isPending ? (
           <LeftPanel>
@@ -240,6 +234,6 @@ export default function TokenDetails({
           showCancel={true}
         />
       </TokenDetailsLayout>
-    </Trace>
+    </>
   )
 }

@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { sendAnalyticsEvent } from '@uniswap/analytics'
-import { InterfaceEventName } from '@uniswap/analytics-events'
 import { formatNumber, formatUSDPrice, NumberType } from '@uniswap/conedison/format'
 import { ParentSize } from '@visx/responsive'
 import SparklineChart from 'components/Charts/SparklineChart'
@@ -24,14 +22,7 @@ import {
   SMALL_MEDIA_BREAKPOINT,
 } from '../constants'
 import { LoadingBubble } from '../loading'
-import {
-  filterStringAtom,
-  filterTimeAtom,
-  sortAscendingAtom,
-  sortMethodAtom,
-  TokenSortMethod,
-  useSetSortMethod,
-} from '../state'
+import { sortAscendingAtom, sortMethodAtom, TokenSortMethod, useSetSortMethod } from '../state'
 import { ArrowCell, DeltaText, formatDelta, getDeltaArrow } from '../TokenDetails/PriceChart'
 
 const Cell = styled.div`
@@ -439,43 +430,24 @@ interface LoadedRowProps {
 /* Loaded State: row component with token information */
 export const LoadedRow = forwardRef((props: LoadedRowProps, ref: ForwardedRef<HTMLDivElement>) => {
   const { tokenListIndex, tokenListLength, token } = props
-  const tokenAddress = token.address
   const tokenName = token.name
   const tokenSymbol = token.symbol
-  const filterString = useAtomValue(filterStringAtom)
   const sortAscending = useAtomValue(sortAscendingAtom)
 
   const lowercaseChainName = useParams<{ chainName?: string }>().chainName?.toUpperCase() ?? 'ethereum'
   const filterNetwork = lowercaseChainName.toUpperCase()
   const chainId = CHAIN_NAME_TO_CHAIN_ID[filterNetwork]
   const L2Icon = getChainInfo(chainId)?.circleLogoUrl
-  const timePeriod = useAtomValue(filterTimeAtom)
   const delta = token.market?.pricePercentChange?.value
   const arrow = getDeltaArrow(delta)
   const smallArrow = getDeltaArrow(delta, 14)
   const formattedDelta = formatDelta(delta)
   const rank = sortAscending ? tokenListLength - tokenListIndex : tokenListIndex + 1
 
-  const exploreTokenSelectedEventProperties = {
-    chain_id: chainId,
-    token_address: tokenAddress,
-    token_symbol: tokenSymbol,
-    token_list_index: tokenListIndex,
-    token_list_rank: rank,
-    token_list_length: tokenListLength,
-    time_frame: timePeriod,
-    search_token_address_input: filterString,
-  }
-
   // TODO: currency logo sizing mobile (32px) vs. desktop (24px)
   return (
     <div ref={ref} data-testid={`token-table-row-${tokenName}`}>
-      <StyledLink
-        to={getTokenDetailsURL(token.address ?? '', token.chain)}
-        onClick={() =>
-          sendAnalyticsEvent(InterfaceEventName.EXPLORE_TOKEN_ROW_CLICKED, exploreTokenSelectedEventProperties)
-        }
-      >
+      <StyledLink to={getTokenDetailsURL(token.address ?? '', token.chain)}>
         <TokenRow
           header={false}
           listNumber={rank}

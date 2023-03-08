@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { TraceEvent } from '@uniswap/analytics'
-import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Protocol } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { Pair } from '@violetprotocol/mauve-v2-sdk'
@@ -47,6 +45,36 @@ interface SwapRouteProps extends React.HTMLAttributes<HTMLDivElement> {
   fixedOpen?: boolean // fixed in open state, hide open/close icon
 }
 
+/**
+ * Loops through all routes on a trade and returns an array of diagram entries.
+ */
+const getTokenPath = (trade: InterfaceTrade<Currency, Currency, TradeType>): RoutingDiagramEntry[] => {
+  return trade.swaps.map(({ route: { path: tokenPath, pools, protocol }, inputAmount, outputAmount }) => {
+    const portion =
+      trade.tradeType === TradeType.EXACT_INPUT
+        ? inputAmount.divide(trade.inputAmount)
+        : outputAmount.divide(trade.outputAmount)
+    const percent = new Percent(portion.numerator, portion.denominator)
+    const path: RoutingDiagramEntry['path'] = []
+    for (let i = 0; i < pools.length; i++) {
+      const nextPool = pools[i]
+      const tokenIn = tokenPath[i]
+      const tokenOut = tokenPath[i + 1]
+      const entry: RoutingDiagramEntry['path'][0] = [
+        tokenIn,
+        tokenOut,
+        nextPool instanceof Pair ? V2_DEFAULT_FEE_TIER : nextPool.fee,
+      ]
+      path.push(entry)
+    }
+    return {
+      percent,
+      path,
+      protocol,
+    }
+  })
+}
+
 export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...rest }: SwapRouteProps) {
   const autoRouterSupported = useAutoRouterSupported()
   const routes = getTokenPath(trade)
@@ -61,20 +89,13 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
 
   return (
     <Wrapper {...rest} fixedOpen={fixedOpen}>
-      <TraceEvent
-        events={[BrowserEvent.onClick]}
-        name={SwapEventName.SWAP_AUTOROUTER_VISUALIZATION_EXPANDED}
-        element={InterfaceElementName.AUTOROUTER_VISUALIZATION_ROW}
-        shouldLogImpression={!open}
-      >
-        <RowBetween onClick={() => setOpen(!open)}>
-          <AutoRow gap="4px" width="auto">
-            <AutoRouterLogo />
-            <AutoRouterLabel />
-          </AutoRow>
-          {fixedOpen ? null : <OpenCloseIcon open={open} />}
-        </RowBetween>
-      </TraceEvent>
+      <RowBetween onClick={() => setOpen(!open)}>
+        <AutoRow gap="4px" width="auto">
+          <AutoRouterLogo />
+          <AutoRouterLabel />
+        </AutoRow>
+        {fixedOpen ? null : <OpenCloseIcon open={open} />}
+      </RowBetween>
       <AnimatedDropdown open={open || fixedOpen}>
         <AutoRow gap="4px" width="auto" style={{ paddingTop: '12px', margin: 0 }}>
           {syncing ? (
@@ -122,33 +143,3 @@ export interface RoutingDiagramEntry {
 }
 
 const V2_DEFAULT_FEE_TIER = 3000
-
-/**
- * Loops through all routes on a trade and returns an array of diagram entries.
- */
-export function getTokenPath(trade: InterfaceTrade<Currency, Currency, TradeType>): RoutingDiagramEntry[] {
-  return trade.swaps.map(({ route: { path: tokenPath, pools, protocol }, inputAmount, outputAmount }) => {
-    const portion =
-      trade.tradeType === TradeType.EXACT_INPUT
-        ? inputAmount.divide(trade.inputAmount)
-        : outputAmount.divide(trade.outputAmount)
-    const percent = new Percent(portion.numerator, portion.denominator)
-    const path: RoutingDiagramEntry['path'] = []
-    for (let i = 0; i < pools.length; i++) {
-      const nextPool = pools[i]
-      const tokenIn = tokenPath[i]
-      const tokenOut = tokenPath[i + 1]
-      const entry: RoutingDiagramEntry['path'][0] = [
-        tokenIn,
-        tokenOut,
-        nextPool instanceof Pair ? V2_DEFAULT_FEE_TIER : nextPool.fee,
-      ]
-      path.push(entry)
-    }
-    return {
-      percent,
-      path,
-      protocol,
-    }
-  })
-}

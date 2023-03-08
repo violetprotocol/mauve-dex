@@ -1,6 +1,4 @@
 import { Trans } from '@lingui/macro'
-import { useTrace } from '@uniswap/analytics'
-import { InterfaceSectionName, NavBarSearchTypes } from '@uniswap/analytics-events'
 import { useIsNftPage } from 'hooks/useIsNftPage'
 import { Box } from 'nft/components/Box'
 import { Column, Row } from 'nft/components/Flex'
@@ -31,7 +29,6 @@ interface SearchBarDropdownSectionProps {
   startingIndex: number
   setHoveredIndex: (index: number | undefined) => void
   isLoading?: boolean
-  eventProperties: Record<string, unknown>
 }
 
 const SearchBarDropdownSection = ({
@@ -43,7 +40,6 @@ const SearchBarDropdownSection = ({
   startingIndex,
   setHoveredIndex,
   isLoading,
-  eventProperties,
 }: SearchBarDropdownSectionProps) => {
   return (
     <Column gap="12">
@@ -63,12 +59,6 @@ const SearchBarDropdownSection = ({
               setHoveredIndex={setHoveredIndex}
               toggleOpen={toggleOpen}
               index={index + startingIndex}
-              eventProperties={{
-                position: index + startingIndex,
-                selected_search_result_name: suggestion.name,
-                selected_search_result_address: suggestion.address,
-                ...eventProperties,
-              }}
             />
           ) : (
             <TokenRow
@@ -78,12 +68,6 @@ const SearchBarDropdownSection = ({
               setHoveredIndex={setHoveredIndex}
               toggleOpen={toggleOpen}
               index={index + startingIndex}
-              eventProperties={{
-                position: index + startingIndex,
-                selected_search_result_name: suggestion.name,
-                selected_search_result_address: suggestion.address,
-                ...eventProperties,
-              }}
             />
           )
         )}
@@ -202,10 +186,7 @@ export const SearchBarDropdown = ({
     (isNFTPage && (hasVerifiedCollection || !hasVerifiedToken)) ||
     (!isNFTPage && !hasVerifiedToken && hasVerifiedCollection)
 
-  const trace = JSON.stringify(useTrace({ section: InterfaceSectionName.NAVBAR_SEARCH }))
-
   useEffect(() => {
-    const eventProperties = { total_suggestions: totalSuggestions, query_text: queryText, ...JSON.parse(trace) }
     if (!isLoading) {
       const tokenSearchResults =
         tokens.length > 0 ? (
@@ -215,10 +196,6 @@ export const SearchBarDropdown = ({
             setHoveredIndex={setHoveredIndex}
             toggleOpen={toggleOpen}
             suggestions={tokens}
-            eventProperties={{
-              suggestion_type: NavBarSearchTypes.TOKEN_SUGGESTION,
-              ...eventProperties,
-            }}
             header={<Trans>Tokens</Trans>}
           />
         ) : (
@@ -235,10 +212,6 @@ export const SearchBarDropdown = ({
             setHoveredIndex={setHoveredIndex}
             toggleOpen={toggleOpen}
             suggestions={collections}
-            eventProperties={{
-              suggestion_type: NavBarSearchTypes.COLLECTION_SUGGESTION,
-              ...eventProperties,
-            }}
             header={<Trans>NFT Collections</Trans>}
           />
         ) : (
@@ -271,10 +244,6 @@ export const SearchBarDropdown = ({
                 setHoveredIndex={setHoveredIndex}
                 toggleOpen={toggleOpen}
                 suggestions={shortenedHistory}
-                eventProperties={{
-                  suggestion_type: NavBarSearchTypes.RECENT_SEARCH,
-                  ...eventProperties,
-                }}
                 header={<Trans>Recent searches</Trans>}
                 headerIcon={<ClockIcon />}
               />
@@ -286,10 +255,6 @@ export const SearchBarDropdown = ({
                 setHoveredIndex={setHoveredIndex}
                 toggleOpen={toggleOpen}
                 suggestions={trendingTokens}
-                eventProperties={{
-                  suggestion_type: NavBarSearchTypes.TOKEN_TRENDING,
-                  ...eventProperties,
-                }}
                 header={<Trans>Popular tokens</Trans>}
                 headerIcon={<TrendingArrow />}
                 isLoading={trendingTokensAreLoading}
@@ -302,10 +267,6 @@ export const SearchBarDropdown = ({
                 setHoveredIndex={setHoveredIndex}
                 toggleOpen={toggleOpen}
                 suggestions={trendingCollections as unknown as GenieCollection[]}
-                eventProperties={{
-                  suggestion_type: NavBarSearchTypes.COLLECTION_TRENDING,
-                  ...eventProperties,
-                }}
                 header={<Trans>Popular NFT collections</Trans>}
                 headerIcon={<TrendingArrow />}
                 isLoading={trendingCollectionsAreLoading}
@@ -333,7 +294,6 @@ export const SearchBarDropdown = ({
     showCollectionsFirst,
     queryText,
     totalSuggestions,
-    trace,
   ])
 
   return (
