@@ -178,7 +178,7 @@ const StyledLink = styled.a`
   ${LinkStyle}
 `
 /**
- * Outbound link that handles firing google analytics events
+ * Outbound link
  */
 export function ExternalLink({
   target = '_blank',

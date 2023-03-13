@@ -4,7 +4,7 @@ import { Connector } from '@web3-react/types'
 import { AutoColumn } from 'components/Column'
 import { AutoRow } from 'components/Row'
 import { networkConnection } from 'connection'
-import { getConnection, getConnectionName, getIsCoinbaseWallet, getIsInjected, getIsMetaMask } from 'connection/utils'
+import { getConnection, getIsCoinbaseWallet, getIsInjected, getIsMetaMask } from 'connection/utils'
 import usePrevious from 'hooks/usePrevious'
 import { useCallback, useEffect, useState } from 'react'
 import { ArrowLeft } from 'react-feather'
@@ -12,7 +12,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { updateConnectionError } from 'state/connection/reducer'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { updateSelectedWallet } from 'state/user/reducer'
-import { useConnectedWallets } from 'state/wallets/hooks'
 import styled from 'styled-components/macro'
 import { flexColumnNoWrap, flexRowNoWrap } from 'theme/styles'
 import { isMobile } from 'utils/userAgent'
@@ -132,10 +131,7 @@ export default function WalletModal({
   const location = useLocation()
   const navigate = useNavigate()
 
-  const [connectedWallets, addWalletToConnectedWallets] = useConnectedWallets()
-
   const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
-  const [lastActiveWalletAddress, setLastActiveWalletAddress] = useState<string | undefined>(account)
 
   const [pendingConnector, setPendingConnector] = useState<Connector | undefined>()
   const pendingError = useAppSelector((state) =>
@@ -177,17 +173,6 @@ export default function WalletModal({
       networkConnection.connector.activate(chainId)
     }
   }, [chainId, connector])
-
-  // When new wallet is successfully set by the user, trigger logging of Amplitude analytics event.
-  useEffect(() => {
-    if (account && account !== lastActiveWalletAddress) {
-      const walletType = getConnectionName(getConnection(connector).type, getIsMetaMask())
-      const isReconnect =
-        connectedWallets.filter((wallet) => wallet.account === account && wallet.walletType === walletType).length > 0
-      if (!isReconnect) addWalletToConnectedWallets({ account, walletType })
-    }
-    setLastActiveWalletAddress(account)
-  }, [connectedWallets, addWalletToConnectedWallets, lastActiveWalletAddress, account, connector, chainId])
 
   const tryActivation = useCallback(
     async (connector: Connector) => {
