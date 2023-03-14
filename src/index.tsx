@@ -26,7 +26,6 @@ import ListsUpdater from './state/lists/updater'
 import LogsUpdater from './state/logs/updater'
 import TransactionUpdater from './state/transactions/updater'
 import ThemeProvider, { ThemedGlobalStyle } from './theme'
-import RadialGradientByChainUpdater from './theme/components/RadialGradientByChainUpdater'
 
 if (window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false
@@ -42,7 +41,6 @@ if (isSentryEnabled()) {
 function Updaters() {
   return (
     <>
-      <RadialGradientByChainUpdater />
       <ListsUpdater />
       <ApplicationUpdater />
       <TransactionUpdater />
