@@ -2,7 +2,7 @@ import { rootCssString } from 'nft/css/cssStringFromTheme'
 import React from 'react'
 import { createGlobalStyle, css, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components/macro'
 
-import { lightTheme } from './colors'
+import { lightTheme, tw } from './colors'
 import { deprecatedColors } from './deprecatedColors'
 
 // todo - remove and replace imports with a new path
@@ -16,9 +16,9 @@ export const MEDIA_WIDTHS = {
   deprecated_upToLarge: 1280,
 }
 
-const deprecated_mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(
-  MEDIA_WIDTHS
-).reduce((acc, size) => {
+const deprecated_mediaWidthTemplates: {
+  [width in keyof typeof MEDIA_WIDTHS]: typeof css
+} = Object.keys(MEDIA_WIDTHS).reduce((acc, size) => {
   acc[size] = (a: any, b: any, c: any) => css`
     @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
       ${css(a, b, c)}
@@ -97,6 +97,7 @@ export function getTheme() {
     ...lightTheme,
     ...deprecatedColors,
     ...getSettings(),
+    tw,
   }
 }
 
