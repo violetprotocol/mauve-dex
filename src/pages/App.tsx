@@ -71,7 +71,7 @@ const BackgroundGlowInner = styled.div`
   height: 100vh;
   left: 50%;
   top: 0;
-  background: #a9b9fc;
+  background: ${({ theme }) => theme.tw.primary['200']};
   opacity: 0.32;
   filter: blur(8rem);
   transform: rotate(45deg);
