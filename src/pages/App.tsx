@@ -1,14 +1,13 @@
 import { initializeAnalytics, OriginApplication, Trace, user } from '@uniswap/analytics'
 import { CustomUserProperties, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
-import { MenuDropdown } from 'components/NavBar/MenuDropdown'
 import TopLevelModals from 'components/TopLevelModals'
 import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
-import { Box } from 'nft/components/Box'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import { tw } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 import { isProductionEnv } from 'utils/env'
@@ -71,7 +70,7 @@ const BackgroundGlowInner = styled.div`
   height: 100vh;
   left: 50%;
   top: 0;
-  background: ${({ theme }) => theme.tw.primary['200']};
+  background: ${tw.primary['200']};
   opacity: 0.32;
   filter: blur(8rem);
   transform: rotate(45deg);
@@ -247,9 +246,6 @@ export default function App() {
         </BodyWrapper>
         <MobileBottomBar>
           <PageTabs />
-          <Box marginY="4">
-            <MenuDropdown />
-          </Box>
         </MobileBottomBar>
       </Trace>
     </ErrorBoundary>
