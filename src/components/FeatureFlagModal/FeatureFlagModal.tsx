@@ -1,5 +1,4 @@
 import { BaseVariant, FeatureFlag, featureFlagSettings, useUpdateFlag } from 'featureFlags'
-import { useFiatOnrampFlag } from 'featureFlags/flags/fiatOnramp'
 import { TraceJsonRpcVariant, useTraceJsonRpcFlag } from 'featureFlags/flags/traceJsonRpc'
 import { useAtomValue, useUpdateAtom } from 'jotai/utils'
 import { Children, PropsWithChildren, ReactElement, ReactNode, useCallback, useState } from 'react'
@@ -202,12 +201,6 @@ export default function FeatureFlagModal() {
           <X size={24} />
         </CloseButton>
       </Header>
-      <FeatureFlagOption
-        variant={BaseVariant}
-        value={useFiatOnrampFlag()}
-        featureFlag={FeatureFlag.fiatOnramp}
-        label="Fiat on-ramp"
-      />
       <FeatureFlagGroup name="Debug">
         <FeatureFlagOption
           variant={TraceJsonRpcVariant}
