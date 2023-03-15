@@ -9,8 +9,6 @@ import { SerializedPair, SerializedToken } from './types'
 const currentTimestamp = () => new Date().getTime()
 
 export interface UserState {
-  fiatOnrampAcknowledgments: { renderCount: number; system: boolean; user: boolean }
-
   selectedWallet?: ConnectionType
 
   // the timestamp of the last updateVersion action
@@ -53,7 +51,6 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  fiatOnrampAcknowledgments: { renderCount: 0, system: false, user: false },
   selectedWallet: undefined,
   userExpertMode: false,
   userLocale: null,
@@ -73,12 +70,6 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateFiatOnrampAcknowledgments(
-      state,
-      { payload }: { payload: Partial<{ renderCount: number; user: boolean; system: boolean }> }
-    ) {
-      state.fiatOnrampAcknowledgments = { ...state.fiatOnrampAcknowledgments, ...payload }
-    },
     updateSelectedWallet(state, { payload: { wallet } }) {
       state.selectedWallet = wallet
     },
@@ -152,7 +143,6 @@ const userSlice = createSlice({
 
 export const {
   addSerializedToken,
-  updateFiatOnrampAcknowledgments,
   updateSelectedWallet,
   updateHideClosedPositions,
   updateUserClientSideRouter,

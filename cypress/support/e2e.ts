@@ -43,7 +43,6 @@ Cypress.Commands.overwrite(
 
           const userState = {
             selectedWallet: options?.noWallet !== true ? options?.selectedWallet || 'INJECTED' : undefined,
-            fiatOnrampDismissed: true,
           }
           win.localStorage.setItem('redux_localstorage_simple_user', JSON.stringify(userState))
 
