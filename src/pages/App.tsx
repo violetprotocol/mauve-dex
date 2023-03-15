@@ -55,6 +55,28 @@ const BodyWrapper = styled.div`
   flex: 1;
 `
 
+const BackgroundGlow = styled.div`
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  pointer-events: none;
+`
+
+const BackgroundGlowInner = styled.div`
+  position: absolute;
+  width: 10vw;
+  height: 100vh;
+  left: 50%;
+  top: 0;
+  background: #a9b9fc;
+  opacity: 0.32;
+  filter: blur(8rem);
+  transform: rotate(45deg);
+`
+
 const MobileBottomBar = styled.div`
   z-index: ${Z_INDEX.sticky};
   position: fixed;
@@ -172,6 +194,10 @@ export default function App() {
           <NavBar />
         </HeaderWrapper>
         <BodyWrapper>
+          <BackgroundGlow>
+            <BackgroundGlowInner />
+          </BackgroundGlow>
+
           <Popups />
           <Polling />
           <TopLevelModals />
