@@ -6,7 +6,6 @@ import { IconWrapper } from 'components/Identicon/StatusIcon'
 import WalletDropdown from 'components/WalletDropdown'
 import { getConnection, getIsMetaMask } from 'connection/utils'
 import { Portal } from 'nft/components/common/Portal'
-import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { getIsValidSwapQuote } from 'pages/Swap'
 import { darken } from 'polished'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -14,7 +13,7 @@ import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import { useAppSelector } from 'state/hooks'
 import { useDerivedSwapInfo } from 'state/swap/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { colors } from 'theme/colors'
+import { colors, tw } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
@@ -38,23 +37,6 @@ import MetamaskConnectionError from './MetamaskConnectionError'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
-
-const ChevronWrapper = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  padding: 10px 16px 10px 4px;
-
-  :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
-  }
-  :hover,
-  :active,
-  :focus {
-    border: none;
-  }
-`
 
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${flexRowNoWrap};
@@ -85,16 +67,14 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
   ${flexRowNoWrap};
   align-items: center;
-  background-color: ${({ theme }) => theme.accentActionSoft};
+  background-color: transparent;
   border-radius: ${FULL_BORDER_RADIUS}px;
-  border: none;
+  border: 2px solid ${tw.black};
   padding: 0;
   height: 40px;
 
-  :hover,
-  :active,
-  :focus {
-    border: none;
+  :hover {
+    border-color: ${tw.neutral[400]};
   }
 `
 
@@ -158,37 +138,19 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
-const VerticalDivider = styled.div`
-  height: 20px;
-  margin: 0px;
-  width: 1px;
-  background-color: ${({ theme }) => theme.accentAction};
-`
-
 const StyledConnectButton = styled.button`
   background-color: transparent;
   border: none;
   border-top-left-radius: ${FULL_BORDER_RADIUS}px;
   border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
-  color: ${({ theme }) => theme.accentAction};
+  color: ${tw.black};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  padding: 10px 8px 10px 12px;
+  padding: 12px 16px;
 
-  transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => `${duration.fast} color ${timing.in}`};
-
-  :hover,
-  :active,
-  :focus {
-    border: none;
-  }
   :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
+    color: ${tw.neutral[400]};
   }
 `
 
@@ -214,7 +176,6 @@ function Web3StatusInner() {
   const toggleWalletModal = useToggleWalletModal()
   const toggleMetamaskConnectionErrorModal = useToggleMetamaskConnectionErrorModal()
   const walletIsOpen = useModalIsOpen(ApplicationModal.WALLET_DROPDOWN)
-  const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
 
   const error = useAppSelector((state) => state.connection.errorByConnectionType[getConnection(connector).type])
   useEffect(() => {
@@ -256,7 +217,6 @@ function Web3StatusInner() {
         data-testid="web3-status-connected"
         onClick={handleWalletDropdownClick}
         pending={hasPendingTransactions}
-        isClaimAvailable={isClaimAvailable}
       >
         {!hasPendingTransactions && <StatusIcon size={24} connectionType={connectionType} />}
         {hasPendingTransactions ? (
@@ -275,11 +235,6 @@ function Web3StatusInner() {
       </Web3StatusConnected>
     )
   } else {
-    const chevronProps = {
-      ...CHEVRON_PROPS,
-      color: theme.accentAction,
-      'data-testid': 'navbar-wallet-dropdown',
-    }
     return (
       <TraceEvent
         events={[BrowserEvent.onClick]}
@@ -291,10 +246,6 @@ function Web3StatusInner() {
           <StyledConnectButton data-testid="navbar-connect-wallet" onClick={toggleWalletModal}>
             <Trans>Connect</Trans>
           </StyledConnectButton>
-          <VerticalDivider />
-          <ChevronWrapper onClick={handleWalletDropdownClick} data-testid="navbar-toggle-dropdown">
-            {walletIsOpen ? <ChevronUp {...chevronProps} /> : <ChevronDown {...chevronProps} />}
-          </ChevronWrapper>
         </Web3StatusConnectWrapper>
       </TraceEvent>
     )

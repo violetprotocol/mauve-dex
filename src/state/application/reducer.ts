@@ -35,7 +35,6 @@ export enum ApplicationModal {
   VOTE,
   WALLET,
   WALLET_DROPDOWN,
-  UNISWAP_NFT_AIRDROP_CLAIM,
 }
 
 type PopupList = Array<{ key: string; show: boolean; content: PopupContent; removeAfterMs: number | null }>

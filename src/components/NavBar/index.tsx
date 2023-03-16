@@ -101,7 +101,7 @@ const Navbar = () => {
           </Box>
 
           <Box className={styles.rightSideContainer}>
-            <Row gap="12">
+            <Row gap="16">
               <ChainDisplay />
 
               <Web3Status />
