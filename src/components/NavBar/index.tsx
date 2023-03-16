@@ -10,7 +10,7 @@ import { ReactNode } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { ChainSelector } from './ChainSelector'
+import { ChainDisplay } from './ChainDisplay'
 import * as styles from './style.css'
 
 const Nav = styled.nav`
@@ -102,7 +102,7 @@ const Navbar = () => {
 
           <Box className={styles.rightSideContainer}>
             <Row gap="12">
-              <ChainSelector />
+              <ChainDisplay />
 
               <Web3Status />
             </Row>

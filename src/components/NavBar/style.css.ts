@@ -64,10 +64,9 @@ const baseMenuItem = style([
   }),
   {
     lineHeight: '24px',
-    textDecoration: 'none',
     fontWeight: 600,
     ':hover': {
-      background: tw.navy['50'],
+      color: tw.navy['900'],
     },
   },
 ])
