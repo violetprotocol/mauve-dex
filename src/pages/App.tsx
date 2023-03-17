@@ -2,7 +2,6 @@ import { initializeAnalytics, OriginApplication, Trace, user } from '@uniswap/an
 import { CustomUserProperties, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
-import { useFeatureFlagsIsLoaded } from 'featureFlags'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
@@ -145,8 +144,6 @@ function getCurrentPageFromLocation(locationPathname: string): InterfacePageName
 // )
 
 export default function App() {
-  const isLoaded = useFeatureFlagsIsLoaded()
-
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
   const isExpertMode = useIsExpertMode()
@@ -201,15 +198,14 @@ export default function App() {
           <Polling />
           <TopLevelModals />
           <Suspense fallback={<Loader />}>
-            {isLoaded ? (
-              <Routes>
-                <Route path="/" element={<Navigate to="/swap" replace />} />
-                <Route path="tokens" element={<Tokens />}>
-                  <Route path=":chainName" />
-                </Route>
-                <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
-                {/* // [MAUVE-DISABLED] */}
-                {/* <Route
+            <Routes>
+              <Route path="/" element={<Navigate to="/swap" replace />} />
+              <Route path="tokens" element={<Tokens />}>
+                <Route path=":chainName" />
+              </Route>
+              <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
+              {/* // [MAUVE-DISABLED] */}
+              {/* <Route
                   path="vote/*"
                   element={
                     <Suspense fallback={<LazyLoadSpinner />}>
@@ -217,31 +213,28 @@ export default function App() {
                     </Suspense>
                   }
                 /> */}
-                {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
-                <Route path="send" element={<RedirectPathToSwapOnly />} />
-                <Route path="swap" element={<Swap />} />
-                <Route path="pool" element={<Pool />} />
-                <Route path="pool/:tokenId" element={<PositionPage />} />
-                <Route path="add" element={<RedirectDuplicateTokenIds />}>
-                  {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
-                  <Route path=":currencyIdA" />
-                  <Route path=":currencyIdA/:currencyIdB" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
-                </Route>
-                <Route path="increase" element={<AddLiquidity />}>
-                  <Route path=":currencyIdA" />
-                  <Route path=":currencyIdA/:currencyIdB" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
-                  <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
-                </Route>
-                <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
-                <Route path="callback" element={<VioletCallback />} />
-                <Route path="*" element={<Navigate to="/not-found" replace />} />
-                <Route path="/not-found" element={<NotFound />} />
-              </Routes>
-            ) : (
-              <Loader />
-            )}
+              {/* <Route path="create-proposal" element={<Navigate to="/vote/create-proposal" replace />} /> */}
+              <Route path="send" element={<RedirectPathToSwapOnly />} />
+              <Route path="swap" element={<Swap />} />
+              <Route path="pool" element={<Pool />} />
+              <Route path="pool/:tokenId" element={<PositionPage />} />
+              <Route path="add" element={<RedirectDuplicateTokenIds />}>
+                {/* this is workaround since react-router-dom v6 doesn't support optional parameters any more */}
+                <Route path=":currencyIdA" />
+                <Route path=":currencyIdA/:currencyIdB" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
+              </Route>
+              <Route path="increase" element={<AddLiquidity />}>
+                <Route path=":currencyIdA" />
+                <Route path=":currencyIdA/:currencyIdB" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount" />
+                <Route path=":currencyIdA/:currencyIdB/:feeAmount/:tokenId" />
+              </Route>
+              <Route path="remove/:tokenId" element={<RemoveLiquidityV3 />} />
+              <Route path="callback" element={<VioletCallback />} />
+              <Route path="*" element={<Navigate to="/not-found" replace />} />
+              <Route path="/not-found" element={<NotFound />} />
+            </Routes>
           </Suspense>
         </BodyWrapper>
         <MobileBottomBar>
