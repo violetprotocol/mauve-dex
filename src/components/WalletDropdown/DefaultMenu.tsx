@@ -3,6 +3,7 @@ import { TransactionSummary } from 'components/AccountDetailsV2'
 import { useMemo } from 'react'
 import { ChevronRight } from 'react-feather'
 import styled from 'styled-components/macro'
+import { tw } from 'theme/colors'
 
 import { useAllTransactions } from '../../state/transactions/hooks'
 import AuthenticatedHeader from './AuthenticatedHeader'
@@ -54,8 +55,8 @@ const LatestPendingTxnBox = styled(FlexContainer)`
 `
 
 const PendingBadge = styled.span`
-  background-color: ${({ theme }) => theme.accentActionSoft};
-  color: ${({ theme }) => theme.accentAction};
+  background-color: ${tw.black};
+  color: ${tw.white};
   font-weight: 600;
   padding: 4px 8px;
   border-radius: 4px;
