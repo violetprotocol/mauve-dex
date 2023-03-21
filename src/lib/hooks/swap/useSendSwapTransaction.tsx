@@ -1,3 +1,4 @@
+import { Interface } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
 // eslint-disable-next-line no-restricted-imports
@@ -6,17 +7,156 @@ import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { SwapCall } from 'hooks/useSwapCallArguments'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useMemo } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import isZero from 'utils/isZero'
 import { swapErrorToUserReadableMessage } from 'utils/swapErrorToUserReadableMessage'
+import { getEATForMulticall } from 'utils/temporary/generateEAT'
 
-interface SwapCall {
-  address: string
-  calldata: string
-  value: string
-}
+// TODO: Update mauve-router-sdk import and replace this ABI with SwapRouter.INTERFACE
+const ISwapRouter02ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'uint8',
+        name: 'v',
+        type: 'uint8',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'r',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'bytes32',
+        name: 's',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: 'expiry',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes[]',
+        name: 'data',
+        type: 'bytes[]',
+      },
+    ],
+    name: 'multicall',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: 'results',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint8',
+        name: 'v',
+        type: 'uint8',
+      },
+      {
+        internalType: 'bytes32',
+        name: 'r',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'bytes32',
+        name: 's',
+        type: 'bytes32',
+      },
+      {
+        internalType: 'uint256',
+        name: 'expiry',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'deadline',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes[]',
+        name: 'data',
+        type: 'bytes[]',
+      },
+    ],
+    name: 'multicall',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: 'results',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'tokenIn',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'tokenOut',
+            type: 'address',
+          },
+          {
+            internalType: 'uint24',
+            name: 'fee',
+            type: 'uint24',
+          },
+          {
+            internalType: 'address',
+            name: 'recipient',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amountIn',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'amountOutMinimum',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint160',
+            name: 'sqrtPriceLimitX96',
+            type: 'uint160',
+          },
+        ],
+        internalType: 'struct IV3SwapRouter.ExactInputSingleParams',
+        name: 'params',
+        type: 'tuple',
+      },
+    ],
+    name: 'exactInputSingle',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: 'amountOut',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+]
 
 interface SwapCallEstimate {
   call: SwapCall
@@ -46,8 +186,42 @@ export default function useSendSwapTransaction(
     if (!trade || !provider || !account || !chainId) {
       return { callback: null }
     }
+
+    if (swapCalls.length == 0) {
+      return { callback: null }
+    }
+
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
+        // Keeping only the first one for now
+        const filteredSwapCalls = swapCalls.slice(0, 1)
+        const swapCall = filteredSwapCalls[0]
+
+        const { route } = trade?.swaps[0]
+        const { input, output } = route
+        const params = {
+          // @ts-ignore: address is on it
+          tokenIn: input?.address,
+          // @ts-ignore: address is on it
+          tokenOut: output?.address,
+          fee: 3000,
+          recipient: account,
+          amountIn: BigNumber.from('1'),
+          amountOutMinimum: 0,
+          sqrtPriceLimitX96: 0,
+        }
+        const routerInterface = new Interface(ISwapRouter02ABI)
+
+        const data = [routerInterface.encodeFunctionData('exactInputSingle', [params])]
+        await getEATForMulticall({
+          callerAddress: account,
+          contractAddress: swapCall.address,
+          contractInterface: routerInterface,
+          chainId,
+          withDeadline: !!swapCall?.deadline,
+          parameters: [swapCall.deadline, data],
+        })
+
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
           swapCalls.map((call) => {
             const { address, calldata, value } = call
@@ -77,11 +251,17 @@ export default function useSendSwapTransaction(
                   .call(tx)
                   .then((result) => {
                     console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
-                    return { call, error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans> }
+                    return {
+                      call,
+                      error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans>,
+                    }
                   })
                   .catch((callError) => {
                     console.debug('Call threw error', call, callError)
-                    return { call, error: swapErrorToUserReadableMessage(callError) }
+                    return {
+                      call,
+                      error: swapErrorToUserReadableMessage(callError),
+                    }
                   })
               })
           })
@@ -121,10 +301,15 @@ export default function useSendSwapTransaction(
           .then((response) => {
             sendAnalyticsEvent(
               SwapEventName.SWAP_SIGNED,
-              formatSwapSignedAnalyticsEventProperties({ trade, txHash: response.hash })
+              formatSwapSignedAnalyticsEventProperties({
+                trade,
+                txHash: response.hash,
+              })
             )
             if (calldata !== response.data) {
-              sendAnalyticsEvent(SwapEventName.SWAP_MODIFIED_IN_WALLET, { txHash: response.hash })
+              sendAnalyticsEvent(SwapEventName.SWAP_MODIFIED_IN_WALLET, {
+                txHash: response.hash,
+              })
               throw new InvalidSwapError(
                 t`Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.`
               )

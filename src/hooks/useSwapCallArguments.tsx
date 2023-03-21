@@ -11,10 +11,11 @@ import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
-interface SwapCall {
+export interface SwapCall {
   address: string
   calldata: string
   value: string
+  deadline: BigNumber | undefined
 }
 
 /**
@@ -87,6 +88,7 @@ export function useSwapCallArguments(
             ],
           ]),
           value: '0x0',
+          deadline,
         },
       ]
     }
@@ -95,6 +97,7 @@ export function useSwapCallArguments(
         address: swapRouterAddress,
         calldata,
         value,
+        deadline,
       },
     ]
   }, [
