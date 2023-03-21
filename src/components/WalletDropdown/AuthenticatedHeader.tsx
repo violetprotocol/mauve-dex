@@ -21,19 +21,6 @@ import { shortenAddress } from '../../nft/utils/address'
 import StatusIcon from '../Identicon/StatusIcon'
 import IconButton, { IconHoverText } from './IconButton'
 
-// const WalletButton = styled(ThemeButton)`
-//   border-radius: 12px;
-//   padding-top: 10px;
-//   padding-bottom: 10px;
-//   margin-top: 12px;
-//   color: white;
-//   border: none;
-// `
-
-// const UNIButton = styled(WalletButton)`
-//   background: linear-gradient(to right, #9139b0 0%, #4261d6 100%);
-// `
-
 const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -120,20 +107,12 @@ const AuthenticatedHeader = () => {
     nativeCurrency: { symbol: nativeCurrencySymbol },
     explorer,
   } = getChainInfoOrDefault(chainId ? chainId : SupportedChainId.MAINNET)
-  // const navigate = useNavigate()
   const closeModal = useCloseModal()
-  // const setSellPageState = useProfilePageState((state) => state.setProfilePageState)
-  // const resetSellAssets = useSellAsset((state) => state.reset)
-  // const clearCollectionFilters = useWalletCollections((state) => state.clearCollectionFilters)
-  // const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
 
-  // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
-  // const isUnclaimed = useUserHasAvailableClaim(account)
   const connectionType = getConnection(connector).type
   const nativeCurrency = useNativeCurrency()
   const nativeCurrencyPrice = useStablecoinPrice(nativeCurrency ?? undefined)
-  // const openClaimModal = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
-  // const openNftModal = useToggleModal(ApplicationModal.UNISWAP_NFT_AIRDROP_CLAIM)
+
   const disconnect = useCallback(() => {
     if (connector && connector.deactivate) {
       connector.deactivate()
@@ -149,14 +128,6 @@ const AuthenticatedHeader = () => {
     const balance = parseFloat(balanceString)
     return price * balance
   }, [balanceString, nativeCurrencyPrice])
-
-  // const navigateToProfile = useCallback(() => {
-  //   resetSellAssets()
-  //   setSellPageState(ProfilePageStateType.VIEWING)
-  //   clearCollectionFilters()
-  //   navigate('/nfts/profile')
-  //   closeModal()
-  // }, [clearCollectionFilters, closeModal, navigate, resetSellAssets, setSellPageState])
 
   return (
     <AuthenticatedHeaderWrapper>
@@ -193,17 +164,6 @@ const AuthenticatedHeader = () => {
           </Text>
           {amountUSD !== undefined && <USDText>{formatUSDPrice(amountUSD)} USD</USDText>}
         </BalanceWrapper>
-
-        {/* {isUnclaimed && (
-          <UNIButton onClick={openClaimModal} size={ButtonSize.medium} emphasis={ButtonEmphasis.medium}>
-            <Trans>Claim</Trans> {unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} <Trans>reward</Trans>
-          </UNIButton>
-        )}
-        {isClaimAvailable && (
-          <UNIButton size={ButtonSize.medium} emphasis={ButtonEmphasis.medium} onClick={openNftModal}>
-            <Trans>Claim Uniswap NFT Airdrop</Trans>
-          </UNIButton>
-        )} */}
       </Column>
     </AuthenticatedHeaderWrapper>
   )

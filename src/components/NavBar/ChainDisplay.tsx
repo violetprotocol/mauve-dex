@@ -27,7 +27,7 @@ export const ChainDisplay = () => {
           <>
             <TokenWarningRedIcon fill={themeVars.colors.textSecondary} width={24} height={24} />
             <Box as="span" className={subhead} display={{ sm: 'none', xxl: 'flex' }} style={{ lineHeight: '20px' }}>
-              Unsupported
+              Unsupported Network
             </Box>
           </>
         ) : (

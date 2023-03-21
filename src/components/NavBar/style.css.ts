@@ -42,6 +42,13 @@ export const centerSideContainer = style([
     justifyContent: 'center',
     gap: '.5rem',
   },
+  {
+    '@media': {
+      'screen and (max-width: 768px)': {
+        display: 'none',
+      },
+    },
+  },
 ])
 
 export const rightSideContainer = style([

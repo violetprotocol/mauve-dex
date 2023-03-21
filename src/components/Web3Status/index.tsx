@@ -64,20 +64,6 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   }
 `
 
-const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
-  ${flexRowNoWrap};
-  align-items: center;
-  background-color: transparent;
-  border-radius: ${FULL_BORDER_RADIUS}px;
-  border: 2px solid ${tw.black};
-  padding: 0;
-  height: 40px;
-
-  :hover {
-    border-color: ${tw.neutral[400]};
-  }
-`
-
 const Web3StatusConnected = styled(Web3StatusGeneric)<{
   pending?: boolean
   isClaimAvailable?: boolean
@@ -140,17 +126,17 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 const StyledConnectButton = styled.button`
   background-color: transparent;
-  border: none;
-  border-top-left-radius: ${FULL_BORDER_RADIUS}px;
-  border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
+  border: 2px solid ${tw.black};
+  border-radius: ${FULL_BORDER_RADIUS}px;
   color: ${tw.black};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  padding: 12px 16px;
+  padding: 10px 16px;
 
   :hover {
     color: ${tw.neutral[400]};
+    border-color: ${tw.neutral[400]};
   }
 `
 
@@ -242,11 +228,9 @@ function Web3StatusInner() {
         properties={{ received_swap_quote: validSwapQuote }}
         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
       >
-        <Web3StatusConnectWrapper faded={!account}>
-          <StyledConnectButton data-testid="navbar-connect-wallet" onClick={toggleWalletModal}>
-            <Trans>Connect</Trans>
-          </StyledConnectButton>
-        </Web3StatusConnectWrapper>
+        <StyledConnectButton data-testid="navbar-connect-wallet" onClick={toggleWalletModal}>
+          <Trans>Connect Wallet</Trans>
+        </StyledConnectButton>
       </TraceEvent>
     )
   }

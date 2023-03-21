@@ -57,6 +57,7 @@ const WalletDropdown = () => {
         <WalletDropdownWrapper>
           <WalletWrapper>
             {menu === MenuState.TRANSACTIONS && <TransactionHistoryMenu onClose={() => setMenu(MenuState.DEFAULT)} />}
+            {/* {menu === MenuState.LANGUAGE && <LanguageMenu onClose={() => setMenu(MenuState.DEFAULT)} />} */}
             {menu === MenuState.DEFAULT && <DefaultMenu setMenu={setMenu} />}
           </WalletWrapper>
         </WalletDropdownWrapper>
