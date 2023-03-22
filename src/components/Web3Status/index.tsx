@@ -46,7 +46,6 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   border-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
   user-select: none;
-  height: 36px;
   margin-right: 2px;
   margin-left: 2px;
   :focus {
@@ -67,17 +66,20 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 const Web3StatusConnected = styled(Web3StatusGeneric)<{
   pending?: boolean
 }>`
-  background-color: ${({ pending }) => (pending ? tw.black : tw.neutral[400])};
-  border: 1px solid ${({ pending }) => (pending ? tw.black : tw.neutral[400])};
+  background-color: ${({ pending }) => (pending ? tw.black : 'transparent')};
+  border: 2px solid ${tw.black};
+  border-radius: ${FULL_BORDER_RADIUS}px;
   color: ${({ pending }) => (pending ? tw.white : tw.black)};
   font-weight: 500;
+  font-size: 16px;
 
   :hover,
   :focus {
-    border: 1px solid ${darken(0.05, tw.neutral[400])};
+    border: 2px solid ${tw.neutral[400]};
+    color: ${tw.neutral[400]};
 
     :focus {
-      border: 1px solid ${({ pending }) => (pending ? darken(0.1, tw.neutral[600]) : darken(0.1, tw.neutral[400]))};
+      border: 2px solid ${({ pending }) => (pending ? tw.neutral[600] : tw.neutral[400])};
     }
   }
 
