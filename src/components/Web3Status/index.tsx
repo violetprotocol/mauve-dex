@@ -6,15 +6,14 @@ import { IconWrapper } from 'components/Identicon/StatusIcon'
 import WalletDropdown from 'components/WalletDropdown'
 import { getConnection, getIsMetaMask } from 'connection/utils'
 import { Portal } from 'nft/components/common/Portal'
-import { useIsNftClaimAvailable } from 'nft/hooks/useIsNftClaimAvailable'
 import { getIsValidSwapQuote } from 'pages/Swap'
 import { darken } from 'polished'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import { useAppSelector } from 'state/hooks'
 import { useDerivedSwapInfo } from 'state/swap/hooks'
-import styled, { useTheme } from 'styled-components/macro'
-import { colors } from 'theme/colors'
+import styled from 'styled-components/macro'
+import { tw } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
@@ -39,23 +38,6 @@ import MetamaskConnectionError from './MetamaskConnectionError'
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
 
-const ChevronWrapper = styled.button`
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  padding: 10px 16px 10px 4px;
-
-  :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
-  }
-  :hover,
-  :active,
-  :focus {
-    border: none;
-  }
-`
-
 const Web3StatusGeneric = styled(ButtonSecondary)`
   ${flexRowNoWrap};
   width: 100%;
@@ -64,7 +46,6 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   border-radius: ${FULL_BORDER_RADIUS}px;
   cursor: pointer;
   user-select: none;
-  height: 36px;
   margin-right: 2px;
   margin-left: 2px;
   :focus {
@@ -72,49 +53,33 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   }
 `
 const Web3StatusError = styled(Web3StatusGeneric)`
-  background-color: ${({ theme }) => theme.accentFailure};
-  border: 1px solid ${({ theme }) => theme.accentFailure};
-  color: ${({ theme }) => theme.white};
+  background-color: ${tw.red[600]};
+  border: 1px solid ${tw.red[600]};
+  color: ${tw.white};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${({ theme }) => darken(0.1, theme.accentFailure)};
-  }
-`
-
-const Web3StatusConnectWrapper = styled.div<{ faded?: boolean }>`
-  ${flexRowNoWrap};
-  align-items: center;
-  background-color: ${({ theme }) => theme.accentActionSoft};
-  border-radius: ${FULL_BORDER_RADIUS}px;
-  border: none;
-  padding: 0;
-  height: 40px;
-
-  :hover,
-  :active,
-  :focus {
-    border: none;
+    background-color: ${darken(0.1, tw.red[600])};
   }
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{
   pending?: boolean
-  isClaimAvailable?: boolean
 }>`
-  background-color: ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
-  border: 1px solid ${({ pending, theme }) => (pending ? theme.accentAction : theme.deprecated_bg1)};
-  color: ${({ pending, theme }) => (pending ? theme.white : theme.textPrimary)};
+  background-color: ${({ pending }) => (pending ? tw.black : 'transparent')};
+  border: 2px solid ${tw.black};
+  border-radius: ${FULL_BORDER_RADIUS}px;
+  color: ${({ pending }) => (pending ? tw.white : tw.black)};
   font-weight: 500;
-  border: ${({ isClaimAvailable }) => isClaimAvailable && `1px solid ${colors.purple300}`};
+  font-size: 16px;
+
   :hover,
   :focus {
-    border: 1px solid ${({ theme }) => darken(0.05, theme.deprecated_bg3)};
+    border: 2px solid ${tw.neutral[400]};
+    color: ${tw.neutral[400]};
 
     :focus {
-      border: 1px solid
-        ${({ pending, theme }) =>
-          pending ? darken(0.1, theme.accentAction) : darken(0.1, theme.backgroundInteractive)};
+      border: 2px solid ${({ pending }) => (pending ? tw.neutral[600] : tw.neutral[400])};
     }
   }
 
@@ -158,37 +123,19 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
 }
 
-const VerticalDivider = styled.div`
-  height: 20px;
-  margin: 0px;
-  width: 1px;
-  background-color: ${({ theme }) => theme.accentAction};
-`
-
 const StyledConnectButton = styled.button`
   background-color: transparent;
-  border: none;
-  border-top-left-radius: ${FULL_BORDER_RADIUS}px;
-  border-bottom-left-radius: ${FULL_BORDER_RADIUS}px;
-  color: ${({ theme }) => theme.accentAction};
+  border: 2px solid ${tw.black};
+  border-radius: ${FULL_BORDER_RADIUS}px;
+  color: ${tw.black};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  padding: 10px 8px 10px 12px;
+  padding: 10px 16px;
 
-  transition: ${({
-    theme: {
-      transition: { duration, timing },
-    },
-  }) => `${duration.fast} color ${timing.in}`};
-
-  :hover,
-  :active,
-  :focus {
-    border: none;
-  }
   :hover {
-    color: ${({ theme }) => theme.accentActionSoft};
+    color: ${tw.neutral[400]};
+    border-color: ${tw.neutral[400]};
   }
 `
 
@@ -205,7 +152,6 @@ function Web3StatusInner() {
     inputError: swapInputError,
   } = useDerivedSwapInfo()
   const validSwapQuote = getIsValidSwapQuote(trade, tradeState, swapInputError)
-  const theme = useTheme()
   const toggleWalletDropdown = useToggleWalletDropdown()
   const handleWalletDropdownClick = useCallback(() => {
     sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
@@ -214,7 +160,6 @@ function Web3StatusInner() {
   const toggleWalletModal = useToggleWalletModal()
   const toggleMetamaskConnectionErrorModal = useToggleMetamaskConnectionErrorModal()
   const walletIsOpen = useModalIsOpen(ApplicationModal.WALLET_DROPDOWN)
-  const isClaimAvailable = useIsNftClaimAvailable((state) => state.isClaimAvailable)
 
   const error = useAppSelector((state) => state.connection.errorByConnectionType[getConnection(connector).type])
   useEffect(() => {
@@ -248,7 +193,7 @@ function Web3StatusInner() {
   } else if (account) {
     const chevronProps = {
       ...CHEVRON_PROPS,
-      color: theme.textSecondary,
+      color: tw.white,
     }
 
     return (
@@ -256,7 +201,6 @@ function Web3StatusInner() {
         data-testid="web3-status-connected"
         onClick={handleWalletDropdownClick}
         pending={hasPendingTransactions}
-        isClaimAvailable={isClaimAvailable}
       >
         {!hasPendingTransactions && <StatusIcon size={24} connectionType={connectionType} />}
         {hasPendingTransactions ? (
@@ -275,11 +219,6 @@ function Web3StatusInner() {
       </Web3StatusConnected>
     )
   } else {
-    const chevronProps = {
-      ...CHEVRON_PROPS,
-      color: theme.accentAction,
-      'data-testid': 'navbar-wallet-dropdown',
-    }
     return (
       <TraceEvent
         events={[BrowserEvent.onClick]}
@@ -287,15 +226,9 @@ function Web3StatusInner() {
         properties={{ received_swap_quote: validSwapQuote }}
         element={InterfaceElementName.CONNECT_WALLET_BUTTON}
       >
-        <Web3StatusConnectWrapper faded={!account}>
-          <StyledConnectButton data-testid="navbar-connect-wallet" onClick={toggleWalletModal}>
-            <Trans>Connect</Trans>
-          </StyledConnectButton>
-          <VerticalDivider />
-          <ChevronWrapper onClick={handleWalletDropdownClick} data-testid="navbar-toggle-dropdown">
-            {walletIsOpen ? <ChevronUp {...chevronProps} /> : <ChevronDown {...chevronProps} />}
-          </ChevronWrapper>
-        </Web3StatusConnectWrapper>
+        <StyledConnectButton data-testid="navbar-connect-wallet" onClick={toggleWalletModal}>
+          <Trans>Connect Wallet</Trans>
+        </StyledConnectButton>
       </TraceEvent>
     )
   }

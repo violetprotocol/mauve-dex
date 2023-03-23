@@ -108,8 +108,8 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
-    color: ${({ theme }) => theme.textPrimary};
-    background-color: #FFFFFF;
+    color: ${tw.navy['900']}; 
+    background-color: ${tw.white}; 
   }
 
   summary::-webkit-details-marker {
@@ -117,7 +117,7 @@ export const ThemedGlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${({ theme }) => theme.accentAction}; 
+    color: ${tw.navy['900']}; 
   }
 
   :root {

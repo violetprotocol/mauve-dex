@@ -65,4 +65,5 @@ const LanguageMenu = ({ onClose }: { onClose: () => void }) => {
   )
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export default LanguageMenu

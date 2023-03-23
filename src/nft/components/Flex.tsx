@@ -8,11 +8,11 @@ export const Row = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) 
 
 Row.displayName = 'Row'
 
-export const Column = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) => {
-  return <Box ref={ref} display="flex" flexDirection="column" {...props} />
-})
+// export const Column = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) => {
+//   return <Box ref={ref} display="flex" flexDirection="column" {...props} />
+// })
 
-Column.displayName = 'Column'
+// Column.displayName = 'Column'
 
 const Center = forwardRef((props: BoxProps, ref: ForwardedRef<HTMLElement>) => {
   return <Box ref={ref} display="flex" justifyContent="center" alignItems="center" {...props} />
