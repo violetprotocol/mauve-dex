@@ -15,7 +15,7 @@ export interface SwapCall {
   address: string
   calldata: string
   value: string
-  deadline: BigNumber | undefined
+  deadline?: BigNumber
 }
 
 /**
