@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Signature, splitSignature } from '@ethersproject/bytes'
 import { Wallet } from '@ethersproject/wallet'
-import { messages, utils } from '@violetprotocol/ethereum-access-token-helpers'
+import { utils } from '@violetprotocol/ethereum-access-token-helpers'
 
 // TODO: Move this to shared types
 type EAT = { signature: Signature; expiry: BigNumber }
@@ -29,17 +29,18 @@ const getDomain = (chainId: number) => ({
   verifyingContract: OP_GOERLI_VERIFIER_CONTRACT_ADDRESS.toLowerCase(),
 })
 
-const generateAccessTokenForMulticall = async (
-  domain: messages.Domain,
-  callerAddress: string,
-  contractAddress: string,
-  functionSigHash: string,
-  parameters: string
-) => {
+// eslint-disable-next-line import/no-unused-modules
+export const getEATForMulticall = async ({
+  chainId,
+  callerAddress,
+  contractAddress,
+  functionSigHash,
+  parameters,
+}: GetEATForMulticallArgs): Promise<EAT> => {
   if (!signer?.address) {
     throw new Error('Signer was not instantiated properly')
   }
-
+  const domain = getDomain(chainId)
   const token = {
     functionCall: {
       functionSignature: functionSigHash,
@@ -51,18 +52,7 @@ const generateAccessTokenForMulticall = async (
   }
 
   const signature = splitSignature(await utils.signAccessToken(signer, domain, token))
-  return { signature, expiry: token.expiry }
-}
-
-export const getEATForMulticall = async ({
-  callerAddress,
-  contractAddress,
-  chainId,
-  functionSigHash,
-  parameters,
-}: GetEATForMulticallArgs): Promise<EAT | null> => {
-  const domain = getDomain(chainId)
-  const EAT = await generateAccessTokenForMulticall(domain, callerAddress, contractAddress, functionSigHash, parameters)
+  const EAT = { signature, expiry: token.expiry }
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
 }
