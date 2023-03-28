@@ -198,13 +198,17 @@ export default function useSendSwapTransaction(
         const swapCall = filteredSwapCalls[0]
 
         const { route } = trade?.swaps[0]
-        const { input, output } = route
+
         const params = {
-          // @ts-ignore: address is on it
-          tokenIn: input?.address,
-          // @ts-ignore: address is on it
-          tokenOut: output?.address,
-          fee: 3000,
+          // TODO: Figure out the conflict between the routes interfaces.
+          // route from router-sdk should only be IRoute<Currency, Currency, Pool>
+          // not IRoute<Currency, Currency, Pool | Pair>
+          // @ts-ignore
+          tokenIn: route.tokenPath[0].address,
+          // @ts-ignore
+          tokenOut: route.tokenPath[1].address,
+          // @ts-ignore
+          fee: route.pools[0].fee,
           recipient: account,
           amountIn: BigNumber.from('1'),
           amountOutMinimum: 0,
