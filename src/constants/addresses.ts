@@ -4,11 +4,18 @@ import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'
 
 // Re-Deployments
+// GOERLI
 const GOERLI_FACTORY_ADDRESS = '0x1EA6C6917e5b707aFfA07e00B7c6CD8dC346bB36'
 const GOERLI_SWAP_ROUTER2 = '0x0ff2D6676456805b5218Dbc91A641fed48a1Ae78'
 const GOERLI_POSITION_MANAGER = '0xaa8e717846745B6E7174A1bbd22e53500d767c21'
 // const GOERLI_QUOTER_V2 = '0xEc53699651FA98b967a08670055478BE6e99FbF5'
 const GOERLI_QUOTER = '0x5dED7B5753488229fF3D46147Bcc02579af5480c'
+
+// OP GOERLI
+const OP_GOERLI_FACTORY_ADDRESS = '0x6BA92ff30d527766394FF4CC4F4bcb74Cbe5cDe9'
+const OP_GOERLI_SWAP_ROUTER2 = '0x9c3cB159613248Db17a1d5b34e0B04C350d3F223'
+const OP_GOERLI_POSITION_MANAGER = '0x7B6d24820f708631b9813b99DA32fABf9Fa679FE'
+const OP_GOERLI_QUOTER = '0x154261910f46FBeaE4e04142a624bFAB157dCcda'
 
 type AddressMap = { [chainId: number]: string }
 
@@ -36,6 +43,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
     ],
     {
       [SupportedChainId.GOERLI]: GOERLI_FACTORY_ADDRESS,
+      [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_FACTORY_ADDRESS,
     }
   ),
   [SupportedChainId.CELO]: CELO_V3_CORE_FACTORY_ADDRESSES,
@@ -68,6 +76,7 @@ export const SWAP_ROUTER_ADDRESSES: AddressMap = {
     ],
     {
       [SupportedChainId.GOERLI]: GOERLI_SWAP_ROUTER2,
+      [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_SWAP_ROUTER2,
     }
   ),
   [SupportedChainId.CELO]: CELO_ROUTER_ADDRESS,
@@ -95,6 +104,7 @@ export const QUOTER_ADDRESSES: AddressMap = {
     ],
     {
       [SupportedChainId.GOERLI]: GOERLI_QUOTER,
+      [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_QUOTER,
     }
   ),
   [SupportedChainId.CELO]: CELO_QUOTER_ADDRESSES,
@@ -114,6 +124,7 @@ export const NONFUNGIBLE_POSITION_MANAGER_ADDRESSES: AddressMap = {
     ],
     {
       [SupportedChainId.GOERLI]: GOERLI_POSITION_MANAGER,
+      [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_POSITION_MANAGER,
     }
   ),
   [SupportedChainId.CELO]: CELO_NONFUNGIBLE_POSITION_MANAGER_ADDRESSES,
