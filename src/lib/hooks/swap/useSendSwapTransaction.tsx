@@ -220,10 +220,9 @@ export default function useSendSwapTransaction(
         await getEATForMulticall({
           callerAddress: account,
           contractAddress: swapCall.address,
-          contractInterface: routerInterface,
+          functionSigHash: 'multicall(uint8,bytes32,bytes32,uint256,uint256,bytes[])',
           chainId,
-          withDeadline: !!swapCall?.deadline,
-          parameters: [swapCall.deadline, data],
+          parameters: '0xeeeeefffffff',
         })
 
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
