@@ -115,7 +115,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { calldata, value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+    const { calls, value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
       tokenId: tokenId.toString(),
       liquidityPercentage,
       slippageTolerance: allowedSlippage,
@@ -125,11 +125,11 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(liquidityValue1.currency, 0),
         recipient: account,
       },
-    })
+    }) as any
 
     const txn = {
       to: positionManager.address,
-      data: calldata,
+      data: calls,
       value,
     }
 
