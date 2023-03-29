@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Signature, splitSignature } from '@ethersproject/bytes'
+import { Signature } from '@ethersproject/bytes'
 import { Wallet } from '@ethersproject/wallet'
-import { utils } from '@violetprotocol/ethereum-access-token-helpers'
 
 // TODO: Move this to shared types
 type EAT = { signature: Signature; expiry: BigNumber }
@@ -37,22 +36,25 @@ export const getEATForMulticall = async ({
   functionSigHash,
   parameters,
 }: GetEATForMulticallArgs): Promise<EAT> => {
-  if (!signer?.address) {
-    throw new Error('Signer was not instantiated properly')
-  }
-  const domain = getDomain(chainId)
-  const token = {
-    functionCall: {
-      functionSignature: functionSigHash,
-      target: contractAddress,
-      caller: callerAddress,
-      parameters,
-    },
-    expiry: EXPIRY,
-  }
+  const response = await fetch('http://localhost:8080/api/onchain/tmp-mint', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      data: parameters,
+      function_signature: functionSigHash,
+      namespace: 'eip155',
+      chainId,
+      address: callerAddress,
+      target_contract: contractAddress,
+    }),
+  })
 
-  const signature = splitSignature(await utils.signAccessToken(signer, domain, token))
-  const EAT = { signature, expiry: token.expiry }
+  const data = await response.json()
+  const signature = data.data
+
+  // @TODO: Expiry should come from the response?
+  const EAT = { signature, expiry: EXPIRY }
+
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
 }
