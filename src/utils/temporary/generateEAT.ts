@@ -19,8 +19,8 @@ const VERIFIER_CONTRACT_ADDRESS = '0x5Dbe2B4648FFAF2867F8Ad07d42003F5ce4b7d2C'
 const OP_GOERLI_VERIFIER_CONTRACT_ADDRESS = '0x5Dbe2B4648FFAF2867F8Ad07d42003F5ce4b7d2C'
 const EXPIRY = BigNumber.from(4833857428)
 
-const pk = process.env.REACT_APP_VIOLET_TEST_PRIVATE_KEY || ''
-const signer = new Wallet(pk)
+const pk = process.env.REACT_APP_VIOLET_EAT_SIGNER_TEST_PRIVATE_KEY || ''
+const signer = pk ? new Wallet(pk) : null
 
 const getDomain = (chainId: number) => ({
   name: 'Ethereum Access Token',
