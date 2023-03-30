@@ -6,7 +6,7 @@
   "license": "GPL-3.0-or-later",
   "scripts": {
     "contracts:compile:abi": "typechain --target ethers-v5 --out-dir src/abis/types \"./src/abis/**/*.json\"",
-    "contracts:compile:v3": "typechain --target ethers-v5 --out-dir src/types/v3 \"./node_modules/@uniswap/**/artifacts/contracts/**/*[!dbg].json\"",
+    "contracts:compile:v3": "typechain --target ethers-v5 --out-dir src/types/v3 \"./node_modules/@violetprotocol/**/artifacts/contracts/**/*[!dbg].json\"",
     "contracts:compile": "yarn contracts:compile:abi && yarn contracts:compile:v3",
     "graphql:fetch": "node fetch-schema.js",
     "graphql:generate:data": "graphql-codegen --config apollo-codegen.ts",
@@ -145,18 +145,18 @@
     "@uniswap/token-lists": "^1.0.0-beta.30",
     "@uniswap/v2-core": "1.0.0",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",
-    "@uniswap/v3-core": "1.0.0",
-    "@uniswap/v3-periphery": "^1.1.1",
     "@vanilla-extract/css": "^1.7.2",
     "@vanilla-extract/css-utils": "^0.1.2",
     "@vanilla-extract/dynamic": "^2.0.2",
     "@vanilla-extract/sprinkles": "^1.4.1",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
+    "@violetprotocol/mauve-core": "1.2.3",
+    "@violetprotocol/mauve-periphery": "1.8.2",
     "@violetprotocol/mauve-router-sdk": "1.5.0",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
     "@violetprotocol/mauve-smart-order-router": "4.0.1",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
-    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.0",
+    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.1",
     "@violetprotocol/mauve-widgets": "3.0.0",
     "@violetprotocol/sdk": "0.0.5",
     "@visx/axis": "^2.12.2",
@@ -243,7 +243,8 @@
   },
   "resolutions": {
     "@lingui/core": "3.14.0",
-    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.0"
+    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.1",
+    "@violetprotocol/mauve-periphery": "1.8.2"
   },
   "engines": {
     "npm": "please-use-yarn",
