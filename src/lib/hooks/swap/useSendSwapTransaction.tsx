@@ -217,10 +217,13 @@ export default function useSendSwapTransaction(
         const routerInterface = new Interface(ISwapRouter02ABI)
 
         const data = [routerInterface.encodeFunctionData('exactInputSingle', [params])]
+        const funcSig = 'multicall(uint8,bytes32,bytes32,uint256,uint256,bytes[])'
+        const funcSigHash = routerInterface.getSighash(funcSig)
+
         await getEATForMulticall({
           callerAddress: account,
           contractAddress: swapCall.address,
-          functionSigHash: 'multicall(uint8,bytes32,bytes32,uint256,uint256,bytes[])',
+          functionSigHash: funcSigHash,
           chainId,
           parameters: '0xeeeeefffffff',
         })

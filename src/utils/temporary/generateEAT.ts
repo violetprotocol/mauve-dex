@@ -50,10 +50,7 @@ export const getEATForMulticall = async ({
   })
 
   const data = await response.json()
-  const signature = data.data
-
-  // @TODO: Expiry should come from the response?
-  const EAT = { signature, expiry: EXPIRY }
+  const EAT = data.data
 
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
