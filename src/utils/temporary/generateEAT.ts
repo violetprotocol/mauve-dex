@@ -1,9 +1,7 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { Signature } from '@ethersproject/bytes'
-import { Wallet } from '@ethersproject/wallet'
+import { Signature, splitSignature } from '@ethersproject/bytes'
 
 // TODO: Move this to shared types
-type EAT = { signature: Signature; expiry: BigNumber }
+type EAT = { signature: Signature; expiry: number }
 
 type GetEATForMulticallArgs = {
   callerAddress: string
@@ -12,21 +10,6 @@ type GetEATForMulticallArgs = {
   functionSigHash: string
   parameters: string
 }
-
-// Change me
-const VERIFIER_CONTRACT_ADDRESS = '0x5Dbe2B4648FFAF2867F8Ad07d42003F5ce4b7d2C'
-const OP_GOERLI_VERIFIER_CONTRACT_ADDRESS = '0x5Dbe2B4648FFAF2867F8Ad07d42003F5ce4b7d2C'
-const EXPIRY = BigNumber.from(4833857428)
-
-const pk = process.env.REACT_APP_VIOLET_EAT_SIGNER_TEST_PRIVATE_KEY || ''
-const signer = pk ? new Wallet(pk) : null
-
-const getDomain = (chainId: number) => ({
-  name: 'Ethereum Access Token',
-  version: '1',
-  chainId,
-  verifyingContract: OP_GOERLI_VERIFIER_CONTRACT_ADDRESS.toLowerCase(),
-})
 
 // eslint-disable-next-line import/no-unused-modules
 export const getEATForMulticall = async ({
@@ -49,9 +32,9 @@ export const getEATForMulticall = async ({
     }),
   })
 
-  const data = await response.json()
-  const EAT = data.data
-
+  const encodedEAT = await response.text()
+  const EAT = JSON.parse(atob(encodedEAT))
+  EAT.signature = splitSignature(EAT.signature)
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
 }

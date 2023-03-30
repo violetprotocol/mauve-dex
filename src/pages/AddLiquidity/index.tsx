@@ -273,7 +273,7 @@ export default function AddLiquidity() {
           throw new Error('Failed to get EAT signature')
         }
         const { v, r, s } = eat?.signature
-        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat?.expiry.toNumber(), calls)
+        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat?.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
       }
