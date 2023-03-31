@@ -350,6 +350,7 @@ export default function AddLiquidity() {
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
           if (error?.code !== 4001) {
+            // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
         })
