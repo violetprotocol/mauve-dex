@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
-import { FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -20,6 +20,7 @@ import {
   useV3MintState,
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
+import { getEATForMulticall } from 'utils/temporary/generateEAT'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
@@ -240,7 +241,7 @@ export default function AddLiquidity() {
 
     if (position && account && deadline) {
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
-      const { calldata, value } =
+      const { calls, value } =
         hasExistingPosition && tokenId
           ? NonfungiblePositionManager.addCallParameters(position, {
               tokenId,
@@ -256,8 +257,33 @@ export default function AddLiquidity() {
               createPool: noLiquidity,
             })
 
+      const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+      let calldata
+      try {
+        const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
+
+        const eat = await getEATForMulticall({
+          callerAddress: account,
+          contractAddress: to,
+          chainId,
+          functionSigHash: functionSignature,
+          parameters,
+        })
+        if (!eat?.signature || !eat?.expiry) {
+          throw new Error('Failed to get EAT')
+        }
+        const { v, r, s } = eat.signature
+        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry.toNumber(), calls)
+      } catch (error) {
+        console.error('Error generating an EAT: ', error)
+      }
+
+      if (!calldata) {
+        throw new Error('Failed to generate calldata')
+      }
+
       let txn: { to: string; data: string; value: string } = {
-        to: NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId],
+        to,
         data: calldata,
         value,
       }
@@ -324,6 +350,7 @@ export default function AddLiquidity() {
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
           if (error?.code !== 4001) {
+            // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
         })
