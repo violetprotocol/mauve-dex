@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@violetprotocol/mauve-sdk-core'
-import { Pool, Position } from '@violetprotocol/mauve-v3-sdk'
+import { NonfungiblePositionManager, Pool, Position } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import Badge from 'components/Badge'
@@ -450,7 +450,7 @@ export function PositionPage() {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { calldata, value } = NonfungiblePositionManager.collectCallParameters({
+    const { value } = NonfungiblePositionManager.collectCallParameters({
       tokenId: tokenId.toString(),
       expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
       expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
@@ -459,7 +459,8 @@ export function PositionPage() {
 
     const txn = {
       to: positionManager.address,
-      data: calldata,
+      // TO UPDATE
+      data: [],
       value,
     }
 
