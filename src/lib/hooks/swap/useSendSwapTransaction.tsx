@@ -220,7 +220,7 @@ export default function useSendSwapTransaction(
         await getEATForMulticall({
           callerAddress: account,
           contractAddress: swapCall.address,
-          functionSigHash: 'multicall(uint8,bytes32,bytes32,uint256,uint256,bytes[])',
+          functionSigHash: '0x6cfd42de',
           chainId,
           parameters: '0xeeeeefffffff',
         })
