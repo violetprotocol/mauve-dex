@@ -222,7 +222,7 @@ export default function useSendSwapTransaction(
           contractAddress: swapCall.address,
           functionSigHash: '0x6cfd42de',
           chainId,
-          parameters: '0xeeeeefffffff',
+          parameters: data[0],
         })
 
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
