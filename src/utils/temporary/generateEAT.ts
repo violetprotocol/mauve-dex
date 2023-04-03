@@ -27,7 +27,7 @@ export const getEATForMulticall = async ({
       chainId,
       address: callerAddress,
       target_contract: contractAddress,
-      blockchain_app: "MAUVE",
+      blockchain_app: 'MAUVE',
     }),
   })
 
