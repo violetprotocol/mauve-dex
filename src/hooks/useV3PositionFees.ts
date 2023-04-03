@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount } from '@violetprotocol/mauve-sdk-core'
 import { Pool } from '@violetprotocol/mauve-v3-sdk'
+import { Contract } from 'ethers'
 import { useSingleCallResult } from 'lib/hooks/multicall'
 import useBlockNumber from 'lib/hooks/useBlockNumber'
 import { useEffect, useState } from 'react'
@@ -28,8 +29,8 @@ export function useV3PositionFees(
   const [amounts, setAmounts] = useState<[BigNumber, BigNumber] | undefined>()
   useEffect(() => {
     if (positionManager && tokenIdHexString && owner) {
-      positionManager.callStatic
-        .collect(
+      (positionManager as Contract)
+        .collectAmounts(
           {
             tokenId: tokenIdHexString,
             recipient: owner, // some tokens might fail if transferred to address(0)
