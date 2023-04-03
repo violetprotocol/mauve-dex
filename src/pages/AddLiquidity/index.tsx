@@ -269,11 +269,19 @@ export default function AddLiquidity() {
           functionSigHash: functionSignature,
           parameters,
         })
+<<<<<<< HEAD
         if (!eat?.signature) {
           throw new Error('Failed to get EAT signature')
         }
         const { v, r, s } = eat?.signature
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat?.expiry, calls)
+=======
+        if (!eat?.signature || !eat?.expiry) {
+          throw new Error('Failed to get EAT')
+        }
+        const { v, r, s } = eat.signature
+        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry.toNumber(), calls)
+>>>>>>> fcb17eec604892d9ffdb9e0f821334868d159c04
       } catch (error) {
         console.error('Error generating an EAT: ', error)
       }
@@ -350,6 +358,7 @@ export default function AddLiquidity() {
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
           if (error?.code !== 4001) {
+            // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
         })

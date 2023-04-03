@@ -1,6 +1,5 @@
 import { Signature, splitSignature } from '@ethersproject/bytes'
 
-// TODO: Move this to shared types
 type EAT = { signature: Signature; expiry: number }
 
 type GetEATForMulticallArgs = {
@@ -11,7 +10,6 @@ type GetEATForMulticallArgs = {
   parameters: string
 }
 
-// eslint-disable-next-line import/no-unused-modules
 export const getEATForMulticall = async ({
   chainId,
   callerAddress,
@@ -32,8 +30,8 @@ export const getEATForMulticall = async ({
     }),
   })
 
-  const encodedEAT = await response.text()
-  const EAT = JSON.parse(atob(encodedEAT))
+  const encodedEAT = await response.json()
+  const EAT = JSON.parse(atob(encodedEAT.eat))
   EAT.signature = splitSignature(EAT.signature)
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
