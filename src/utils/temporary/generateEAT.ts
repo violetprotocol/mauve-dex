@@ -17,7 +17,7 @@ export const getEATForMulticall = async ({
   functionSigHash,
   parameters,
 }: GetEATForMulticallArgs): Promise<EAT> => {
-  const response = await fetch('http://localhost:8080/api/onchain/tmp-mint', {
+  const response = await fetch('http://localhost:8080/api/onchain/eat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -27,6 +27,7 @@ export const getEATForMulticall = async ({
       chainId,
       address: callerAddress,
       target_contract: contractAddress,
+      blockchain_app: "MAUVE",
     }),
   })
 
