@@ -269,8 +269,8 @@ export default function AddLiquidity() {
           functionSigHash: functionSignature,
           parameters,
         })
-        if (!eat?.signature) {
-          throw new Error('Failed to get EAT signature')
+        if (!eat?.signature || !eat?.expiry) {
+          throw new Error('Failed to get EAT')
         }
         const { v, r, s } = eat?.signature
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat?.expiry, calls)
