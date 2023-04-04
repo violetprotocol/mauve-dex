@@ -1,5 +1,6 @@
 import { Signature, splitSignature } from '@ethersproject/bytes'
 
+// TODO: Move this to shared types
 type EAT = { signature: Signature; expiry: number }
 
 type GetEATForMulticallArgs = {

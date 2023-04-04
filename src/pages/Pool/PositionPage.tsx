@@ -450,7 +450,7 @@ export function PositionPage() {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { calldata, value } = NonfungiblePositionManager.collectCallParameters({
+    const { value } = NonfungiblePositionManager.collectCallParameters({
       tokenId: tokenId.toString(),
       expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
       expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
@@ -459,7 +459,7 @@ export function PositionPage() {
 
     const txn = {
       to: positionManager.address,
-      data: calldata,
+      data: [],
       value,
     }
 
