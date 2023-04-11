@@ -1,6 +1,6 @@
 import { sendAnalyticsEvent, useTrace } from '@uniswap/analytics'
 import { InterfaceSectionName, SwapEventName } from '@uniswap/analytics-events'
-import { Currency, Field, SwapController, SwapEventHandlers, TradeType } from '@violetprotocol/mauve-widgets'
+import { Currency, Field, SwapController, SwapEventHandlers, TradeType } from '@uniswap/widgets'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
@@ -130,7 +130,7 @@ export function useSyncWidgetInputs({
   return { inputs: { value, ...valueHandlers }, tokenSelector }
 }
 
-// TODO(zzmp): Move to @violetprotocol/mauve-widgets.
+// TODO(zzmp): Move to @uniswap/widgets.
 function invertField(field: Field) {
   switch (field) {
     case Field.INPUT:
@@ -140,7 +140,7 @@ function invertField(field: Field) {
   }
 }
 
-// TODO(zzmp): Include in @violetprotocol/mauve-sdk-core (on TradeType, if possible).
+// TODO(zzmp): Include in @uniswap/sdk-core (on TradeType, if possible).
 function invertTradeType(tradeType: TradeType) {
   switch (tradeType) {
     case TradeType.EXACT_INPUT:

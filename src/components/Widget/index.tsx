@@ -5,16 +5,17 @@ import {
   SwapEventName,
   SwapPriceUpdateUserResponse,
 } from '@uniswap/analytics-events'
-import { Trade } from '@violetprotocol/mauve-router-sdk'
-import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { Trade } from '@uniswap/router-sdk'
+import { Currency, TradeType } from '@uniswap/sdk-core'
 import {
   AddEthereumChainParameter,
   EMPTY_TOKEN_LIST,
   OnReviewSwapClick,
   SwapWidget,
   SwapWidgetSkeleton,
-} from '@violetprotocol/mauve-widgets'
+} from '@uniswap/widgets'
 import { useWeb3React } from '@web3-react/core'
+import { usePermit2Enabled } from 'featureFlags/flags/permit2'
 import { useActiveLocale } from 'hooks/useActiveLocale'
 import {
   formatPercentInBasisPointsNumber,
@@ -25,12 +26,13 @@ import {
   getTokenAddress,
 } from 'lib/utils/analytics'
 import { useCallback, useState } from 'react'
+import { useIsDarkMode } from 'state/user/hooks'
 import { computeRealizedPriceImpact } from 'utils/prices'
 import { switchChain } from 'utils/switchChain'
 
 import { useSyncWidgetInputs } from './inputs'
 import { useSyncWidgetSettings } from './settings'
-import { LIGHT_THEME } from './theme'
+import { DARK_THEME, LIGHT_THEME } from './theme'
 import { useSyncWidgetTransactions } from './transactions'
 
 export const WIDGET_WIDTH = 360
@@ -38,7 +40,7 @@ export const WIDGET_WIDTH = 360
 const WIDGET_ROUTER_URL = 'https://api.uniswap.org/v1/'
 
 function useWidgetTheme() {
-  return LIGHT_THEME
+  return useIsDarkMode() ? DARK_THEME : LIGHT_THEME
 }
 
 interface WidgetProps {
@@ -135,6 +137,8 @@ export default function Widget({ token, onTokenChange, onReviewSwapClick }: Widg
     [initialQuoteDate, trace]
   )
 
+  const permit2Enabled = usePermit2Enabled()
+
   if (!(inputs.value.INPUT || inputs.value.OUTPUT)) {
     return <WidgetSkeleton />
   }
@@ -144,6 +148,7 @@ export default function Widget({ token, onTokenChange, onReviewSwapClick }: Widg
       <SwapWidget
         hideConnectionUI
         brandedFooter={false}
+        permit2={permit2Enabled}
         routerUrl={WIDGET_ROUTER_URL}
         locale={locale}
         theme={theme}

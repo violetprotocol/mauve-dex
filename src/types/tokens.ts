@@ -1,3 +1,3 @@
-import { Token } from '@violetprotocol/mauve-sdk-core'
+import { Token } from '@uniswap/sdk-core'
 
 export class UserAddedToken extends Token {}

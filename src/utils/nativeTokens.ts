@@ -4,6 +4,7 @@ import { CHAIN_NAME_TO_CHAIN_ID } from 'graphql/data/util'
 
 export function getNativeTokenDBAddress(chain: Chain): string {
   const pageChainId = CHAIN_NAME_TO_CHAIN_ID[chain]
+
   switch (chain) {
     case Chain.Celo:
     case Chain.Polygon:
@@ -14,6 +15,6 @@ export function getNativeTokenDBAddress(chain: Chain): string {
     case Chain.Optimism:
       return 'ETH'
     default:
-      throw new Error('Unsupported Chain')
+      throw new Error('Unsupported chain')
   }
 }

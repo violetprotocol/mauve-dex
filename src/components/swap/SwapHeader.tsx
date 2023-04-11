@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Percent } from '@violetprotocol/mauve-sdk-core'
+import { Percent } from '@uniswap/sdk-core'
 import styled from 'styled-components/macro'
 
 import { ThemedText } from '../../theme'

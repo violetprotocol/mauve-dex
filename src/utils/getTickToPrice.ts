@@ -1,5 +1,5 @@
-import { Price, Token } from '@violetprotocol/mauve-sdk-core'
-import { tickToPrice } from '@violetprotocol/mauve-v3-sdk'
+import { Price, Token } from '@uniswap/sdk-core'
+import { tickToPrice } from '@uniswap/v3-sdk'
 
 export function getTickToPrice(baseToken?: Token, quoteToken?: Token, tick?: number): Price<Token, Token> | undefined {
   if (!baseToken || !quoteToken || typeof tick !== 'number') {

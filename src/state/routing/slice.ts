@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
-import { Protocol } from '@violetprotocol/mauve-router-sdk'
+import { Protocol } from '@uniswap/router-sdk'
 import { AlphaRouter, ChainId } from '@violetprotocol/mauve-smart-order-router'
 import { RPC_PROVIDERS } from 'constants/providers'
 import { getClientSideQuote, toSupportedChainId } from 'lib/hooks/routing/clientSideSmartOrderRouter'

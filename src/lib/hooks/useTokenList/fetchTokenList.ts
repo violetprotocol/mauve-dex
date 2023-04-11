@@ -1,5 +1,5 @@
 import type { TokenList } from '@uniswap/token-lists'
-import { validateTokenList } from '@violetprotocol/mauve-widgets'
+import { validateTokenList } from '@uniswap/widgets'
 import contenthashToUri from 'lib/utils/contenthashToUri'
 import parseENSAddress from 'lib/utils/parseENSAddress'
 import uriToHttp from 'lib/utils/uriToHttp'

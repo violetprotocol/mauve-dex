@@ -1,9 +1,10 @@
 import { rootCssString } from 'nft/css/cssStringFromTheme'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { createGlobalStyle, css, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components/macro'
 
-import { lightTheme, tw } from './colors'
-import { deprecatedColors } from './deprecatedColors'
+import { useIsDarkMode } from '../state/user/hooks'
+import { darkTheme, lightTheme } from './colors'
+import { darkDeprecatedTheme, lightDeprecatedTheme } from './deprecatedColors'
 
 // todo - remove and replace imports with a new path
 export * from './components'
@@ -16,9 +17,9 @@ export const MEDIA_WIDTHS = {
   deprecated_upToLarge: 1280,
 }
 
-const deprecated_mediaWidthTemplates: {
-  [width in keyof typeof MEDIA_WIDTHS]: typeof css
-} = Object.keys(MEDIA_WIDTHS).reduce((acc, size) => {
+const deprecated_mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(
+  MEDIA_WIDTHS
+).reduce((acc, size) => {
   acc[size] = (a: any, b: any, c: any) => css`
     @media (max-width: ${(MEDIA_WIDTHS as any)[size]}px) {
       ${css(a, b, c)}
@@ -63,7 +64,7 @@ const fonts = {
   code: 'courier, courier new, serif',
 }
 
-function getSettings() {
+function getSettings(darkMode: boolean) {
   return {
     grids: {
       xs: '4px',
@@ -75,7 +76,7 @@ function getSettings() {
     fonts,
 
     // shadows
-    shadow1: '#2F80ED',
+    shadow1: darkMode ? '#000' : '#2F80ED',
 
     // media queries
     deprecated_mediaWidth: deprecated_mediaWidthTemplates,
@@ -92,24 +93,25 @@ function getSettings() {
 }
 
 // eslint-disable-next-line import/no-unused-modules -- used in styled.d.ts
-export function getTheme() {
+export function getTheme(darkMode: boolean) {
   return {
-    ...lightTheme,
-    ...deprecatedColors,
-    ...getSettings(),
-    tw,
+    darkMode,
+    ...(darkMode ? darkTheme : lightTheme),
+    ...(darkMode ? darkDeprecatedTheme : lightDeprecatedTheme),
+    ...getSettings(darkMode),
   }
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const themeObject = getTheme()
+  const darkMode = useIsDarkMode()
+  const themeObject = useMemo(() => getTheme(darkMode), [darkMode])
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
-    color: ${tw.navy['900']}; 
-    background-color: ${tw.white}; 
+    color: ${({ theme }) => theme.textPrimary};
+    background-color: ${({ theme }) => theme.background} !important;
   }
 
   summary::-webkit-details-marker {
@@ -117,10 +119,10 @@ export const ThemedGlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${tw.navy['900']}; 
+    color: ${({ theme }) => theme.accentAction}; 
   }
 
   :root {
-    ${rootCssString()}
+    ${({ theme }) => rootCssString(theme.darkMode)}
   }
 `

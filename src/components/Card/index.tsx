@@ -18,6 +18,10 @@ export const GrayCard = styled(Card)`
   background-color: ${({ theme }) => theme.deprecated_bg3};
 `
 
+export const DarkGrayCard = styled(Card)`
+  background-color: ${({ theme }) => theme.backgroundInteractive};
+`
+
 export const DarkCard = styled(Card)`
   background-color: ${({ theme }) => theme.backgroundSurface};
 `

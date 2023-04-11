@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
-import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { FeeOptions } from '@violetprotocol/mauve-v3-sdk'
+import { SwapRouter, Trade } from '@uniswap/router-sdk'
+import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { FeeOptions } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
 import { useMemo } from 'react'
@@ -11,11 +11,10 @@ import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
-export interface SwapCall {
+interface SwapCall {
   address: string
   calldata: string
   value: string
-  deadline?: BigNumber
 }
 
 /**
@@ -88,7 +87,6 @@ export function useSwapCallArguments(
             ],
           ]),
           value: '0x0',
-          deadline,
         },
       ]
     }
@@ -97,7 +95,6 @@ export function useSwapCallArguments(
         address: swapRouterAddress,
         calldata,
         value,
-        deadline,
       },
     ]
   }, [
