@@ -56,3 +56,33 @@ export const getEATForMulticall = async ({
   console.log('###### Generated EAT ######: ', EAT)
   return EAT
 }
+
+export const baseUrlByEnvironment = (environment: string) => {
+  switch (environment) {
+    case 'local':
+      return 'http://localhost:8080'
+    case 'staging':
+      return 'https://staging.k8s.app.violet.co'
+    case 'development':
+      return 'https://dev.k8s.app.violet.co'
+    case 'production':
+      return 'https://app.violet.co'
+    default:
+      throw new Error('Invalid environment')
+  }
+}
+
+export const redirectUrlByEnvironment = (environment: string) => {
+  switch (environment) {
+    case 'local':
+      return 'http://localhost:3000/#/callback'
+    case 'staging':
+      return 'https://staging.k8s.app.mauve.org/#/callback'
+    case 'development':
+      return 'https://dev.k8s.app.mauve.org/#/callback'
+    case 'production':
+      return 'https://app.mauve.org/#/callback'
+    default:
+      throw new Error('Invalid environment')
+  }
+}

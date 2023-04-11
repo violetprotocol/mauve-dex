@@ -5,9 +5,11 @@ import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { splitSignature } from 'ethers/lib/utils'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useCallback, useEffect, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
@@ -20,7 +22,7 @@ import {
   useV3MintState,
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
-import { getEATForMulticall } from 'utils/temporary/generateEAT'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
@@ -78,6 +80,9 @@ import {
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
+
 export default function AddLiquidity() {
   const navigate = useNavigate()
   const {
@@ -87,6 +92,15 @@ export default function AddLiquidity() {
     tokenId,
   } = useParams<{ currencyIdA?: string; currencyIdB?: string; feeAmount?: string; tokenId?: string }>()
   const { account, chainId, provider } = useWeb3React()
+
+  if (!environment || !clientId) {
+    throw new Error('Invalid environment')
+  }
+  const { authorize } = useViolet({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  })
   const theme = useTheme()
 
   const toggleWalletModal = useToggleWalletModal() // toggle wallet when disconnected
@@ -262,13 +276,25 @@ export default function AddLiquidity() {
       try {
         const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
 
-        const eat = await getEATForMulticall({
-          callerAddress: account,
-          contractAddress: to,
+        const response = await authorize({
+          transaction: {
+            data: parameters,
+            functionSignature,
+            targetContract: to,
+          },
+          address: account,
           chainId,
-          functionSigHash: functionSignature,
-          parameters,
         })
+        if (!response) return
+
+        const [violet, error] = response
+
+        if (!violet) {
+          console.log(error)
+          return
+        }
+        const eat = JSON.parse(atob(violet.token))
+        eat.signature = splitSignature(eat.signature)
         if (!eat?.signature || !eat?.expiry) {
           throw new Error('Failed to get EAT')
         }
