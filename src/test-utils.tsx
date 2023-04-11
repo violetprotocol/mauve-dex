@@ -22,6 +22,7 @@ i18n.loadLocaleData({
 })
 i18n.activate(DEFAULT_LOCALE)
 
+//@ts-ignore
 const MockedI18nProvider = ({ children }: any) => <I18nProvider i18n={i18n}>{children}</I18nProvider>
 const queryClient = new QueryClient()
 

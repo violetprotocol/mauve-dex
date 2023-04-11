@@ -1,7 +1,7 @@
-import { Trade } from '@violetprotocol/mauve-router-sdk'
-import { Currency, CurrencyAmount, Fraction, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { Pair } from '@violetprotocol/mauve-v2-sdk'
-import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
+import { Trade } from '@uniswap/router-sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, TradeType } from '@uniswap/sdk-core'
+import { Pair } from '@uniswap/v2-sdk'
+import { FeeAmount } from '@uniswap/v3-sdk'
 import JSBI from 'jsbi'
 
 import {

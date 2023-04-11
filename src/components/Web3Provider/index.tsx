@@ -5,6 +5,7 @@ import { ConnectionType, setMetMaskErrorHandler } from 'connection'
 import { getConnectionName } from 'connection/utils'
 import { isSupportedChain } from 'constants/chains'
 import { RPC_PROVIDERS } from 'constants/providers'
+import { TraceJsonRpcVariant, useTraceJsonRpcFlag } from 'featureFlags/flags/traceJsonRpc'
 import useEagerlyConnect from 'hooks/useEagerlyConnect'
 import useOrderedConnections from 'hooks/useOrderedConnections'
 import { ReactNode, useEffect, useMemo } from 'react'
@@ -38,7 +39,7 @@ export default function Web3Provider({ children }: { children: ReactNode }) {
 function Tracer() {
   const { chainId, provider } = useWeb3React()
   const networkProvider = isSupportedChain(chainId) ? RPC_PROVIDERS[chainId] : undefined
-  const shouldTrace = false
+  const shouldTrace = useTraceJsonRpcFlag() === TraceJsonRpcVariant.Enabled
 
   useEffect(() => {
     if (shouldTrace) {

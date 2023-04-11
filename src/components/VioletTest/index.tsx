@@ -1,10 +1,6 @@
-import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { ButtonPrimary } from 'components/Button'
 import styled from 'styled-components/macro'
-
-const environment = process.env.REACT_APP_VIOLET_ENV
-const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
 const ResponsiveButtonPrimary = styled(ButtonPrimary)`
   border-radius: 12px;
@@ -35,13 +31,13 @@ const baseUrlByEnvironment = (environment: string) => {
 const redirectUrlByEnvironment = (environment: string) => {
   switch (environment) {
     case 'local':
-      return 'http://localhost:3000/#/callback'
+      return 'http://localhost:3000/swap'
     case 'staging':
-      return 'https://staging.k8s.app.mauve.org/#/callback'
+      return 'https://staging.k8s.mauve.org/swap'
     case 'development':
-      return 'https://dev.k8s.app.mauve.org/#/callback'
+      return 'https://dev.k8s.mauve.org/swap'
     case 'production':
-      return 'https://app.mauve.org/#/callback'
+      return 'https://mauve.org/swap'
     default:
       throw new Error('Invalid environment')
   }
@@ -70,16 +66,7 @@ const getHumanBoundContractAddressByNetworkId = (chainId: number) => {
 }
 
 export default function VioletTestButton() {
-  if (!environment || !clientId) {
-    throw new Error('Invalid environment')
-  }
-
   const { chainId, account, connector } = useWeb3React()
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
-  })
 
   const switchNetwork = async () => {
     if (!connector.provider) return
@@ -112,29 +99,23 @@ export default function VioletTestButton() {
     }
   }
 
-  const redirectToVioletAuthentication = async (account: string) => {
-    // If on local or development environment, switch to test network (Polygon Mumbai)
-    if (environment.toString() === 'local' || environment.toString() === 'development') {
-      await switchNetwork()
+  const redirectToVioletAuthentication = async (chainId: number, account: string) => {
+    console.log(getHumanBoundContractAddressByNetworkId(chainId))
+    const environment = process.env.REACT_APP_VIOLET_ENV
+    const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
+    if (!environment || !clientId) {
+      throw new Error('Invalid environment')
     }
-
-    if (!chainId) return
-
-    const response = await authorize({
-      transaction: {
-        data: '0x000000000000000000000000d00f7eddc37631bc7bd9ebad8265b2785465a3b7000000000000000000000000000000000000000000000000000000001adc34a100000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000',
-        functionSignature: '0x50d41df3',
-        targetContract: getHumanBoundContractAddressByNetworkId(chainId),
-      },
-      address: account,
-      chainId,
-    })
-
-    if (!response) return
-
-    const [violet, error] = response
-
-    console.log(violet, error)
+    // If on local or development environment, switch to test network (Polygon Mumbai)
+    if (environment.toString() == 'local' || environment.toString() == 'development') {
+      await switchNetwork()
+      chainId = 80001
+    }
+    const baseApiUrl = baseUrlByEnvironment(environment.toString())
+    const redirectUrl = redirectUrlByEnvironment(environment.toString())
+    const txTargetContract = getHumanBoundContractAddressByNetworkId(chainId)
+    const authorizationRedirectUrl = `${baseApiUrl}/api/authz/authorize?account_id=eip155:${chainId}:${account}&dapp_state=null&tx_target_contract=${txTargetContract}&tx_function_signature=0x50d41df3&tx_data=0x000000000000000000000000d00f7eddc37631bc7bd9ebad8265b2785465a3b7000000000000000000000000000000000000000000000000000000001adc34a100000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000&redirect_uri=${redirectUrl}&client_id=${clientId}`
+    window.location.href = authorizationRedirectUrl
   }
 
   if (!account || !chainId) {
@@ -142,7 +123,7 @@ export default function VioletTestButton() {
   }
 
   return (
-    <ResponsiveButtonPrimary onClick={() => redirectToVioletAuthentication(account)}>
+    <ResponsiveButtonPrimary onClick={() => redirectToVioletAuthentication(chainId, account)}>
       Transaction Authorization
     </ResponsiveButtonPrimary>
   )

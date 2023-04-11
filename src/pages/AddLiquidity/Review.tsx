@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, Price } from '@violetprotocol/mauve-sdk-core'
-import { Position } from '@violetprotocol/mauve-v3-sdk'
+import { Currency, CurrencyAmount, Price } from '@uniswap/sdk-core'
+import { Position } from '@uniswap/v3-sdk'
 import { AutoColumn } from 'components/Column'
 import { PositionPreview } from 'components/PositionPreview'
 import styled from 'styled-components/macro'

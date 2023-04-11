@@ -1,10 +1,10 @@
 import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
-import { Protocol } from '@violetprotocol/mauve-router-sdk'
-import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { Pair } from '@violetprotocol/mauve-v2-sdk'
-import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
+import { Protocol } from '@uniswap/router-sdk'
+import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { Pair } from '@uniswap/v2-sdk'
+import { FeeAmount } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import AnimatedDropdown from 'components/AnimatedDropdown'
 import { AutoColumn } from 'components/Column'
@@ -16,12 +16,13 @@ import useAutoRouterSupported from 'hooks/useAutoRouterSupported'
 import { memo, useState } from 'react'
 import { Plus } from 'react-feather'
 import { InterfaceTrade } from 'state/routing/types'
+import { useDarkModeManager } from 'state/user/hooks'
 import styled from 'styled-components/macro'
 import { Separator, ThemedText } from 'theme'
 
 import { AutoRouterLabel, AutoRouterLogo } from './RouterLabel'
 
-const Wrapper = styled(AutoColumn)<{ fixedOpen?: boolean }>`
+const Wrapper = styled(AutoColumn)<{ darkMode?: boolean; fixedOpen?: boolean }>`
   padding: ${({ fixedOpen }) => (fixedOpen ? '12px' : '12px 8px 12px 12px')};
   border-radius: 16px;
   border: 1px solid ${({ theme, fixedOpen }) => (fixedOpen ? 'transparent' : theme.backgroundOutline)};
@@ -53,6 +54,8 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
   const [open, setOpen] = useState(false)
   const { chainId } = useWeb3React()
 
+  const [darkMode] = useDarkModeManager()
+
   const formattedGasPriceString = trade?.gasUseEstimateUSD
     ? trade.gasUseEstimateUSD.toFixed(2) === '0.00'
       ? '<$0.01'
@@ -60,7 +63,7 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
     : undefined
 
   return (
-    <Wrapper {...rest} fixedOpen={fixedOpen}>
+    <Wrapper {...rest} darkMode={darkMode} fixedOpen={fixedOpen}>
       <TraceEvent
         events={[BrowserEvent.onClick]}
         name={SwapEventName.SWAP_AUTOROUTER_VISUALIZATION_EXPANDED}

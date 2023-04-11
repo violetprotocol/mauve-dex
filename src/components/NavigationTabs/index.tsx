@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Percent } from '@violetprotocol/mauve-sdk-core'
+import { Percent } from '@uniswap/sdk-core'
 import { ReactNode } from 'react'
 import { ArrowLeft } from 'react-feather'
 import { Link as HistoryLink, useLocation } from 'react-router-dom'
@@ -11,7 +11,7 @@ import styled, { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { flexRowNoWrap } from 'theme/styles'
 
-import { RowBetween } from '../Row'
+import Row, { RowBetween } from '../Row'
 import SettingsTab from '../Settings'
 
 const Tabs = styled.div`
@@ -30,9 +30,29 @@ const StyledHistoryLink = styled(HistoryLink)<{ flex: string | undefined }>`
   `};
 `
 
+const ActiveText = styled.div`
+  font-weight: 500;
+  font-size: 20px;
+`
+
 const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.textPrimary};
 `
+
+export function FindPoolTabs({ origin }: { origin: string }) {
+  return (
+    <Tabs>
+      <RowBetween style={{ padding: '1rem 1rem 0 1rem', position: 'relative' }}>
+        <HistoryLink to={origin}>
+          <StyledArrowLeft />
+        </HistoryLink>
+        <ActiveText style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <Trans>Import V2 Pool</Trans>
+        </ActiveText>
+      </RowBetween>
+    </Tabs>
+  )
+}
 
 export function AddRemoveTabs({
   adding,
@@ -94,16 +114,15 @@ export function AddRemoveTabs({
   )
 }
 
-// [MAUVE-DISABLED]
-// export function CreateProposalTabs() {
-//   return (
-//     <Tabs>
-//       <Row style={{ padding: '1rem 1rem 0 1rem' }}>
-//         <HistoryLink to="/vote">
-//           <StyledArrowLeft />
-//         </HistoryLink>
-//         <ActiveText style={{ marginLeft: 'auto', marginRight: 'auto' }}>Create Proposal</ActiveText>
-//       </Row>
-//     </Tabs>
-//   )
-// }
+export function CreateProposalTabs() {
+  return (
+    <Tabs>
+      <Row style={{ padding: '1rem 1rem 0 1rem' }}>
+        <HistoryLink to="/vote">
+          <StyledArrowLeft />
+        </HistoryLink>
+        <ActiveText style={{ marginLeft: 'auto', marginRight: 'auto' }}>Create Proposal</ActiveText>
+      </Row>
+    </Tabs>
+  )
+}

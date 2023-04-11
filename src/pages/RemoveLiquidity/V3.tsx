@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { Trans } from '@lingui/macro'
-import { CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
-import { NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { CurrencyAmount, Percent } from '@uniswap/sdk-core'
+import { NonfungiblePositionManager } from '@uniswap/v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
@@ -115,7 +115,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+    const { calldata, value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
       tokenId: tokenId.toString(),
       liquidityPercentage,
       slippageTolerance: allowedSlippage,
@@ -129,8 +129,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     const txn = {
       to: positionManager.address,
-      // TO UPDATE
-      data: [],
+      data: calldata,
       value,
     }
 

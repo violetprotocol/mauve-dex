@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Currency } from '@violetprotocol/mauve-sdk-core'
+import { Currency } from '@uniswap/sdk-core'
 import { NATIVE_CHAIN_ID } from 'constants/tokens'
 import { chainIdToBackendName } from 'graphql/data/util'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
@@ -60,7 +60,7 @@ const ShareAction = styled.div`
   color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   :hover {
-    background-color: ${opacify(10, colors.gray300)};
+    background-color: ${({ theme }) => opacify(10, theme.darkMode ? colors.gray200 : colors.gray300)};
   }
 `
 

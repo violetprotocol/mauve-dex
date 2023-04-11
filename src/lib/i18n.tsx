@@ -116,6 +116,7 @@ export function Provider({ locale, forceRenderAfterLocaleChange = true, onActiva
   }
 
   return (
+    // @ts-ignore
     <I18nProvider forceRenderOnLocaleChange={forceRenderAfterLocaleChange} i18n={i18n}>
       {children}
     </I18nProvider>

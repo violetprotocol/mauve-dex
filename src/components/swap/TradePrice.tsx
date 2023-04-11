@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { Currency, Price } from '@violetprotocol/mauve-sdk-core'
+import { Currency, Price } from '@uniswap/sdk-core'
 import useStablecoinPrice from 'hooks/useStablecoinPrice'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components/macro'

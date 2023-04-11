@@ -18,6 +18,19 @@ describe('Testing tokens on uniswap page', () => {
     cy.get(getTestSelector('tokens-network-filter-selected')).should('contain', 'Optimism')
   })
 
+  it('should have the correct network configuration when reloaded: OP global, Polygon local', () => {
+    cy.get(getTestSelector('chain-selector')).last().click()
+    cy.get(getTestSelector('chain-selector-option-optimism')).click()
+
+    cy.visit('/tokens/ethereum')
+    cy.get(getTestSelector('tokens-network-filter-selected')).click()
+    cy.get(getTestSelector('tokens-network-filter-option-polygon')).click()
+    cy.reload()
+    cy.get(getTestSelector('tokens-network-filter-selected')).should('contain', 'Polygon')
+    // With no wallet connected, reloading the page resets the global network.
+    cy.get(getTestSelector('chain-selector')).last().should('contain', 'Ethereum')
+  })
+
   it('should load go to ethereum token and return to token list page', () => {
     cy.visit('/tokens/ethereum')
     cy.get(getTestSelector('token-table-row-Ether')).click()
