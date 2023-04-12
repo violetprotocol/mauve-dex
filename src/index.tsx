@@ -53,6 +53,9 @@ const queryClient = new QueryClient()
 
 const container = document.getElementById('root') as HTMLElement
 
+console.log(process.env.REACT_APP_TEST_ENV)
+console.log(process.env.REACT_APP_INFURA_KEY)
+
 createRoot(container).render(
   <StrictMode>
     <Provider store={store}>

@@ -8,6 +8,8 @@ dynamicActivate(initialLocale)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const locale = useActiveLocale()
+  console.log('****** LANGUAGE PROVIDER *******')
+  console.log(locale)
   const [, setUserLocale] = useUserLocaleManager()
 
   const onActivate = useCallback(
