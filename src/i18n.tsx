@@ -13,6 +13,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const onActivate = useCallback(
     (locale: SupportedLocale) => {
       document.documentElement.setAttribute('lang', locale)
+
       setUserLocale(locale) // stores the selected locale to persist across sessions
     },
     [setUserLocale]

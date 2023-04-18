@@ -250,9 +250,5 @@
     "npm": "please-use-yarn",
     "node": "16",
     "yarn": ">=1.22"
-  },
-  "volta": {
-    "node": "16.19.1",
-    "yarn": "4.0.0-rc.40"
   }
 }
