@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
-import { Trade } from '@uniswap/router-sdk'
-import { Currency, CurrencyAmount, Percent, TradeType } from '@uniswap/sdk-core'
+import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import JSBI from 'jsbi'
 import { useSingleCallResult } from 'lib/hooks/multicall'
@@ -12,7 +12,7 @@ import { DAI, UNI, USDC_MAINNET } from '../constants/tokens'
 import { useEIP2612Contract } from './useContract'
 import useIsArgentWallet from './useIsArgentWallet'
 
-export enum PermitType {
+enum PermitType {
   AMOUNT = 1,
   ALLOWED = 2,
 }
@@ -20,7 +20,7 @@ export enum PermitType {
 // 20 minutes to submit after signing
 const PERMIT_VALIDITY_BUFFER = 20 * 60
 
-export interface PermitInfo {
+interface PermitInfo {
   type: PermitType
   name: string
   // version is optional, and if omitted, will not be included in the domain
@@ -54,6 +54,8 @@ const PERMITTABLE_TOKENS: {
   },
 }
 
+// TODO-MAUVE: Figure out why eslint complains it is not imported when it is, in Swap page
+// eslint-disable-next-line import/no-unused-modules
 export enum UseERC20PermitState {
   // returned for any reason, e.g. it is an argent wallet, or the currency does not support it
   NOT_APPLICABLE,
@@ -114,7 +116,7 @@ const PERMIT_ALLOWED_TYPE = [
   { name: 'allowed', type: 'bool' },
 ]
 
-export function useERC20Permit(
+function useERC20Permit(
   currencyAmount: CurrencyAmount<Currency> | null | undefined,
   spender: string | null | undefined,
   transactionDeadline: BigNumber | undefined,

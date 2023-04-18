@@ -3,11 +3,13 @@ import type { TransactionResponse } from '@ethersproject/providers'
 import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
-import { Currency, CurrencyAmount, Percent } from '@uniswap/sdk-core'
-import { FeeAmount, NonfungiblePositionManager } from '@uniswap/v3-sdk'
+import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
+import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { splitSignature } from 'ethers/lib/utils'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { useCallback, useEffect, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
@@ -20,6 +22,7 @@ import {
   useV3MintState,
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
@@ -77,6 +80,9 @@ import {
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
+
 export default function AddLiquidity() {
   const navigate = useNavigate()
   const {
@@ -86,6 +92,15 @@ export default function AddLiquidity() {
     tokenId,
   } = useParams<{ currencyIdA?: string; currencyIdB?: string; feeAmount?: string; tokenId?: string }>()
   const { account, chainId, provider } = useWeb3React()
+
+  if (!environment || !clientId) {
+    throw new Error('Invalid environment')
+  }
+  const { authorize } = useViolet({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  })
   const theme = useTheme()
 
   const toggleWalletModal = useToggleWalletModal() // toggle wallet when disconnected
@@ -240,7 +255,7 @@ export default function AddLiquidity() {
 
     if (position && account && deadline) {
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
-      const { calldata, value } =
+      const { calls, value } =
         hasExistingPosition && tokenId
           ? NonfungiblePositionManager.addCallParameters(position, {
               tokenId,
@@ -256,8 +271,45 @@ export default function AddLiquidity() {
               createPool: noLiquidity,
             })
 
+      const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+      let calldata
+      try {
+        const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
+
+        const response = await authorize({
+          transaction: {
+            data: parameters,
+            functionSignature,
+            targetContract: to,
+          },
+          address: account,
+          chainId,
+        })
+        if (!response) return
+
+        const [violet, error] = response
+
+        if (!violet) {
+          console.log(error)
+          return
+        }
+        const eat = JSON.parse(atob(violet.token))
+        eat.signature = splitSignature(eat.signature)
+        if (!eat?.signature || !eat?.expiry) {
+          throw new Error('Failed to get EAT')
+        }
+        const { v, r, s } = eat.signature
+        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry.toNumber(), calls)
+      } catch (error) {
+        console.error('Error generating an EAT: ', error)
+      }
+
+      if (!calldata) {
+        throw new Error('Failed to generate calldata')
+      }
+
       let txn: { to: string; data: string; value: string } = {
-        to: NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId],
+        to,
         data: calldata,
         value,
       }
@@ -324,6 +376,7 @@ export default function AddLiquidity() {
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
           if (error?.code !== 4001) {
+            // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
         })

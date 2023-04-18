@@ -1,7 +1,8 @@
 import { style } from '@vanilla-extract/css'
+import { tw } from 'theme/colors'
 
 import { subhead } from '../../nft/css/common.css'
-import { sprinkles, vars } from '../../nft/css/sprinkles.css'
+import { sprinkles } from '../../nft/css/sprinkles.css'
 
 export const logoContainer = style([
   sprinkles({
@@ -12,10 +13,9 @@ export const logoContainer = style([
 ])
 
 export const logo = style([
-  sprinkles({
+  {
     display: 'block',
-    color: 'textPrimary',
-  }),
+  },
 ])
 
 export const baseSideContainer = style([
@@ -35,16 +35,20 @@ export const leftSideContainer = style([
   }),
 ])
 
-export const searchContainer = style([
-  sprinkles({
-    flex: '1',
-    flexShrink: '1',
-    justifyContent: { lg: 'flex-end', xl: 'center' },
-    display: { sm: 'none', xl: 'flex' },
-    alignSelf: 'center',
-    height: '48',
-    alignItems: 'flex-start',
-  }),
+export const centerSideContainer = style([
+  baseSideContainer,
+  {
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '.5rem',
+  },
+  {
+    '@media': {
+      'screen and (max-width: 768px)': {
+        display: 'none',
+      },
+    },
+  },
 ])
 
 export const rightSideContainer = style([
@@ -60,33 +64,30 @@ const baseMenuItem = style([
   sprinkles({
     paddingY: '8',
     paddingX: '16',
-    marginY: '4',
     borderRadius: '12',
     transition: '250',
     height: 'min',
-    width: 'full',
     textAlign: 'center',
   }),
   {
     lineHeight: '24px',
-    textDecoration: 'none',
+    fontWeight: 600,
     ':hover': {
-      background: vars.color.lightGrayOverlay,
+      color: tw.navy['900'],
     },
   },
 ])
 
 export const menuItem = style([
   baseMenuItem,
-  sprinkles({
-    color: 'textSecondary',
-  }),
+  {
+    color: tw.navy['300'],
+  },
 ])
 
 export const activeMenuItem = style([
   baseMenuItem,
-  sprinkles({
-    color: 'textPrimary',
-    background: 'backgroundFloating',
-  }),
+  {
+    color: tw.navy['900'],
+  },
 ])

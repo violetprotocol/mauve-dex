@@ -1,11 +1,22 @@
+// [MAUVE-DISABLED]
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable jest/no-disabled-tests */
 import { BigNumber } from '@ethersproject/bignumber'
-import { CurrencyAmount, Token } from '@uniswap/sdk-core'
+import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 import JSBI from 'jsbi'
 
 import { ZERO_ADDRESS } from '../constants/misc'
-import { computeUniCirculation } from './computeUniCirculation'
+// import { computeUniCirculation } from './computeUniCirculation'
 
-describe('computeUniCirculation', () => {
+function computeUniCirculation(
+  uni: Token,
+  blockTimestamp: BigNumber,
+  unclaimedUni: CurrencyAmount<Token> | undefined
+): null {
+  return null
+}
+
+describe.skip('computeUniCirculation', () => {
   const token = new Token(4, ZERO_ADDRESS, 18)
 
   function expandTo18Decimals(num: JSBI | string | number) {

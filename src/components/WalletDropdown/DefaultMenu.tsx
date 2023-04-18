@@ -1,31 +1,13 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import { TransactionSummary } from 'components/AccountDetailsV2'
-import { ButtonPrimary } from 'components/Button'
-import { useActiveLocale } from 'hooks/useActiveLocale'
 import { useMemo } from 'react'
-import { ChevronRight, Moon, Sun } from 'react-feather'
-import { useToggleWalletModal } from 'state/application/hooks'
-import { useDarkModeManager } from 'state/user/hooks'
+import { ChevronRight } from 'react-feather'
 import styled from 'styled-components/macro'
+import { tw } from 'theme/colors'
 
 import { useAllTransactions } from '../../state/transactions/hooks'
 import AuthenticatedHeader from './AuthenticatedHeader'
 import { MenuState } from './index'
-
-const ConnectButton = styled(ButtonPrimary)`
-  border-radius: 12px;
-  height: 44px;
-  width: 288px;
-  font-weight: 600;
-  font-size: 16px;
-  margin-left: auto;
-  margin-right: auto;
-
-  @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.sm}px`}) {
-    width: 100%;
-  }
-`
 
 const Divider = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.backgroundOutline};
@@ -73,8 +55,8 @@ const LatestPendingTxnBox = styled(FlexContainer)`
 `
 
 const PendingBadge = styled.span`
-  background-color: ${({ theme }) => theme.accentActionSoft};
-  color: ${({ theme }) => theme.accentAction};
+  background-color: ${tw.black};
+  color: ${tw.white};
   font-weight: 600;
   padding: 4px 8px;
   border-radius: 4px;
@@ -99,19 +81,8 @@ const DefaultText = styled.span`
   font-weight: 400;
 `
 
-const CenterVertically = styled.div`
-  margin-top: auto;
-  margin-bottom: auto;
-`
-
 const WalletDropdown = ({ setMenu }: { setMenu: (state: MenuState) => void }) => {
-  const { account } = useWeb3React()
-  const isAuthenticated = !!account
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
-  const activeLocale = useActiveLocale()
-  const ISO = activeLocale.split('-')[0].toUpperCase()
   const allTransactions = useAllTransactions()
-  const toggleWalletModal = useToggleWalletModal()
 
   const pendingTransactions = useMemo(
     () => Object.values(allTransactions).filter((tx) => !tx.receipt),
@@ -124,57 +95,32 @@ const WalletDropdown = ({ setMenu }: { setMenu: (state: MenuState) => void }) =>
 
   return (
     <DefaultMenuWrap>
-      {isAuthenticated ? (
-        <AuthenticatedHeader />
-      ) : (
-        <ConnectButton data-testid="wallet-connect-wallet" onClick={toggleWalletModal}>
-          Connect wallet
-        </ConnectButton>
-      )}
+      <AuthenticatedHeader />
+
       <Divider />
-      {isAuthenticated && (
-        <>
-          <ToggleMenuItem data-testid="wallet-transactions" onClick={() => setMenu(MenuState.TRANSACTIONS)}>
-            <DefaultText>
-              <Trans>Transactions</Trans>{' '}
-              {pendingTransactions.length > 0 && (
-                <PendingBadge>
-                  {pendingTransactions.length} <Trans>Pending</Trans>
-                </PendingBadge>
-              )}
-            </DefaultText>
-            <IconWrap>
-              <ChevronRight size={16} strokeWidth={3} />
-            </IconWrap>
-          </ToggleMenuItem>
-          {!!latestPendingTransaction && (
-            <LatestPendingTxnBox>
-              <TransactionSummary
-                key={latestPendingTransaction.hash}
-                transactionDetails={latestPendingTransaction}
-                isLastTransactionInList={true}
-              />
-            </LatestPendingTxnBox>
-          )}
-        </>
-      )}
-      <ToggleMenuItem data-testid="wallet-select-language" onClick={() => setMenu(MenuState.LANGUAGE)}>
+
+      <ToggleMenuItem data-testid="wallet-transactions" onClick={() => setMenu(MenuState.TRANSACTIONS)}>
         <DefaultText>
-          <Trans>Language</Trans>
+          <Trans>Transactions</Trans>{' '}
+          {pendingTransactions.length > 0 && (
+            <PendingBadge>
+              {pendingTransactions.length} <Trans>Pending</Trans>
+            </PendingBadge>
+          )}
         </DefaultText>
-        <FlexContainer>
-          <CenterVertically>
-            <DefaultText>{ISO}</DefaultText>
-          </CenterVertically>
-          <IconWrap>
-            <ChevronRight size={16} strokeWidth={3} />
-          </IconWrap>
-        </FlexContainer>
+        <IconWrap>
+          <ChevronRight size={16} strokeWidth={3} />
+        </IconWrap>
       </ToggleMenuItem>
-      <ToggleMenuItem data-testid="wallet-select-theme" onClick={toggleDarkMode}>
-        <DefaultText>{darkMode ? <Trans> Light theme</Trans> : <Trans>Dark theme</Trans>}</DefaultText>
-        <IconWrap>{darkMode ? <Sun size={16} /> : <Moon size={16} />}</IconWrap>
-      </ToggleMenuItem>
+      {!!latestPendingTransaction && (
+        <LatestPendingTxnBox>
+          <TransactionSummary
+            key={latestPendingTransaction.hash}
+            transactionDetails={latestPendingTransaction}
+            isLastTransactionInList={true}
+          />
+        </LatestPendingTxnBox>
+      )}
     </DefaultMenuWrap>
   )
 }

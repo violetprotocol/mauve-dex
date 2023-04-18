@@ -3,18 +3,14 @@ import { useWeb3React } from '@web3-react/core'
 import VioletTestButton from 'components/VioletTest'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
-import { useIsNftPage } from 'hooks/useIsNftPage'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
-import { UniIcon } from 'nft/components/icons'
+import { MauveIcon } from 'nft/components/icons'
 import { ReactNode } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
 
-import { Bag } from './Bag'
-import { ChainSelector } from './ChainSelector'
-import { MenuDropdown } from './MenuDropdown'
-import { SearchBar } from './SearchBar'
+import { ChainDisplay } from './ChainDisplay'
 import * as styles from './style.css'
 
 const Nav = styled.nav`
@@ -58,8 +54,6 @@ export const PageTabs = () => {
     pathname.startsWith('/increase') ||
     pathname.startsWith('/find')
 
-  const isNftPage = useIsNftPage()
-
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
@@ -67,9 +61,6 @@ export const PageTabs = () => {
       </MenuItem>
       <MenuItem href={`/tokens/${chainName.toLowerCase()}`} isActive={pathname.startsWith('/tokens')}>
         <Trans>Tokens</Trans>
-      </MenuItem>
-      <MenuItem dataTestId="nft-nav" href="/nfts" isActive={isNftPage}>
-        <Trans>NFTs</Trans>
       </MenuItem>
       <MenuItem href="/pool" id="pool-nav-link" isActive={isPoolActive}>
         <Trans>Pool</Trans>
@@ -79,7 +70,6 @@ export const PageTabs = () => {
 }
 
 const Navbar = () => {
-  const isNftPage = useIsNftPage()
   const navigate = useNavigate()
 
   return (
@@ -88,10 +78,10 @@ const Navbar = () => {
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
             <Box className={styles.logoContainer}>
-              <UniIcon
+              <MauveIcon
                 width="48"
                 height="48"
-                data-testid="uniswap-logo"
+                data-testid="mauve-logo"
                 className={styles.logo}
                 onClick={() => {
                   navigate({
@@ -102,34 +92,17 @@ const Navbar = () => {
               />
             </Box>
             <Box>
-              <VioletTestButton></VioletTestButton>
+              <VioletTestButton />
             </Box>
-            {!isNftPage && (
-              <Box display={{ sm: 'flex', lg: 'none' }}>
-                <ChainSelector leftAlign={true} />
-              </Box>
-            )}
-            <Row gap={{ xl: '0', xxl: '8' }} display={{ sm: 'none', lg: 'flex' }}>
-              <PageTabs />
-            </Row>
           </Box>
-          <Box className={styles.searchContainer}>
-            <SearchBar />
+
+          <Box className={styles.centerSideContainer} display={{ sm: 'none', lg: 'flex' }}>
+            <PageTabs />
           </Box>
+
           <Box className={styles.rightSideContainer}>
-            <Row gap="12">
-              <Box position="relative" display={{ sm: 'flex', xl: 'none' }}>
-                <SearchBar />
-              </Box>
-              <Box display={{ sm: 'none', lg: 'flex' }}>
-                <MenuDropdown />
-              </Box>
-              {isNftPage && <Bag />}
-              {!isNftPage && (
-                <Box display={{ sm: 'none', lg: 'flex' }}>
-                  <ChainSelector />
-                </Box>
-              )}
+            <Row gap="16">
+              <ChainDisplay />
 
               <Web3Status />
             </Row>

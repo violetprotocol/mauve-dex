@@ -1,6 +1,6 @@
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
-import { Currency, Percent, TradeType } from '@uniswap/sdk-core'
+import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { DEFAULT_TXN_DISMISS_MS, L2_TXN_DISMISS_MS } from 'constants/misc'
 import LibUpdater from 'lib/hooks/transactions/updater'

@@ -9,16 +9,11 @@ import { SerializedPair, SerializedToken } from './types'
 const currentTimestamp = () => new Date().getTime()
 
 export interface UserState {
-  fiatOnrampAcknowledgments: { renderCount: number; system: boolean; user: boolean }
-
   selectedWallet?: ConnectionType
 
   // the timestamp of the last updateVersion action
   lastUpdateVersionTimestamp?: number
 
-  matchesDarkMode: boolean // whether the dark mode media query matches
-
-  userDarkMode: boolean | null // the user's choice for dark mode or light mode
   userLocale: SupportedLocale | null
 
   userExpertMode: boolean
@@ -55,15 +50,8 @@ export interface UserState {
   showSurveyPopup: boolean | undefined
 }
 
-function pairKey(token0Address: string, token1Address: string) {
-  return `${token0Address};${token1Address}`
-}
-
 export const initialState: UserState = {
-  fiatOnrampAcknowledgments: { renderCount: 0, system: false, user: false },
   selectedWallet: undefined,
-  matchesDarkMode: false,
-  userDarkMode: null,
   userExpertMode: false,
   userLocale: null,
   userClientSideRouter: false,
@@ -82,22 +70,8 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateFiatOnrampAcknowledgments(
-      state,
-      { payload }: { payload: Partial<{ renderCount: number; user: boolean; system: boolean }> }
-    ) {
-      state.fiatOnrampAcknowledgments = { ...state.fiatOnrampAcknowledgments, ...payload }
-    },
     updateSelectedWallet(state, { payload: { wallet } }) {
       state.selectedWallet = wallet
-    },
-    updateUserDarkMode(state, action) {
-      state.userDarkMode = action.payload.userDarkMode
-      state.timestamp = currentTimestamp()
-    },
-    updateMatchesDarkMode(state, action) {
-      state.matchesDarkMode = action.payload.matchesDarkMode
-      state.timestamp = currentTimestamp()
     },
     updateUserExpertMode(state, action) {
       state.userExpertMode = action.payload.userExpertMode
@@ -127,17 +101,6 @@ const userSlice = createSlice({
       }
       state.tokens[serializedToken.chainId] = state.tokens[serializedToken.chainId] || {}
       state.tokens[serializedToken.chainId][serializedToken.address] = serializedToken
-      state.timestamp = currentTimestamp()
-    },
-    addSerializedPair(state, { payload: { serializedPair } }) {
-      if (
-        serializedPair.token0.chainId === serializedPair.token1.chainId &&
-        serializedPair.token0.address !== serializedPair.token1.address
-      ) {
-        const chainId = serializedPair.token0.chainId
-        state.pairs[chainId] = state.pairs[chainId] || {}
-        state.pairs[chainId][pairKey(serializedPair.token0.address, serializedPair.token1.address)] = serializedPair
-      }
       state.timestamp = currentTimestamp()
     },
   },
@@ -179,14 +142,10 @@ const userSlice = createSlice({
 })
 
 export const {
-  addSerializedPair,
   addSerializedToken,
-  updateFiatOnrampAcknowledgments,
   updateSelectedWallet,
   updateHideClosedPositions,
-  updateMatchesDarkMode,
   updateUserClientSideRouter,
-  updateUserDarkMode,
   updateUserDeadline,
   updateUserExpertMode,
   updateUserLocale,

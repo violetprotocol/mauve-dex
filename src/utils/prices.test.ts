@@ -1,7 +1,7 @@
-import { Trade } from '@uniswap/router-sdk'
-import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core'
-import { Pair, Route as V2Route } from '@uniswap/v2-sdk'
-import { FeeAmount, Pool, Route as V3Route } from '@uniswap/v3-sdk'
+import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { Pair, Route as V2Route } from '@violetprotocol/mauve-v2-sdk'
+import { FeeAmount, Pool, Route as V3Route } from '@violetprotocol/mauve-v3-sdk'
 import JSBI from 'jsbi'
 
 import { computeRealizedLPFeeAmount, warningSeverity } from './prices'

@@ -1,7 +1,7 @@
-import { Protocol } from '@uniswap/router-sdk'
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { Pool } from '@uniswap/v3-sdk'
+import { Protocol } from '@violetprotocol/mauve-router-sdk'
+import { Currency, CurrencyAmount } from '@violetprotocol/mauve-sdk-core'
 import { routeAmountsToString, SwapRoute } from '@violetprotocol/mauve-smart-order-router'
+import { Pool } from '@violetprotocol/mauve-v3-sdk'
 import { GetQuoteResult, V2PoolInRoute, V3PoolInRoute } from 'state/routing/types'
 
 // from routing-api (https://github.com/Uniswap/routing-api/blob/main/lib/handlers/quote/quote.ts#L243-L311)
