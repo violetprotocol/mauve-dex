@@ -5,7 +5,7 @@ name: Build and push Mauve-Dex image
 on:
   push:
     branches:
-      - po-review
+      - dev
       - main
       - staging
 

@@ -61,7 +61,7 @@ jobs:
               refs/heads/main)
                 echo "::set-output name=environment::mauve-prod"
               ;;
-              refs/heads/po-review)
+              refs/heads/dev)
                 echo "::set-output name=environment::mauve-dev"
               ;;
               refs/heads/staging)
