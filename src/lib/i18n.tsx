@@ -2,38 +2,8 @@ import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import * as Sentry from '@sentry/react'
 import { DEFAULT_LOCALE, SupportedLocale } from 'constants/locales'
-import {
-  af,
-  ar,
-  ca,
-  cs,
-  da,
-  de,
-  el,
-  en,
-  es,
-  fi,
-  fr,
-  he,
-  hu,
-  id,
-  it,
-  ja,
-  ko,
-  nl,
-  no,
-  pl,
-  pt,
-  ro,
-  ru,
-  sr,
-  sv,
-  sw,
-  tr,
-  uk,
-  vi,
-  zh,
-} from 'make-plural/plurals'
+import en_US from 'locales/en-US.js'
+import { en } from 'make-plural/plurals'
 import { PluralCategory } from 'make-plural/plurals'
 import { ReactNode, useEffect } from 'react'
 
@@ -42,38 +12,7 @@ type LocalePlural = {
 }
 
 const plurals: LocalePlural = {
-  'af-ZA': af,
-  'ar-SA': ar,
-  'ca-ES': ca,
-  'cs-CZ': cs,
-  'da-DK': da,
-  'de-DE': de,
-  'el-GR': el,
   'en-US': en,
-  'es-ES': es,
-  'fi-FI': fi,
-  'fr-FR': fr,
-  'he-IL': he,
-  'hu-HU': hu,
-  'id-ID': id,
-  'it-IT': it,
-  'ja-JP': ja,
-  'ko-KR': ko,
-  'nl-NL': nl,
-  'no-NO': no,
-  'pl-PL': pl,
-  'pt-BR': pt,
-  'pt-PT': pt,
-  'ro-RO': ro,
-  'ru-RU': ru,
-  'sr-SP': sr,
-  'sv-SE': sv,
-  'sw-TZ': sw,
-  'tr-TR': tr,
-  'uk-UA': uk,
-  'vi-VN': vi,
-  'zh-CN': zh,
-  'zh-TW': zh,
   pseudo: en,
 }
 
@@ -81,16 +20,20 @@ export async function dynamicActivate(locale: SupportedLocale) {
   i18n.loadLocaleData(locale, { plurals: () => plurals[locale] })
   try {
     const catalog = await import(`locales/${locale}.js`)
+    const dynamic = await import(`locales/en-US.js`)
 
-    console.log(catalog)
-    console.log(`locales/${locale}.js`)
+    console.log({ en_US, dynamic, catalog })
 
     // Bundlers will either export it as default or as a named export named default.
     i18n.load(locale, catalog.messages || catalog.default.messages)
   } catch (error) {
+    console.log(error)
+
     Sentry.captureMessage(error.toString())
   }
   i18n.activate(locale)
+
+  console.log(i18n)
 }
 
 interface ProviderProps {
@@ -102,6 +45,8 @@ interface ProviderProps {
 
 export function Provider({ locale, forceRenderAfterLocaleChange = true, onActivate, children }: ProviderProps) {
   useEffect(() => {
+    console.log(locale)
+
     dynamicActivate(locale)
       .then(() => onActivate?.(locale))
       .catch((error) => {
@@ -118,6 +63,8 @@ export function Provider({ locale, forceRenderAfterLocaleChange = true, onActiva
     i18n.load(DEFAULT_LOCALE, {})
     i18n.activate(DEFAULT_LOCALE)
   }
+
+  console.log({ locale, forceRenderAfterLocaleChange, onActivate, children, i18n })
 
   return (
     <I18nProvider forceRenderOnLocaleChange={forceRenderAfterLocaleChange} i18n={i18n}>
