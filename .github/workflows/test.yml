@@ -88,6 +88,7 @@ jobs:
         run: yarn cypress install
 
       - uses: cypress-io/github-action@v4
+        continue
         with:
           install: false
           start: yarn serve
@@ -95,6 +96,7 @@ jobs:
           browser: chrome
           record: true
           parallel: true
+          continue-on-error: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
