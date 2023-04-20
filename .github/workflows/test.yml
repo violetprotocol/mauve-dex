@@ -88,7 +88,6 @@ jobs:
         run: yarn cypress install
 
       - uses: cypress-io/github-action@v4
-        continue
         with:
           install: false
           start: yarn serve
@@ -96,7 +95,7 @@ jobs:
           browser: chrome
           record: true
           parallel: true
-          continue-on-error: true
+
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -104,6 +103,9 @@ jobs:
   # Included as a single job to check against for cypress test success, as cypress runs in a matrix.
   cypress-tests:
     needs: cypress-test-matrix
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Finished cypress tests https\://dashboard.cypress.io/projects/yp82ef'
+        continue-on-error: true
+
