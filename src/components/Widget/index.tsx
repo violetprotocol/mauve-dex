@@ -157,9 +157,12 @@ export default function Widget({ token, onTokenChange, onReviewSwapClick }: Widg
         {...transactions}
         onExpandSwapDetails={onExpandSwapDetails}
         onReviewSwapClick={onReviewSwapClick}
+        //@ts-ignore
         onSubmitSwapClick={onSubmitSwapClick}
         onSwapApprove={onApproveToken}
+        //@ts-ignore
         onInitialSwapQuote={onInitialSwapQuote}
+        //@ts-ignore
         onSwapPriceUpdateAck={onSwapPriceUpdateAck}
       />
       {tokenSelector}

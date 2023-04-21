@@ -62,6 +62,7 @@ export function useSyncWidgetTransactions() {
 
         const eventProperties = {
           ...formatSwapSignedAnalyticsEventProperties({
+            //@ts-ignore
             trade,
             txHash: transaction.receipt?.transactionHash ?? '',
           }),

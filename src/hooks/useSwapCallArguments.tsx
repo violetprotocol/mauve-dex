@@ -43,7 +43,7 @@ export function useSwapCallArguments(
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   const argentWalletContract = useArgentWalletContract()
-  if (!environment || !clientId || !chainId) {
+  if (!environment || !clientId) {
     throw new Error('Invalid environment')
   }
   const { authorize } = useViolet({
@@ -58,7 +58,7 @@ export function useSwapCallArguments(
   useEffect(() => {
     if (violet) return
 
-    if (!account || !parameters || !functionSignature) return
+    if (!account || !parameters || !functionSignature || !chainId) return
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
 
