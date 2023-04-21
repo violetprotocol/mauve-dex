@@ -2,10 +2,12 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { FeeOptions } from '@violetprotocol/mauve-v3-sdk'
+import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import approveAmountCalldata from 'utils/approveAmountCalldata'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
@@ -17,6 +19,9 @@ export interface SwapCall {
   value: string
   deadline?: BigNumber
 }
+
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
 /**
  * Returns the swap calls that can be used to make the trade
@@ -38,14 +43,46 @@ export function useSwapCallArguments(
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   const argentWalletContract = useArgentWalletContract()
+  if (!environment || !clientId || !chainId) {
+    throw new Error('Invalid environment')
+  }
+  const { authorize } = useViolet({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  })
+  const [violet, setViolet] = useState<Awaited<ReturnType<typeof authorize>>>()
+  const [functionSignature, setFunctionSignature] = useState<string>()
+  const [parameters, setParameters] = useState<string>()
+
+  useEffect(() => {
+    if (violet) return
+
+    if (!account || !parameters || !functionSignature) return
+
+    const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+
+    if (!swapRouterAddress) return
+
+    authorize({
+      transaction: {
+        data: parameters,
+        functionSignature,
+        targetContract: swapRouterAddress,
+      },
+      address: account,
+      chainId,
+    }).then(setViolet)
+  }, [account, authorize, chainId, functionSignature, parameters, violet])
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) return []
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+
     if (!swapRouterAddress) return []
 
-    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+    const { value, calls, functionSignature, parameters } = SwapRouter.swapCallParameters(trade, {
       fee: feeOptions,
       recipient,
       slippageTolerance: allowedSlippage,
@@ -73,6 +110,11 @@ export function useSwapCallArguments(
       deadlineOrPreviousBlockhash: deadline.toString(),
     })
 
+    setFunctionSignature(functionSignature)
+    setParameters(parameters)
+
+    console.log(violet)
+
     if (argentWalletContract && trade.inputAmount.currency.isToken) {
       return [
         {
@@ -83,7 +125,7 @@ export function useSwapCallArguments(
               {
                 to: swapRouterAddress,
                 value,
-                data: calldata,
+                data: calls[0],
               },
             ],
           ]),
@@ -95,7 +137,7 @@ export function useSwapCallArguments(
     return [
       {
         address: swapRouterAddress,
-        calldata,
+        calldata: calls[0],
         value,
         deadline,
       },
@@ -111,5 +153,6 @@ export function useSwapCallArguments(
     recipient,
     signatureData,
     trade,
+    violet,
   ])
 }
