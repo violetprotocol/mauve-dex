@@ -64,9 +64,9 @@ jobs:
   cypress-test-matrix:
     needs: cypress-build
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
       fail-fast: false
+      continue-on-error: true
       matrix:
         containers: [1, 2, 3, 4]
     steps:
@@ -89,6 +89,7 @@ jobs:
         run: yarn cypress install
 
       - uses: cypress-io/github-action@v4
+        continue-on-error: true
         with:
           install: false
           start: yarn serve
@@ -104,6 +105,6 @@ jobs:
   cypress-tests:
     needs: cypress-test-matrix
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - run: echo 'Finished cypress tests https\://dashboard.cypress.io/projects/yp82ef'
+        continue-on-error: true
