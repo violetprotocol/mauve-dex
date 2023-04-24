@@ -139,8 +139,16 @@ export function useSwapCallArguments(
     } else {
       // throw new Error('Failed to get EAT')
     }
-    const { v, r, s } = eat.signature
-    const calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+    let calldata
+    if (eat?.signature) {
+      const { v, r, s } = eat.signature
+      calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+    }
+    if (!calldata) {
+      console.log('*********************')
+      console.log('this should not happen')
+      calldata = calls[0]
+    }
 
     // if (argentWalletContract && trade.inputAmount.currency.isToken) {
     //   return [
