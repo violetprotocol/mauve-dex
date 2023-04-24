@@ -1,15 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { FeeOptions } from '@violetprotocol/mauve-v3-sdk'
+import { EATMulticall, FeeOptions } from '@violetprotocol/mauve-v3-sdk'
 import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
+import { splitSignature } from 'ethers/lib/utils'
 import { useEffect, useMemo, useState } from 'react'
-import approveAmountCalldata from 'utils/approveAmountCalldata'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
-import { useArgentWalletContract } from './useArgentWalletContract'
+// import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
@@ -42,7 +42,7 @@ export function useSwapCallArguments(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  const argentWalletContract = useArgentWalletContract()
+  // const argentWalletContract = useArgentWalletContract()
   if (!environment || !clientId) {
     throw new Error('Invalid environment')
   }
@@ -51,19 +51,22 @@ export function useSwapCallArguments(
     apiUrl: baseUrlByEnvironment(environment.toString()),
     redirectUrl: redirectUrlByEnvironment(environment.toString()),
   })
-  const [violet, setViolet] = useState<Awaited<ReturnType<typeof authorize>>>()
+  const [violetResponse, setVioletResponse] = useState<Awaited<ReturnType<typeof authorize>>>()
   const [functionSignature, setFunctionSignature] = useState<string>()
   const [parameters, setParameters] = useState<string>()
+  const [isMakingAuthorization, setIsMakingAuthorization] = useState<boolean>(false)
 
   useEffect(() => {
-    if (violet) return
+    if (violetResponse) return
 
     if (!account || !parameters || !functionSignature || !chainId) return
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
 
     if (!swapRouterAddress) return
+    if (isMakingAuthorization) return
 
+    setIsMakingAuthorization(true)
     authorize({
       transaction: {
         data: parameters,
@@ -72,8 +75,13 @@ export function useSwapCallArguments(
       },
       address: account,
       chainId,
-    }).then(setViolet)
-  }, [account, authorize, chainId, functionSignature, parameters, violet])
+    }).then((response) => {
+      if (response) {
+        setVioletResponse(response)
+      }
+      setIsMakingAuthorization(false)
+    })
+  }, [account, authorize, chainId, functionSignature, parameters, violetResponse, isMakingAuthorization])
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) return []
@@ -113,31 +121,50 @@ export function useSwapCallArguments(
     setFunctionSignature(functionSignature)
     setParameters(parameters)
 
-    console.log(violet)
-
-    if (argentWalletContract && trade.inputAmount.currency.isToken) {
-      return [
-        {
-          address: argentWalletContract.address,
-          calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
-            [
-              approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
-              {
-                to: swapRouterAddress,
-                value,
-                data: calls[0],
-              },
-            ],
-          ]),
-          value: '0x0',
-          deadline,
-        },
-      ]
+    let eat
+    console.log('*********************')
+    console.log(violetResponse)
+    if (violetResponse) {
+      const [violet, error] = violetResponse
+      if (violet) {
+        eat = JSON.parse(atob(violet.token))
+        eat.signature = splitSignature(eat.signature)
+        if (!eat?.signature || !eat?.expiry) {
+          // throw new Error('Failed to get EAT')
+        }
+      } else {
+        console.log(error)
+        // throw new Error('Failed to get EAT')
+      }
+    } else {
+      // throw new Error('Failed to get EAT')
     }
+    const { v, r, s } = eat.signature
+    const calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+
+    // if (argentWalletContract && trade.inputAmount.currency.isToken) {
+    //   return [
+    //     {
+    //       address: argentWalletContract.address,
+    //       calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
+    //         [
+    //           approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
+    //           {
+    //             to: swapRouterAddress,
+    //             value,
+    //             data: calls[0],
+    //           },
+    //         ],
+    //       ]),
+    //       value: '0x0',
+    //       deadline,
+    //     },
+    //   ]
+    // }
     return [
       {
         address: swapRouterAddress,
-        calldata: calls[0],
+        calldata,
         value,
         deadline,
       },
@@ -145,7 +172,6 @@ export function useSwapCallArguments(
   }, [
     account,
     allowedSlippage,
-    argentWalletContract,
     chainId,
     deadline,
     feeOptions,
@@ -153,6 +179,6 @@ export function useSwapCallArguments(
     recipient,
     signatureData,
     trade,
-    violet,
+    violetResponse,
   ])
 }
