@@ -1,4 +1,3 @@
-import { Interface } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
 // eslint-disable-next-line no-restricted-imports
@@ -13,150 +12,6 @@ import { useMemo } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import isZero from 'utils/isZero'
 import { swapErrorToUserReadableMessage } from 'utils/swapErrorToUserReadableMessage'
-import { getEATForMulticall } from 'utils/temporary/generateEAT'
-
-// TODO: Update mauve-router-sdk import and replace this ABI with SwapRouter.INTERFACE
-const ISwapRouter02ABI = [
-  {
-    inputs: [
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8',
-      },
-      {
-        internalType: 'bytes32',
-        name: 'r',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint256',
-        name: 'expiry',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes[]',
-        name: 'data',
-        type: 'bytes[]',
-      },
-    ],
-    name: 'multicall',
-    outputs: [
-      {
-        internalType: 'bytes[]',
-        name: 'results',
-        type: 'bytes[]',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint8',
-        name: 'v',
-        type: 'uint8',
-      },
-      {
-        internalType: 'bytes32',
-        name: 'r',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'bytes32',
-        name: 's',
-        type: 'bytes32',
-      },
-      {
-        internalType: 'uint256',
-        name: 'expiry',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'deadline',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes[]',
-        name: 'data',
-        type: 'bytes[]',
-      },
-    ],
-    name: 'multicall',
-    outputs: [
-      {
-        internalType: 'bytes[]',
-        name: 'results',
-        type: 'bytes[]',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: 'address',
-            name: 'tokenIn',
-            type: 'address',
-          },
-          {
-            internalType: 'address',
-            name: 'tokenOut',
-            type: 'address',
-          },
-          {
-            internalType: 'uint24',
-            name: 'fee',
-            type: 'uint24',
-          },
-          {
-            internalType: 'address',
-            name: 'recipient',
-            type: 'address',
-          },
-          {
-            internalType: 'uint256',
-            name: 'amountIn',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint256',
-            name: 'amountOutMinimum',
-            type: 'uint256',
-          },
-          {
-            internalType: 'uint160',
-            name: 'sqrtPriceLimitX96',
-            type: 'uint160',
-          },
-        ],
-        internalType: 'struct IV3SwapRouter.ExactInputSingleParams',
-        name: 'params',
-        type: 'tuple',
-      },
-    ],
-    name: 'exactInputSingle',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'amountOut',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-]
 
 interface SwapCallEstimate {
   call: SwapCall
@@ -193,40 +48,8 @@ export default function useSendSwapTransaction(
 
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
-        // Keeping only the first one for now
-        // const filteredSwapCalls = swapCalls.slice(0, 1)
-        // const swapCall = filteredSwapCalls[0]
-
-        // const { route } = trade?.swaps[0]
-        //
-        // const params = {
-        //   // TODO: Figure out the conflict between the routes interfaces.
-        //   // route from router-sdk should only be IRoute<Currency, Currency, Pool>
-        //   // not IRoute<Currency, Currency, Pool | Pair>
-        //   // @ts-ignore
-        //   tokenIn: route.tokenPath[0].address,
-        //   // @ts-ignore
-        //   tokenOut: route.tokenPath[1].address,
-        //   // @ts-ignore
-        //   fee: route.pools[0].fee,
-        //   recipient: account,
-        //   amountIn: BigNumber.from('1'),
-        //   amountOutMinimum: 0,
-        //   sqrtPriceLimitX96: 0,
-        // }
-        // const routerInterface = new Interface(ISwapRouter02ABI)
-        //
-        // const data = [routerInterface.encodeFunctionData('exactInputSingle', [params])]
-        // await getEATForMulticall({
-        //   callerAddress: account,
-        //   contractAddress: swapCall.address,
-        //   functionSigHash: '0x6cfd42de',
-        //   chainId,
-        //   parameters: data[0],
-        // })
-
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
-          swapCalls.map((call) => {
+          swapCalls.map(async (call) => {
             const { address, calldata, value } = call
 
             const tx =
@@ -247,7 +70,7 @@ export default function useSendSwapTransaction(
                   gasEstimate,
                 }
               })
-              .catch((gasError) => {
+              .catch(async (gasError) => {
                 console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 return provider
