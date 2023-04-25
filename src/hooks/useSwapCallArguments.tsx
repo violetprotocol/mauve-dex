@@ -142,41 +142,11 @@ export function useSwapCallArguments(
     let calldata
     if (eat?.signature) {
       const { v, r, s } = eat.signature
-      console.log('ENCODING:')
-      console.log(v)
-      console.log(r)
-      console.log(s)
-      console.log(eat.expiry)
-      // calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       calldata = EATMulticallExtended.encodePostsignMulticallExtended(v, r, s, eat.expiry, calls, deadline?.toString())
-      // calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
-      console.log('***********************')
-      console.log(calldata)
     }
     if (!calldata) {
-      console.log('this should not happen')
       calldata = calls[0]
     }
-
-    // if (argentWalletContract && trade.inputAmount.currency.isToken) {
-    //   return [
-    //     {
-    //       address: argentWalletContract.address,
-    //       calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
-    //         [
-    //           approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
-    //           {
-    //             to: swapRouterAddress,
-    //             value,
-    //             data: calls[0],
-    //           },
-    //         ],
-    //       ]),
-    //       value: '0x0',
-    //       deadline,
-    //     },
-    //   ]
-    // }
     return [
       {
         address: swapRouterAddress,
