@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
+import { EATMulticallExtended, SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { EATMulticall, FeeOptions } from '@violetprotocol/mauve-v3-sdk'
+import { FeeOptions } from '@violetprotocol/mauve-v3-sdk'
 import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
@@ -142,10 +142,18 @@ export function useSwapCallArguments(
     let calldata
     if (eat?.signature) {
       const { v, r, s } = eat.signature
-      calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+      console.log('ENCODING:')
+      console.log(v)
+      console.log(r)
+      console.log(s)
+      console.log(eat.expiry)
+      // calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+      calldata = EATMulticallExtended.encodePostsignMulticallExtended(v, r, s, eat.expiry, calls, deadline?.toString())
+      // calldata = EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
+      console.log('***********************')
+      console.log(calldata)
     }
     if (!calldata) {
-      console.log('*********************')
       console.log('this should not happen')
       calldata = calls[0]
     }

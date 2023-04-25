@@ -5631,10 +5631,10 @@
     "@violetprotocol/mauve-v2-sdk" "3.1.0"
     "@violetprotocol/mauve-v3-sdk" "4.0.0"
 
-"@violetprotocol/mauve-router-sdk@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.6.0.tgz#4ba314f7542d38326a71de68a8f8e34afcfa6a35"
-  integrity sha512-v65uf3OKsSoQn45ZxUcDjAd4EZbdhBD1NZA5LdSRIA/tEEI9Xy0VptrFdz34OjPCt0nFZ7kOudf1OmvoNYH95Q==
+"@violetprotocol/mauve-router-sdk@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.6.1.tgz#0ad3e7c6eb5a99d504f1ba137497ecc0a40463d6"
+  integrity sha512-U9H1Q5EDPx7Zm1Z9h9+4ISmQi6naefrhd/+gGFi0apM4mXyYJLFghfOs6i4YuKmCaCGZK00+5srB9THIH0r7SA==
   dependencies:
     "@violetprotocol/mauve-sdk-core" "3.2.0"
     "@violetprotocol/mauve-swap-router-contracts" "1.5.0"

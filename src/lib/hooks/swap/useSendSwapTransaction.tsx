@@ -194,29 +194,29 @@ export default function useSendSwapTransaction(
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
         // Keeping only the first one for now
-        const filteredSwapCalls = swapCalls.slice(0, 1)
-        const swapCall = filteredSwapCalls[0]
+        // const filteredSwapCalls = swapCalls.slice(0, 1)
+        // const swapCall = filteredSwapCalls[0]
 
-        const { route } = trade?.swaps[0]
-
-        const params = {
-          // TODO: Figure out the conflict between the routes interfaces.
-          // route from router-sdk should only be IRoute<Currency, Currency, Pool>
-          // not IRoute<Currency, Currency, Pool | Pair>
-          // @ts-ignore
-          tokenIn: route.tokenPath[0].address,
-          // @ts-ignore
-          tokenOut: route.tokenPath[1].address,
-          // @ts-ignore
-          fee: route.pools[0].fee,
-          recipient: account,
-          amountIn: BigNumber.from('1'),
-          amountOutMinimum: 0,
-          sqrtPriceLimitX96: 0,
-        }
-        const routerInterface = new Interface(ISwapRouter02ABI)
-
-        const data = [routerInterface.encodeFunctionData('exactInputSingle', [params])]
+        // const { route } = trade?.swaps[0]
+        //
+        // const params = {
+        //   // TODO: Figure out the conflict between the routes interfaces.
+        //   // route from router-sdk should only be IRoute<Currency, Currency, Pool>
+        //   // not IRoute<Currency, Currency, Pool | Pair>
+        //   // @ts-ignore
+        //   tokenIn: route.tokenPath[0].address,
+        //   // @ts-ignore
+        //   tokenOut: route.tokenPath[1].address,
+        //   // @ts-ignore
+        //   fee: route.pools[0].fee,
+        //   recipient: account,
+        //   amountIn: BigNumber.from('1'),
+        //   amountOutMinimum: 0,
+        //   sqrtPriceLimitX96: 0,
+        // }
+        // const routerInterface = new Interface(ISwapRouter02ABI)
+        //
+        // const data = [routerInterface.encodeFunctionData('exactInputSingle', [params])]
         // await getEATForMulticall({
         //   callerAddress: account,
         //   contractAddress: swapCall.address,
