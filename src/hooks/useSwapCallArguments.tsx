@@ -72,12 +72,16 @@ export function useSwapCallArguments(
       },
       address: account,
       chainId,
-    }).then((response) => {
-      if (response) {
-        setVioletResponse(response)
-      }
-      setIsBeingAuthorized(false)
     })
+      .then((response) => {
+        if (response) {
+          setVioletResponse(response)
+        }
+        setIsBeingAuthorized(false)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }, [account, authorize, chainId, functionSignature, parameters, violetResponse, isBeingAuthorized])
 
   return useMemo(() => {
