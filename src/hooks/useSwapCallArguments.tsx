@@ -9,7 +9,6 @@ import { splitSignature } from 'ethers/lib/utils'
 import { useEffect, useMemo, useState } from 'react'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
-// import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
@@ -42,7 +41,6 @@ export function useSwapCallArguments(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  // const argentWalletContract = useArgentWalletContract()
   if (!environment || !clientId) {
     throw new Error('Invalid environment')
   }
@@ -54,19 +52,18 @@ export function useSwapCallArguments(
   const [violetResponse, setVioletResponse] = useState<Awaited<ReturnType<typeof authorize>>>()
   const [functionSignature, setFunctionSignature] = useState<string>()
   const [parameters, setParameters] = useState<string>()
-  const [isMakingAuthorization, setIsMakingAuthorization] = useState<boolean>(false)
+  const [isBeingAuthorized, setIsBeingAuthorized] = useState<boolean>(false)
 
   useEffect(() => {
-    if (violetResponse) return
+    if (violetResponse || isBeingAuthorized) return
 
     if (!account || !parameters || !functionSignature || !chainId) return
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
 
     if (!swapRouterAddress) return
-    if (isMakingAuthorization) return
 
-    setIsMakingAuthorization(true)
+    setIsBeingAuthorized(true)
     authorize({
       transaction: {
         data: parameters,
@@ -79,9 +76,9 @@ export function useSwapCallArguments(
       if (response) {
         setVioletResponse(response)
       }
-      setIsMakingAuthorization(false)
+      setIsBeingAuthorized(false)
     })
-  }, [account, authorize, chainId, functionSignature, parameters, violetResponse, isMakingAuthorization])
+  }, [account, authorize, chainId, functionSignature, parameters, violetResponse, isBeingAuthorized])
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) return []
@@ -122,8 +119,6 @@ export function useSwapCallArguments(
     setParameters(parameters)
 
     let eat
-    console.log('*********************')
-    console.log(violetResponse)
     if (violetResponse) {
       const [violet, error] = violetResponse
       if (violet) {

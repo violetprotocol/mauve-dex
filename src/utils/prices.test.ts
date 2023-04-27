@@ -1,6 +1,5 @@
 import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
-// import { Pair, Route as V2Route } from '@violetprotocol/mauve-v2-sdk'
 import { FeeAmount, Pool, Route as V3Route } from '@violetprotocol/mauve-v3-sdk'
 import JSBI from 'jsbi'
 
