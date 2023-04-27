@@ -49,7 +49,7 @@ export default function useSendSwapTransaction(
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
         const estimatedCalls: SwapCallEstimate[] = await Promise.all(
-          swapCalls.map(async (call) => {
+          swapCalls.map((call) => {
             const { address, calldata, value } = call
 
             const tx =
@@ -70,7 +70,7 @@ export default function useSendSwapTransaction(
                   gasEstimate,
                 }
               })
-              .catch(async (gasError) => {
+              .catch((gasError) => {
                 console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 return provider
