@@ -1,13 +1,14 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
+import { EATMulticallExtended, SwapRouter, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { FeeOptions } from '@violetprotocol/mauve-v3-sdk'
+import { useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
-import { useMemo } from 'react'
-import approveAmountCalldata from 'utils/approveAmountCalldata'
+import { splitSignature } from 'ethers/lib/utils'
+import { useEffect, useMemo, useState } from 'react'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
-import { useArgentWalletContract } from './useArgentWalletContract'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
@@ -17,6 +18,9 @@ export interface SwapCall {
   value: string
   deadline?: BigNumber
 }
+
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
 /**
  * Returns the swap calls that can be used to make the trade
@@ -37,15 +41,57 @@ export function useSwapCallArguments(
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
-  const argentWalletContract = useArgentWalletContract()
+  if (!environment || !clientId) {
+    throw new Error('Invalid environment')
+  }
+  const { authorize } = useViolet({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  })
+  const [violetResponse, setVioletResponse] = useState<Awaited<ReturnType<typeof authorize>>>()
+  const [functionSignature, setFunctionSignature] = useState<string>()
+  const [parameters, setParameters] = useState<string>()
+  const [isBeingAuthorized, setIsBeingAuthorized] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (violetResponse || isBeingAuthorized) return
+
+    if (!account || !parameters || !functionSignature || !chainId) return
+
+    const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+
+    if (!swapRouterAddress) return
+
+    setIsBeingAuthorized(true)
+    authorize({
+      transaction: {
+        data: parameters,
+        functionSignature,
+        targetContract: swapRouterAddress,
+      },
+      address: account,
+      chainId,
+    })
+      .then((response) => {
+        if (response) {
+          setVioletResponse(response)
+        }
+        setIsBeingAuthorized(false)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [account, authorize, chainId, functionSignature, parameters, violetResponse, isBeingAuthorized])
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) return []
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+
     if (!swapRouterAddress) return []
 
-    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+    const { value, calls, functionSignature, parameters } = SwapRouter.swapCallParameters(trade, {
       fee: feeOptions,
       recipient,
       slippageTolerance: allowedSlippage,
@@ -73,24 +119,32 @@ export function useSwapCallArguments(
       deadlineOrPreviousBlockhash: deadline.toString(),
     })
 
-    if (argentWalletContract && trade.inputAmount.currency.isToken) {
-      return [
-        {
-          address: argentWalletContract.address,
-          calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
-            [
-              approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
-              {
-                to: swapRouterAddress,
-                value,
-                data: calldata,
-              },
-            ],
-          ]),
-          value: '0x0',
-          deadline,
-        },
-      ]
+    setFunctionSignature(functionSignature)
+    setParameters(parameters)
+
+    let eat
+    if (violetResponse) {
+      const [violet, error] = violetResponse
+      if (violet) {
+        eat = JSON.parse(atob(violet.token))
+        eat.signature = splitSignature(eat.signature)
+        if (!eat?.signature || !eat?.expiry) {
+          // throw new Error('Failed to get EAT')
+        }
+      } else {
+        console.log(error)
+        // throw new Error('Failed to get EAT')
+      }
+    } else {
+      // throw new Error('Failed to get EAT')
+    }
+    let calldata
+    if (eat?.signature) {
+      const { v, r, s } = eat.signature
+      calldata = EATMulticallExtended.encodePostsignMulticallExtended(v, r, s, eat.expiry, calls, deadline?.toString())
+    }
+    if (!calldata) {
+      calldata = calls[0]
     }
     return [
       {
@@ -103,7 +157,6 @@ export function useSwapCallArguments(
   }, [
     account,
     allowedSlippage,
-    argentWalletContract,
     chainId,
     deadline,
     feeOptions,
@@ -111,5 +164,6 @@ export function useSwapCallArguments(
     recipient,
     signatureData,
     trade,
+    violetResponse,
   ])
 }
