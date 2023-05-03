@@ -59,7 +59,7 @@ export default function useSendSwapTransaction({
         const violetResponse = await violetCallback()
 
         if (!violetResponse) {
-          throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
+          throw new Error(t`Unexpected error. Could not get proper response from Violet.`)
         }
 
         const swapCallEncodedWithEAT = {
