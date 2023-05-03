@@ -47,23 +47,23 @@ const redirectUrlByEnvironment = (environment: string) => {
   }
 }
 
-const getHumanBoundContractAddressByNetworkId = (chainId: number) => {
+const getMauvePositionManagerContractAddressByNetworkId = (chainId: number) => {
   const parsedChainId = chainId.toString()
   switch (parsedChainId) {
     case '1':
-      return '0x594e5550ece2c10e5d580e538871914f55884f5d'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '421613':
-      return '0x8d39fe83ed158f1b7e21a6434e0878d6c11f02b9'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '42161':
-      return '0x5beb956a9af054956c5c6c0afac7b109236f86aa'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '80001':
-      return '0x1888649d566908e0a4ac17978740f6a04f600a51'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '420':
-      return '0x5e5007bdd3eb92575499e17eabdd411b42cf79c0'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '10':
-      return '0xff439ba52825ffd65e39fd2bf519566d0cd91827'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     case '137':
-      return '0x41be3a6c17cf76442d9e7b150de4870027d36f52'
+      return '0x0eae7acE48BCE9ff53333e1A7c4045e7EAb93894'
     default:
       throw new Error('Not supported chainId')
   }
@@ -124,7 +124,7 @@ export default function VioletTestButton() {
       transaction: {
         data: '0x000000000000000000000000d00f7eddc37631bc7bd9ebad8265b2785465a3b7000000000000000000000000000000000000000000000000000000001adc34a100000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000',
         functionSignature: '0x50d41df3',
-        targetContract: getHumanBoundContractAddressByNetworkId(chainId),
+        targetContract: getMauvePositionManagerContractAddressByNetworkId(chainId),
       },
       address: account,
       chainId,
