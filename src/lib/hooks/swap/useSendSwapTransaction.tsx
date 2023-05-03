@@ -62,47 +62,50 @@ export default function useSendSwapTransaction({
           throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
         }
 
-        const call = {
+        const swapCallEncodedWithEAT = {
           ...swapCall,
           calldata: violetResponse.calldata,
         }
 
-        const { address, calldata, value } = call
-
         const tx =
-          !value || isZero(value)
-            ? { from: account, to: address, data: calldata }
+          !swapCallEncodedWithEAT.value || isZero(swapCallEncodedWithEAT.value)
+            ? { from: account, to: swapCallEncodedWithEAT.address, data: swapCallEncodedWithEAT.calldata }
             : {
                 from: account,
-                to: address,
-                data: calldata,
-                value,
+                to: swapCallEncodedWithEAT.address,
+                data: swapCallEncodedWithEAT.calldata,
+                value: swapCallEncodedWithEAT.value,
               }
 
         const estimatedCall: SwapCallEstimate | SuccessfulCall | FailedCall = await provider
           .estimateGas(tx)
           .then((gasEstimate) => {
             return {
-              call,
+              call: swapCallEncodedWithEAT,
               gasEstimate,
             }
           })
           .catch((gasError) => {
-            console.debug('Gas estimate failed, trying eth_call to extract error', call)
+            console.debug('Gas estimate failed, trying eth_call to extract error', swapCallEncodedWithEAT)
 
             return provider
               .call(tx)
               .then((result) => {
-                console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
+                console.debug(
+                  'Unexpected successful call after failed estimate gas',
+                  swapCallEncodedWithEAT,
+                  gasError,
+                  result
+                )
                 return {
-                  call,
+                  call: swapCallEncodedWithEAT,
                   error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans>,
                 }
               })
               .catch((callError) => {
-                console.debug('Call threw error', call, callError)
+                console.debug('Call threw error', swapCallEncodedWithEAT, callError)
                 return {
-                  call,
+                  call: swapCallEncodedWithEAT,
                   error: swapErrorToUserReadableMessage(callError),
                 }
               })
@@ -116,11 +119,13 @@ export default function useSendSwapTransaction({
           .getSigner()
           .sendTransaction({
             from: account,
-            to: address,
-            data: calldata,
+            to: swapCallEncodedWithEAT.address,
+            data: swapCallEncodedWithEAT.calldata,
             // let the wallet try if we can't estimate the gas
             ...('gasEstimate' in estimatedCall ? { gasLimit: calculateGasMargin(estimatedCall.gasEstimate) } : {}),
-            ...(value && !isZero(value) ? { value } : {}),
+            ...(swapCallEncodedWithEAT.value && !isZero(swapCallEncodedWithEAT.value)
+              ? { value: swapCallEncodedWithEAT.value }
+              : {}),
           })
           .then((response) => {
             sendAnalyticsEvent(
@@ -130,7 +135,7 @@ export default function useSendSwapTransaction({
                 txHash: response.hash,
               })
             )
-            if (calldata !== response.data) {
+            if (swapCallEncodedWithEAT.calldata !== response.data) {
               sendAnalyticsEvent(SwapEventName.SWAP_MODIFIED_IN_WALLET, {
                 txHash: response.hash,
               })
@@ -146,7 +151,13 @@ export default function useSendSwapTransaction({
               throw new Error(t`Transaction rejected`)
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              console.error(`Swap failed`, error, address, calldata, value)
+              console.error(
+                `Swap failed`,
+                error,
+                swapCallEncodedWithEAT.address,
+                swapCallEncodedWithEAT.calldata,
+                swapCallEncodedWithEAT.value
+              )
 
               if (error instanceof InvalidSwapError) {
                 throw error

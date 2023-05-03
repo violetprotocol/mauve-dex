@@ -29,7 +29,7 @@ const useSwapVioletAuthorize = ({
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
 
     if (!swapRouterAddress) {
-      return
+      throw new Error('Swap router address not found')
     }
 
     const response = await authorize({
