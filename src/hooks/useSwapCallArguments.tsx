@@ -18,6 +18,15 @@ export interface SwapCall {
   parameters: string
 }
 
+interface SwapCallArgumentsInputs {
+  trade?: Trade<Currency, Currency, TradeType>
+  allowedSlippage: Percent
+  recipientAddressOrName?: string | null
+  signatureData?: SignatureData | null
+  deadline?: BigNumber
+  feeOptions?: FeeOptions
+}
+
 const environment = process.env.REACT_APP_VIOLET_ENV
 const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
@@ -37,14 +46,7 @@ export function useSwapCallArguments({
   signatureData,
   deadline,
   feeOptions,
-}: {
-  trade?: Trade<Currency, Currency, TradeType>
-  allowedSlippage: Percent
-  recipientAddressOrName?: string | null
-  signatureData?: SignatureData | null
-  deadline?: BigNumber
-  feeOptions?: FeeOptions
-}): SwapCall | undefined {
+}: SwapCallArgumentsInputs): SwapCall | null {
   const { account, chainId, provider } = useWeb3React()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
@@ -57,13 +59,13 @@ export function useSwapCallArguments({
 
   return useMemo(() => {
     if (!trade || !recipient || !provider || !account || !chainId || !deadline) {
-      return
+      return null
     }
 
     const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
 
     if (!swapRouterAddress) {
-      return
+      return null
     }
 
     const { value, calls, functionSignature, parameters } = SwapRouter.swapCallParameters(trade, {

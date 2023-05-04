@@ -42,8 +42,8 @@ export default function useSendSwapTransaction({
   chainId?: number
   provider?: JsonRpcProvider
   trade?: Trade<Currency, Currency, TradeType> // trade to execute, required
-  swapCall?: SwapCall
-  violetCallback: () => Promise<{ calldata: string } | undefined>
+  swapCall: SwapCall | null
+  violetCallback: () => Promise<{ calldata: string } | null>
 }): { callback: null | (() => Promise<TransactionResponse>) } {
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId || !violetCallback) {
@@ -67,14 +67,16 @@ export default function useSendSwapTransaction({
           calldata: violetResponse.calldata,
         }
 
+        const { address, value, calldata } = swapCallEncodedWithEAT
+
         const tx =
-          !swapCallEncodedWithEAT.value || isZero(swapCallEncodedWithEAT.value)
-            ? { from: account, to: swapCallEncodedWithEAT.address, data: swapCallEncodedWithEAT.calldata }
+          !value || isZero(value)
+            ? { from: account, to: address, data: calldata }
             : {
                 from: account,
-                to: swapCallEncodedWithEAT.address,
-                data: swapCallEncodedWithEAT.calldata,
-                value: swapCallEncodedWithEAT.value,
+                to: address,
+                data: calldata,
+                value,
               }
 
         const estimatedCall: SwapCallEstimate | SuccessfulCall | FailedCall = await provider
@@ -119,13 +121,11 @@ export default function useSendSwapTransaction({
           .getSigner()
           .sendTransaction({
             from: account,
-            to: swapCallEncodedWithEAT.address,
-            data: swapCallEncodedWithEAT.calldata,
+            to: address,
+            data: calldata,
             // let the wallet try if we can't estimate the gas
             ...('gasEstimate' in estimatedCall ? { gasLimit: calculateGasMargin(estimatedCall.gasEstimate) } : {}),
-            ...(swapCallEncodedWithEAT.value && !isZero(swapCallEncodedWithEAT.value)
-              ? { value: swapCallEncodedWithEAT.value }
-              : {}),
+            ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response) => {
             sendAnalyticsEvent(
@@ -135,7 +135,7 @@ export default function useSendSwapTransaction({
                 txHash: response.hash,
               })
             )
-            if (swapCallEncodedWithEAT.calldata !== response.data) {
+            if (calldata !== response.data) {
               sendAnalyticsEvent(SwapEventName.SWAP_MODIFIED_IN_WALLET, {
                 txHash: response.hash,
               })
@@ -151,13 +151,7 @@ export default function useSendSwapTransaction({
               throw new Error(t`Transaction rejected`)
             } else {
               // otherwise, the error was unexpected and we need to convey that
-              console.error(
-                `Swap failed`,
-                error,
-                swapCallEncodedWithEAT.address,
-                swapCallEncodedWithEAT.calldata,
-                swapCallEncodedWithEAT.value
-              )
+              console.error(`Swap failed`, error, address, calldata, value)
 
               if (error instanceof InvalidSwapError) {
                 throw error

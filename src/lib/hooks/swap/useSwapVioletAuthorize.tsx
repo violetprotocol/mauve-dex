@@ -13,13 +13,13 @@ const useSwapVioletAuthorize = ({
   account,
   chainId,
 }: {
-  swapCall?: SwapCall
+  swapCall: SwapCall | null
   account?: string
   chainId?: number
 }) => {
   const violetCallback = async () => {
     if (!swapCall || !account || !chainId) {
-      return
+      return null
     }
 
     if (!environment || !clientId) {
@@ -55,12 +55,12 @@ const useSwapVioletAuthorize = ({
         eat.signature = splitSignature(eat.signature)
 
         if (!eat?.signature || !eat?.expiry) {
-          throw new Error('Failed to get EAT')
+          throw new Error('EAT malformed')
         }
       } else {
         console.error(error)
 
-        throw new Error('Failed to get EAT')
+        throw new Error('Failed to parse EAT')
       }
     } else {
       throw new Error('Failed to get EAT')
@@ -82,7 +82,7 @@ const useSwapVioletAuthorize = ({
     }
 
     if (!calldata) {
-      throw new Error('Failed to get EAT')
+      throw new Error('Failed to get callata from EAT')
     }
 
     return { calldata }
