@@ -12,6 +12,7 @@ import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 import { ReactNode, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
+import useSwapVioletAuthorize from './useSwapVioletAuthorize'
 
 export enum SwapCallbackState {
   INVALID,
@@ -45,15 +46,18 @@ export function useSwapCallback({
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
 
-  const swapCalls = useSwapCallArguments(
+  const swapCall = useSwapCallArguments({
     trade,
     allowedSlippage,
     recipientAddressOrName,
     signatureData,
     deadline,
-    feeOptions
-  )
-  const { callback } = useSendSwapTransaction(account, chainId, provider, trade, swapCalls)
+    feeOptions,
+  })
+
+  const { violetCallback } = useSwapVioletAuthorize({ swapCall, account, chainId })
+
+  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress

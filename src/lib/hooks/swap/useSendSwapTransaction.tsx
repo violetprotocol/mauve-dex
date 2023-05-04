@@ -30,89 +30,92 @@ interface FailedCall extends SwapCallEstimate {
 class InvalidSwapError extends Error {}
 
 // returns a function that will execute a swap, if the parameters are all valid
-export default function useSendSwapTransaction(
-  account: string | null | undefined,
-  chainId: number | undefined,
-  provider: JsonRpcProvider | undefined,
-  trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
-  swapCalls: SwapCall[]
-): { callback: null | (() => Promise<TransactionResponse>) } {
+export default function useSendSwapTransaction({
+  account,
+  chainId,
+  provider,
+  trade,
+  swapCall,
+  violetCallback,
+}: {
+  account?: string | null
+  chainId?: number
+  provider?: JsonRpcProvider
+  trade?: Trade<Currency, Currency, TradeType> // trade to execute, required
+  swapCall: SwapCall | null
+  violetCallback: () => Promise<{ calldata: string } | null>
+}): { callback: null | (() => Promise<TransactionResponse>) } {
   return useMemo(() => {
-    if (!trade || !provider || !account || !chainId) {
+    if (!trade || !provider || !account || !chainId || !violetCallback) {
       return { callback: null }
     }
 
-    if (swapCalls.length == 0) {
+    if (!swapCall) {
       return { callback: null }
     }
 
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
-        const estimatedCalls: SwapCallEstimate[] = await Promise.all(
-          swapCalls.map((call) => {
-            const { address, calldata, value } = call
+        const violetResponse = await violetCallback()
 
-            const tx =
-              !value || isZero(value)
-                ? { from: account, to: address, data: calldata }
-                : {
-                    from: account,
-                    to: address,
-                    data: calldata,
-                    value,
-                  }
-
-            return provider
-              .estimateGas(tx)
-              .then((gasEstimate) => {
-                return {
-                  call,
-                  gasEstimate,
-                }
-              })
-              .catch((gasError) => {
-                console.debug('Gas estimate failed, trying eth_call to extract error', call)
-
-                return provider
-                  .call(tx)
-                  .then((result) => {
-                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
-                    return {
-                      call,
-                      error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans>,
-                    }
-                  })
-                  .catch((callError) => {
-                    console.debug('Call threw error', call, callError)
-                    return {
-                      call,
-                      error: swapErrorToUserReadableMessage(callError),
-                    }
-                  })
-              })
-          })
-        )
-
-        // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | SwapCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
-        )
-
-        // check if any calls errored with a recognizable error
-        if (!bestCallOption) {
-          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-          if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<SwapCallEstimate>(
-            (call): call is SwapCallEstimate => !('error' in call)
-          )
-          if (!firstNoErrorCall) throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
-          bestCallOption = firstNoErrorCall
+        if (!violetResponse) {
+          throw new Error(t`Unexpected error. Could not get proper response from Violet.`)
         }
 
-        const {
-          call: { address, calldata, value },
-        } = bestCallOption
+        const swapCallEncodedWithEAT = {
+          ...swapCall,
+          calldata: violetResponse.calldata,
+        }
+
+        const { address, value, calldata } = swapCallEncodedWithEAT
+
+        const tx =
+          !value || isZero(value)
+            ? { from: account, to: address, data: calldata }
+            : {
+                from: account,
+                to: address,
+                data: calldata,
+                value,
+              }
+
+        const estimatedCall: SwapCallEstimate | SuccessfulCall | FailedCall = await provider
+          .estimateGas(tx)
+          .then((gasEstimate) => {
+            return {
+              call: swapCallEncodedWithEAT,
+              gasEstimate,
+            }
+          })
+          .catch((gasError) => {
+            console.debug('Gas estimate failed, trying eth_call to extract error', swapCallEncodedWithEAT)
+
+            return provider
+              .call(tx)
+              .then((result) => {
+                console.debug(
+                  'Unexpected successful call after failed estimate gas',
+                  swapCallEncodedWithEAT,
+                  gasError,
+                  result
+                )
+                return {
+                  call: swapCallEncodedWithEAT,
+                  error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans>,
+                }
+              })
+              .catch((callError) => {
+                console.debug('Call threw error', swapCallEncodedWithEAT, callError)
+                return {
+                  call: swapCallEncodedWithEAT,
+                  error: swapErrorToUserReadableMessage(callError),
+                }
+              })
+          })
+
+        if ('error' in estimatedCall) {
+          throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
+        }
 
         return provider
           .getSigner()
@@ -121,7 +124,7 @@ export default function useSendSwapTransaction(
             to: address,
             data: calldata,
             // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in bestCallOption ? { gasLimit: calculateGasMargin(bestCallOption.gasEstimate) } : {}),
+            ...('gasEstimate' in estimatedCall ? { gasLimit: calculateGasMargin(estimatedCall.gasEstimate) } : {}),
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response) => {
@@ -159,5 +162,5 @@ export default function useSendSwapTransaction(
           })
       },
     }
-  }, [account, chainId, provider, swapCalls, trade])
+  }, [account, chainId, provider, swapCall, trade, violetCallback])
 }
