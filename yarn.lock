@@ -5620,6 +5620,18 @@
     base64-sol "1.0.1"
     hardhat-watcher "^2.1.1"
 
+"@violetprotocol/mauve-periphery@1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-periphery/-/mauve-periphery-1.8.3.tgz#641b162c5d1cabc06fec536712ef1c6505a9b5d7"
+  integrity sha512-7cwIn9Gu0DP5FeW62vuEpOWwTrDg4OkVI5h8jS5NXA96YVJAfyCI32UEQcJt/tjtQisNemRGLYTWcwQuvyfMjw==
+  dependencies:
+    "@openzeppelin/contracts" "3.4.2-solc-0.7"
+    "@violetprotocol/ethereum-access-token" "0.2.0-sol07"
+    "@violetprotocol/mauve-core" "1.2.3"
+    "@violetprotocol/violetid" "1.2.2"
+    base64-sol "1.0.1"
+    hardhat-watcher "^2.1.1"
+
 "@violetprotocol/mauve-router-sdk@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.5.0.tgz#41b288eb03a608c51e9e9c7a5e89b41811394d66"
