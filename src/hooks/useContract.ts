@@ -25,7 +25,7 @@ import {
 } from 'constants/addresses'
 import { WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
 import { useMemo } from 'react'
-import { NonfungiblePositionManager, Quoter, QuoterV2, TickLens, UniswapInterfaceMulticall } from 'types/v3'
+import { MauveInterfaceMulticall, NonfungiblePositionManager, Quoter, QuoterV2, TickLens } from 'types/v3'
 
 import { getContract } from '../utils'
 
@@ -100,7 +100,7 @@ export function useEIP2612Contract(tokenAddress?: string): Contract | null {
 }
 
 export function useInterfaceMulticall() {
-  return useContract<UniswapInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as UniswapInterfaceMulticall
+  return useContract<MauveInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as MauveInterfaceMulticall
 }
 
 export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean): NonfungiblePositionManager | null {
