@@ -22,6 +22,7 @@ import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useDebouncedChangeHandler from 'hooks/useDebouncedChangeHandler'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3PositionFromTokenId } from 'hooks/useV3Positions'
+import { getVioletAuthorizedCall } from 'hooks/useVioletAuthorize'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { useCallback, useMemo, useState } from 'react'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
@@ -115,7 +116,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+    const callParameters = NonfungiblePositionManager.removeCallParameters(positionSDK, {
       tokenId: tokenId.toString(),
       liquidityPercentage,
       slippageTolerance: allowedSlippage,
@@ -126,12 +127,25 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         recipient: account,
       },
     })
+    const call = {
+      ...callParameters,
+      address: positionManager.address,
+    }
+    const result = await getVioletAuthorizedCall({
+      call,
+      account,
+      chainId,
+    })
+
+    if (!result?.calldata) {
+      console.error(`Failed to get calldata with EAT`)
+      return
+    }
 
     const txn = {
       to: positionManager.address,
-      // TO UPDATE
-      data: [],
-      value,
+      data: result.calldata,
+      value: callParameters.value,
     }
 
     provider
