@@ -16,70 +16,84 @@ export type Call = {
   deadline?: BigNumber
 }
 
-const useVioletAuthorize = ({ call, account, chainId }: { call: Call | null; account?: string; chainId?: number }) => {
-  const violetCallback = async () => {
-    if (!call || !account || !chainId) {
-      return null
-    }
+type VioletTxAuthorizationPayload = {
+  call: Call | null
+  account?: string
+  chainId?: number
+}
 
-    if (!environment || !clientId) {
-      throw new Error('Invalid environment')
-    }
+export const getVioletAuthorizedCall = async ({
+  call,
+  account,
+  chainId,
+}: VioletTxAuthorizationPayload): Promise<{ calldata: string } | null> => {
+  if (!call || !account || !chainId) {
+    return null
+  }
 
-    const response = await authorize({
-      clientId,
-      apiUrl: baseUrlByEnvironment(environment.toString()),
-      redirectUrl: redirectUrlByEnvironment(environment.toString()),
-      transaction: {
-        data: call.parameters,
-        functionSignature: call.functionSignature,
-        targetContract: call.address,
-      },
-      address: account,
-      chainId,
-    })
+  if (!environment || !clientId) {
+    throw new Error('Invalid environment')
+  }
 
-    let eat
+  const response = await authorize({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+    transaction: {
+      data: call.parameters,
+      functionSignature: call.functionSignature,
+      targetContract: call.address,
+    },
+    address: account,
+    chainId,
+  })
 
-    if (response) {
-      const [violet, error] = response
-      if (violet) {
-        eat = JSON.parse(atob(violet.token))
+  let eat
 
-        eat.signature = splitSignature(eat.signature)
+  if (response) {
+    const [violet, error] = response
+    if (violet) {
+      eat = JSON.parse(atob(violet.token))
 
-        if (!eat?.signature || !eat?.expiry) {
-          throw new Error('EAT malformed')
-        }
-      } else {
-        console.error(error)
+      eat.signature = splitSignature(eat.signature)
 
-        throw new Error('Failed to parse EAT')
+      if (!eat?.signature || !eat?.expiry) {
+        throw new Error('EAT malformed')
       }
     } else {
-      throw new Error('Failed to get EAT')
+      console.error(error)
+
+      throw new Error('Failed to parse EAT')
     }
+  } else {
+    throw new Error('Failed to get EAT')
+  }
 
-    let calldata
+  let calldata
 
-    if (eat?.signature) {
-      const { v, r, s } = eat.signature
+  if (eat?.signature) {
+    const { v, r, s } = eat.signature
 
-      calldata = EATMulticallExtended.encodePostsignMulticallExtended(
-        v,
-        r,
-        s,
-        eat.expiry,
-        call.calls,
-        call?.deadline?.toString()
-      )
-    }
+    calldata = EATMulticallExtended.encodePostsignMulticallExtended(
+      v,
+      r,
+      s,
+      eat.expiry,
+      call.calls,
+      call?.deadline?.toString()
+    )
+  }
 
-    if (!calldata) {
-      throw new Error('Failed to get callata from EAT')
-    }
+  if (!calldata) {
+    throw new Error('Failed to get callata from EAT')
+  }
 
-    return { calldata }
+  return { calldata }
+}
+
+const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
+  const violetCallback = async () => {
+    return await getVioletAuthorizedCall({ call, account, chainId })
   }
 
   return {
