@@ -1,24 +1,60 @@
+import { BigNumber } from '@ethersproject/bignumber'
+import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize } from '@violetprotocol/sdk'
-import { SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
-import { splitSignature } from 'ethers/lib/utils'
-import { SwapCall } from 'hooks/useSwapCallArguments'
+import { NONFUNGIBLE_POSITION_MANAGER_ADDRESSES, SWAP_ROUTER_ADDRESSES } from 'constants/addresses'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 const environment = process.env.REACT_APP_VIOLET_ENV
 const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
-const useSwapVioletAuthorize = ({
-  swapCall,
-  account,
+export type Call = {
+  address: string
+  calls: string[]
+  value: string
+  functionSignature: string
+  parameters: string
+  deadline?: BigNumber
+}
+
+export enum CallTargetContract {
+  NON_FUNGIBLE_POSITION_MANAGER,
+  SWAP_ROUTER,
+}
+
+const getTargetContractAddress = ({
+  targetContract,
   chainId,
 }: {
-  swapCall: SwapCall | null
+  targetContract: CallTargetContract
+  chainId: number
+}): string | null => {
+  if (!chainId) {
+    return null
+  }
+
+  if (targetContract == CallTargetContract.NON_FUNGIBLE_POSITION_MANAGER) {
+    return NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+  } else if (targetContract == CallTargetContract.SWAP_ROUTER) {
+    return SWAP_ROUTER_ADDRESSES[chainId]
+  } else {
+    throw new Error(`Expected targetContract to be a known CallTargetContract but got ${targetContract}`)
+  }
+}
+
+const useVioletAuthorize = ({
+  call,
+  account,
+  chainId,
+  targetContract,
+}: {
+  call: Call | null
   account?: string
   chainId?: number
+  targetContract: CallTargetContract
 }) => {
   const violetCallback = async () => {
-    if (!swapCall || !account || !chainId) {
+    if (!call || !account || !chainId) {
       return null
     }
 
@@ -26,10 +62,10 @@ const useSwapVioletAuthorize = ({
       throw new Error('Invalid environment')
     }
 
-    const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+    const targetContractAddress = getTargetContractAddress({ targetContract, chainId })
 
-    if (!swapRouterAddress) {
-      throw new Error('Swap router address not found')
+    if (!targetContractAddress) {
+      throw new Error('Address of target contract not found')
     }
 
     const response = await authorize({
@@ -37,9 +73,9 @@ const useSwapVioletAuthorize = ({
       apiUrl: baseUrlByEnvironment(environment.toString()),
       redirectUrl: redirectUrlByEnvironment(environment.toString()),
       transaction: {
-        data: swapCall.parameters,
-        functionSignature: swapCall.functionSignature,
-        targetContract: swapRouterAddress,
+        data: call.parameters,
+        functionSignature: call.functionSignature,
+        targetContract: targetContractAddress,
       },
       address: account,
       chainId,
@@ -76,8 +112,8 @@ const useSwapVioletAuthorize = ({
         r,
         s,
         eat.expiry,
-        swapCall.calls,
-        swapCall?.deadline?.toString()
+        call.calls,
+        call?.deadline?.toString()
       )
     }
 
@@ -93,4 +129,4 @@ const useSwapVioletAuthorize = ({
   }
 }
 
-export default useSwapVioletAuthorize
+export default useVioletAuthorize
