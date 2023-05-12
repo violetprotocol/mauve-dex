@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
-import useVioletAuthorize, { Call, CallTargetContract } from 'hooks/useVioletAuthorize'
+import useVioletAuthorize, { Call } from 'hooks/useVioletAuthorize'
 import { ReactNode, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
@@ -59,7 +59,6 @@ export function useSwapCallback({
     call: swapCall,
     account,
     chainId,
-    targetContract: CallTargetContract.SWAP_ROUTER,
   })
 
   const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })
