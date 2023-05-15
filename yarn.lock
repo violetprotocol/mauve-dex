@@ -5746,7 +5746,7 @@
     node-cache "^5.1.2"
     stats-lite "^2.2.0"
 
-"@violetprotocol/mauve-swap-router-contracts@1.5.2":
+"@violetprotocol/mauve-swap-router-contracts@1.5.2", "@violetprotocol/mauve-swap-router-contracts@^1.5.0":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-swap-router-contracts/-/mauve-swap-router-contracts-1.5.2.tgz#791e10cfd80ee25496157977f27520280fcae893"
   integrity sha512-BH6yE2DMgy2fBV6rZ4O1VnWrVDFeQSzcoGT01uf9pJmuj7fQFuvmZSby7H5ruhkqvTGlXq9Hyw7RWWcJFfDSWg==
@@ -5754,17 +5754,6 @@
     "@openzeppelin/contracts" "3.4.2-solc-0.7"
     "@violetprotocol/mauve-core" "1.2.4"
     "@violetprotocol/mauve-periphery" "1.8.6"
-    dotenv "^14.2.0"
-    hardhat-watcher "^2.1.1"
-
-"@violetprotocol/mauve-swap-router-contracts@^1.5.0":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-swap-router-contracts/-/mauve-swap-router-contracts-1.5.1.tgz#07b63c495ece9051e9f19695aaa9327941e2f30a"
-  integrity sha512-f3wMRH72rAYgMwu2Dmsc0C5KL0iV9CDFywuuYY9FTPo8NaJKZD0PiWoCkNLJn50uZpIKF++k3PGjPp1VGB9Sfw==
-  dependencies:
-    "@openzeppelin/contracts" "3.4.2-solc-0.7"
-    "@violetprotocol/mauve-core" "1.2.3"
-    "@violetprotocol/mauve-periphery" "1.8.1"
     dotenv "^14.2.0"
     hardhat-watcher "^2.1.1"
 
