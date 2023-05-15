@@ -496,12 +496,11 @@ export function PositionPage() {
             setCollectMigrationHash(response.hash)
             setCollecting(false)
 
-            // TODO: Check analystics events
-            // sendEvent({
-            //   category: 'Liquidity',
-            //   action: 'CollectV3',
-            //   label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
-            // })
+            sendEvent({
+              category: 'Liquidity',
+              action: 'CollectV3',
+              label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
+            })
 
             addTransaction(response, {
               type: TransactionType.COLLECT_FEES,
