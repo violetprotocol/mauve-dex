@@ -65,44 +65,45 @@ export function transformSwapRouteToGetQuoteResult(
           amountOut: edgeAmountOut,
         })
       } else {
-        const reserve0 = nextPool.reserve0
-        const reserve1 = nextPool.reserve1
+        console.log('Unexpected V2 pool, discarding.')
+        //   const reserve0 = nextPool.reserve0
+        //   const reserve1 = nextPool.reserve1
 
-        curRoute.push({
-          type: 'v2-pool',
-          tokenIn: {
-            chainId: tokenIn.chainId,
-            decimals: tokenIn.decimals,
-            address: tokenIn.address,
-            symbol: tokenIn.symbol,
-          },
-          tokenOut: {
-            chainId: tokenOut.chainId,
-            decimals: tokenOut.decimals,
-            address: tokenOut.address,
-            symbol: tokenOut.symbol,
-          },
-          reserve0: {
-            token: {
-              chainId: reserve0.currency.wrapped.chainId,
-              decimals: reserve0.currency.wrapped.decimals,
-              address: reserve0.currency.wrapped.address,
-              symbol: reserve0.currency.wrapped.symbol,
-            },
-            quotient: reserve0.quotient.toString(),
-          },
-          reserve1: {
-            token: {
-              chainId: reserve1.currency.wrapped.chainId,
-              decimals: reserve1.currency.wrapped.decimals,
-              address: reserve1.currency.wrapped.address,
-              symbol: reserve1.currency.wrapped.symbol,
-            },
-            quotient: reserve1.quotient.toString(),
-          },
-          amountIn: edgeAmountIn,
-          amountOut: edgeAmountOut,
-        })
+        //   curRoute.push({
+        //     type: 'v2-pool',
+        //     tokenIn: {
+        //       chainId: tokenIn.chainId,
+        //       decimals: tokenIn.decimals,
+        //       address: tokenIn.address,
+        //       symbol: tokenIn.symbol,
+        //     },
+        //     tokenOut: {
+        //       chainId: tokenOut.chainId,
+        //       decimals: tokenOut.decimals,
+        //       address: tokenOut.address,
+        //       symbol: tokenOut.symbol,
+        //     },
+        //     reserve0: {
+        //       token: {
+        //         chainId: reserve0.currency.wrapped.chainId,
+        //         decimals: reserve0.currency.wrapped.decimals,
+        //         address: reserve0.currency.wrapped.address,
+        //         symbol: reserve0.currency.wrapped.symbol,
+        //       },
+        //       quotient: reserve0.quotient.toString(),
+        //     },
+        //     reserve1: {
+        //       token: {
+        //         chainId: reserve1.currency.wrapped.chainId,
+        //         decimals: reserve1.currency.wrapped.decimals,
+        //         address: reserve1.currency.wrapped.address,
+        //         symbol: reserve1.currency.wrapped.symbol,
+        //       },
+        //       quotient: reserve1.quotient.toString(),
+        //     },
+        //     amountIn: edgeAmountIn,
+        //     amountOut: edgeAmountOut,
+        //   })
       }
     }
 
