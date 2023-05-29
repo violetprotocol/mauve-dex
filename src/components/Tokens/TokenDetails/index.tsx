@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
-import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AboutSection } from 'components/Tokens/TokenDetails/About'
@@ -23,7 +22,6 @@ import StatsSection from 'components/Tokens/TokenDetails/StatsSection'
 import { L2NetworkLogo, LogoContainer } from 'components/Tokens/TokenTable/TokenRow'
 import TokenSafetyMessage from 'components/TokenSafety/TokenSafetyMessage'
 import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
-import Widget from 'components/Widget'
 import { getChainInfo } from 'constants/chainInfo'
 import { NATIVE_CHAIN_ID, nativeOnChain } from 'constants/tokens'
 import { checkWarning } from 'constants/tokenSafety'
@@ -31,7 +29,6 @@ import { TokenPriceQuery } from 'graphql/data/__generated__/types-and-hooks'
 import { Chain, TokenQuery, TokenQueryData } from 'graphql/data/Token'
 import { QueryToken } from 'graphql/data/Token'
 import { CHAIN_NAME_TO_CHAIN_ID, getTokenDetailsURL } from 'graphql/data/util'
-import { useIsUserAddedTokenOnChain } from 'hooks/Tokens'
 import { useOnGlobalChainSwitch } from 'hooks/useGlobalChainSwitch'
 import { UNKNOWN_TOKEN_SYMBOL, useTokenFromActiveNetwork } from 'lib/hooks/useCurrency'
 import { useCallback, useMemo, useState, useTransition } from 'react'
@@ -143,22 +140,7 @@ export default function TokenDetails({
   )
   useOnGlobalChainSwitch(navigateToTokenForChain)
 
-  const navigateToWidgetSelectedToken = useCallback(
-    (token: Currency) => {
-      const address = token.isNative ? NATIVE_CHAIN_ID : token.address
-      startTokenTransition(() => navigate(getTokenDetailsURL(address, chain)))
-    },
-    [chain, navigate]
-  )
-
   const [continueSwap, setContinueSwap] = useState<{ resolve: (value: boolean | PromiseLike<boolean>) => void }>()
-
-  // Show token safety modal if Swap-reviewing a warning token, at all times if the current token is blocked
-  const shouldShowSpeedbump = !useIsUserAddedTokenOnChain(address, pageChainId) && tokenWarning !== null
-  const onReviewSwapClick = useCallback(
-    () => new Promise<boolean>((resolve) => (shouldShowSpeedbump ? setContinueSwap({ resolve }) : resolve(true))),
-    [shouldShowSpeedbump]
-  )
 
   const onResolveSwap = useCallback(
     (value: boolean) => {
@@ -221,11 +203,6 @@ export default function TokenDetails({
         )}
 
         <RightPanel>
-          <Widget
-            token={token ?? undefined}
-            onTokenChange={navigateToWidgetSelectedToken}
-            onReviewSwapClick={onReviewSwapClick}
-          />
           {tokenWarning && <TokenSafetyMessage tokenAddress={address} warning={tokenWarning} />}
           {token && <BalanceSummary token={token} />}
         </RightPanel>

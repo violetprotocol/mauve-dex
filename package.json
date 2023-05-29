@@ -157,7 +157,6 @@
     "@violetprotocol/mauve-smart-order-router": "4.0.3",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
     "@violetprotocol/mauve-v3-sdk": "4.2.3",
-    "@violetprotocol/mauve-widgets": "3.0.0",
     "@violetprotocol/sdk": "0.0.7",
     "@visx/axis": "^2.12.2",
     "@visx/event": "^2.6.0",
