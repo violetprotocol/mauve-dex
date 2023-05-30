@@ -33,7 +33,8 @@ export const getVioletAuthorizedCall = async ({
   }
 
   if (!environment || !clientId) {
-    throw new Error('Invalid environment')
+    console.error('Invalid environment')
+    return null
   }
 
   const response = await authorize({
@@ -59,15 +60,16 @@ export const getVioletAuthorizedCall = async ({
       eat.signature = splitSignature(eat.signature)
 
       if (!eat?.signature || !eat?.expiry) {
-        throw new Error('EAT malformed')
+        console.error('EAT malformed')
+        return null
       }
     } else {
       console.error(error)
-
-      throw new Error('Failed to parse EAT')
+      return null
     }
   } else {
-    throw new Error('Failed to get EAT')
+    console.error('No response from Violet while fetching an EAT')
+    return null
   }
 
   let calldata
@@ -86,7 +88,8 @@ export const getVioletAuthorizedCall = async ({
   }
 
   if (!calldata) {
-    throw new Error('Failed to get callata from EAT')
+    console.error('Failed to get callata from EAT')
+    return null
   }
 
   return { calldata }
