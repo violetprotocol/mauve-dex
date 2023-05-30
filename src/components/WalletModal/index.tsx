@@ -207,7 +207,7 @@ export default function WalletModal({
       const walletType = getConnectionName(getConnection(connector).type, getIsMetaMask())
       const isReconnect =
         connectedWallets.filter((wallet) => wallet.account === account && wallet.walletType === walletType).length > 0
-      sendAnalyticsEventAndUserInfo(account, walletType, chainId, isReconnect)
+      // sendAnalyticsEventAndUserInfo(account, walletType, chainId, isReconnect)
       if (!isReconnect) addWalletToConnectedWallets({ account, walletType })
     }
     setLastActiveWalletAddress(account)

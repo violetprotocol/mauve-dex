@@ -1,5 +1,5 @@
-import { initializeAnalytics, OriginApplication, Trace, user } from '@uniswap/analytics'
-import { CustomUserProperties, InterfacePageName, SharedEventName } from '@uniswap/analytics-events'
+import { Trace, user } from '@uniswap/analytics'
+import { CustomUserProperties, InterfacePageName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
 import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
@@ -9,7 +9,6 @@ import styled from 'styled-components/macro'
 import { tw } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
-import { isProductionEnv } from 'utils/env'
 
 import ErrorBoundary from '../components/ErrorBoundary'
 import { PageTabs } from '../components/NavBar'
@@ -32,16 +31,17 @@ const TokenDetails = lazy(() => import('./TokenDetails'))
 // [MAUVE-DISABLED]
 // const Vote = lazy(() => import('./Vote'))
 
+// [MAUVE-DISABLED] Analytics is disabled
 // Placeholder API key. Actual API key used in the proxy server
-const ANALYTICS_DUMMY_KEY = '00000000000000000000000000000000'
-const ANALYTICS_PROXY_URL = process.env.REACT_APP_AMPLITUDE_PROXY_URL
-const COMMIT_HASH = process.env.REACT_APP_GIT_COMMIT_HASH
-initializeAnalytics(ANALYTICS_DUMMY_KEY, OriginApplication.INTERFACE, {
-  proxyUrl: ANALYTICS_PROXY_URL,
-  defaultEventName: SharedEventName.PAGE_VIEWED,
-  commitHash: COMMIT_HASH,
-  isProductionEnv: isProductionEnv(),
-})
+// const ANALYTICS_DUMMY_KEY = '00000000000000000000000000000000'
+// const ANALYTICS_PROXY_URL = process.env.REACT_APP_AMPLITUDE_PROXY_URL
+// const COMMIT_HASH = process.env.REACT_APP_GIT_COMMIT_HASH
+// initializeAnalytics(ANALYTICS_DUMMY_KEY, OriginApplication.INTERFACE, {
+//   proxyUrl: ANALYTICS_PROXY_URL,
+//   defaultEventName: SharedEventName.PAGE_VIEWED,
+//   commitHash: COMMIT_HASH,
+//   isProductionEnv: isProductionEnv(),
+// })
 
 const BodyWrapper = styled.div`
   display: flex;
