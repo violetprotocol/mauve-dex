@@ -1,5 +1,3 @@
-import { WidgetSkeleton } from 'components/Widget'
-import { WIDGET_WIDTH } from 'components/Widget'
 import { ArrowLeft } from 'react-feather'
 import { useParams } from 'react-router-dom'
 import styled, { useTheme } from 'styled-components/macro'
@@ -44,7 +42,7 @@ export const RightPanel = styled.div`
   display: none;
   flex-direction: column;
   gap: 20px;
-  width: ${WIDGET_WIDTH}px;
+  width: 360px;
 
   @media screen and (min-width: ${({ theme }) => theme.breakpoint.lg}px) {
     display: flex;
@@ -262,9 +260,7 @@ export function TokenDetailsPageSkeleton() {
   return (
     <TokenDetailsLayout>
       <TokenDetailsSkeleton />
-      <RightPanel>
-        <WidgetSkeleton />
-      </RightPanel>
+      <RightPanel></RightPanel>
     </TokenDetailsLayout>
   )
 }
