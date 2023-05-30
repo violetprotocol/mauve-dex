@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize } from '@violetprotocol/sdk'
+import { useCallback } from 'react'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 const environment = process.env.REACT_APP_VIOLET_ENV
@@ -92,9 +93,9 @@ export const getVioletAuthorizedCall = async ({
 }
 
 const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
-  const violetCallback = async () => {
+  const violetCallback = useCallback(async () => {
     return await getVioletAuthorizedCall({ call, account, chainId })
-  }
+  }, [call, account, chainId])
 
   return {
     violetCallback,
