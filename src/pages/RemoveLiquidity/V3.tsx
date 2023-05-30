@@ -131,20 +131,20 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       ...callParameters,
       address: positionManager.address,
     }
-    const result = await getVioletAuthorizedCall({
+    const violetEATResult = await getVioletAuthorizedCall({
       call,
       account,
       chainId,
     })
 
-    if (!result?.calldata) {
+    if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
       return
     }
 
     const txn = {
       to: positionManager.address,
-      data: result.calldata,
+      data: violetEATResult.calldata,
       value: callParameters.value,
     }
 
