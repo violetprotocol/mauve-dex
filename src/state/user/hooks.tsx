@@ -6,6 +6,7 @@ import { L2_DEADLINE_FROM_NOW } from 'constants/misc'
 import JSBI from 'jsbi'
 import { useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
+import { UserAddedToken } from 'types/tokens'
 
 import { AppState } from '../index'
 import {
@@ -27,6 +28,16 @@ function serializeToken(token: Token): SerializedToken {
     symbol: token.symbol,
     name: token.name,
   }
+}
+
+function deserializeToken(serializedToken: SerializedToken, Class: typeof Token = Token): Token {
+  return new Class(
+    serializedToken.chainId,
+    serializedToken.address,
+    serializedToken.decimals,
+    serializedToken.symbol,
+    serializedToken.name
+  )
 }
 
 export function useUserLocale(): SupportedLocale | null {
@@ -166,6 +177,24 @@ export function useAddUserToken(): (token: Token) => void {
     },
     [dispatch]
   )
+}
+
+function useUserAddedTokensOnChain(chainId: number | undefined | null): Token[] {
+  const serializedTokensMap = useAppSelector(({ user: { tokens } }) => tokens)
+
+  return useMemo(() => {
+    if (!chainId) return []
+    const tokenMap: Token[] = serializedTokensMap?.[chainId]
+      ? Object.values(serializedTokensMap[chainId]).map((value) => deserializeToken(value, UserAddedToken))
+      : []
+    return tokenMap
+  }, [serializedTokensMap, chainId])
+}
+
+// Used in CurrencySearchModal.tsx, src/hooks/Tokens.ts
+// eslint-disable-next-line import/no-unused-modules
+export function useUserAddedTokens(): Token[] {
+  return useUserAddedTokensOnChain(useWeb3React().chainId)
 }
 
 export function useURLWarningVisible(): boolean {
