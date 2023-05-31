@@ -21,9 +21,11 @@ export default function Updater(): null {
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach((url) => {
-      // Skip validation on unsupported lists
       const isUnsupportedList = UNSUPPORTED_LIST_URLS.includes(url)
-      fetchList(url, false, isUnsupportedList).catch((error) => console.debug('interval list fetching error', error))
+      // Skip unsupported lists
+      if (!isUnsupportedList) {
+        fetchList(url, false).catch((error) => console.debug('interval list fetching error', error))
+      }
     })
   }, [fetchList, isWindowVisible, lists])
 
@@ -45,7 +47,7 @@ export default function Updater(): null {
     UNSUPPORTED_LIST_URLS.forEach((listUrl) => {
       const list = lists[listUrl]
       if (!list || (!list.current && !list.loadingRequestId && !list.error)) {
-        fetchList(listUrl, undefined, true).catch((error) => console.debug('list added fetching error', error))
+        fetchList(listUrl, undefined).catch((error) => console.debug('list added fetching error', error))
       }
     })
   }, [dispatch, fetchList, lists])

@@ -150,14 +150,13 @@
     "@vanilla-extract/dynamic": "^2.0.2",
     "@vanilla-extract/sprinkles": "^1.4.1",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
-    "@violetprotocol/mauve-core": "1.2.3",
-    "@violetprotocol/mauve-periphery": "1.8.2",
-    "@violetprotocol/mauve-router-sdk": "1.6.1",
+    "@violetprotocol/mauve-core": "1.2.4",
+    "@violetprotocol/mauve-periphery": "1.8.6",
+    "@violetprotocol/mauve-router-sdk": "1.6.4",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
-    "@violetprotocol/mauve-smart-order-router": "4.0.2",
+    "@violetprotocol/mauve-smart-order-router": "4.0.3",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
-    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.1",
-    "@violetprotocol/mauve-widgets": "3.0.0",
+    "@violetprotocol/mauve-v3-sdk": "4.2.3",
     "@violetprotocol/sdk": "0.0.7",
     "@visx/axis": "^2.12.2",
     "@visx/event": "^2.6.0",
@@ -242,9 +241,7 @@
     "zustand": "^4.0.0-rc.1"
   },
   "resolutions": {
-    "@lingui/core": "3.14.0",
-    "@violetprotocol/mauve-v3-sdk": "4.2.0-alpha.1",
-    "@violetprotocol/mauve-periphery": "1.8.2"
+    "@lingui/core": "3.14.0"
   },
   "engines": {
     "npm": "please-use-yarn",

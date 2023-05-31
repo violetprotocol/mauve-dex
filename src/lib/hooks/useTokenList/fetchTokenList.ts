@@ -1,5 +1,4 @@
 import type { TokenList } from '@uniswap/token-lists'
-import { validateTokenList } from '@violetprotocol/mauve-widgets'
 import contenthashToUri from 'lib/utils/contenthashToUri'
 import parseENSAddress from 'lib/utils/parseENSAddress'
 import uriToHttp from 'lib/utils/uriToHttp'
@@ -11,8 +10,7 @@ const listCache = new Map<string, TokenList>()
 /** Fetches and validates a token list. */
 export default async function fetchTokenList(
   listUrl: string,
-  resolveENSContentHash: (ensName: string) => Promise<string>,
-  skipValidation?: boolean
+  resolveENSContentHash: (ensName: string) => Promise<string>
 ): Promise<TokenList> {
   const cached = listCache?.get(listUrl) // avoid spurious re-fetches
   if (cached) {
@@ -64,9 +62,10 @@ export default async function fetchTokenList(
     }
 
     const json = await response.json()
-    const list = skipValidation ? json : await validateTokenList(json)
-    listCache?.set(listUrl, list)
-    return list
+    // [MAUVE-DISABLED] TODO: Figure out token list validation as part of the token list epic.
+    // const list = skipValidation ? json : await validateTokenList(json)
+    listCache?.set(listUrl, json)
+    return json
   }
 
   throw new Error('Unrecognized list URL protocol.')

@@ -9,10 +9,10 @@ import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
+import useVioletAuthorize, { Call } from 'hooks/useVioletAuthorize'
 import { ReactNode, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
-import useSwapVioletAuthorize from './useSwapVioletAuthorize'
 
 export enum SwapCallbackState {
   INVALID,
@@ -46,7 +46,7 @@ export function useSwapCallback({
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
 
-  const swapCall = useSwapCallArguments({
+  const swapCall: Call | null = useSwapCallArguments({
     trade,
     allowedSlippage,
     recipientAddressOrName,
@@ -55,7 +55,11 @@ export function useSwapCallback({
     feeOptions,
   })
 
-  const { violetCallback } = useSwapVioletAuthorize({ swapCall, account, chainId })
+  const { violetCallback } = useVioletAuthorize({
+    call: swapCall,
+    account,
+    chainId,
+  })
 
   const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })
 

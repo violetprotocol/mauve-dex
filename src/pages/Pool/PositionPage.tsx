@@ -25,6 +25,7 @@ import { PoolState, usePool } from 'hooks/usePools'
 import useStablecoinPrice from 'hooks/useStablecoinPrice'
 import { useV3PositionFees } from 'hooks/useV3PositionFees'
 import { useV3PositionFromTokenId } from 'hooks/useV3Positions'
+import { getVioletAuthorizedCall } from 'hooks/useVioletAuthorize'
 import { useSingleCallResult } from 'lib/hooks/multicall'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { useCallback, useMemo, useRef, useState } from 'react'
@@ -434,7 +435,7 @@ export function PositionPage() {
 
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
-  const collect = useCallback(() => {
+  const collect = useCallback(async () => {
     if (
       !currency0ForFeeCollectionPurposes ||
       !currency1ForFeeCollectionPurposes ||
@@ -450,18 +451,33 @@ export function PositionPage() {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { value } = NonfungiblePositionManager.collectCallParameters({
+    const callParameters = NonfungiblePositionManager.collectCallParameters({
       tokenId: tokenId.toString(),
       expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
       expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
       recipient: account,
     })
 
+    const call = {
+      ...callParameters,
+      address: positionManager.address,
+    }
+
+    const violetEATResult = await getVioletAuthorizedCall({
+      call,
+      account,
+      chainId,
+    })
+
+    if (!violetEATResult?.calldata) {
+      console.error('Failed to get calldata with EAT')
+      return
+    }
+
     const txn = {
       to: positionManager.address,
-      // TO UPDATE
-      data: [],
-      value,
+      data: violetEATResult.calldata,
+      value: callParameters.value,
     }
 
     provider

@@ -1,3 +1,4 @@
+import { Interface } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount } from '@violetprotocol/mauve-sdk-core'
 import { Pool } from '@violetprotocol/mauve-v3-sdk'
@@ -29,7 +30,7 @@ export function useV3PositionFees(
   useEffect(() => {
     if (positionManager && tokenIdHexString && owner) {
       positionManager.callStatic
-        .collect(
+        .collectAmounts(
           {
             tokenId: tokenIdHexString,
             recipient: owner, // some tokens might fail if transferred to address(0)
@@ -38,8 +39,18 @@ export function useV3PositionFees(
           },
           { from: owner } // need to simulate the call as the owner
         )
-        .then((results) => {
-          setAmounts([results.amount0, results.amount1])
+        .then(() => {
+          throw new Error('callStatic to collectAmounts was expected to revert but did not.')
+        })
+        .catch((error) => {
+          if (!error.data) {
+            console.error(`Failed to determine position fees`, error)
+          }
+          const ABI = ['error CollectAmounts(uint256 amount0, uint256 amount1)']
+          const iface = new Interface(ABI)
+          const decodedResult = iface.decodeErrorResult('CollectAmounts', error.data)
+
+          setAmounts([decodedResult[0], decodedResult[1]])
         })
     }
   }, [positionManager, tokenIdHexString, owner, latestBlockNumber])

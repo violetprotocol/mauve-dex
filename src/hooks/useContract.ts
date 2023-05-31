@@ -1,9 +1,9 @@
 import { Contract } from '@ethersproject/contracts'
-import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
 import UniswapInterfaceMulticallJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/MauveInterfaceMulticall.sol/MauveInterfaceMulticall.json'
 import QuoterJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import TickLensJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/TickLens.sol/TickLens.json'
 import NonfungiblePositionManagerJson from '@violetprotocol/mauve-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
+import QuoterV2Json from '@violetprotocol/mauve-swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
 import { useWeb3React } from '@web3-react/core'
 import ARGENT_WALLET_DETECTOR_ABI from 'abis/argent-wallet-detector.json'
 import EIP_2612 from 'abis/eip_2612.json'
@@ -25,7 +25,7 @@ import {
 } from 'constants/addresses'
 import { WRAPPED_NATIVE_CURRENCY } from 'constants/tokens'
 import { useMemo } from 'react'
-import { NonfungiblePositionManager, Quoter, QuoterV2, TickLens, UniswapInterfaceMulticall } from 'types/v3'
+import { MauveInterfaceMulticall, NonfungiblePositionManager, Quoter, QuoterV2, TickLens } from 'types/v3'
 
 import { getContract } from '../utils'
 
@@ -100,7 +100,7 @@ export function useEIP2612Contract(tokenAddress?: string): Contract | null {
 }
 
 export function useInterfaceMulticall() {
-  return useContract<UniswapInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as UniswapInterfaceMulticall
+  return useContract<MauveInterfaceMulticall>(MULTICALL_ADDRESS, MulticallABI, false) as MauveInterfaceMulticall
 }
 
 export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean): NonfungiblePositionManager | null {
