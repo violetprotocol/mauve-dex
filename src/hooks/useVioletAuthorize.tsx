@@ -9,6 +9,7 @@ const environment = process.env.REACT_APP_VIOLET_ENV
 const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
 export type Call = {
+  address: string
   calls: string[]
   value: string
   functionSignature: string
