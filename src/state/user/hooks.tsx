@@ -14,7 +14,6 @@ import {
   updateHideClosedPositions,
   updateUserClientSideRouter,
   updateUserDeadline,
-  updateUserExpertMode,
   updateUserLocale,
   updateUserSlippageTolerance,
 } from './reducer'
@@ -56,21 +55,6 @@ export function useUserLocaleManager(): [SupportedLocale | null, (newLocale: Sup
   )
 
   return [locale, setLocale]
-}
-
-export function useIsExpertMode(): boolean {
-  return useAppSelector((state) => state.user.userExpertMode)
-}
-
-export function useExpertModeManager(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const expertMode = useIsExpertMode()
-
-  const toggleSetExpertMode = useCallback(() => {
-    dispatch(updateUserExpertMode({ userExpertMode: !expertMode }))
-  }, [expertMode, dispatch])
-
-  return [expertMode, toggleSetExpertMode]
 }
 
 export function useClientSideRouter(): [boolean, (userClientSideRouter: boolean) => void] {

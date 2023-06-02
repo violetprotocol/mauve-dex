@@ -40,10 +40,6 @@ describe('Swap', () => {
     cy.get('[data-cy="confirmation-close-icon"]').click()
   })
 
-  it('add a recipient does not exist unless in expert mode', () => {
-    cy.get('#add-recipient-button').should('not.exist')
-  })
-
   it.skip('ETH to wETH is same value (wrapped swaps have no price impact)', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
     cy.get('.token-item-0xc778417E063141139Fce010982780140Aa0cD5Ab').click()

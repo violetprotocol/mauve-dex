@@ -1,8 +1,7 @@
-import { Trace, user } from '@uniswap/analytics'
-import { CustomUserProperties, InterfacePageName } from '@uniswap/analytics-events'
+import { Trace } from '@uniswap/analytics'
+import { InterfacePageName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
-import ApeModeQueryParamReader from 'hooks/useApeModeQueryParamReader'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
@@ -15,7 +14,6 @@ import { PageTabs } from '../components/NavBar'
 import NavBar from '../components/NavBar'
 import Polling from '../components/Polling'
 import Popups from '../components/Popups'
-import { useIsExpertMode } from '../state/user/hooks'
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds } from './AddLiquidity/redirects'
 import NotFound from './NotFound'
@@ -146,7 +144,6 @@ function getCurrentPageFromLocation(locationPathname: string): InterfacePageName
 export default function App() {
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
-  const isExpertMode = useIsExpertMode()
   const [scrolledState, setScrolledState] = useState(false)
 
   useEffect(() => {
@@ -169,10 +166,6 @@ export default function App() {
   // }, [])
 
   useEffect(() => {
-    user.set(CustomUserProperties.EXPERT_MODE, isExpertMode)
-  }, [isExpertMode])
-
-  useEffect(() => {
     const scrollListener = () => {
       setScrolledState(window.scrollY > 0)
     }
@@ -184,7 +177,6 @@ export default function App() {
 
   return (
     <ErrorBoundary>
-      <ApeModeQueryParamReader />
       <Trace page={currentPage}>
         <HeaderWrapper transparent={isHeaderTransparent}>
           <NavBar />

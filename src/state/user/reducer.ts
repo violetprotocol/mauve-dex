@@ -16,8 +16,6 @@ export interface UserState {
 
   userLocale: SupportedLocale | null
 
-  userExpertMode: boolean
-
   userClientSideRouter: boolean // whether routes should be calculated with the client side router only
 
   // hides closed (inactive) positions across the app
@@ -52,7 +50,6 @@ export interface UserState {
 
 export const initialState: UserState = {
   selectedWallet: undefined,
-  userExpertMode: false,
   userLocale: null,
   userClientSideRouter: false,
   userHideClosedPositions: false,
@@ -72,10 +69,6 @@ const userSlice = createSlice({
   reducers: {
     updateSelectedWallet(state, { payload: { wallet } }) {
       state.selectedWallet = wallet
-    },
-    updateUserExpertMode(state, action) {
-      state.userExpertMode = action.payload.userExpertMode
-      state.timestamp = currentTimestamp()
     },
     updateUserLocale(state, action) {
       state.userLocale = action.payload.userLocale
@@ -147,7 +140,6 @@ export const {
   updateHideClosedPositions,
   updateUserClientSideRouter,
   updateUserDeadline,
-  updateUserExpertMode,
   updateUserLocale,
   updateUserSlippageTolerance,
 } = userSlice.actions

@@ -62,7 +62,6 @@ import {
   useSwapActionHandlers,
   useSwapState,
 } from '../../state/swap/hooks'
-import { useExpertModeManager } from '../../state/user/hooks'
 import { LinkStyledButton, ThemedText } from '../../theme'
 import { computeFiatValuePriceImpact } from '../../utils/computeFiatValuePriceImpact'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -194,8 +193,6 @@ export default function Swap({ className }: { className?: string }) {
   // toggle wallet when disconnected
   const toggleWalletModal = useToggleWalletModal()
 
-  // for expert mode
-  const [isExpertMode] = useExpertModeManager()
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const {
@@ -416,14 +413,14 @@ export default function Swap({ className }: { className?: string }) {
   const isArgentWallet = useIsArgentWallet()
 
   // show approve flow when: no error on inputs, not approved or pending, or approved in current session
-  // never show if price impact is above threshold in non expert mode
+  // never show if price impact is above threshold
   const showApproveFlow =
     !isArgentWallet &&
     !swapInputError &&
     (approvalState === ApprovalState.NOT_APPROVED ||
       approvalState === ApprovalState.PENDING ||
       (approvalSubmitted && approvalState === ApprovalState.APPROVED)) &&
-    !(priceImpactSeverity > 3 && !isExpertMode)
+    !(priceImpactSeverity > 3)
 
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -460,7 +457,7 @@ export default function Swap({ className }: { className?: string }) {
 
   const swapIsUnsupported = useIsSwapUnsupported(currencies[Field.INPUT], currencies[Field.OUTPUT])
 
-  const priceImpactTooHigh = priceImpactSeverity > 3 && !isExpertMode
+  const priceImpactTooHigh = priceImpactSeverity > 3
   const showPriceImpactWarning = largerPriceImpact && priceImpactSeverity > 3
 
   // Handle time based logging events and event properties.
@@ -710,17 +707,13 @@ export default function Swap({ className }: { className?: string }) {
                       </ButtonConfirmed>
                       <ButtonError
                         onClick={() => {
-                          if (isExpertMode) {
-                            handleSwap()
-                          } else {
-                            setSwapState({
-                              tradeToConfirm: trade,
-                              attemptingTxn: false,
-                              swapErrorMessage: undefined,
-                              showConfirm: true,
-                              txHash: undefined,
-                            })
-                          }
+                          setSwapState({
+                            tradeToConfirm: trade,
+                            attemptingTxn: false,
+                            swapErrorMessage: undefined,
+                            showConfirm: true,
+                            txHash: undefined,
+                          })
                         }}
                         width="100%"
                         id="swap-button"
@@ -748,17 +741,13 @@ export default function Swap({ className }: { className?: string }) {
                 ) : (
                   <ButtonError
                     onClick={() => {
-                      if (isExpertMode) {
-                        handleSwap()
-                      } else {
-                        setSwapState({
-                          tradeToConfirm: trade,
-                          attemptingTxn: false,
-                          swapErrorMessage: undefined,
-                          showConfirm: true,
-                          txHash: undefined,
-                        })
-                      }
+                      setSwapState({
+                        tradeToConfirm: trade,
+                        attemptingTxn: false,
+                        swapErrorMessage: undefined,
+                        showConfirm: true,
+                        txHash: undefined,
+                      })
                     }}
                     id="swap-button"
                     disabled={
@@ -781,7 +770,7 @@ export default function Swap({ className }: { className?: string }) {
                     </Text>
                   </ButtonError>
                 )}
-                {isExpertMode && swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
+                {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
               </div>
             </AutoColumn>
           </SwapWrapper>
