@@ -8,6 +8,7 @@ import {
   ALLOWED_PRICE_IMPACT_HIGH,
   ALLOWED_PRICE_IMPACT_LOW,
   ALLOWED_PRICE_IMPACT_MEDIUM,
+  BLOCKED_PRICE_IMPACT,
   ONE_HUNDRED_PERCENT,
   ZERO_PERCENT,
 } from '../constants/misc'
@@ -74,7 +75,12 @@ export function computeRealizedLPFeeAmount(
   return undefined
 }
 
-const IMPACT_TIERS = [ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_MEDIUM, ALLOWED_PRICE_IMPACT_LOW]
+const IMPACT_TIERS = [
+  BLOCKED_PRICE_IMPACT,
+  ALLOWED_PRICE_IMPACT_HIGH,
+  ALLOWED_PRICE_IMPACT_MEDIUM,
+  ALLOWED_PRICE_IMPACT_LOW,
+]
 
 type WarningSeverity = 0 | 1 | 2 | 3 | 4
 export function warningSeverity(priceImpact: Percent | undefined): WarningSeverity {

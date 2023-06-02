@@ -51,7 +51,7 @@ describe('prices', () => {
       expect(warningSeverity(new Percent(5, 100))).toEqual(2)
     })
     it('correct for 50', () => {
-      expect(warningSeverity(new Percent(5, 10))).toEqual(3)
+      expect(warningSeverity(new Percent(5, 10))).toEqual(4)
     })
   })
 })
