@@ -40,7 +40,7 @@ describe('Swap', () => {
     cy.get('[data-cy="confirmation-close-icon"]').click()
   })
 
-  it('add a recipient does not exist unless in expert mode', () => {
+  it('add a recipient does not exist', () => {
     cy.get('#add-recipient-button').should('not.exist')
   })
 
