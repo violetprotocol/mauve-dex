@@ -46,7 +46,7 @@ export const injected = new (class extends Eip1193Bridge {
     }
     if (method === 'eth_chainId') {
       if (isCallbackForm) {
-        callback(null, { result: '0x1a4' })
+        callback(null, { result: '0x1a4' }) // OP Goerli chain ID, 420, in hex
       } else {
         return Promise.resolve('0x1a4')
       }
