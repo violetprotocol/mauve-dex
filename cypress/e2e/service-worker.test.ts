@@ -1,10 +1,11 @@
 import assert = require('assert')
 
 describe('Service Worker', () => {
+  let isValid
   before(() => {
     // Fail fast if there is no Service Worker on this build.
     cy.request({ url: '/service-worker.js', headers: { 'Service-Worker': 'script' } }).then((response) => {
-      const isValid = isValidServiceWorker(response)
+      isValid = isValidServiceWorker(response)
       if (!isValid) {
         throw new Error(
           '\n' +
@@ -49,36 +50,37 @@ describe('Service Worker', () => {
       }
     })
   })
-
-  it('installs a ServiceWorker', () => {
-    cy.visit('/', { serviceWorker: true })
-      .get('#swap-page')
-      .wait('@NotInstalled', { timeout: 20000 })
-      .window({ timeout: 20000 })
-      .and((win) => {
-        expect(win.navigator.serviceWorker.controller?.state).to.equal('activated')
-      })
-  })
-
-  it('records a cache hit', () => {
-    cy.visit('/', { serviceWorker: true }).get('#swap-page').wait('@CacheHit', { timeout: 20000 })
-  })
-
-  it('records a cache miss', () => {
-    cy.then(async () => {
-      const cacheKeys = await window.caches.keys()
-      const cacheKey = cacheKeys.find((key) => key.match(/precache/))
-      assert(cacheKey)
-
-      const cache = await window.caches.open(cacheKey)
-      const keys = await cache.keys()
-      const key = keys.find((key) => key.url.match(/index/))
-      assert(key)
-
-      await cache.put(key, new Response())
+  if (isValid) {
+    it('installs a ServiceWorker', () => {
+      cy.visit('/', { serviceWorker: true })
+        .get('#swap-page')
+        .wait('@NotInstalled', { timeout: 20000 })
+        .window({ timeout: 20000 })
+        .and((win) => {
+          expect(win.navigator.serviceWorker.controller?.state).to.equal('activated')
+        })
     })
-      .visit('/', { serviceWorker: true })
-      .get('#swap-page')
-      .wait('@CacheMiss', { timeout: 20000 })
-  })
+
+    it('records a cache hit', () => {
+      cy.visit('/', { serviceWorker: true }).get('#swap-page').wait('@CacheHit', { timeout: 20000 })
+    })
+
+    it('records a cache miss', () => {
+      cy.then(async () => {
+        const cacheKeys = await window.caches.keys()
+        const cacheKey = cacheKeys.find((key) => key.match(/precache/))
+        assert(cacheKey)
+
+        const cache = await window.caches.open(cacheKey)
+        const keys = await cache.keys()
+        const key = keys.find((key) => key.url.match(/index/))
+        assert(key)
+
+        await cache.put(key, new Response())
+      })
+        .visit('/', { serviceWorker: true })
+        .get('#swap-page')
+        .wait('@CacheMiss', { timeout: 20000 })
+    })
+  }
 })

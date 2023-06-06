@@ -30,11 +30,28 @@ describe('Swap', () => {
     cy.get('#swap-currency-output .token-amount-input').clear().type('0.0').should('have.value', '0.0')
   })
 
-  it.skip('can swap ETH for DAI', () => {
-    cy.get('#swap-currency-output .open-currency-select-button').click()
-    cy.get('.token-item-0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735').click()
+  it('can swap ETH for USDC', () => {
+    const selectTokenToSwapTo = () => {
+      cy.get('#swap-currency-output .open-currency-select-button').click()
+      // TODO: Once we have our own provided token list, the token should directly appear in the
+      // CurrencyList without having to search for it.
+      cy.get('#token-search-input').type('USDC')
+      cy.contains('USD Coin').click()
+      cy.contains('I understand').click()
+    }
+    selectTokenToSwapTo()
+
     cy.get('#swap-currency-input .token-amount-input').clear().type('0.0000001')
     cy.get('#swap-currency-output .token-amount-input').should('not.equal', '')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500) // wait for rendering to be stable
+    try {
+      cy.get('#swap-currency-output .open-currency-select-button').contains('USDC')
+    } catch {
+      selectTokenToSwapTo()
+    }
+
+    cy.get('#swap-button')
     cy.get('#swap-button').click()
     cy.get('#confirm-swap-or-send').should('contain', 'Confirm Swap')
     cy.get('[data-cy="confirmation-close-icon"]').click()
@@ -44,9 +61,9 @@ describe('Swap', () => {
     cy.get('#add-recipient-button').should('not.exist')
   })
 
-  it.skip('ETH to wETH is same value (wrapped swaps have no price impact)', () => {
+  it('ETH to wETH is same value (wrapped swaps have no price impact)', () => {
     cy.get('#swap-currency-output .open-currency-select-button').click()
-    cy.get('.token-item-0xc778417E063141139Fce010982780140Aa0cD5Ab').click()
+    cy.get('.token-item-0x4200000000000000000000000000000000000006').click()
     cy.get('#swap-currency-input .token-amount-input').clear().type('0.01')
     cy.get('#swap-currency-output .token-amount-input').should('have.value', '0.01')
   })
