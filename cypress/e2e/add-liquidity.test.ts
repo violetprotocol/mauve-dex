@@ -2,6 +2,12 @@ import { CyHttpMessages } from 'cypress/types/net-stubbing'
 
 import { aliasQuery, hasQuery } from '../utils/graphql-test-utils'
 
+//  Tokens on Optimism Goerli
+const OUT1 = '0x32307adfFE088e383AFAa721b06436aDaBA47DBE'
+const OUT2 = '0xb378eD8647D67b5dB6fD41817fd7a0949627D87a'
+const WETH = '0x4200000000000000000000000000000000000006'
+const TEST_USDC = '0x1888649D566908E0A4Ac17978740F6A04f600a51'
+
 describe('Add Liquidity', () => {
   beforeEach(() => {
     cy.intercept('POST', '/subgraphs/name/uniswap/uniswap-v3', (req) => {
@@ -10,7 +16,7 @@ describe('Add Liquidity', () => {
   })
 
   it('loads the two correct tokens', () => {
-    cy.visit('/add/0x32307adfFE088e383AFAa721b06436aDaBA47DBE/0x4200000000000000000000000000000000000006/500')
+    cy.visit(`/add/${OUT1}/${WETH}/500`)
     cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'OUT-1')
     cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'ETH')
   })
@@ -22,15 +28,15 @@ describe('Add Liquidity', () => {
   })
 
   it('token not in storage is loaded', () => {
-    cy.visit('/add/0x1888649D566908E0A4Ac17978740F6A04f600a51/0xb378eD8647D67b5dB6fD41817fd7a0949627D87a')
+    cy.visit(`/add/${TEST_USDC}/${OUT2}`)
     cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'tUSDC')
     cy.get('#add-liquidity-input-tokenb .token-symbol-container').should('contain.text', 'OUT-2')
   })
 
   it('single token can be selected', () => {
-    cy.visit('/add/0x1888649D566908E0A4Ac17978740F6A04f600a51')
+    cy.visit(`/add/${TEST_USDC}`)
     cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'tUSDC')
-    cy.visit('/add/0x32307adfFE088e383AFAa721b06436aDaBA47DBE')
+    cy.visit(`/add/${OUT1}`)
     cy.get('#add-liquidity-input-tokena .token-symbol-container').should('contain.text', 'OUT-1')
   })
 
