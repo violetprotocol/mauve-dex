@@ -15,7 +15,7 @@ export const LightCard = styled(Card)`
 `
 
 export const GrayCard = styled(Card)`
-  background-color: ${({ theme }) => theme.deprecated_bg3};
+  background-color: ${({ theme }) => theme.tw.navy[200]};
 `
 
 export const DarkCard = styled(Card)`

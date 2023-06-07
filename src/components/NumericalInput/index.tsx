@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import { escapeRegExp } from '../../utils'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
-  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.textPrimary)};
+  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.tw.navy[300])};
   width: 0;
   position: relative;
   font-weight: 400;
@@ -13,7 +13,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   flex: 1 1 auto;
   background-color: transparent;
   font-size: ${({ fontSize }) => fontSize ?? '28px'};
-  text-align: ${({ align }) => align && align};
+  text-align: ${({ align }) => (align ? align : 'inherit')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

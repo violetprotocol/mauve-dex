@@ -7,10 +7,9 @@ import { RowBetween, RowFixed } from '../Row'
 import SettingsTab from '../Settings'
 
 const StyledSwapHeader = styled.div`
-  padding: 8px 12px;
-  margin-bottom: 8px;
   width: 100%;
-  color: ${({ theme }) => theme.textSecondary};
+  margin-bottom: 1.5rem;
+  color: ${({ theme }) => theme.black};
 `
 
 export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Percent }) {
@@ -18,7 +17,7 @@ export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Perce
     <StyledSwapHeader>
       <RowBetween>
         <RowFixed>
-          <ThemedText.DeprecatedBlack fontWeight={500} fontSize={16} style={{ marginRight: '8px' }}>
+          <ThemedText.DeprecatedBlack fontWeight={600} fontSize={20}>
             <Trans>Swap</Trans>
           </ThemedText.DeprecatedBlack>
         </RowFixed>
