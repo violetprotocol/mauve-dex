@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import { isSupportedChainId } from 'lib/hooks/routing/clientSideSmartOrderRouter'
 import { useRef } from 'react'
-import { Settings } from 'react-feather'
+import { Sliders } from 'react-feather'
 import { Text } from 'rebass'
 import styled, { useTheme } from 'styled-components/macro'
 
@@ -19,15 +19,6 @@ import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
-
-const StyledMenuIcon = styled(Settings)`
-  height: 20px;
-  width: 20px;
-
-  > * {
-    stroke: ${({ theme }) => theme.textSecondary};
-  }
-`
 
 const StyledMenuButton = styled.button<{ disabled: boolean }>`
   position: relative;
@@ -106,7 +97,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         id="open-settings-dialog-button"
         aria-label={t`Transaction Settings`}
       >
-        <StyledMenuIcon />
+        <Sliders color="black" size={20} />
       </StyledMenuButton>
       {open && (
         <MenuFlyout>

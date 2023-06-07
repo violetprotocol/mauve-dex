@@ -28,7 +28,7 @@ export const SwapWrapper = styled.main`
   background: ${({ theme }) => theme.backgroundSurface};
   border-radius: 16px;
   border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  padding: 8px;
+  padding: 2rem;
   z-index: ${Z_INDEX.deprecated_content};
   transition: transform 250ms ease;
 
@@ -46,9 +46,9 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   margin-bottom: -18px;
   margin-left: auto;
   margin-right: auto;
-  background-color: ${({ theme }) => theme.backgroundInteractive};
-  border: 4px solid;
-  border-color: ${({ theme }) => theme.backgroundSurface};
+  /* THIS IS HERE BECAUSE WE CAN'T USE TRANSPARENCY FOR THIS COMPONENT */
+  background-color: #e6e7eb;
+  border: 4px solid white;
 
   z-index: 2;
   ${({ clickable }) =>

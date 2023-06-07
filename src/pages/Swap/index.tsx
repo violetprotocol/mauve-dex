@@ -23,6 +23,7 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
+import { transparentize } from 'polished'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactNode } from 'react'
 import { ArrowDown, CheckCircle, HelpCircle } from 'react-feather'
@@ -80,7 +81,7 @@ const ArrowContainer = styled.div`
 
 const SwapSection = styled.div`
   position: relative;
-  background-color: ${({ theme }) => theme.backgroundModule};
+  background-color: ${({ theme }) => transparentize(0.5, theme.tw.navy[50])};
   border-radius: 12px;
   padding: 16px;
   color: ${({ theme }) => theme.textSecondary};
@@ -570,9 +571,7 @@ export default function Swap({ className }: { className?: string }) {
                   >
                     <ArrowDown
                       size="16"
-                      color={
-                        currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.textTertiary
-                      }
+                      color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.black}
                     />
                   </ArrowContainer>
                 </TraceEvent>
@@ -657,9 +656,9 @@ export default function Swap({ className }: { className?: string }) {
                   </ButtonPrimary>
                 ) : routeNotFound && userHasSpecifiedInputOutput && !routeIsLoading && !routeIsSyncing ? (
                   <GrayCard style={{ textAlign: 'center' }}>
-                    <ThemedText.DeprecatedMain mb="4px">
+                    <ThemedText.DeprecatedWhite mb="4px">
                       <Trans>Insufficient liquidity for this trade.</Trans>
-                    </ThemedText.DeprecatedMain>
+                    </ThemedText.DeprecatedWhite>
                   </GrayCard>
                 ) : showApproveFlow ? (
                   <AutoRow style={{ flexWrap: 'nowrap', width: '100%' }}>

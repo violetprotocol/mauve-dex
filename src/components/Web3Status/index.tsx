@@ -69,6 +69,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
   background-color: ${({ pending }) => (pending ? tw.black : 'transparent')};
   border: 2px solid ${tw.black};
   border-radius: ${FULL_BORDER_RADIUS}px;
+  min-width: 44px;
   color: ${({ pending }) => (pending ? tw.white : tw.black)};
   font-weight: 500;
   font-size: 16px;

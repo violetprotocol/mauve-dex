@@ -59,27 +59,27 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+  background-color: ${({ selected, theme }) => (selected ? theme.tw.navy[100] : theme.tw.black)};
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   color: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.white)};
+  padding: 0.5rem 0.75rem;
   cursor: pointer;
-  height: unset;
-  border-radius: 16px;
+  border-radius: 32px
   outline: none;
   user-select: none;
   border: none;
   font-size: 24px;
   font-weight: 400;
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
-  padding: ${({ selected }) => (selected ? '4px 8px 4px 4px' : '6px 6px 6px 8px')};
+  padding: ${({ selected }) => (selected ? '0.5rem 0.75rem 0.5rem 0.5rem' : '0.675rem 0.675rem 0.675rem 0.75rem')};
   gap: 8px;
   justify-content: space-between;
   margin-left: ${({ hideInput }) => (hideInput ? '0' : '12px')};
 
   &:hover,
   &:active {
-    background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.accentAction)};
+    background-color: ${({ theme, selected }) => (selected ? theme.tw.navy[200] : theme.tw.black)};
   }
 
   &:before {
@@ -158,7 +158,7 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme.accentAction};
+  color: ${({ theme }) => theme.black};
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -284,10 +284,10 @@ export default function SwapCurrencyInputPanel({
               <RowFixed>
                 {pair ? (
                   <span style={{ marginRight: '0.5rem' }}>
-                    <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={24} margin={true} />
+                    <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin={true} />
                   </span>
                 ) : currency ? (
-                  <CurrencyLogo style={{ marginRight: '2px' }} currency={currency} size="24px" />
+                  <CurrencyLogo style={{ marginRight: '0.5rem' }} currency={currency} size="20px" />
                 ) : null}
                 {pair ? (
                   <StyledTokenName className="pair-name-container">
@@ -348,7 +348,7 @@ export default function SwapCurrencyInputPanel({
           </FiatRow>
         )}
       </Container>
-      {onCurrencySelect && (
+      {onCurrencySelect ? (
         <CurrencySearchModal
           isOpen={modalOpen}
           onDismiss={handleDismissSearch}
@@ -359,7 +359,7 @@ export default function SwapCurrencyInputPanel({
           showCurrencyAmount={showCurrencyAmount}
           disableNonToken={disableNonToken}
         />
-      )}
+      ) : null}
     </InputPanel>
   )
 }
