@@ -84,7 +84,6 @@ const SwapSection = styled.div`
   background-color: ${({ theme }) => transparentize(0.5, theme.tw.navy[50])};
   border-radius: 12px;
   padding: 16px;
-  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
@@ -122,8 +121,8 @@ const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
 
 const DetailsSwapSection = styled(SwapSection)`
   padding: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  background-color: transparent;
+  margin-top: 0.5rem;
 `
 
 export function getIsValidSwapQuote(

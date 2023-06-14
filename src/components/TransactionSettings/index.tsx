@@ -47,8 +47,9 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.accentAction};
-  color: ${({ active, theme }) => (active ? theme.white : theme.textPrimary)};
+  background-color: ${({ active, theme }) => (active ? theme.tw.black : theme.tw.neutral[200])};
+  color: ${({ active, theme }) => (active ? theme.tw.white : theme.tw.black)};
+  border: 1px solid ${({ active, theme }) => (active ? theme.tw.black : theme.tw.neutral[200])};
 `
 
 const Input = styled.input`
@@ -171,7 +172,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
+          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.tw.neutral[200]}>
             <Trans>Slippage tolerance</Trans>
           </ThemedText.DeprecatedBlack>
           <QuestionHelper
@@ -240,7 +241,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
       {showCustomDeadlineRow && (
         <AutoColumn gap="sm">
           <RowFixed>
-            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.textSecondary}>
+            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.tw.neutral[200]}>
               <Trans>Transaction deadline</Trans>
             </ThemedText.DeprecatedBlack>
             <QuestionHelper
