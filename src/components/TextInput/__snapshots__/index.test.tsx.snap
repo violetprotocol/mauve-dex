@@ -11,10 +11,10 @@ exports[`ResizableTextArea renders correctly 1`] = `
   flex: 1 1 auto;
   width: 0;
   resize: none;
-  background-color: #F5F6FC;
+  background-color: #e5e5e5;
   -webkit-transition: color 300ms step-start;
   transition: color 300ms step-start;
-  color: #0D111C;
+  color: #000;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
@@ -74,10 +74,10 @@ exports[`TextInput renders correctly 1`] = `
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
   width: 0;
-  background-color: #F5F6FC;
+  background-color: #e5e5e5;
   -webkit-transition: color 300ms step-start;
   transition: color 300ms step-start;
-  color: #0D111C;
+  color: #000;
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;

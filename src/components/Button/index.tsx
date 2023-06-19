@@ -18,7 +18,7 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
   width: ${({ width }) => width ?? '100%'};
   font-weight: 500;
   text-align: center;
-  border-radius: ${({ $borderRadius }) => $borderRadius ?? '20px'};
+  border-radius: ${({ $borderRadius }) => $borderRadius ?? '100px'};
   outline: none;
   border: 1px solid transparent;
   color: ${({ theme }) => theme.tw.black};
@@ -82,7 +82,6 @@ export const SmallButtonPrimary = styled(ButtonPrimary)`
   width: auto;
   font-size: 16px;
   padding: 10px 16px;
-  border-radius: 12px;
 `
 
 export const ButtonLight = styled(BaseButton)`
@@ -136,7 +135,6 @@ export const ButtonSecondary = styled(BaseButton)`
   color: ${({ theme }) => theme.accentAction};
   background-color: transparent;
   font-size: 16px;
-  border-radius: 12px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
   &:focus {

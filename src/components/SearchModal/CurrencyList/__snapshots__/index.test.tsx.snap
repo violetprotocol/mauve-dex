@@ -21,7 +21,7 @@ exports[`renders currency rows correctly when currencies list is non-empty 1`] =
 .c9 {
   width: 1em;
   height: 1em;
-  color: #98A1C0;
+  color: #a3a3a3;
 }
 
 .c4 {
