@@ -13,6 +13,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Lock } from 'react-feather'
 import styled, { useTheme } from 'styled-components/macro'
 import { flexColumnNoWrap, flexRowNoWrap } from 'theme/styles'
+import { opacify } from 'theme/utils'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
@@ -59,7 +60,7 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.tw.navy[100] : theme.tw.black)};
+  background-color: ${({ selected, theme }) => (selected ? opacify(50, theme.tw.navy[100]) : theme.tw.navy[900])};
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   color: ${({ selected, theme }) => (selected ? theme.tw.black : theme.white)};
@@ -79,7 +80,8 @@ const CurrencySelect = styled(ButtonGray)<{
 
   &:hover,
   &:active {
-    background-color: ${({ theme, selected }) => (selected ? theme.tw.navy[200] : theme.tw.black)};
+    background-color: ${({ theme, selected }) =>
+      selected ? opacify(80, theme.tw.navy[100]) : opacify(80, theme.tw.black)};
   }
 
   &:before {
@@ -93,14 +95,6 @@ const CurrencySelect = styled(ButtonGray)<{
     width: 100%;
     height: 100%;
     content: '';
-  }
-
-  &:hover:before {
-    background-color: ${({ theme }) => theme.stateOverlayHover};
-  }
-
-  &:active:before {
-    background-color: ${({ theme }) => theme.stateOverlayPressed};
   }
 
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};

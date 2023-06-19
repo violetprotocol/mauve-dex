@@ -2,8 +2,8 @@
 import { opacify } from './utils'
 
 export const tw = {
-  black: '#000',
-  white: '#fff',
+  black: '#000000',
+  white: '#ffffff',
   primary: {
     50: '#eaeefe',
     100: '#d4dcfd',

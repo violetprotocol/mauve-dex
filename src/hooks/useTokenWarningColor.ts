@@ -8,7 +8,7 @@ export const useTokenWarningTextColor = (level: WARNING_LEVEL) => {
     case WARNING_LEVEL.MEDIUM:
       return theme.tw.yellow[500]
     case WARNING_LEVEL.UNKNOWN:
-      return theme.tw.red[600]
+      return theme.tw.red[500]
     case WARNING_LEVEL.BLOCKED:
       return theme.tw.navy[300]
   }

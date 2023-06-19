@@ -35,7 +35,7 @@ describe('Token Warning Colors', () => {
 
     it('blocked', () => {
       const { result } = renderHook(() => useTokenWarningTextColor(WARNING_LEVEL.BLOCKED))
-      expect(result.current).toEqual(tw.neutral[100])
+      expect(result.current).toEqual(tw.navy[300])
     })
   })
 })
