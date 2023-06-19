@@ -37,7 +37,7 @@ const NoTokenDisplay = styled.div`
   justify-content: center;
   width: 100%;
   height: 60px;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.tw.neutral[600]};
   font-size: 16px;
   font-weight: 500;
   align-items: center;

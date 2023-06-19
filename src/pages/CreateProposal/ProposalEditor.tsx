@@ -10,7 +10,7 @@ export {}
 // const ProposalEditorHeader = styled(Text)`
 //   font-size: 14px;
 //   font-weight: 500;
-//   color: ${({ theme }) => theme.textSecondary};
+//   color: ${({ theme }) => theme.tw.neutral[600]};
 // `
 
 // const ProposalTitle = memo(styled(TextInput)`
@@ -23,7 +23,7 @@ export {}
 //   padding: 0.75rem 1rem 0.75rem 1rem;
 //   border-radius: 20px;
 //   border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.tw.neutral[200]};
 // `
 
 // export const ProposalEditor = ({

@@ -62,11 +62,11 @@ export {}
 //   text-align: left;
 //   outline: none;
 //   cursor: pointer;
-//   color: ${({ theme }) => theme.textPrimary};
+//   color: ${({ theme }) => theme.tw.black};
 //   text-decoration: none;
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.tw.neutral[200]};
 //   &:focus {
-//     background-color: ${({ theme }) => darken(0.05, theme.deprecated_bg1)};
+//     background-color: ${({ theme }) => darken(0.05, theme.tw.neutral[200])};
 //   }
 //   &:hover {
 //     background-color: ${({ theme }) => theme.backgroundInteractive};
@@ -117,7 +117,7 @@ export {}
 // `
 
 // const StyledExternalLink = styled(ExternalLink)`
-//   color: ${({ theme }) => theme.textPrimary};
+//   color: ${({ theme }) => theme.tw.black};
 // `
 
 // export default function Landing() {

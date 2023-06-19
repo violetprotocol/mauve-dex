@@ -42,12 +42,12 @@ import InvalidTokenDetails from './InvalidTokenDetails'
 
 const TokenSymbol = styled.span`
   text-transform: uppercase;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.tw.neutral[600]};
 `
 const TokenActions = styled.div`
   display: flex;
   gap: 16px;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.tw.neutral[600]};
 `
 
 function useOnChainToken(address: string | undefined, skip: boolean) {

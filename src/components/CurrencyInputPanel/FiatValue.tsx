@@ -32,10 +32,10 @@ export function FiatValue({
     if (!priceImpact) return undefined
     if (priceImpact.lessThan('0')) return theme.accentSuccess
     const severity = warningSeverity(priceImpact)
-    if (severity < 1) return theme.textTertiary
+    if (severity < 1) return theme.tw.neutral[400]
     if (severity < 3) return theme.deprecated_yellow1
-    return theme.accentFailure
-  }, [priceImpact, theme.accentSuccess, theme.accentFailure, theme.textTertiary, theme.deprecated_yellow1])
+    return theme.tw.red[600]
+  }, [priceImpact, theme.accentSuccess, theme.deprecated_yellow1, theme.tw.neutral, theme.tw.red])
 
   useEffect(() => {
     const stale = false
@@ -51,7 +51,7 @@ export function FiatValue({
   }, [isLoading, fiatValue])
 
   return (
-    <ThemedText.DeprecatedBody fontSize={14} color={theme.textSecondary}>
+    <ThemedText.DeprecatedBody fontSize={14} color={theme.tw.neutral[600]}>
       {showLoadingPlaceholder ? (
         <FiatLoadingBubble />
       ) : (

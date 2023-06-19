@@ -65,7 +65,7 @@ const AccountGroupingRow = styled.div`
   justify-content: space-between;
   align-items: center;
   font-weight: 400;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
 
   div {
     ${flexColumnNoWrap};
@@ -102,7 +102,7 @@ const LowerSection = styled.div`
   h5 {
     margin: 0;
     font-weight: 400;
-    color: ${({ theme }) => theme.textTertiary};
+    color: ${({ theme }) => theme.tw.neutral[400]};
   }
 `
 
@@ -129,14 +129,14 @@ const AccountControl = styled.div`
 `
 
 const AddressLink = styled(ExternalLink)`
-  color: ${({ theme }) => theme.textTertiary};
+  color: ${({ theme }) => theme.tw.neutral[400]};
   margin-left: 1rem;
   font-size: 0.825rem;
   display: flex;
   gap: 6px;
   text-decoration: none !important;
   :hover {
-    color: ${({ theme }) => theme.textSecondary};
+    color: ${({ theme }) => theme.tw.neutral[600]};
   }
 `
 
@@ -160,7 +160,7 @@ const WalletName = styled.div`
   width: initial;
   font-size: 0.825rem;
   font-weight: 500;
-  color: ${({ theme }) => theme.textTertiary};
+  color: ${({ theme }) => theme.tw.neutral[400]};
 `
 
 const TransactionListWrapper = styled.div`
@@ -316,7 +316,7 @@ export default function AccountDetails({
         </LowerSection>
       ) : (
         <LowerSection>
-          <ThemedText.DeprecatedBody color={theme.textPrimary}>
+          <ThemedText.DeprecatedBody color={theme.tw.black}>
             <Trans>Your transactions will appear here...</Trans>
           </ThemedText.DeprecatedBody>
         </LowerSection>

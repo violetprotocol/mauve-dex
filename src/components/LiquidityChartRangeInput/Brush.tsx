@@ -34,7 +34,7 @@ const TooltipBackground = styled.rect`
 const Tooltip = styled.text`
   text-anchor: middle;
   font-size: 13px;
-  fill: ${({ theme }) => theme.textPrimary};
+  fill: ${({ theme }) => theme.tw.black};
 `
 
 // flips the handles draggers when close to the container edges

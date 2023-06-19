@@ -21,7 +21,7 @@ export default function FailedNetworkSwitchPopup({ chainId }: { chainId: Support
       <AutoColumn gap="sm">
         <RowNoFlex style={{ alignItems: 'center' }}>
           <div style={{ paddingRight: 13 }}>
-            <AlertTriangle color={theme.accentWarning} size={24} display="flex" />
+            <AlertTriangle color={theme.tw.yellow[500]} size={24} display="flex" />
           </div>
           <ThemedText.SubHeader>
             <Trans>Failed to switch networks</Trans>

@@ -7,14 +7,14 @@ import styled from 'styled-components/macro'
 import { ExternalLink, MEDIA_WIDTHS } from 'theme'
 
 const BodyRow = styled.div`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   font-size: 12px;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
 `
 const CautionTriangle = styled(AlertTriangle)`
-  color: ${({ theme }) => theme.accentWarning};
+  color: ${({ theme }) => theme.tw.yellow[500]};
 `
 const Link = styled(ExternalLink)`
   color: ${({ theme }) => theme.black};
@@ -27,7 +27,7 @@ const TitleRow = styled.div`
   margin-bottom: 8px;
 `
 const TitleText = styled.div`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;

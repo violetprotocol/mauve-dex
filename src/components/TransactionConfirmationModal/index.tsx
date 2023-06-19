@@ -74,13 +74,13 @@ function ConfirmationPendingContent({
           <CustomLightSpinner src={Circle} alt="loader" size={inline ? '40px' : '90px'} />
         </ConfirmedIcon>
         <AutoColumn gap="md" justify="center">
-          <Text fontWeight={500} fontSize={20} color={theme.textPrimary} textAlign="center">
+          <Text fontWeight={500} fontSize={20} color={theme.tw.black} textAlign="center">
             <Trans>Waiting for confirmation</Trans>
           </Text>
-          <Text fontWeight={600} fontSize={16} color={theme.textPrimary} textAlign="center">
+          <Text fontWeight={600} fontSize={16} color={theme.tw.black} textAlign="center">
             {pendingText}
           </Text>
-          <Text fontWeight={400} fontSize={12} color={theme.textSecondary} textAlign="center" marginBottom="12px">
+          <Text fontWeight={400} fontSize={12} color={theme.tw.neutral[600]} textAlign="center" marginBottom="12px">
             <Trans>Confirm this transaction in your wallet</Trans>
           </Text>
         </AutoColumn>
@@ -270,7 +270,7 @@ function L2Content({
               // <CheckCircle strokeWidth={1} size={inline ? '40px' : '90px'} color={theme.accentSuccess} />
               <AnimatedConfirmation />
             ) : (
-              <AlertCircle strokeWidth={1} size={inline ? '40px' : '90px'} color={theme.accentFailure} />
+              <AlertCircle strokeWidth={1} size={inline ? '40px' : '90px'} color={theme.tw.red[600]} />
             )
           ) : (
             <CustomLightSpinner src={Circle} alt="loader" size={inline ? '40px' : '90px'} />
@@ -300,13 +300,13 @@ function L2Content({
           ) : (
             <div style={{ height: '17px' }} />
           )}
-          <Text color={theme.textTertiary} style={{ margin: '20px 0 0 0' }} fontSize="14px">
+          <Text color={theme.tw.neutral[400]} style={{ margin: '20px 0 0 0' }} fontSize="14px">
             {!secondsToConfirm ? (
               <div style={{ height: '24px' }} />
             ) : (
               <div>
                 <Trans>Transaction completed in </Trans>
-                <span style={{ fontWeight: 500, marginLeft: '4px', color: theme.textPrimary }}>
+                <span style={{ fontWeight: 500, marginLeft: '4px', color: theme.tw.black }}>
                   {secondsToConfirm} seconds 🎉
                 </span>
               </div>

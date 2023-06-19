@@ -21,7 +21,7 @@ import { ChainConnectivityWarning } from './ChainConnectivityWarning'
 const StyledPolling = styled.div`
   align-items: center;
   bottom: 0;
-  color: ${({ theme }) => theme.textTertiary};
+  color: ${({ theme }) => theme.tw.neutral[400]};
   display: none;
   padding: 1rem;
   position: fixed;
@@ -72,7 +72,7 @@ const StyledPollingDot = styled.div<{ warning: boolean }>`
 `
 
 const StyledGasDot = styled.div`
-  background-color: ${({ theme }) => theme.textTertiary};
+  background-color: ${({ theme }) => theme.tw.neutral[400]};
   border-radius: 50%;
   height: 4px;
   min-height: 4px;

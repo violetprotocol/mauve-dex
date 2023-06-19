@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.backgroundSurface};
   border-radius: 20px 20px 0px 0px;
   bottom: 56px;
-  color: ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.tw.neutral[600]};
   display: flex;
   flex-direction: row;
   font-weight: 500;
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   }
 `
 const BalanceValue = styled.div`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   font-size: 20px;
   line-height: 28px;
   display: flex;

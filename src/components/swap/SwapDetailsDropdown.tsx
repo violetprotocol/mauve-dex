@@ -35,7 +35,7 @@ const StyledInfoIcon = styled(Info)`
   height: 16px;
   width: 16px;
   margin-right: 4px;
-  color: ${({ theme }) => theme.textTertiary};
+  color: ${({ theme }) => theme.tw.neutral[400]};
 `
 
 const StyledCard = styled(OutlineCard)`
@@ -61,7 +61,7 @@ const StyledPolling = styled.div`
   margin-right: 2px;
   margin-left: 10px;
   align-items: center;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   transition: 250ms ease color;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
@@ -95,7 +95,7 @@ const Spinner = styled.div`
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
   border-bottom: 1px solid transparent;
-  border-left: 2px solid ${({ theme }) => theme.textPrimary};
+  border-left: 2px solid ${({ theme }) => theme.tw.black};
   background: transparent;
   width: 14px;
   height: 14px;
@@ -154,7 +154,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                     placement="bottom"
                     disableHover={showDetails}
                   >
-                    <StyledInfoIcon color={trade ? theme.textTertiary : theme.deprecated_bg3} />
+                    <StyledInfoIcon color={trade ? theme.tw.neutral[400] : theme.deprecated_bg3} />
                   </MouseoverTooltipContent>
                 </HideSmall>
               )}
@@ -181,7 +181,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                 />
               )}
               <RotatingArrow
-                stroke={trade ? theme.textTertiary : theme.deprecated_bg3}
+                stroke={trade ? theme.tw.neutral[400] : theme.deprecated_bg3}
                 open={Boolean(trade && showDetails)}
               />
             </RowFixed>

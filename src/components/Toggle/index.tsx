@@ -5,7 +5,7 @@ import styled, { keyframes } from 'styled-components/macro'
 const Wrapper = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   align-items: center;
   background: ${({ isActive, theme }) => (isActive ? theme.tw.neutral[200] : 'transparent')};
-  border: 1px solid ${({ theme }) => theme.tw.black};
+  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.tw.black : theme.tw.neutral[400])};
   border-radius: 20px;
   cursor: pointer;
   display: flex;
@@ -43,7 +43,7 @@ const ToggleElementHoverStyle = (hasBgColor: boolean, theme: any, isActive?: boo
       }
     : {
         background: isActive ? theme.tw.black : darken(0.05, theme.tw.neutral[200]),
-        color: isActive ? theme.white : theme.textTertiary,
+        color: isActive ? theme.white : theme.tw.neutral[400],
       }
 
 const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string; isInitialToggleLoad?: boolean }>`

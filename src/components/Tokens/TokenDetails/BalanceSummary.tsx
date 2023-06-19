@@ -15,7 +15,7 @@ const BalancesCard = styled.div`
   background-color: ${({ theme }) => theme.backgroundSurface};
   border: ${({ theme }) => `1px solid ${theme.backgroundOutline}`};
   border-radius: 16px;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   display: none;
   height: fit-content;
   padding: 20px;
@@ -79,7 +79,7 @@ export default function BalanceSummary({ token }: { token: Currency }) {
   return (
     <BalancesCard>
       <BalanceSection>
-        <ThemedText.SubHeaderSmall color={theme.textPrimary}>
+        <ThemedText.SubHeaderSmall color={theme.tw.black}>
           <Trans>Your balance on {label}</Trans>
         </ThemedText.SubHeaderSmall>
         <BalanceRow>

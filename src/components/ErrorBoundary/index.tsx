@@ -46,7 +46,7 @@ const Code = styled.code`
   line-height: 16px;
   word-wrap: break-word;
   width: 100%;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   font-family: ${({ theme }) => theme.fonts.code};
   overflow: scroll;
   max-height: calc(100vh - 450px);
@@ -65,7 +65,7 @@ const CodeBlockWrapper = styled.div`
   border-radius: 24px;
   padding: 24px;
   gap: 10px;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
 `
 
 const ShowMoreButton = styled.div`
@@ -75,7 +75,7 @@ const ShowMoreButton = styled.div`
 `
 
 const CopyIcon = styled(Copy)`
-  stroke: ${({ theme }) => theme.textSecondary};
+  stroke: ${({ theme }) => theme.tw.neutral[600]};
 `
 
 const ShowMoreIcon = styled(ChevronUpIcon)<{ $isExpanded?: boolean }>`
@@ -103,7 +103,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
 
   const showMoreButton = (
     <ShowMoreButton onClick={() => setExpanded((s) => !s)}>
-      <ThemedText.Link color="textSecondary">
+      <ThemedText.Link color="tw.neutral[600]">
         <Trans>{isExpanded ? 'Show less' : 'Show more'}</Trans>
       </ThemedText.Link>
       <ShowMoreIcon $isExpanded={isExpanded} secondaryWidth="20" secondaryHeight="20" />
@@ -122,7 +122,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
                 <Title textAlign="center">
                   <Trans>Something went wrong</Trans>
                 </Title>
-                <Description textAlign="center" color="textSecondary">
+                <Description textAlign="center" color="tw.neutral[600]">
                   <Trans>
                     Sorry, an error occured while processing your request. If you request support, be sure to provide
                     your error ID.
@@ -154,7 +154,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
                 <Title textAlign="center">
                   <Trans>Something went wrong</Trans>
                 </Title>
-                <Description textAlign="center" color="textSecondary">
+                <Description textAlign="center" color="tw.neutral[600]">
                   <Trans>
                     Sorry, an error occured while processing your request. If you request support, be sure to copy the
                     details of this error.

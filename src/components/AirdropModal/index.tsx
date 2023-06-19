@@ -158,7 +158,7 @@ export {}
 //   display: inline-block;
 //   font-size: 14px;
 //   line-height: 20px;
-//   color: ${({ theme }) => theme.textPrimary};
+//   color: ${({ theme }) => theme.tw.black};
 //   margin-bottom: 28px;
 // `
 

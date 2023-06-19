@@ -38,7 +38,7 @@ const StyledUpArrow = styled(ArrowUpRight)`
   color: ${({ theme }) => theme.accentSuccess};
 `
 const StyledDownArrow = styled(ArrowDownRight)`
-  color: ${({ theme }) => theme.accentFailure};
+  color: ${({ theme }) => theme.tw.red[600]};
 `
 
 function calculateDelta(start: number, current: number) {
@@ -66,7 +66,7 @@ export function formatDelta(delta: number | null | undefined) {
 
 export const DeltaText = styled.span<{ delta: number | undefined }>`
   color: ${({ theme, delta }) =>
-    delta !== undefined ? (Math.sign(delta) < 0 ? theme.accentFailure : theme.accentSuccess) : theme.textPrimary};
+    delta !== undefined ? (Math.sign(delta) < 0 ? theme.tw.red[600] : theme.accentSuccess) : theme.tw.black};
 `
 
 const ChartHeader = styled.div`
@@ -81,7 +81,7 @@ export const TokenPrice = styled.span`
 const MissingPrice = styled(TokenPrice)`
   font-size: 24px;
   line-height: 44px;
-  color: ${({ theme }) => theme.textTertiary};
+  color: ${({ theme }) => theme.tw.neutral[400]};
 `
 
 const DeltaContainer = styled.div`
@@ -287,7 +287,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
         ) : (
           <>
             <MissingPrice>Price Unavailable</MissingPrice>
-            <ThemedText.Caption style={{ color: theme.textTertiary }}>{missingPricesMessage}</ThemedText.Caption>
+            <ThemedText.Caption style={{ color: theme.tw.neutral[400] }}>{missingPricesMessage}</ThemedText.Caption>
           </>
         )}
       </ChartHeader>
@@ -312,7 +312,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
               marginTop={margin.top}
               curve={curve}
               strokeWidth={2}
-              color={theme.textTertiary}
+              color={theme.tw.neutral[400]}
               dashed
             />
           ))}
@@ -329,7 +329,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
                 tickValues={ticks}
                 top={graphHeight - 1}
                 tickLabelProps={() => ({
-                  fill: theme.textSecondary,
+                  fill: theme.tw.neutral[600],
                   fontSize: 12,
                   textAnchor: 'middle',
                   transform: 'translate(0 -24)',
@@ -340,7 +340,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
                 y={margin.crosshair + 10}
                 textAnchor={crosshairAtEdge ? 'end' : 'start'}
                 fontSize={12}
-                fill={theme.textSecondary}
+                fill={theme.tw.neutral[600]}
               >
                 {crosshairDateFormatter(displayPrice.timestamp)}
               </text>
@@ -419,8 +419,8 @@ function MissingPriceChart({ width, height, message }: { width: number; height: 
         fill="transparent"
         strokeWidth="2"
       />
-      {message && <TrendingUp stroke={theme.textTertiary} x={0} size={12} y={height - chartBottomPadding - 10} />}
-      <text y={height - chartBottomPadding} x="20" fill={theme.textTertiary}>
+      {message && <TrendingUp stroke={theme.tw.neutral[400]} x={0} size={12} y={height - chartBottomPadding - 10} />}
+      <text y={height - chartBottomPadding} x="20" fill={theme.tw.neutral[400]}>
         {message}
       </text>
     </StyledMissingChart>

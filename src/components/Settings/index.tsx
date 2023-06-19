@@ -67,7 +67,7 @@ const MenuFlyout = styled.span`
   top: 2rem;
   right: 0rem;
   z-index: 100;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
     min-width: 18.125rem;
@@ -112,7 +112,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
             {isSupportedChainId(chainId) && (
               <RowBetween>
                 <RowFixed>
-                  <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
+                  <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.tw.neutral[600]}>
                     <Trans>Auto Router API</Trans>
                   </ThemedText.DeprecatedBlack>
                   <QuestionHelper text={<Trans>Use the Uniswap Labs API to get faster quotes.</Trans>} />

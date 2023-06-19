@@ -40,7 +40,7 @@ export const SearchInput = styled.input`
   border: none;
   outline: none;
   border-radius: 12px;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.backgroundOutline};
   -webkit-appearance: none;
@@ -48,7 +48,7 @@ export const SearchInput = styled.input`
   font-size: 16px;
 
   ::placeholder {
-    color: ${({ theme }) => theme.textTertiary};
+    color: ${({ theme }) => theme.tw.neutral[400]};
     font-size: 16px;
   }
   transition: border 100ms;

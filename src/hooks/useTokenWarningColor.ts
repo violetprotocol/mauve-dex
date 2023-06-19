@@ -6,11 +6,11 @@ export const useTokenWarningTextColor = (level: WARNING_LEVEL) => {
 
   switch (level) {
     case WARNING_LEVEL.MEDIUM:
-      return theme.accentWarning
+      return theme.tw.yellow[500]
     case WARNING_LEVEL.UNKNOWN:
-      return theme.accentFailure
+      return theme.tw.red[600]
     case WARNING_LEVEL.BLOCKED:
-      return theme.textSecondary
+      return theme.tw.navy[300]
   }
 }
 
@@ -19,10 +19,10 @@ export const useTokenWarningColor = (level: WARNING_LEVEL) => {
 
   switch (level) {
     case WARNING_LEVEL.MEDIUM:
-      return theme.accentWarningSoft
+      return theme.tw.yellow[100]
     case WARNING_LEVEL.UNKNOWN:
-      return theme.accentFailureSoft
+      return theme.tw.red[100]
     case WARNING_LEVEL.BLOCKED:
-      return theme.backgroundFloating
+      return theme.tw.neutral[100]
   }
 }

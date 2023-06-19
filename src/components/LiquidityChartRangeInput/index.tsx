@@ -167,7 +167,7 @@ export default function LiquidityChartRangeInput({
       {isUninitialized ? (
         <InfoBox
           message={<Trans>Your position will appear here.</Trans>}
-          icon={<Inbox size={56} stroke={theme.textPrimary} />}
+          icon={<Inbox size={56} stroke={theme.tw.black} />}
         />
       ) : isLoading ? (
         <InfoBox icon={<Loader size="40px" stroke={theme.deprecated_text4} />} />
@@ -193,7 +193,7 @@ export default function LiquidityChartRangeInput({
               },
               brush: {
                 handle: {
-                  west: saturate(0.1, tokenAColor) ?? theme.accentFailure,
+                  west: saturate(0.1, tokenAColor) ?? theme.tw.red[600],
                   east: saturate(0.1, tokenBColor) ?? theme.accentAction,
                 },
               },

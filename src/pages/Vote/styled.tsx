@@ -14,12 +14,12 @@ export {}
 //     case ProposalState.EXECUTED:
 //       return theme.accentSuccess
 //     case ProposalState.DEFEATED:
-//       return theme.accentFailure
+//       return theme.tw.red[600]
 //     case ProposalState.QUEUED:
 //     case ProposalState.CANCELED:
 //     case ProposalState.EXPIRED:
 //     default:
-//       return theme.textTertiary
+//       return theme.tw.neutral[400]
 //   }
 // }
 

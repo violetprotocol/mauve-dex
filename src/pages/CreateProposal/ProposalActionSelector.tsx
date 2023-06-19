@@ -30,13 +30,13 @@ export {}
 // const ActionSelectorHeader = styled.div`
 //   font-size: 14px;
 //   font-weight: 500;
-//   color: ${({ theme }) => theme.textSecondary};
+//   color: ${({ theme }) => theme.tw.neutral[600]};
 // `
 
 // const ActionDropdown = styled(ButtonDropdown)`
 //   padding: 0px;
 //   background-color: transparent;
-//   color: ${({ theme }) => theme.textPrimary};
+//   color: ${({ theme }) => theme.tw.black};
 //   font-size: 1.25rem;
 
 //   :hover,
@@ -54,7 +54,7 @@ export {}
 //   flex-flow: column nowrap;
 //   border-radius: 20px;
 //   border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.tw.neutral[200]};
 // `
 
 // const ProposalActionSelectorContainer = styled.div`

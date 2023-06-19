@@ -566,12 +566,9 @@ export default function Swap({ className }: { className?: string }) {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
-                    color={theme.textPrimary}
+                    color={theme.tw.black}
                   >
-                    <ArrowDown
-                      size="16"
-                      color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.black}
-                    />
+                    <ArrowDown size="16" color={theme.tw.black} />
                   </ArrowContainer>
                 </TraceEvent>
               </ArrowWrapper>

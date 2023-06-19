@@ -1,6 +1,6 @@
 import { WARNING_LEVEL } from 'constants/tokenSafety'
 import { renderHook } from 'test-utils'
-import { lightTheme } from 'theme/colors'
+import { lightTheme, tw } from 'theme/colors'
 
 import { useTokenWarningColor, useTokenWarningTextColor } from './useTokenWarningColor'
 
@@ -8,7 +8,7 @@ describe('Token Warning Colors', () => {
   describe('useTokenWarningColor', () => {
     it('medium', () => {
       const { result } = renderHook(() => useTokenWarningColor(WARNING_LEVEL.MEDIUM))
-      expect(result.current).toEqual(lightTheme.accentWarningSoft)
+      expect(result.current).toEqual(tw.yellow[100])
     })
 
     it('strong', () => {
@@ -18,14 +18,14 @@ describe('Token Warning Colors', () => {
 
     it('blocked', () => {
       const { result } = renderHook(() => useTokenWarningColor(WARNING_LEVEL.BLOCKED))
-      expect(result.current).toEqual(lightTheme.backgroundFloating)
+      expect(result.current).toEqual(tw.neutral[100])
     })
   })
 
   describe('useTokenWarningTextColor', () => {
     it('medium', () => {
       const { result } = renderHook(() => useTokenWarningTextColor(WARNING_LEVEL.MEDIUM))
-      expect(result.current).toEqual(lightTheme.accentWarning)
+      expect(result.current).toEqual(tw.yellow[500])
     })
 
     it('strong', () => {

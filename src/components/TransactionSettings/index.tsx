@@ -23,22 +23,16 @@ enum DeadlineError {
 }
 
 const FancyButton = styled.button`
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   align-items: center;
   height: 2rem;
   border-radius: 36px;
   font-size: 1rem;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.deprecated_bg3};
+  border: 1px solid ${({ theme }) => theme.tw.black};
   outline: none;
-  background: ${({ theme }) => theme.deprecated_bg1};
-  :hover {
-    border: 1px solid ${({ theme }) => theme.deprecated_bg4};
-  }
-  :focus {
-    border: 1px solid ${({ theme }) => theme.accentAction};
-  }
+  background: ${({ theme }) => theme.tw.neutral[200]};
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
@@ -53,7 +47,7 @@ const Option = styled(FancyButton)<{ active: boolean }>`
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.deprecated_bg1};
+  background: ${({ theme }) => theme.tw.neutral[200]};
   font-size: 16px;
   border-radius: 12px;
   width: auto;
@@ -62,11 +56,11 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.accentFailure : theme.textPrimary)};
+  color: ${({ theme, color }) => (color === 'red' ? theme.tw.red[600] : theme.tw.black)};
   text-align: right;
 
   ::placeholder {
-    color: ${({ theme }) => theme.textTertiary};
+    color: ${({ theme }) => theme.tw.neutral[400]};
   }
 `
 
@@ -78,11 +72,11 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   flex: 1;
   border: ${({ theme, active, warning }) =>
     active
-      ? `1px solid ${warning ? theme.accentFailure : theme.accentAction}`
-      : warning && `1px solid ${theme.accentFailure}`};
+      ? `1px solid ${warning ? theme.tw.red[600] : theme.tw.neutral[900]}`
+      : warning && `1px solid ${theme.tw.red[600]}`};
   :hover {
     border: ${({ theme, active, warning }) =>
-      active && `1px solid ${warning ? darken(0.1, theme.accentFailure) : darken(0.1, theme.accentAction)}`};
+      active && `1px solid ${warning ? darken(0.1, theme.tw.red[600]) : darken(0.1, theme.tw.neutral[900])}`};
   }
 
   input {

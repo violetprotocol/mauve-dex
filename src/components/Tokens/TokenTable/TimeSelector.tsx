@@ -30,7 +30,7 @@ export const ORDERED_TIMES: TimePeriod[] = [
 const InternalMenuItem = styled.div`
   flex: 1;
   padding: 8px;
-  color: ${({ theme }) => theme.textPrimary};
+  color: ${({ theme }) => theme.tw.black};
   border-radius: 8px;
 
   :hover {
@@ -97,7 +97,7 @@ const StyledMenuContent = styled.div`
 `
 const Chevron = styled.span<{ open: boolean }>`
   padding-top: 1px;
-  color: ${({ open, theme }) => (open ? theme.accentActive : theme.textSecondary)};
+  color: ${({ open, theme }) => (open ? theme.accentActive : theme.tw.neutral[600])};
 `
 
 // TODO: change this to reflect data pipeline
