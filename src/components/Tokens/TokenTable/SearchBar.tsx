@@ -28,7 +28,7 @@ const SearchInput = styled.input`
   width: min(200px, 100%);
   font-size: 14px;
   padding-left: 40px;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   transition-duration: ${({ theme }) => theme.transition.duration.fast};
 
   :hover {
@@ -42,7 +42,7 @@ const SearchInput = styled.input`
   }
 
   ::placeholder {
-    color: ${({ theme }) => theme.tw.neutral[400]};
+    color: ${({ theme }) => theme.textTertiary};
   }
   ::-webkit-search-cancel-button {
     -webkit-appearance: none;

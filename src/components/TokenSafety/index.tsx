@@ -53,14 +53,14 @@ const StyledButton = styled(ButtonPrimary)`
 
 const StyledCancelButton = styled(ButtonText)`
   margin-top: 16px;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-weight: 600;
   font-size: 14px;
 `
 
 const StyledCloseButton = styled(StyledButton)`
   background-color: ${({ theme }) => theme.backgroundInteractive};
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 
   &:hover {
     background-color: ${({ theme }) => theme.backgroundInteractive};
@@ -183,7 +183,7 @@ function ExplorerView({ token }: { token: Token }) {
 }
 
 const StyledExternalLink = styled(ExternalLink)`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   stroke: currentColor;
   font-weight: 600;
 `

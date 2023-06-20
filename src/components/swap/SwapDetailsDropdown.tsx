@@ -35,7 +35,7 @@ const StyledInfoIcon = styled(Info)`
   height: 16px;
   width: 16px;
   margin-right: 4px;
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
 `
 
 const StyledCard = styled(OutlineCard)`
@@ -61,7 +61,7 @@ const StyledPolling = styled.div`
   margin-right: 2px;
   margin-left: 10px;
   align-items: center;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   transition: 250ms ease color;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
@@ -95,7 +95,7 @@ const Spinner = styled.div`
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
   border-bottom: 1px solid transparent;
-  border-left: 2px solid ${({ theme }) => theme.tw.black};
+  border-left: 2px solid ${({ theme }) => theme.black};
   background: transparent;
   width: 14px;
   height: 14px;

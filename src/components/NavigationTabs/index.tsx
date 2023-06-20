@@ -31,7 +31,7 @@ const StyledHistoryLink = styled(HistoryLink)<{ flex: string | undefined }>`
 `
 
 const StyledArrowLeft = styled(ArrowLeft)`
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 `
 
 export function AddRemoveTabs({

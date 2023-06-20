@@ -63,7 +63,7 @@ const CurrencySelect = styled(ButtonGray)<{
   background-color: ${({ selected, theme }) => (selected ? opacify(50, theme.tw.navy[100]) : theme.tw.navy[900])};
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
-  color: ${({ selected, theme }) => (selected ? theme.tw.black : theme.white)};
+  color: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   border-radius: 32px
@@ -81,7 +81,7 @@ const CurrencySelect = styled(ButtonGray)<{
   &:hover,
   &:active {
     background-color: ${({ theme, selected }) =>
-      selected ? opacify(80, theme.tw.navy[100]) : opacify(80, theme.tw.black)};
+      selected ? opacify(80, theme.tw.navy[100]) : opacify(80, theme.black)};
   }
 
   &:before {
@@ -109,7 +109,7 @@ const InputRow = styled.div`
 const LabelRow = styled.div`
   ${flexRowNoWrap};
   align-items: center;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 0.75rem;
   line-height: 1rem;
 
@@ -138,7 +138,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   margin-left: 8px;
 
   path {
-    stroke: ${({ selected, theme }) => (selected ? theme.tw.black : theme.white)};
+    stroke: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
     stroke-width: 2px;
   }
 `

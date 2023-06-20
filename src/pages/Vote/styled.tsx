@@ -14,7 +14,7 @@ export {}
 //     case ProposalState.EXECUTED:
 //       return theme.accentSuccess
 //     case ProposalState.DEFEATED:
-//       return theme.tw.red[600]
+//       return theme.accentFailure
 //     case ProposalState.QUEUED:
 //     case ProposalState.CANCELED:
 //     case ProposalState.EXPIRED:

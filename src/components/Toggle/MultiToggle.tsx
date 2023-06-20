@@ -5,7 +5,7 @@ export const ToggleWrapper = styled.button<{ width?: string }>`
   align-items: center;
   width: ${({ width }) => width ?? '100%'};
   padding: 1px;
-  background: ${({ theme }) => theme.tw.neutral[200]};
+  background: ${({ theme }) => theme.backgroundSurface};
   border-radius: 8px;
   border: ${({ theme }) => '1px solid ' + theme.backgroundInteractive};
   cursor: pointer;
@@ -21,7 +21,7 @@ export const ToggleElement = styled.span<{ isActive?: boolean; fontSize?: string
   justify-content: center;
   height: 100%;
   background: ${({ theme, isActive }) => (isActive ? theme.backgroundSurface : 'none')};
-  color: ${({ theme, isActive }) => (isActive ? theme.tw.black : theme.tw.neutral[400])};
+  color: ${({ theme, isActive }) => (isActive ? theme.black : theme.tw.neutral[400])};
   font-size: ${({ fontSize }) => fontSize ?? '1rem'};
   font-weight: 500;
   white-space: nowrap;

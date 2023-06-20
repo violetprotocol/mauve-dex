@@ -105,7 +105,7 @@ const StyledTokenRow = styled.div<{
 const ClickableContent = styled.div`
   display: flex;
   text-decoration: none;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   align-items: center;
   cursor: pointer;
 `
@@ -117,7 +117,7 @@ const StyledHeaderRow = styled(StyledTokenRow)`
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.backgroundOutline};
   border-radius: 8px 8px 0px 0px;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   height: 48px;
   line-height: 16px;
@@ -135,7 +135,7 @@ const StyledHeaderRow = styled(StyledTokenRow)`
 `
 
 const ListNumberCell = styled(Cell)<{ header: boolean }>`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   min-width: 32px;
   font-size: 14px;
 
@@ -180,7 +180,7 @@ const PercentChangeInfoCell = styled(Cell)`
   @media only screen and (max-width: ${SMALL_MEDIA_BREAKPOINT}) {
     display: flex;
     justify-content: flex-end;
-    color: ${({ theme }) => theme.tw.neutral[600]};
+    color: ${({ theme }) => theme.textSecondary};
     font-size: 12px;
     line-height: 16px;
   }
@@ -246,7 +246,7 @@ const TokenName = styled.div`
   max-width: 100%;
 `
 const TokenSymbol = styled(Cell)`
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
   text-transform: uppercase;
 
   @media only screen and (max-width: ${SMALL_MEDIA_BREAKPOINT}) {

@@ -4,7 +4,7 @@ import styled from 'styled-components/macro'
 import { escapeRegExp } from '../../utils'
 
 const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
-  color: ${({ error, theme }) => (error ? theme.tw.red[600] : theme.tw.navy[900])};
+  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.tw.navy[900])};
   width: 0;
   position: relative;
   font-weight: 500;
@@ -35,7 +35,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   }
 
   ::placeholder {
-    color: ${({ theme }) => theme.tw.neutral[400]};
+    color: ${({ theme }) => theme.textTertiary};
   }
 `
 

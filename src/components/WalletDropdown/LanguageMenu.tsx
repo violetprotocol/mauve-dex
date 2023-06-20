@@ -12,7 +12,7 @@ import { SlideOutMenu } from './SlideOutMenu'
 const InternalMenuItem = styled(Link)`
   flex: 1;
   padding: 0.5rem 0.5rem;
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
   :hover {
     cursor: pointer;
   }
@@ -25,7 +25,7 @@ const InternalLinkMenuItem = styled(InternalMenuItem)`
   padding: 12px 16px;
   justify-content: space-between;
   text-decoration: none;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   :hover {
     cursor: pointer;
     background-color: ${({ theme }) => theme.backgroundModule};

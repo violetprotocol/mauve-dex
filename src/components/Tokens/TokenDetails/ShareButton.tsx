@@ -57,7 +57,7 @@ const ShareAction = styled.div`
   font-weight: 400;
   gap: 12px;
   height: 40px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   :hover {
     background-color: ${opacify(10, colors.gray300)};
@@ -95,19 +95,13 @@ export default function ShareButton({ currency }: { currency: Currency }) {
       {open && (
         <ShareActions>
           <ShareAction onClick={() => copyHelperRef.current?.forceCopy()}>
-            <CopyHelper
-              link
-              color={theme.tw.black}
-              iconPosition="left"
-              toCopy={window.location.href}
-              ref={copyHelperRef}
-            >
+            <CopyHelper link color={theme.black} iconPosition="left" toCopy={window.location.href} ref={copyHelperRef}>
               <Trans>Copy Link</Trans>
             </CopyHelper>
           </ShareAction>
 
           <ShareAction onClick={shareTweet}>
-            <Twitter color={theme.tw.black} size={20} strokeWidth={1.5} />
+            <Twitter color={theme.black} size={20} strokeWidth={1.5} />
             <Trans>Share to Twitter</Trans>
           </ShareAction>
         </ShareActions>

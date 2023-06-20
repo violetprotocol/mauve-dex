@@ -84,10 +84,10 @@ export {}
 //   align-items: center;
 //   gap: 8px;
 //   height: 24px;
-//   color: ${({ theme }) => theme.tw.black};
+//   color: ${({ theme }) => theme.textPrimary};
 
 //   a {
-//     color: ${({ theme }) => theme.tw.black};
+//     color: ${({ theme }) => theme.textPrimary};
 //     text-decoration: none;
 //   }
 //   :hover {
@@ -104,7 +104,7 @@ export {}
 // const StyledDataCard = styled(DataCard)`
 //   width: 100%;
 //   background: none;
-//   background-color: ${({ theme }) => theme.tw.neutral[200]};
+//   background-color: ${({ theme }) => theme.backgroundSurface};
 //   height: fit-content;
 //   z-index: 2;
 // `
@@ -121,7 +121,7 @@ export {}
 // const Progress = styled.div<{ status: 'for' | 'against'; percentageString?: string }>`
 //   height: 4px;
 //   border-radius: 4px;
-//   background-color: ${({ theme, status }) => (status === 'for' ? theme.accentSuccess : theme.tw.red[600])};
+//   background-color: ${({ theme, status }) => (status === 'for' ? theme.accentSuccess : theme.accentFailure)};
 //   width: ${({ percentageString }) => percentageString ?? '0%'};
 // `
 

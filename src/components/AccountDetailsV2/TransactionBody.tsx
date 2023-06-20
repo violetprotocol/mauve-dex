@@ -22,7 +22,7 @@ import { shortenAddress } from '../../utils'
 import { TransactionState } from './index'
 
 const HighlightText = styled.span`
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   font-weight: 600;
 `
 

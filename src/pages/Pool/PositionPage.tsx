@@ -100,7 +100,7 @@ const Label = styled(({ end, ...props }) => <ThemedText.DeprecatedLabel {...prop
 `
 
 const ExtentsText = styled.span`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   text-align: center;
   margin-right: 4px;
@@ -109,15 +109,15 @@ const ExtentsText = styled.span`
 
 const HoverText = styled(ThemedText.DeprecatedMain)`
   text-decoration: none;
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
   :hover {
-    color: ${({ theme }) => theme.tw.black};
+    color: ${({ theme }) => theme.textPrimary};
     text-decoration: none;
   }
 `
 
 const DoubleArrow = styled.span`
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
   margin: 0 1rem;
 `
 const ResponsiveRow = styled(RowBetween)`
@@ -716,7 +716,7 @@ export function PositionPage() {
                           <Trans>${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}</Trans>
                         </ThemedText.DeprecatedLargeHeader>
                       ) : (
-                        <ThemedText.DeprecatedLargeHeader color={theme.tw.black} fontSize="36px" fontWeight={500}>
+                        <ThemedText.DeprecatedLargeHeader color={theme.black} fontSize="36px" fontWeight={500}>
                           <Trans>$-</Trans>
                         </ThemedText.DeprecatedLargeHeader>
                       )}
@@ -774,7 +774,7 @@ export function PositionPage() {
                               <Trans>${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}</Trans>
                             </ThemedText.DeprecatedLargeHeader>
                           ) : (
-                            <ThemedText.DeprecatedLargeHeader color={theme.tw.black} fontSize="36px" fontWeight={500}>
+                            <ThemedText.DeprecatedLargeHeader color={theme.black} fontSize="36px" fontWeight={500}>
                               <Trans>$-</Trans>
                             </ThemedText.DeprecatedLargeHeader>
                           )}
@@ -790,11 +790,11 @@ export function PositionPage() {
                             onClick={() => setShowConfirm(true)}
                           >
                             {!!collectMigrationHash && !isCollectPending ? (
-                              <ThemedText.DeprecatedMain color={theme.tw.black}>
+                              <ThemedText.DeprecatedMain color={theme.black}>
                                 <Trans> Collected</Trans>
                               </ThemedText.DeprecatedMain>
                             ) : isCollectPending || collecting ? (
-                              <ThemedText.DeprecatedMain color={theme.tw.black}>
+                              <ThemedText.DeprecatedMain color={theme.black}>
                                 {' '}
                                 <Dots>
                                   <Trans>Collecting</Trans>

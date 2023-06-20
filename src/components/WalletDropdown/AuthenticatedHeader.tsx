@@ -46,7 +46,7 @@ const IconContainer = styled.div`
 const USDText = styled.div`
   font-size: 16px;
   font-weight: 500;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   margin-top: 8px;
 `
 const FlexContainer = styled.div`
@@ -72,13 +72,13 @@ const AccountNamesWrapper = styled.div`
 
 const ENSNameContainer = styled(ThemedText.SubHeader)`
   ${TruncatedTextStyle}
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   margin-top: 2.5px;
 `
 
 const AccountContainer = styled(ThemedText.BodySmall)`
   ${TruncatedTextStyle}
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   margin-top: 2.5px;
 `
 const BalanceWrapper = styled.div`

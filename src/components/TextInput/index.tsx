@@ -7,9 +7,9 @@ const Input = styled.input<{ error?: boolean; fontSize?: string }>`
   border: none;
   flex: 1 1 auto;
   width: 0;
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  color: ${({ error, theme }) => (error ? theme.tw.red[600] : theme.tw.black)};
+  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.black)};
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
@@ -38,9 +38,9 @@ const TextAreaInput = styled.textarea<{ error?: boolean; fontSize?: string }>`
   flex: 1 1 auto;
   width: 0;
   resize: none;
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  color: ${({ error, theme }) => (error ? theme.tw.red[600] : theme.tw.black)};
+  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.black)};
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;

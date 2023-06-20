@@ -9,7 +9,7 @@ export const TooltipContainer = styled.div`
   cursor: default;
   padding: 0.6rem 1rem;
 
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;

@@ -2,7 +2,7 @@ import { Icon } from 'react-feather'
 import styled, { css } from 'styled-components/macro'
 
 export const IconHoverText = styled.span`
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   position: absolute;
   top: 28px;
   border-radius: 8px;
@@ -21,7 +21,7 @@ const IconStyles = css`
   position: relative;
   height: 32px;
   width: 32px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   :hover {
     background-color: ${({ theme }) => theme.hoverState};
     transition: ${({

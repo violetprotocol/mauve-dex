@@ -23,16 +23,16 @@ enum DeadlineError {
 }
 
 const FancyButton = styled.button`
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   align-items: center;
   height: 2rem;
   border-radius: 36px;
   font-size: 1rem;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.tw.black};
+  border: 1px solid ${({ theme }) => theme.black};
   outline: none;
-  background: ${({ theme }) => theme.tw.neutral[200]};
+  background: ${({ theme }) => theme.backgroundSurface};
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
@@ -41,13 +41,13 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => (active ? theme.tw.black : theme.tw.neutral[200])};
-  color: ${({ active, theme }) => (active ? theme.tw.white : theme.tw.black)};
-  border: 1px solid ${({ active, theme }) => (active ? theme.tw.black : theme.tw.neutral[200])};
+  background-color: ${({ active, theme }) => (active ? theme.black : theme.backgroundSurface)};
+  color: ${({ active, theme }) => (active ? theme.white : theme.black)};
+  border: 1px solid ${({ active, theme }) => (active ? theme.black : theme.backgroundSurface)};
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.tw.neutral[200]};
+  background: ${({ theme }) => theme.backgroundSurface};
   font-size: 16px;
   border-radius: 12px;
   width: auto;
@@ -56,11 +56,11 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.tw.red[600] : theme.tw.black)};
+  color: ${({ theme, color }) => (color === 'red' ? theme.accentFailure : theme.black)};
   text-align: right;
 
   ::placeholder {
-    color: ${({ theme }) => theme.tw.neutral[400]};
+    color: ${({ theme }) => theme.textTertiary};
   }
 `
 
@@ -72,11 +72,11 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   flex: 1;
   border: ${({ theme, active, warning }) =>
     active
-      ? `1px solid ${warning ? theme.tw.red[600] : theme.tw.neutral[900]}`
-      : warning && `1px solid ${theme.tw.red[600]}`};
+      ? `1px solid ${warning ? theme.accentFailure : theme.tw.neutral[900]}`
+      : warning && `1px solid ${theme.accentFailure}`};
   :hover {
     border: ${({ theme, active, warning }) =>
-      active && `1px solid ${warning ? darken(0.1, theme.tw.red[600]) : darken(0.1, theme.tw.neutral[900])}`};
+      active && `1px solid ${warning ? darken(0.1, theme.accentFailure) : darken(0.1, theme.tw.neutral[900])}`};
   }
 
   input {
@@ -166,7 +166,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.tw.neutral[200]}>
+          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.backgroundSurface}>
             <Trans>Slippage tolerance</Trans>
           </ThemedText.DeprecatedBlack>
           <QuestionHelper
@@ -235,7 +235,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
       {showCustomDeadlineRow && (
         <AutoColumn gap="sm">
           <RowFixed>
-            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.tw.neutral[200]}>
+            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.backgroundSurface}>
               <Trans>Transaction deadline</Trans>
             </ThemedText.DeprecatedBlack>
             <QuestionHelper

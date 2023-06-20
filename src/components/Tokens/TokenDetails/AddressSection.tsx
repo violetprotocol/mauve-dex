@@ -5,7 +5,7 @@ import { CopyContractAddress, ThemedText } from 'theme'
 const ContractAddressSection = styled.div`
   display: flex;
   flex-direction: column;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 0.9em;
   gap: 4px;
   padding: 4px 0px;
@@ -13,7 +13,7 @@ const ContractAddressSection = styled.div`
 
 const ContractAddress = styled.button`
   display: flex;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   gap: 10px;
   align-items: center;
   background: transparent;

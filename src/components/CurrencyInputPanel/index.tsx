@@ -51,7 +51,7 @@ const FixedContainer = styled.div`
 const Container = styled.div<{ hideInput: boolean; disabled: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '16px' : '20px')};
   border: 1px solid ${({ theme }) => theme.backgroundSurface};
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
   ${({ theme, hideInput, disabled }) =>
     !disabled &&
@@ -70,11 +70,11 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.tw.neutral[200] : theme.tw.black)};
+  background-color: ${({ selected, theme }) => (selected ? theme.backgroundSurface : theme.black)};
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
-  color: ${({ selected, theme }) => (selected ? theme.tw.black : theme.white)};
+  color: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
   cursor: pointer;
   border-radius: 16px;
   outline: none;
@@ -89,7 +89,7 @@ const CurrencySelect = styled(ButtonGray)<{
   margin-left: ${({ hideInput }) => (hideInput ? '0' : '12px')};
   :focus,
   :hover {
-    background-color: ${({ selected, theme }) => (selected ? theme.deprecated_bg3 : darken(0.05, theme.tw.black))};
+    background-color: ${({ selected, theme }) => (selected ? theme.deprecated_bg3 : darken(0.05, theme.black))};
   }
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `
@@ -104,7 +104,7 @@ const InputRow = styled.div<{ selected: boolean }>`
 const LabelRow = styled.div`
   ${flexRowNoWrap};
   align-items: center;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   font-size: 0.75rem;
   line-height: 1rem;
   padding: 0 1rem 1rem;
@@ -132,7 +132,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   height: 35%;
 
   path {
-    stroke: ${({ selected, theme }) => (selected ? theme.tw.black : theme.white)};
+    stroke: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
     stroke-width: 1.5px;
   }
 `
@@ -147,7 +147,7 @@ const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: ${({ theme }) => theme.deprecated_primary5};
   border: none;
   border-radius: 12px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   font-size: 11px;
   font-weight: 500;

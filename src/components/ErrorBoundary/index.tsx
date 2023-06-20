@@ -46,14 +46,14 @@ const Code = styled.code`
   line-height: 16px;
   word-wrap: break-word;
   width: 100%;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   font-family: ${({ theme }) => theme.fonts.code};
   overflow: scroll;
   max-height: calc(100vh - 450px);
 `
 
 const Separator = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.tw.black};
+  border-bottom: 1px solid ${({ theme }) => theme.black};
 `
 
 const CodeBlockWrapper = styled.div`
@@ -65,7 +65,7 @@ const CodeBlockWrapper = styled.div`
   border-radius: 24px;
   padding: 24px;
   gap: 10px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 `
 
 const ShowMoreButton = styled.div`

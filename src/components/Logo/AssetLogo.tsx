@@ -6,7 +6,7 @@ import styled from 'styled-components/macro'
 const MissingImageLogo = styled.div<{ size?: string }>`
   --size: ${({ size }) => size};
   border-radius: 100px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   background-color: ${({ theme }) => theme.backgroundInteractive};
   font-size: calc(var(--size) / 3);
   font-weight: 500;

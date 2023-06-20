@@ -25,7 +25,7 @@ describe('Token Warning Colors', () => {
   describe('useTokenWarningTextColor', () => {
     it('medium', () => {
       const { result } = renderHook(() => useTokenWarningTextColor(WARNING_LEVEL.MEDIUM))
-      expect(result.current).toEqual(tw.yellow[500])
+      expect(result.current).toEqual(accentWarning)
     })
 
     it('strong', () => {

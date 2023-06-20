@@ -43,7 +43,7 @@ const PageWrapper = styled(AutoColumn)`
   }
 `
 const TitleRow = styled(RowBetween)`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
     flex-wrap: wrap;
     gap: 12px;

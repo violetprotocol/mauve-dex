@@ -30,7 +30,7 @@ export const ORDERED_TIMES: TimePeriod[] = [
 const InternalMenuItem = styled.div`
   flex: 1;
   padding: 8px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   border-radius: 8px;
 
   :hover {

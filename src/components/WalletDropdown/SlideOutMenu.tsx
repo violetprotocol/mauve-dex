@@ -46,7 +46,7 @@ const StyledChevron = styled(ChevronLeft)`
   cursor: pointer;
 
   &:hover {
-    color: ${({ theme }) => theme.tw.black};
+    color: ${({ theme }) => theme.textPrimary};
     transition: ${({
       theme: {
         transition: { duration, timing },
@@ -60,7 +60,7 @@ const BackSection = styled.div`
   background-color: ${({ theme }) => theme.backgroundSurface};
   width: 99%;
   padding: 0 16px 16px 16px;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   cursor: default;
   display: flex;
   justify-content: space-between;

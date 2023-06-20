@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 
 export const BreadcrumbNavLink = styled(Link)`
   display: flex;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   line-height: 20px;
   align-items: center;
@@ -14,6 +14,6 @@ export const BreadcrumbNavLink = styled(Link)`
   width: fit-content;
 
   &:hover {
-    color: ${({ theme }) => theme.tw.neutral[400]};
+    color: ${({ theme }) => theme.textTertiary};
   }
 `

@@ -30,9 +30,9 @@ const ToggleMenuItem = styled.button`
   font-weight: 400;
   width: 100%;
   padding: 12px 8px;
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   :hover {
-    color: ${({ theme }) => theme.tw.black};
+    color: ${({ theme }) => theme.textPrimary};
     background-color: ${({ theme }) => theme.backgroundModule};
     transition: ${({
       theme: {

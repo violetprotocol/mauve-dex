@@ -13,7 +13,7 @@ import FilterOption from './FilterOption'
 const InternalMenuItem = styled.div`
   flex: 1;
   padding: 12px 8px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 
   :hover {
     cursor: pointer;

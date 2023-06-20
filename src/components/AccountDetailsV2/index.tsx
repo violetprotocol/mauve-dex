@@ -38,7 +38,7 @@ const TextContainer = styled.span`
   font-size: 14px;
   margin-top: auto;
   margin-bottom: auto;
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
 `
 
 const IconStyleWrap = styled.span`

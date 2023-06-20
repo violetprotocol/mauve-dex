@@ -10,7 +10,7 @@ import { TokenSortMethod } from '../state'
 import { HEADER_DESCRIPTIONS } from '../TokenTable/TokenRow'
 
 export const StatWrapper = styled.div`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   min-width: 168px;
   flex: 1;
@@ -33,10 +33,10 @@ const Header = styled(ThemedText.MediumHeader)`
 const StatPrice = styled.div`
   margin-top: 4px;
   font-size: 28px;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 `
 const NoData = styled.div`
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
 `
 export const StatsWrapper = styled.div`
   gap: 16px;

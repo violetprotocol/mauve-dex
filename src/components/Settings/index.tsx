@@ -67,7 +67,7 @@ const MenuFlyout = styled.span`
   top: 2rem;
   right: 0rem;
   z-index: 100;
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
     min-width: 18.125rem;

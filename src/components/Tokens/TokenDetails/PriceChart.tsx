@@ -38,7 +38,7 @@ const StyledUpArrow = styled(ArrowUpRight)`
   color: ${({ theme }) => theme.accentSuccess};
 `
 const StyledDownArrow = styled(ArrowDownRight)`
-  color: ${({ theme }) => theme.tw.red[600]};
+  color: ${({ theme }) => theme.accentFailure};
 `
 
 function calculateDelta(start: number, current: number) {
@@ -66,7 +66,7 @@ export function formatDelta(delta: number | null | undefined) {
 
 export const DeltaText = styled.span<{ delta: number | undefined }>`
   color: ${({ theme, delta }) =>
-    delta !== undefined ? (Math.sign(delta) < 0 ? theme.tw.red[600] : theme.accentSuccess) : theme.tw.black};
+    delta !== undefined ? (Math.sign(delta) < 0 ? theme.accentFailure : theme.accentSuccess) : theme.black};
 `
 
 const ChartHeader = styled.div`
@@ -81,7 +81,7 @@ export const TokenPrice = styled.span`
 const MissingPrice = styled(TokenPrice)`
   font-size: 24px;
   line-height: 44px;
-  color: ${({ theme }) => theme.tw.neutral[400]};
+  color: ${({ theme }) => theme.textTertiary};
 `
 
 const DeltaContainer = styled.div`

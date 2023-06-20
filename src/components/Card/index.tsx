@@ -13,10 +13,6 @@ export const LightCard = styled(Card)`
   background-color: ${({ theme }) => theme.tw.neutral[100]};
 `
 
-export const GrayCard = styled(Card)`
-  background-color: ${({ theme }) => theme.tw.navy[200]};
-`
-
 export const DarkCard = styled(Card)`
   background-color: ${({ theme }) => theme.backgroundSurface};
 `

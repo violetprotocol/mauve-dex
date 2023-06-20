@@ -17,7 +17,7 @@ const InvalidDetailsText = styled.span`
 
   text-align: center;
 
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   font-size: 20px;
   font-weight: 500;
   line-height: 28px;
@@ -29,7 +29,7 @@ const TokenExploreButton = styled.button`
   background-color: ${({ theme }) => theme.accentAction};
   padding: 12px 16px;
 
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   font-size: 16px;
   font-weight: 600;
 `

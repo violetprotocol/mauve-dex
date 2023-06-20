@@ -37,7 +37,7 @@ import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/for
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
-import { GrayCard } from '../../components/Card'
+import { LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import SwapCurrencyInputPanel from '../../components/CurrencyInputPanel/SwapCurrencyInputPanel'
 import Loader from '../../components/Loader'
@@ -101,7 +101,7 @@ const SwapSection = styled.div`
     height: 100%;
     pointer-events: none;
     content: '';
-    border: 1px solid ${({ theme }) => theme.backgroundModule};
+    border: 1px solid ${({ theme }) => theme.backgroundInteractive};
   }
 
   &:hover:before {
@@ -651,11 +651,9 @@ export default function Swap({ className }: { className?: string }) {
                     ) : null}
                   </ButtonPrimary>
                 ) : routeNotFound && userHasSpecifiedInputOutput && !routeIsLoading && !routeIsSyncing ? (
-                  <GrayCard style={{ textAlign: 'center' }}>
-                    <ThemedText.DeprecatedWhite mb="4px">
-                      <Trans>Insufficient liquidity for this trade.</Trans>
-                    </ThemedText.DeprecatedWhite>
-                  </GrayCard>
+                  <LightCard style={{ textAlign: 'center', borderRadius: '100px', fontWeight: 500 }}>
+                    <Trans>Insufficient liquidity for this trade.</Trans>
+                  </LightCard>
                 ) : showApproveFlow ? (
                   <AutoRow style={{ flexWrap: 'nowrap', width: '100%' }}>
                     <AutoColumn style={{ width: '100%' }} gap="12px">

@@ -16,7 +16,7 @@ const InputPanel = styled.div`
   ${flexColumnNoWrap};
   position: relative;
   border-radius: 1.25rem;
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   z-index: 1;
   width: 100%;
 `
@@ -26,10 +26,10 @@ const ContainerRow = styled.div<{ error: boolean }>`
   justify-content: center;
   align-items: center;
   border-radius: 1.25rem;
-  border: 1px solid ${({ error, theme }) => (error ? theme.tw.red[600] : theme.backgroundInteractive)};
+  border: 1px solid ${({ error, theme }) => (error ? theme.accentFailure : theme.backgroundInteractive)};
   transition: border-color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')},
     color 500ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
 `
 
 const InputContainer = styled.div`
@@ -43,9 +43,9 @@ const Input = styled.input<{ error?: boolean }>`
   border: none;
   flex: 1 1 auto;
   width: 0;
-  background-color: ${({ theme }) => theme.tw.neutral[200]};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   transition: color 300ms ${({ error }) => (error ? 'step-end' : 'step-start')};
-  color: ${({ error, theme }) => (error ? theme.tw.red[600] : theme.tw.black)};
+  color: ${({ error, theme }) => (error ? theme.accentFailure : theme.black)};
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;

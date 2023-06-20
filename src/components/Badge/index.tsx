@@ -19,13 +19,13 @@ interface BadgeProps {
 function pickBackgroundColor(variant: BadgeVariant | undefined, theme: DefaultTheme): string {
   switch (variant) {
     case BadgeVariant.NEGATIVE:
-      return theme.tw.red[600]
+      return theme.accentFailure
     case BadgeVariant.POSITIVE:
       return theme.accentSuccess
     case BadgeVariant.PRIMARY:
       return theme.accentAction
     case BadgeVariant.WARNING:
-      return theme.tw.yellow[500]
+      return theme.accentWarning
     case BadgeVariant.WARNING_OUTLINE:
       return 'transparent'
     default:
@@ -36,7 +36,7 @@ function pickBackgroundColor(variant: BadgeVariant | undefined, theme: DefaultTh
 function pickBorder(variant: BadgeVariant | undefined, theme: DefaultTheme): string {
   switch (variant) {
     case BadgeVariant.WARNING_OUTLINE:
-      return `1px solid ${theme.tw.yellow[500]}`
+      return `1px solid ${theme.accentWarning}`
     default:
       return 'unset'
   }
@@ -45,13 +45,13 @@ function pickBorder(variant: BadgeVariant | undefined, theme: DefaultTheme): str
 function pickFontColor(variant: BadgeVariant | undefined, theme: DefaultTheme): string {
   switch (variant) {
     case BadgeVariant.NEGATIVE:
-      return readableColor(theme.tw.red[600])
+      return readableColor(theme.accentFailure)
     case BadgeVariant.POSITIVE:
       return readableColor(theme.accentSuccess)
     case BadgeVariant.WARNING:
-      return readableColor(theme.tw.yellow[500])
+      return readableColor(theme.accentWarning)
     case BadgeVariant.WARNING_OUTLINE:
-      return theme.tw.yellow[500]
+      return theme.accentWarning
     default:
       return readableColor(theme.backgroundInteractive)
   }

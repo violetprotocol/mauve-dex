@@ -30,7 +30,7 @@ import { anonymizeLink } from '../../utils/anonymizeLink'
 // TODO: Break this file into a components folder
 
 export const CloseIcon = styled(X)<{ onClick: () => void }>`
-  color: ${({ theme }) => theme.tw.neutral[600]};
+  color: ${({ theme }) => theme.textSecondary};
   cursor: pointer;
 `
 
@@ -435,7 +435,7 @@ export const SpinnerSVG = styled.svg`
 `
 
 const BackArrowLink = styled(StyledInternalLink)`
-  color: ${({ theme }) => theme.tw.black};
+  color: ${({ theme }) => theme.textPrimary};
 `
 export function BackArrow({ to }: { to: string }) {
   return (
