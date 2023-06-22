@@ -35,7 +35,7 @@ export function FiatValue({
     if (severity < 1) return theme.tw.neutral[400]
     if (severity < 3) return theme.deprecated_yellow1
     return theme.accentFailure
-  }, [priceImpact, theme.accentSuccess, theme.deprecated_yellow1, theme.tw.neutral, theme.tw.red])
+  }, [priceImpact, theme.accentFailure, theme.accentSuccess, theme.deprecated_yellow1, theme.tw.neutral])
 
   useEffect(() => {
     const stale = false

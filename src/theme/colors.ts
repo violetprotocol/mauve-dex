@@ -235,13 +235,14 @@ export const lightTheme = {
   accentSuccess: tw.green[600],
   accentWarning: tw.yellow[500],
   accentFailure: tw.red[600],
-  accentCritical: tw.red[600],
+  accentCritical: tw.red[800],
 
   accentActionSoft: opacify(24, tw.primary[600]),
   accentActiveSoft: opacify(24, tw.neutral[800]),
   accentSuccessSoft: opacify(24, tw.green[600]),
   accentWarningSoft: opacify(24, tw.yellow[500]),
   accentFailureSoft: opacify(12, tw.red[600]),
+  accentCriticalSoft: opacify(12, tw.red[800]),
 
   accentTextLightPrimary: tw.navy[50],
   accentTextLightSecondary: opacify(72, tw.navy[50]),

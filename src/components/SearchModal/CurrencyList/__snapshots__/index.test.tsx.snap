@@ -3,7 +3,7 @@
 exports[`renders currency rows correctly when currencies list is non-empty 1`] = `
 <DocumentFragment>
   .c10 {
-  color: #98A1C0;
+  color: #a3a3a3;
 }
 
 .c8 {
@@ -90,7 +90,7 @@ exports[`renders currency rows correctly when currencies list is non-empty 1`] =
 }
 
 .c3:hover {
-  background-color: #B8C0DC14;
+  background-color: #9b9faf14;
 }
 
 .c6 {
