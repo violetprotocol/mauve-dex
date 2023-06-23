@@ -64,7 +64,7 @@ const InputTitle = styled(ThemedText.DeprecatedSmall)`
 `
 
 const ButtonLabel = styled(ThemedText.DeprecatedWhite)<{ disabled: boolean }>`
-  color: ${({ theme, disabled }) => (disabled ? theme.tw.neutral[600] : theme.black)} !important;
+  color: ${({ theme, disabled }) => (disabled ? theme.textSecondary : theme.black)} !important;
 `
 
 interface StepCounterProps {

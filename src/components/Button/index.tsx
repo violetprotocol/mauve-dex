@@ -85,7 +85,7 @@ export const SmallButtonPrimary = styled(ButtonPrimary)`
 `
 
 export const ButtonLight = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.backgroundSurface};
+  background-color: ${({ theme }) => theme.backgroundModule};
   color: ${({ theme }) => theme.textPrimary};
   font-size: 20px;
   font-weight: 600;
@@ -93,6 +93,7 @@ export const ButtonLight = styled(BaseButton)`
   &:focus {
     box-shadow: 0 0 0 1pt ${({ disabled, theme }) => !disabled && theme.accentActiveSoft};
     background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
+    color: ${({ disabled, theme }) => !disabled && theme.white};
   }
   &:hover {
     background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};

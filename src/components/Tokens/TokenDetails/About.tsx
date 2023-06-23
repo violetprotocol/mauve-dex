@@ -32,7 +32,7 @@ const TruncateDescriptionButton = styled.div`
 
   &:hover,
   &:focus {
-    color: ${({ theme }) => darken(0.1, theme.tw.neutral[600])};
+    color: ${({ theme }) => darken(0.1, theme.textSecondary)};
     cursor: pointer;
   }
 `

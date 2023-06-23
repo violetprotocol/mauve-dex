@@ -115,7 +115,7 @@ const LabelRow = styled.div`
 
   span:hover {
     cursor: pointer;
-    color: ${({ theme }) => darken(0.2, theme.tw.neutral[600])};
+    color: ${({ theme }) => darken(0.2, theme.textSecondary)};
   }
 `
 
@@ -310,7 +310,7 @@ export default function SwapCurrencyInputPanel({
               {account ? (
                 <RowFixed style={{ height: '17px' }}>
                   <ThemedText.DeprecatedBody
-                    color={theme.tw.neutral[600]}
+                    color={theme.textSecondary}
                     fontWeight={400}
                     fontSize={14}
                     style={{ display: 'inline' }}

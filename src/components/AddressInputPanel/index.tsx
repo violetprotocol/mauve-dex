@@ -109,7 +109,7 @@ export default function AddressInputPanel({
         <InputContainer>
           <AutoColumn gap="md">
             <RowBetween>
-              <ThemedText.DeprecatedBlack color={theme.tw.neutral[600]} fontWeight={500} fontSize={14}>
+              <ThemedText.DeprecatedBlack color={theme.textSecondary} fontWeight={500} fontSize={14}>
                 {label ?? <Trans>Recipient</Trans>}
               </ThemedText.DeprecatedBlack>
               {address && chainId && (

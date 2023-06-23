@@ -746,7 +746,7 @@ export function PositionPage() {
                             </ThemedText.DeprecatedMain>
                             {typeof ratio === 'number' && !removed ? (
                               <Badge style={{ marginLeft: '10px' }}>
-                                <ThemedText.DeprecatedMain color={theme.tw.neutral[600]} fontSize={11}>
+                                <ThemedText.DeprecatedMain color={theme.textSecondary} fontSize={11}>
                                   <Trans>{inverted ? 100 - ratio : ratio}%</Trans>
                                 </ThemedText.DeprecatedMain>
                               </Badge>

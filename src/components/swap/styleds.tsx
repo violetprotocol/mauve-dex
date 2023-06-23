@@ -70,7 +70,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
       ? theme.deprecated_yellow2
       : severity === 1
       ? theme.tw.black
-      : theme.tw.neutral[600]};
+      : theme.textSecondary};
 `
 
 export const TruncatedText = styled(Text)`

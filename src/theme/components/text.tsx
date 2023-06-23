@@ -20,7 +20,7 @@ export const ThemedText = {
     return <TextWrapper fontWeight={400} fontSize={16} color="textPrimary" {...props} />
   },
   BodySecondary(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={16} color="tw.neutral[600]" {...props} />
+    return <TextWrapper fontWeight={400} fontSize={16} color="textSecondary" {...props} />
   },
   BodySmall(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} color="textPrimary" {...props} />
@@ -54,10 +54,10 @@ export const ThemedText = {
     return <TextWrapper fontWeight={600} fontSize={16} color="textPrimary" {...props} />
   },
   SubHeaderSmall(props: TextProps) {
-    return <TextWrapper fontWeight={500} fontSize={14} color="tw.neutral[600]" {...props} />
+    return <TextWrapper fontWeight={500} fontSize={14} color="textSecondary" {...props} />
   },
   DeprecatedMain(props: TextProps) {
-    return <TextWrapper fontWeight={500} color="tw.neutral[600]" {...props} />
+    return <TextWrapper fontWeight={500} color="textSecondary" {...props} />
   },
   DeprecatedLink(props: TextProps) {
     return <TextWrapper fontWeight={500} color="accentAction" {...props} />
@@ -99,9 +99,9 @@ export const ThemedText = {
     return <TextWrapper fontWeight={500} color="deprecated_bg3" {...props} />
   },
   DeprecatedItalic(props: TextProps) {
-    return <TextWrapper fontWeight={500} fontSize={12} fontStyle="italic" color="tw.neutral[600]" {...props} />
+    return <TextWrapper fontWeight={500} fontSize={12} fontStyle="italic" color="textSecondary" {...props} />
   },
   DeprecatedError({ error, ...props }: { error: boolean } & TextProps) {
-    return <TextWrapper fontWeight={500} color={error ? 'accentFailure' : 'tw.neutral[600]'} {...props} />
+    return <TextWrapper fontWeight={500} color={error ? 'accentFailure' : 'textSecondary'} {...props} />
   },
 }

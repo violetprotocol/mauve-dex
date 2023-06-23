@@ -75,7 +75,7 @@ const ShowMoreButton = styled.div`
 `
 
 const CopyIcon = styled(Copy)`
-  stroke: ${({ theme }) => theme.tw.neutral[600]};
+  stroke: ${({ theme }) => theme.textSecondary};
 `
 
 const ShowMoreIcon = styled(ChevronUpIcon)<{ $isExpanded?: boolean }>`
@@ -103,7 +103,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
 
   const showMoreButton = (
     <ShowMoreButton onClick={() => setExpanded((s) => !s)}>
-      <ThemedText.Link color="tw.neutral[600]">
+      <ThemedText.Link color="textSecondary">
         <Trans>{isExpanded ? 'Show less' : 'Show more'}</Trans>
       </ThemedText.Link>
       <ShowMoreIcon $isExpanded={isExpanded} secondaryWidth="20" secondaryHeight="20" />
@@ -122,7 +122,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
                 <Title textAlign="center">
                   <Trans>Something went wrong</Trans>
                 </Title>
-                <Description textAlign="center" color="tw.neutral[600]">
+                <Description textAlign="center" color="textSecondary">
                   <Trans>
                     Sorry, an error occured while processing your request. If you request support, be sure to provide
                     your error ID.
@@ -154,7 +154,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
                 <Title textAlign="center">
                   <Trans>Something went wrong</Trans>
                 </Title>
-                <Description textAlign="center" color="tw.neutral[600]">
+                <Description textAlign="center" color="textSecondary">
                   <Trans>
                     Sorry, an error occured while processing your request. If you request support, be sure to copy the
                     details of this error.

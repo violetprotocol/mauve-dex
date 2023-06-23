@@ -80,7 +80,7 @@ function ConfirmationPendingContent({
           <Text fontWeight={600} fontSize={16} color={theme.black} textAlign="center">
             {pendingText}
           </Text>
-          <Text fontWeight={400} fontSize={12} color={theme.tw.neutral[600]} textAlign="center" marginBottom="12px">
+          <Text fontWeight={400} fontSize={12} color={theme.textSecondary} textAlign="center" marginBottom="12px">
             <Trans>Confirm this transaction in your wallet</Trans>
           </Text>
         </AutoColumn>

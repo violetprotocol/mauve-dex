@@ -329,7 +329,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
                 tickValues={ticks}
                 top={graphHeight - 1}
                 tickLabelProps={() => ({
-                  fill: theme.tw.neutral[600],
+                  fill: theme.textSecondary,
                   fontSize: 12,
                   textAnchor: 'middle',
                   transform: 'translate(0 -24)',
@@ -340,7 +340,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
                 y={margin.crosshair + 10}
                 textAnchor={crosshairAtEdge ? 'end' : 'start'}
                 fontSize={12}
-                fill={theme.tw.neutral[600]}
+                fill={theme.textSecondary}
               >
                 {crosshairDateFormatter(displayPrice.timestamp)}
               </text>

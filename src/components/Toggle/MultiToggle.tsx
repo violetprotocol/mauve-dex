@@ -27,6 +27,6 @@ export const ToggleElement = styled.span<{ isActive?: boolean; fontSize?: string
   white-space: nowrap;
   :hover {
     user-select: initial;
-    color: ${({ theme, isActive }) => (isActive ? theme.tw.neutral[600] : theme.tw.neutral[400])};
+    color: ${({ theme, isActive }) => (isActive ? theme.textSecondary : theme.tw.neutral[400])};
   }
 `
