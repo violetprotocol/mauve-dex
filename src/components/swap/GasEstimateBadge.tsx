@@ -27,7 +27,7 @@ const StyledGasIcon = styled(GasIcon)`
   margin-right: 4px;
   height: 14px;
   & > * {
-    stroke: ${({ theme }) => theme.tw.neutral[400]};
+    stroke: ${({ theme }) => theme.textTertiary};
   }
 `
 

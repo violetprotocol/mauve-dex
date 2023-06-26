@@ -72,11 +72,11 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   flex: 1;
   border: ${({ theme, active, warning }) =>
     active
-      ? `1px solid ${warning ? theme.accentFailure : theme.tw.neutral[900]}`
+      ? `1px solid ${warning ? theme.accentFailure : theme.accentAction}`
       : warning && `1px solid ${theme.accentFailure}`};
   :hover {
     border: ${({ theme, active, warning }) =>
-      active && `1px solid ${warning ? darken(0.1, theme.accentFailure) : darken(0.1, theme.tw.neutral[900])}`};
+      active && `1px solid ${warning ? darken(0.1, theme.accentFailure) : darken(0.1, theme.accentAction)}`};
   }
 
   input {

@@ -300,7 +300,7 @@ function L2Content({
           ) : (
             <div style={{ height: '17px' }} />
           )}
-          <Text color={theme.tw.neutral[400]} style={{ margin: '20px 0 0 0' }} fontSize="14px">
+          <Text color={theme.textTertiary} style={{ margin: '20px 0 0 0' }} fontSize="14px">
             {!secondsToConfirm ? (
               <div style={{ height: '24px' }} />
             ) : (

@@ -50,7 +50,7 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
 `
 
 export const ButtonPrimary = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.textPrimary};
+  background-color: ${({ theme }) => theme.black};
   font-size: 20px;
   font-weight: 600;
   padding: 16px;
@@ -169,7 +169,7 @@ export const ButtonOutlined = styled(BaseButton)`
     box-shadow: 0 0 0 1px ${({ theme }) => theme.accentActiveSoft};
   }
   &:active {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.tw.neutral[500]};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.accentActiveSoft};
   }
   &:disabled {
     opacity: 50%;
@@ -178,20 +178,20 @@ export const ButtonOutlined = styled(BaseButton)`
 `
 
 export const ButtonYellow = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.tw.yellow[100]};
+  background-color: ${({ theme }) => theme.accentWarningSoft};
   color: ${({ theme }) => theme.accentWarning};
   &:focus {
-    background-color: ${({ theme }) => theme.tw.yellow[100]};
+    background-color: ${({ theme }) => theme.accentWarningSoft};
   }
   &:hover {
-    background-color: ${({ theme }) => theme.tw.yellow[100]};
+    background-color: ${({ theme }) => theme.accentWarningSoft};
     mix-blend-mode: normal;
   }
   &:active {
-    background-color: ${({ theme }) => theme.tw.yellow[100]};
+    background-color: ${({ theme }) => theme.accentWarningSoft};
   }
   &:disabled {
-    background-color: ${({ theme }) => theme.tw.yellow[100]};
+    background-color: ${({ theme }) => theme.accentWarningSoft};
     opacity: 60%;
     cursor: auto;
   }

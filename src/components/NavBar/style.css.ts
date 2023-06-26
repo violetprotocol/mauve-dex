@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css'
-import { tw } from 'theme/colors'
+import { lightTheme } from 'theme/colors'
 
 import { subhead } from '../../nft/css/common.css'
 import { sprinkles } from '../../nft/css/sprinkles.css'
@@ -73,7 +73,7 @@ const baseMenuItem = style([
     lineHeight: '24px',
     fontWeight: 600,
     ':hover': {
-      color: tw.navy['900'],
+      color: lightTheme.textPrimary,
     },
   },
 ])
@@ -81,13 +81,13 @@ const baseMenuItem = style([
 export const menuItem = style([
   baseMenuItem,
   {
-    color: tw.navy['300'],
+    color: lightTheme.textTertiary,
   },
 ])
 
 export const activeMenuItem = style([
   baseMenuItem,
   {
-    color: tw.navy['900'],
+    color: lightTheme.textPrimary,
   },
 ])

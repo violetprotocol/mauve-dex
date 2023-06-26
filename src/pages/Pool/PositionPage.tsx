@@ -905,7 +905,7 @@ export function PositionPage() {
                       </ExtentsText>
 
                       {inRange && (
-                        <ThemedText.DeprecatedSmall color={theme.tw.neutral[400]}>
+                        <ThemedText.DeprecatedSmall color={theme.textTertiary}>
                           <Trans>Your position will be 100% {currencyBase?.symbol} at this price.</Trans>
                         </ThemedText.DeprecatedSmall>
                       )}
@@ -929,7 +929,7 @@ export function PositionPage() {
                       </ExtentsText>
 
                       {inRange && (
-                        <ThemedText.DeprecatedSmall color={theme.tw.neutral[400]}>
+                        <ThemedText.DeprecatedSmall color={theme.textTertiary}>
                           <Trans>Your position will be 100% {currencyQuote?.symbol} at this price.</Trans>
                         </ThemedText.DeprecatedSmall>
                       )}

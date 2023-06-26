@@ -255,8 +255,8 @@ export const lightTheme = {
 
   networkDefaultShadow: `0px 40px 120px ${opacify(12, tw.primary[600])}`,
 
-  stateOverlayHover: opacify(8, tw.neutral[200]),
-  stateOverlayPressed: opacify(24, tw.neutral[400]),
+  stateOverlayHover: opacify(8, tw.neutral[400]),
+  stateOverlayPressed: opacify(24, tw.neutral[600]),
   searchBackground: opacify(4, tw.white),
   searchOutline: opacify(1, tw.black),
 } as const

@@ -32,10 +32,10 @@ export function FiatValue({
     if (!priceImpact) return undefined
     if (priceImpact.lessThan('0')) return theme.accentSuccess
     const severity = warningSeverity(priceImpact)
-    if (severity < 1) return theme.tw.neutral[400]
+    if (severity < 1) return theme.textTertiary
     if (severity < 3) return theme.deprecated_yellow1
     return theme.accentFailure
-  }, [priceImpact, theme.accentFailure, theme.accentSuccess, theme.deprecated_yellow1, theme.tw.neutral])
+  }, [priceImpact, theme.accentFailure, theme.accentSuccess, theme.deprecated_yellow1, theme.textTertiary])
 
   useEffect(() => {
     const stale = false

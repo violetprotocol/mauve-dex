@@ -21,12 +21,12 @@ export const ToggleElement = styled.span<{ isActive?: boolean; fontSize?: string
   justify-content: center;
   height: 100%;
   background: ${({ theme, isActive }) => (isActive ? theme.backgroundSurface : 'none')};
-  color: ${({ theme, isActive }) => (isActive ? theme.black : theme.tw.neutral[400])};
+  color: ${({ theme, isActive }) => (isActive ? theme.black : theme.textTertiary)};
   font-size: ${({ fontSize }) => fontSize ?? '1rem'};
   font-weight: 500;
   white-space: nowrap;
   :hover {
     user-select: initial;
-    color: ${({ theme, isActive }) => (isActive ? theme.textSecondary : theme.tw.neutral[400])};
+    color: ${({ theme, isActive }) => (isActive ? theme.textSecondary : theme.textTertiary)};
   }
 `

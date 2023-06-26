@@ -176,7 +176,7 @@ function WrongNetworkCard() {
 
             <MainContentWrapper>
               <ErrorContainer>
-                <ThemedText.DeprecatedBody color={theme.tw.neutral[400]} textAlign="center">
+                <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
                   <NetworkIcon strokeWidth={1.2} />
                   <div data-testid="pools-unsupported-err">
                     <Trans>Your connected network is unsupported.</Trans>
@@ -302,7 +302,7 @@ export default function Pool() {
                 />
               ) : (
                 <ErrorContainer>
-                  <ThemedText.DeprecatedBody color={theme.tw.neutral[400]} textAlign="center">
+                  <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
                     <InboxIcon strokeWidth={1} style={{ marginTop: '2em' }} />
                     <div>
                       <Trans>Your active V3 liquidity positions will appear here.</Trans>

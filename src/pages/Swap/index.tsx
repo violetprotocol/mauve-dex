@@ -23,7 +23,6 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
-import { transparentize } from 'polished'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactNode } from 'react'
 import { ArrowDown, CheckCircle, HelpCircle } from 'react-feather'
@@ -81,7 +80,7 @@ const ArrowContainer = styled.div`
 
 const SwapSection = styled.div`
   position: relative;
-  background-color: ${({ theme }) => transparentize(0.5, theme.tw.navy[50])};
+  background-color: ${({ theme }) => theme.backgroundModule};
   border-radius: 12px;
   padding: 16px;
   font-size: 14px;
@@ -566,9 +565,9 @@ export default function Swap({ className }: { className?: string }) {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
-                    color={theme.tw.black}
+                    color={theme.black}
                   >
-                    <ArrowDown size="16" color={theme.tw.black} />
+                    <ArrowDown size="16" color={theme.black} />
                   </ArrowContainer>
                 </TraceEvent>
               </ArrowWrapper>

@@ -287,7 +287,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
         ) : (
           <>
             <MissingPrice>Price Unavailable</MissingPrice>
-            <ThemedText.Caption style={{ color: theme.tw.neutral[400] }}>{missingPricesMessage}</ThemedText.Caption>
+            <ThemedText.Caption style={{ color: theme.textTertiary }}>{missingPricesMessage}</ThemedText.Caption>
           </>
         )}
       </ChartHeader>
@@ -312,7 +312,7 @@ export function PriceChart({ width, height, prices: originalPrices, timePeriod }
               marginTop={margin.top}
               curve={curve}
               strokeWidth={2}
-              color={theme.tw.neutral[400]}
+              color={theme.textTertiary}
               dashed
             />
           ))}
@@ -419,8 +419,8 @@ function MissingPriceChart({ width, height, message }: { width: number; height: 
         fill="transparent"
         strokeWidth="2"
       />
-      {message && <TrendingUp stroke={theme.tw.neutral[400]} x={0} size={12} y={height - chartBottomPadding - 10} />}
-      <text y={height - chartBottomPadding} x="20" fill={theme.tw.neutral[400]}>
+      {message && <TrendingUp stroke={theme.textTertiary} x={0} size={12} y={height - chartBottomPadding - 10} />}
+      <text y={height - chartBottomPadding} x="20" fill={theme.textTertiary}>
         {message}
       </text>
     </StyledMissingChart>

@@ -117,7 +117,7 @@ export function AdvancedSwapDetails({
               }
               disableHover={hideInfoTooltips}
             >
-              <ThemedText.DeprecatedSubHeader color={theme.tw.neutral[400]}>
+              <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
                 {trade.tradeType === TradeType.EXACT_INPUT ? (
                   <Trans>Minimum received</Trans>
                 ) : (
@@ -128,7 +128,7 @@ export function AdvancedSwapDetails({
             </MouseoverTooltip>
           </RowFixed>
           <TextWithLoadingPlaceholder syncing={syncing} width={70}>
-            <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.tw.neutral[400]}>
+            <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.textTertiary}>
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? `${trade.minimumAmountOut(allowedSlippage).toSignificant(6)} ${trade.outputAmount.currency.symbol}`
                 : `${trade.maximumAmountIn(allowedSlippage).toSignificant(6)} ${trade.inputAmount.currency.symbol}`}
@@ -145,12 +145,12 @@ export function AdvancedSwapDetails({
               }
               disableHover={hideInfoTooltips}
             >
-              <ThemedText.DeprecatedSubHeader color={theme.tw.neutral[400]}>
+              <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
                 <Trans>Network Fee</Trans>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
             <TextWithLoadingPlaceholder syncing={syncing} width={50}>
-              <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.tw.neutral[400]}>
+              <ThemedText.DeprecatedBlack textAlign="right" fontSize={14} color={theme.textTertiary}>
                 ~${trade.gasUseEstimateUSD.toFixed(2)}
               </ThemedText.DeprecatedBlack>
             </TextWithLoadingPlaceholder>

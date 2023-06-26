@@ -19,7 +19,7 @@ export {}
 //     case ProposalState.CANCELED:
 //     case ProposalState.EXPIRED:
 //     default:
-//       return theme.tw.neutral[400]
+//       return theme.textTertiary
 //   }
 // }
 

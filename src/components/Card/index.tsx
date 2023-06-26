@@ -10,7 +10,7 @@ const Card = styled(Box)<{ width?: string; padding?: string; border?: string; $b
 export default Card
 
 export const LightCard = styled(Card)`
-  background-color: ${({ theme }) => theme.tw.neutral[100]};
+  background-color: ${({ theme }) => theme.backgroundModule};
 `
 
 export const DarkCard = styled(Card)`

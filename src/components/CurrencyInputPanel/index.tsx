@@ -299,7 +299,7 @@ export default function CurrencyInputPanel({
                 <RowFixed style={{ height: '17px' }}>
                   <ThemedText.DeprecatedBody
                     onClick={onMax}
-                    color={theme.tw.neutral[400]}
+                    color={theme.textTertiary}
                     fontWeight={500}
                     fontSize={14}
                     style={{ display: 'inline', cursor: 'pointer' }}

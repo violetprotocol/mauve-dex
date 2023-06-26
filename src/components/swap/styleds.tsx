@@ -65,11 +65,11 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
   color: ${({ theme, severity }) =>
     severity === 3 || severity === 4
-      ? theme.tw.red[600]
+      ? theme.accentFailure
       : severity === 2
       ? theme.deprecated_yellow2
       : severity === 1
-      ? theme.tw.black
+      ? theme.black
       : theme.textSecondary};
 `
 
@@ -103,7 +103,7 @@ export const Dots = styled.span`
 `
 
 const SwapCallbackErrorInner = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.tw.red[600])};
+  background-color: ${({ theme }) => theme.accentFailureSoft};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -111,7 +111,7 @@ const SwapCallbackErrorInner = styled.div`
   width: 100%;
   padding: 3rem 1.25rem 1rem 1rem;
   margin-top: -2rem;
-  color: ${({ theme }) => theme.tw.red[600]};
+  color: ${({ theme }) => theme.accentFailure};
   z-index: -1;
   p {
     padding: 0;
@@ -121,7 +121,7 @@ const SwapCallbackErrorInner = styled.div`
 `
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.tw.red[600])};
+  background-color: ${({ theme }) => theme.accentFailureSoft};
   display: flex;
   align-items: center;
   justify-content: center;
