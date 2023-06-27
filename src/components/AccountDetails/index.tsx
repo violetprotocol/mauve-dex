@@ -316,7 +316,7 @@ export default function AccountDetails({
         </LowerSection>
       ) : (
         <LowerSection>
-          <ThemedText.DeprecatedBody color={theme.black}>
+          <ThemedText.DeprecatedBody color={theme.textPrimary}>
             <Trans>Your transactions will appear here...</Trans>
           </ThemedText.DeprecatedBody>
         </LowerSection>

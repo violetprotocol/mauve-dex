@@ -79,7 +79,7 @@ export default function BalanceSummary({ token }: { token: Currency }) {
   return (
     <BalancesCard>
       <BalanceSection>
-        <ThemedText.SubHeaderSmall color={theme.black}>
+        <ThemedText.SubHeaderSmall color={theme.textPrimary}>
           <Trans>Your balance on {label}</Trans>
         </ThemedText.SubHeaderSmall>
         <BalanceRow>

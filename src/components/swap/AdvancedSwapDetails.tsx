@@ -76,7 +76,7 @@ export function AdvancedSwapDetails({
               }
               disableHover={hideInfoTooltips}
             >
-              <ThemedText.DeprecatedSubHeader color={theme.black}>
+              <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
                 <Trans>Expected Output</Trans>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
@@ -95,7 +95,7 @@ export function AdvancedSwapDetails({
               text={<Trans>The impact your trade has on the market price of this pool.</Trans>}
               disableHover={hideInfoTooltips}
             >
-              <ThemedText.DeprecatedSubHeader color={theme.black}>
+              <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
                 <Trans>Price Impact</Trans>
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>

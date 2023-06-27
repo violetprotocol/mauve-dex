@@ -95,13 +95,19 @@ export default function ShareButton({ currency }: { currency: Currency }) {
       {open && (
         <ShareActions>
           <ShareAction onClick={() => copyHelperRef.current?.forceCopy()}>
-            <CopyHelper link color={theme.black} iconPosition="left" toCopy={window.location.href} ref={copyHelperRef}>
+            <CopyHelper
+              link
+              color={theme.textPrimary}
+              iconPosition="left"
+              toCopy={window.location.href}
+              ref={copyHelperRef}
+            >
               <Trans>Copy Link</Trans>
             </CopyHelper>
           </ShareAction>
 
           <ShareAction onClick={shareTweet}>
-            <Twitter color={theme.black} size={20} strokeWidth={1.5} />
+            <Twitter color={theme.textPrimary} size={20} strokeWidth={1.5} />
             <Trans>Share to Twitter</Trans>
           </ShareAction>
         </ShareActions>

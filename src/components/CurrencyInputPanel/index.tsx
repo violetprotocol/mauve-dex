@@ -70,11 +70,11 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.backgroundSurface : theme.black)};
+  background-color: ${({ selected, theme }) => (selected ? theme.backgroundSurface : theme.backgroundContrast)};
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
-  color: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
+  color: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textContrast)};
   cursor: pointer;
   border-radius: 16px;
   outline: none;
@@ -89,7 +89,8 @@ const CurrencySelect = styled(ButtonGray)<{
   margin-left: ${({ hideInput }) => (hideInput ? '0' : '12px')};
   :focus,
   :hover {
-    background-color: ${({ selected, theme }) => (selected ? theme.deprecated_bg3 : darken(0.05, theme.black))};
+    background-color: ${({ selected, theme }) =>
+      selected ? theme.deprecated_bg3 : darken(0.05, theme.backgroundContrast)};
   }
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `
@@ -132,7 +133,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   height: 35%;
 
   path {
-    stroke: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
+    stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textContrast)};
     stroke-width: 1.5px;
   }
 `

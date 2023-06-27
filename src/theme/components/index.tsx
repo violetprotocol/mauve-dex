@@ -222,12 +222,12 @@ const ToolTipWrapper = styled.div<{ isCopyContractTooltip?: boolean; tooltipX?: 
 
 const StyledTooltipTriangle = styled(TooltipTriangle)`
   path {
-    fill: ${({ theme }) => theme.black};
+    fill: ${({ theme }) => theme.textPrimary};
   }
 `
 
 const CopiedTooltip = styled.div<{ isCopyContractTooltip?: boolean }>`
-  background-color: ${({ theme }) => theme.black};
+  background-color: ${({ theme }) => theme.backgroundContrast};
   text-align: center;
   justify-content: center;
   width: ${({ isCopyContractTooltip }) => !isCopyContractTooltip && `${TOOLTIP_WIDTH}px`};
@@ -237,7 +237,7 @@ const CopiedTooltip = styled.div<{ isCopyContractTooltip?: boolean }>`
   padding: ${({ isCopyContractTooltip }) => isCopyContractTooltip && '8px'};
   border-radius: 8px;
 
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textContrast};
   font-size: 12px;
 `
 

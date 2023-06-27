@@ -124,7 +124,7 @@ export default function SwapModalHeader({
         </AutoColumn>
       </LightCard>
       <ArrowWrapper>
-        <ArrowDown size="16" color={theme.black} />
+        <ArrowDown size="16" color={theme.textPrimary} />
       </ArrowWrapper>
       <LightCard padding="0.75rem 1rem" style={{ marginBottom: '0.25rem' }}>
         <AutoColumn gap="sm">

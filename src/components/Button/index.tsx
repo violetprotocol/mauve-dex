@@ -50,11 +50,11 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
 `
 
 export const ButtonPrimary = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.black};
+  background-color: ${({ theme }) => theme.backgroundContrast};
   font-size: 20px;
   font-weight: 600;
   padding: 16px;
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textContrast};
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};
     background-color: ${({ theme }) => theme.textTertiary};
@@ -68,9 +68,9 @@ export const ButtonPrimary = styled(BaseButton)`
   }
   &:disabled {
     background-color: ${({ altDisabledStyle, disabled, theme }) =>
-      altDisabledStyle ? (disabled ? theme.black : theme.backgroundModule) : theme.backgroundOutline};
+      altDisabledStyle ? (disabled ? theme.backgroundContrast : theme.backgroundModule) : theme.backgroundOutline};
     color: ${({ altDisabledStyle, disabled, theme }) =>
-      altDisabledStyle ? (disabled ? theme.white : theme.accentActive) : theme.accentActive};
+      altDisabledStyle ? (disabled ? theme.textContrast : theme.accentActive) : theme.accentActive};
     cursor: auto;
     box-shadow: none;
     border: 1px solid transparent;
@@ -93,16 +93,16 @@ export const ButtonLight = styled(BaseButton)`
   &:focus {
     box-shadow: 0 0 0 1pt ${({ disabled, theme }) => !disabled && theme.accentActiveSoft};
     background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
-    color: ${({ disabled, theme }) => !disabled && theme.white};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
   &:hover {
     background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
-    color: ${({ disabled, theme }) => !disabled && theme.white};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
   &:active {
     box-shadow: 0 0 0 1pt ${({ disabled, theme }) => !disabled && theme.accentActiveSoft};
     background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
-    color: ${({ disabled, theme }) => !disabled && theme.white};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
 
   :disabled {
@@ -339,7 +339,7 @@ export function ButtonRadioChecked({ active = false, children, ...rest }: { acti
           {children}
           <CheckboxWrapper>
             <Circle>
-              <ResponsiveCheck size={13} stroke={theme.white} />
+              <ResponsiveCheck size={13} stroke={theme.textContrast} />
             </Circle>
           </CheckboxWrapper>
         </RowBetween>

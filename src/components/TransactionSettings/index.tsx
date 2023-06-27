@@ -30,7 +30,7 @@ const FancyButton = styled.button`
   font-size: 1rem;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.black};
+  border: 1px solid ${({ theme }) => theme.backgroundContrast};
   outline: none;
   background: ${({ theme }) => theme.backgroundSurface};
 `
@@ -41,9 +41,9 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => (active ? theme.black : theme.backgroundSurface)};
-  color: ${({ active, theme }) => (active ? theme.white : theme.black)};
-  border: 1px solid ${({ active, theme }) => (active ? theme.black : theme.backgroundSurface)};
+  background-color: ${({ active, theme }) => (active ? theme.backgroundContrast : theme.backgroundSurface)};
+  color: ${({ active, theme }) => (active ? theme.textContrast : theme.textPrimary)};
+  border: 1px solid ${({ active, theme }) => (active ? theme.backgroundContrast : theme.backgroundSurface)};
 `
 
 const Input = styled.input`
@@ -56,7 +56,7 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
-  color: ${({ theme, color }) => (color === 'red' ? theme.accentFailure : theme.black)};
+  color: ${({ theme, color }) => (color === 'red' ? theme.accentFailure : theme.textPrimary)};
   text-align: right;
 
   ::placeholder {

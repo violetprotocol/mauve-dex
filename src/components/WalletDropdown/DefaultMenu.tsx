@@ -54,8 +54,8 @@ const LatestPendingTxnBox = styled(FlexContainer)`
 `
 
 const PendingBadge = styled.span`
-  background-color: ${({ theme }) => theme.black};
-  color: ${({ theme }) => theme.white};
+  background-color: ${({ theme }) => theme.backgroundContrast};
+  color: ${({ theme }) => theme.textContrast};
   font-weight: 600;
   padding: 4px 8px;
   border-radius: 4px;

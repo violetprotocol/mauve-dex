@@ -59,10 +59,10 @@ const CurrencySelect = styled(ButtonGray)<{
   disabled?: boolean
 }>`
   align-items: center;
-  background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.black)};  
+  background-color: ${({ selected, theme }) => (selected ? theme.backgroundInteractive : theme.backgroundContrast)};  
   opacity: ${({ disabled }) => (!disabled ? 1 : 0.4)};
   box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
-  color: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
+  color: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textContrast)};
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   border-radius: 32px
@@ -79,7 +79,7 @@ const CurrencySelect = styled(ButtonGray)<{
 
   &:hover,
   &:active {
-    background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.black)};
+    background-color: ${({ theme, selected }) => (selected ? theme.backgroundInteractive : theme.backgroundContrast)};
   }
 
   &:before {
@@ -136,7 +136,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   margin-left: 8px;
 
   path {
-    stroke: ${({ selected, theme }) => (selected ? theme.black : theme.white)};
+    stroke: ${({ selected, theme }) => (selected ? theme.textPrimary : theme.textContrast)};
     stroke-width: 2px;
   }
 `
@@ -150,7 +150,7 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme.black};
+  color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;

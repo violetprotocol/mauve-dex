@@ -53,7 +53,7 @@ const Code = styled.code`
 `
 
 const Separator = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.black};
+  border-bottom: 1px solid ${({ theme }) => theme.backgroundContrast};
 `
 
 const CodeBlockWrapper = styled.div`

@@ -66,7 +66,7 @@ export function formatDelta(delta: number | null | undefined) {
 
 export const DeltaText = styled.span<{ delta: number | undefined }>`
   color: ${({ theme, delta }) =>
-    delta !== undefined ? (Math.sign(delta) < 0 ? theme.accentFailure : theme.accentSuccess) : theme.black};
+    delta !== undefined ? (Math.sign(delta) < 0 ? theme.accentFailure : theme.accentSuccess) : theme.textPrimary};
 `
 
 const ChartHeader = styled.div`

@@ -54,7 +54,7 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
 const Web3StatusError = styled(Web3StatusGeneric)`
   background-color: ${({ theme }) => theme.accentFailure};
   border: 1px solid ${({ theme }) => theme.accentFailure};
-  color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textContrast};
   font-weight: 500;
   :hover,
   :focus {
@@ -122,9 +122,9 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 const StyledConnectButton = styled.button`
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.black};
+  border: 2px solid ${({ theme }) => theme.backgroundContrast};
   border-radius: ${FULL_BORDER_RADIUS}px;
-  color: ${({ theme }) => theme.black};
+  color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;

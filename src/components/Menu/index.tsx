@@ -15,7 +15,7 @@ export enum FlyoutAlignment {
 
 const StyledMenuIcon = styled(MenuIcon)`
   path {
-    stroke: ${({ theme }) => theme.black};
+    stroke: ${({ theme }) => theme.textPrimary};
   }
 `
 

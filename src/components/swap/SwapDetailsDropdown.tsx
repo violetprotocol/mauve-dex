@@ -95,7 +95,7 @@ const Spinner = styled.div`
   border-top: 1px solid transparent;
   border-right: 1px solid transparent;
   border-bottom: 1px solid transparent;
-  border-left: 2px solid ${({ theme }) => theme.black};
+  border-left: 2px solid ${({ theme }) => theme.textPrimary};
   background: transparent;
   width: 14px;
   height: 14px;

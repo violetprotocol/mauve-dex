@@ -17,7 +17,7 @@ const CautionTriangle = styled(AlertTriangle)`
   color: ${({ theme }) => theme.accentWarning};
 `
 const Link = styled(ExternalLink)`
-  color: ${({ theme }) => theme.black};
+  color: ${({ theme }) => theme.textPrimary};
   text-decoration: underline;
 `
 const TitleRow = styled.div`

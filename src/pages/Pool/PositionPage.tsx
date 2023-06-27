@@ -716,7 +716,7 @@ export function PositionPage() {
                           <Trans>${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}</Trans>
                         </ThemedText.DeprecatedLargeHeader>
                       ) : (
-                        <ThemedText.DeprecatedLargeHeader color={theme.black} fontSize="36px" fontWeight={500}>
+                        <ThemedText.DeprecatedLargeHeader color={theme.textPrimary} fontSize="36px" fontWeight={500}>
                           <Trans>$-</Trans>
                         </ThemedText.DeprecatedLargeHeader>
                       )}
@@ -774,7 +774,11 @@ export function PositionPage() {
                               <Trans>${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}</Trans>
                             </ThemedText.DeprecatedLargeHeader>
                           ) : (
-                            <ThemedText.DeprecatedLargeHeader color={theme.black} fontSize="36px" fontWeight={500}>
+                            <ThemedText.DeprecatedLargeHeader
+                              color={theme.textPrimary}
+                              fontSize="36px"
+                              fontWeight={500}
+                            >
                               <Trans>$-</Trans>
                             </ThemedText.DeprecatedLargeHeader>
                           )}
@@ -790,11 +794,11 @@ export function PositionPage() {
                             onClick={() => setShowConfirm(true)}
                           >
                             {!!collectMigrationHash && !isCollectPending ? (
-                              <ThemedText.DeprecatedMain color={theme.black}>
+                              <ThemedText.DeprecatedMain color={theme.textPrimary}>
                                 <Trans> Collected</Trans>
                               </ThemedText.DeprecatedMain>
                             ) : isCollectPending || collecting ? (
-                              <ThemedText.DeprecatedMain color={theme.black}>
+                              <ThemedText.DeprecatedMain color={theme.textPrimary}>
                                 {' '}
                                 <Dots>
                                   <Trans>Collecting</Trans>
@@ -802,7 +806,7 @@ export function PositionPage() {
                               </ThemedText.DeprecatedMain>
                             ) : (
                               <>
-                                <ThemedText.DeprecatedMain color={theme.white}>
+                                <ThemedText.DeprecatedMain color={theme.textContrast}>
                                   <Trans>Collect fees</Trans>
                                 </ThemedText.DeprecatedMain>
                               </>

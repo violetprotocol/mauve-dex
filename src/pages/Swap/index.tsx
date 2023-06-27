@@ -100,7 +100,7 @@ const SwapSection = styled.div`
     height: 100%;
     pointer-events: none;
     content: '';
-    border: 1px solid ${({ theme }) => theme.backgroundInteractive};
+    border: 1px solid ${({ theme }) => theme.backgroundModule};
   }
 
   &:hover:before {
@@ -114,8 +114,6 @@ const SwapSection = styled.div`
 
 const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
   border-bottom: ${({ theme }) => `1px solid ${theme.backgroundSurface}`};
-  border-bottom-left-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
-  border-bottom-right-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
 `
 
 const DetailsSwapSection = styled(SwapSection)`
@@ -565,9 +563,14 @@ export default function Swap({ className }: { className?: string }) {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
                     }}
-                    color={theme.black}
+                    color={theme.textPrimary}
                   >
-                    <ArrowDown size="16" color={theme.black} />
+                    <ArrowDown
+                      size="16"
+                      color={
+                        currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.textTertiary
+                      }
+                    />
                   </ArrowContainer>
                 </TraceEvent>
               </ArrowWrapper>
@@ -679,7 +682,7 @@ export default function Swap({ className }: { className?: string }) {
                           )}
 
                           {approvalPending || approvalState === ApprovalState.PENDING ? (
-                            <Loader stroke={theme.white} />
+                            <Loader stroke={theme.textContrast} />
                           ) : (approvalSubmitted && approvalState === ApprovalState.APPROVED) ||
                             signatureState === UseERC20PermitState.SIGNED ? (
                             <CheckCircle size="20" color={theme.accentSuccess} />
@@ -692,7 +695,7 @@ export default function Swap({ className }: { className?: string }) {
                                 </Trans>
                               }
                             >
-                              <HelpCircle size="20" color={theme.white} style={{ marginLeft: '8px' }} />
+                              <HelpCircle size="20" color={theme.textContrast} style={{ marginLeft: '8px' }} />
                             </MouseoverTooltip>
                           )}
                         </AutoRow>

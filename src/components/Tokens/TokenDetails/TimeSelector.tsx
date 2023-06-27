@@ -39,7 +39,7 @@ const TimeButton = styled.button<{ active: boolean }>`
   line-height: 20px;
   border: none;
   cursor: pointer;
-  color: ${({ theme, active }) => (active ? theme.black : theme.textSecondary)};
+  color: ${({ theme, active }) => (active ? theme.textPrimary : theme.textSecondary)};
   transition-duration: ${({ theme }) => theme.transition.duration.fast};
   :hover {
     ${({ active, theme }) => !active && `opacity: ${theme.opacity.hover};`}

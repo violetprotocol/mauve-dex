@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro'
 const FilterOption = styled.button<{ active: boolean; highlight?: boolean }>`
   height: 100%;
-  color: ${({ theme, active }) => (active ? theme.accentActive : theme.black)};
+  color: ${({ theme, active }) => (active ? theme.accentActive : theme.textPrimary)};
   background-color: ${({ theme, active }) => (active ? theme.accentActiveSoft : theme.backgroundInteractive)};
   margin: 0;
   padding: 6px 12px 6px 14px;

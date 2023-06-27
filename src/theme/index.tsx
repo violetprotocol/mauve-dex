@@ -109,7 +109,7 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
 export const ThemedGlobalStyle = createGlobalStyle`
   html {
     color: ${lightTheme.textPrimary}; 
-    background-color: ${lightTheme.white}; 
+    background-color: ${lightTheme.background}; 
   }
 
   summary::-webkit-details-marker {

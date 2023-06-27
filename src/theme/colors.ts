@@ -218,17 +218,20 @@ export const lightTheme = {
   ...commonTheme,
 
   background: tw.white,
-  backgroundSurface: tw.white,
+  backgroundSurface: tw.neutral[50],
   backgroundModule: tw.neutral[100],
   backgroundInteractive: tw.neutral[200],
-  backgroundFloating: opacify(8, tw.neutral[700]),
-  backgroundOutline: tw.neutral[400],
+  backgroundContrast: tw.neutral[900],
+
+  backgroundFloating: opacify(16, tw.neutral[700]),
+  backgroundOutline: opacify(80, tw.neutral[400]),
   backgroundScrim: opacify(60, tw.neutral[900]),
   backgroundScrolledSurface: opacify(72, tw.white),
 
   textPrimary: tw.neutral[900],
   textSecondary: tw.neutral[600],
   textTertiary: tw.neutral[400],
+  textContrast: tw.neutral[50],
 
   accentAction: tw.primary[600],
   accentActive: tw.neutral[800],
