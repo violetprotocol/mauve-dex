@@ -23,7 +23,6 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
-import { transparentize } from 'polished'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { ReactNode } from 'react'
 import { ArrowDown, CheckCircle, HelpCircle } from 'react-feather'
@@ -37,7 +36,7 @@ import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/for
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
-import { GrayCard } from '../../components/Card'
+import { LightCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import SwapCurrencyInputPanel from '../../components/CurrencyInputPanel/SwapCurrencyInputPanel'
 import Loader from '../../components/Loader'
@@ -81,10 +80,9 @@ const ArrowContainer = styled.div`
 
 const SwapSection = styled.div`
   position: relative;
-  background-color: ${({ theme }) => transparentize(0.5, theme.tw.navy[50])};
+  background-color: ${({ theme }) => theme.backgroundModule};
   border-radius: 12px;
   padding: 16px;
-  color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
@@ -116,14 +114,12 @@ const SwapSection = styled.div`
 
 const OutputSwapSection = styled(SwapSection)<{ showDetailsDropdown: boolean }>`
   border-bottom: ${({ theme }) => `1px solid ${theme.backgroundSurface}`};
-  border-bottom-left-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
-  border-bottom-right-radius: ${({ showDetailsDropdown }) => showDetailsDropdown && '0'};
 `
 
 const DetailsSwapSection = styled(SwapSection)`
   padding: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  background-color: transparent;
+  margin-top: 0.5rem;
 `
 
 export function getIsValidSwapQuote(
@@ -571,7 +567,9 @@ export default function Swap({ className }: { className?: string }) {
                   >
                     <ArrowDown
                       size="16"
-                      color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.black}
+                      color={
+                        currencies[Field.INPUT] && currencies[Field.OUTPUT] ? theme.textPrimary : theme.textTertiary
+                      }
                     />
                   </ArrowContainer>
                 </TraceEvent>
@@ -655,11 +653,9 @@ export default function Swap({ className }: { className?: string }) {
                     ) : null}
                   </ButtonPrimary>
                 ) : routeNotFound && userHasSpecifiedInputOutput && !routeIsLoading && !routeIsSyncing ? (
-                  <GrayCard style={{ textAlign: 'center' }}>
-                    <ThemedText.DeprecatedWhite mb="4px">
-                      <Trans>Insufficient liquidity for this trade.</Trans>
-                    </ThemedText.DeprecatedWhite>
-                  </GrayCard>
+                  <LightCard style={{ textAlign: 'center', borderRadius: '100px', fontWeight: 500 }}>
+                    <Trans>Insufficient liquidity for this trade.</Trans>
+                  </LightCard>
                 ) : showApproveFlow ? (
                   <AutoRow style={{ flexWrap: 'nowrap', width: '100%' }}>
                     <AutoColumn style={{ width: '100%' }} gap="12px">
@@ -686,7 +682,7 @@ export default function Swap({ className }: { className?: string }) {
                           )}
 
                           {approvalPending || approvalState === ApprovalState.PENDING ? (
-                            <Loader stroke={theme.white} />
+                            <Loader stroke={theme.textContrast} />
                           ) : (approvalSubmitted && approvalState === ApprovalState.APPROVED) ||
                             signatureState === UseERC20PermitState.SIGNED ? (
                             <CheckCircle size="20" color={theme.accentSuccess} />
@@ -699,7 +695,7 @@ export default function Swap({ className }: { className?: string }) {
                                 </Trans>
                               }
                             >
-                              <HelpCircle size="20" color={theme.white} style={{ marginLeft: '8px' }} />
+                              <HelpCircle size="20" color={theme.textContrast} style={{ marginLeft: '8px' }} />
                             </MouseoverTooltip>
                           )}
                         </AutoRow>

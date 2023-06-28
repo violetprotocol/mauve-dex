@@ -54,7 +54,7 @@ export {}
 //   flex-flow: column nowrap;
 //   border-radius: 20px;
 //   border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.backgroundSurface};
 // `
 
 // const ProposalActionSelectorContainer = styled.div`

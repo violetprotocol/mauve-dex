@@ -9,7 +9,7 @@ import { useMemo } from 'react'
 import { InterfaceTrade } from 'state/routing/types'
 import styled, { useTheme } from 'styled-components/macro'
 
-import { Separator, ThemedText } from '../../theme'
+import { ThemedText } from '../../theme'
 import { computeRealizedPriceImpact } from '../../utils/prices'
 import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
@@ -106,7 +106,6 @@ export function AdvancedSwapDetails({
             </ThemedText.DeprecatedBlack>
           </TextWithLoadingPlaceholder>
         </RowBetween>
-        <Separator />
         <RowBetween>
           <RowFixed style={{ marginRight: '20px' }}>
             <MouseoverTooltip

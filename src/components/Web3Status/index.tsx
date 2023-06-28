@@ -12,8 +12,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { AlertTriangle, ChevronDown, ChevronUp } from 'react-feather'
 import { useAppSelector } from 'state/hooks'
 import { useDerivedSwapInfo } from 'state/swap/hooks'
-import styled from 'styled-components/macro'
-import { tw } from 'theme/colors'
+import styled, { useTheme } from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
 
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
@@ -53,34 +52,31 @@ const Web3StatusGeneric = styled(ButtonSecondary)`
   }
 `
 const Web3StatusError = styled(Web3StatusGeneric)`
-  background-color: ${tw.red[600]};
-  border: 1px solid ${tw.red[600]};
-  color: ${tw.white};
+  background-color: ${({ theme }) => theme.accentFailure};
+  border: 1px solid ${({ theme }) => theme.accentFailure};
+  color: ${({ theme }) => theme.textContrast};
   font-weight: 500;
   :hover,
   :focus {
-    background-color: ${darken(0.1, tw.red[600])};
+    background-color: ${({ theme }) => darken(0.1, theme.accentFailure)};
   }
 `
 
 const Web3StatusConnected = styled(Web3StatusGeneric)<{
   pending?: boolean
 }>`
-  background-color: ${({ pending }) => (pending ? tw.black : 'transparent')};
-  border: 2px solid ${tw.black};
+  border-width: 2px;
   border-radius: ${FULL_BORDER_RADIUS}px;
   min-width: 44px;
-  color: ${({ pending }) => (pending ? tw.white : tw.black)};
   font-weight: 500;
   font-size: 16px;
 
   :hover,
   :focus {
-    border: 2px solid ${tw.neutral[400]};
-    color: ${tw.neutral[400]};
+    border-width: 2px;
 
     :focus {
-      border: 2px solid ${({ pending }) => (pending ? tw.neutral[600] : tw.neutral[400])};
+      border-width: 2px;
     }
   }
 
@@ -126,17 +122,17 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 const StyledConnectButton = styled.button`
   background-color: transparent;
-  border: 2px solid ${tw.black};
+  border: 2px solid ${({ theme }) => theme.backgroundContrast};
   border-radius: ${FULL_BORDER_RADIUS}px;
-  color: ${tw.black};
+  color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
   padding: 10px 16px;
 
   :hover {
-    color: ${tw.neutral[400]};
-    border-color: ${tw.neutral[400]};
+    color: ${({ theme }) => theme.textTertiary};
+    border-color: ${({ theme }) => theme.textTertiary};
   }
 `
 
@@ -158,6 +154,7 @@ function Web3StatusInner() {
     sendAnalyticsEvent(InterfaceEventName.ACCOUNT_DROPDOWN_BUTTON_CLICKED)
     toggleWalletDropdown()
   }, [toggleWalletDropdown])
+  const theme = useTheme()
   const toggleWalletModal = useToggleWalletModal()
   const toggleMetamaskConnectionErrorModal = useToggleMetamaskConnectionErrorModal()
   const walletIsOpen = useModalIsOpen(ApplicationModal.WALLET_DROPDOWN)
@@ -194,7 +191,7 @@ function Web3StatusInner() {
   } else if (account) {
     const chevronProps = {
       ...CHEVRON_PROPS,
-      color: tw.white,
+      color: theme.textSecondary,
     }
 
     return (

@@ -23,7 +23,7 @@ export {}
 //   padding: 0.75rem 1rem 0.75rem 1rem;
 //   border-radius: 20px;
 //   border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.backgroundSurface};
 // `
 
 // export const ProposalEditor = ({

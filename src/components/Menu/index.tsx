@@ -32,7 +32,7 @@ const MenuFlyout = styled.span<{ flyoutAlignment?: FlyoutAlignment }>`
   min-width: 196px;
   max-height: 350px;
   overflow: auto;
-  background-color: ${({ theme }) => theme.deprecated_bg1};
+  background-color: ${({ theme }) => theme.backgroundSurface};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
   border: 1px solid ${({ theme }) => theme.backgroundSurface};

@@ -64,9 +64,9 @@ export {}
 //   cursor: pointer;
 //   color: ${({ theme }) => theme.textPrimary};
 //   text-decoration: none;
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.backgroundSurface};
 //   &:focus {
-//     background-color: ${({ theme }) => darken(0.05, theme.deprecated_bg1)};
+//     background-color: ${({ theme }) => darken(0.05, theme.backgroundSurface)};
 //   }
 //   &:hover {
 //     background-color: ${({ theme }) => theme.backgroundInteractive};

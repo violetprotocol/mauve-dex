@@ -9,7 +9,7 @@ import SettingsTab from '../Settings'
 const StyledSwapHeader = styled.div`
   width: 100%;
   margin-bottom: 1.5rem;
-  color: ${({ theme }) => theme.black};
+  color: ${({ theme }) => theme.textPrimary};
 `
 
 export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Percent }) {

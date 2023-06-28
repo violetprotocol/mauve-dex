@@ -30,15 +30,9 @@ const FancyButton = styled.button`
   font-size: 1rem;
   width: auto;
   min-width: 3.5rem;
-  border: 1px solid ${({ theme }) => theme.deprecated_bg3};
+  border: 1px solid ${({ theme }) => theme.backgroundContrast};
   outline: none;
-  background: ${({ theme }) => theme.deprecated_bg1};
-  :hover {
-    border: 1px solid ${({ theme }) => theme.deprecated_bg4};
-  }
-  :focus {
-    border: 1px solid ${({ theme }) => theme.accentAction};
-  }
+  background: ${({ theme }) => theme.backgroundSurface};
 `
 
 const Option = styled(FancyButton)<{ active: boolean }>`
@@ -47,12 +41,13 @@ const Option = styled(FancyButton)<{ active: boolean }>`
   :hover {
     cursor: pointer;
   }
-  background-color: ${({ active, theme }) => active && theme.accentAction};
-  color: ${({ active, theme }) => (active ? theme.white : theme.textPrimary)};
+  background-color: ${({ active, theme }) => (active ? theme.backgroundContrast : theme.backgroundSurface)};
+  color: ${({ active, theme }) => (active ? theme.textContrast : theme.textPrimary)};
+  border: 1px solid ${({ active, theme }) => (active ? theme.backgroundContrast : theme.backgroundSurface)};
 `
 
 const Input = styled.input`
-  background: ${({ theme }) => theme.deprecated_bg1};
+  background: ${({ theme }) => theme.backgroundSurface};
   font-size: 16px;
   border-radius: 12px;
   width: auto;
@@ -171,7 +166,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
     <AutoColumn gap="md">
       <AutoColumn gap="sm">
         <RowFixed>
-          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
+          <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.backgroundSurface}>
             <Trans>Slippage tolerance</Trans>
           </ThemedText.DeprecatedBlack>
           <QuestionHelper
@@ -240,7 +235,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
       {showCustomDeadlineRow && (
         <AutoColumn gap="sm">
           <RowFixed>
-            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.textSecondary}>
+            <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.backgroundSurface}>
               <Trans>Transaction deadline</Trans>
             </ThemedText.DeprecatedBlack>
             <QuestionHelper

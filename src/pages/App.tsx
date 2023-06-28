@@ -2,10 +2,10 @@ import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
+import { opacify } from 'polished'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { tw } from 'theme/colors'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 
@@ -67,7 +67,7 @@ const BackgroundGlowInner = styled.div`
   height: 100vh;
   left: 50%;
   top: 0;
-  background: ${tw.primary['200']};
+  background: ${({ theme }) => opacify(8, theme.backgroundInteractive)};
   opacity: 0.32;
   filter: blur(8rem);
   transform: rotate(45deg);

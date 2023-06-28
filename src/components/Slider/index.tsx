@@ -23,7 +23,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     border-radius: 100%;
     border: none;
     transform: translateY(-50%);
-    color: ${({ theme }) => theme.deprecated_bg1};
+    color: ${({ theme }) => theme.backgroundSurface};
 
     &:hover,
     &:focus {
@@ -38,7 +38,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     background-color: #565a69;
     border-radius: 100%;
     border: none;
-    color: ${({ theme }) => theme.deprecated_bg1};
+    color: ${({ theme }) => theme.backgroundSurface};
 
     &:hover,
     &:focus {
@@ -52,7 +52,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
     width: ${({ size }) => size}px;
     background-color: #565a69;
     border-radius: 100%;
-    color: ${({ theme }) => theme.deprecated_bg1};
+    color: ${({ theme }) => theme.backgroundSurface};
 
     &:hover,
     &:focus {

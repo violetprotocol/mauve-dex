@@ -4,8 +4,8 @@ import styled, { keyframes } from 'styled-components/macro'
 
 const Wrapper = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   align-items: center;
-  background: ${({ isActive, theme }) => (isActive ? theme.accentActionSoft : 'transparent')};
-  border: ${({ theme, isActive }) => (isActive ? 'none' : `1px solid ${theme.backgroundOutline}`)};
+  background: ${({ isActive, theme }) => (isActive ? theme.backgroundSurface : 'transparent')};
+  border: 1px solid ${({ theme, isActive }) => (isActive ? theme.textPrimary : theme.textTertiary)};
   border-radius: 20px;
   cursor: pointer;
   display: flex;
@@ -42,8 +42,8 @@ const ToggleElementHoverStyle = (hasBgColor: boolean, theme: any, isActive?: boo
         opacity: '0.8',
       }
     : {
-        background: isActive ? darken(0.05, theme.accentAction) : darken(0.05, theme.deprecated_bg4),
-        color: isActive ? theme.white : theme.textTertiary,
+        background: isActive ? theme.backgroundContrast : darken(0.05, theme.backgroundSurface),
+        color: isActive ? theme.textContrast : theme.textTertiary,
       }
 
 const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string; isInitialToggleLoad?: boolean }>`
@@ -51,7 +51,11 @@ const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string; isInit
     ${({ isActive, isInitialToggleLoad }) => (isInitialToggleLoad ? 'none' : isActive ? turnOnToggle : turnOffToggle)}
     ease-in;
   background: ${({ theme, bgColor, isActive }) =>
-    isActive ? bgColor ?? theme.accentAction : bgColor ? theme.deprecated_bg4 : theme.textTertiary};
+    isActive
+      ? bgColor ?? theme.backgroundContrast
+      : bgColor
+      ? theme.backgroundSurface
+      : darken(0.05, theme.backgroundSurface)};
   border-radius: 50%;
   height: 24px;
   :hover {

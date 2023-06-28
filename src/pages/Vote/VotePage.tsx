@@ -104,7 +104,7 @@ export {}
 // const StyledDataCard = styled(DataCard)`
 //   width: 100%;
 //   background: none;
-//   background-color: ${({ theme }) => theme.deprecated_bg1};
+//   background-color: ${({ theme }) => theme.backgroundSurface};
 //   height: fit-content;
 //   z-index: 2;
 // `

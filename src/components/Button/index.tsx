@@ -1,25 +1,10 @@
-import { darken } from 'polished'
 import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
 import styled, { useTheme } from 'styled-components/macro'
-import { tw } from 'theme/colors'
 
 import { RowBetween } from '../Row'
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
-
-const ButtonOverlay = styled.div`
-  background-color: transparent;
-  bottom: 0;
-  border-radius: inherit;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: 150ms ease background-color;
-  width: 100%;
-`
 
 type BaseButtonProps = {
   padding?: string
@@ -33,7 +18,7 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
   width: ${({ width }) => width ?? '100%'};
   font-weight: 500;
   text-align: center;
-  border-radius: ${({ $borderRadius }) => $borderRadius ?? '20px'};
+  border-radius: ${({ $borderRadius }) => $borderRadius ?? '100px'};
   outline: none;
   border: 1px solid transparent;
   color: ${({ theme }) => theme.textPrimary};
@@ -65,27 +50,27 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
 `
 
 export const ButtonPrimary = styled(BaseButton)`
-  background-color: ${tw.black};
+  background-color: ${({ theme }) => theme.backgroundContrast};
   font-size: 20px;
   font-weight: 600;
   padding: 16px;
-  color: ${tw.white};
+  color: ${({ theme }) => theme.textContrast};
   &:focus {
-    box-shadow: 0 0 0 1pt ${tw.neutral[400]};
-    background-color: ${tw.neutral[400]};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};
+    background-color: ${({ theme }) => theme.textTertiary};
   }
   &:hover {
-    background-color: ${tw.neutral[400]};
+    background-color: ${({ theme }) => theme.textTertiary};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${tw.neutral[200]};
-    background-color: ${tw.neutral[200]};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.backgroundInteractive};
+    background-color: ${({ theme }) => theme.backgroundInteractive};
   }
   &:disabled {
-    background-color: ${({ altDisabledStyle, disabled }) =>
-      altDisabledStyle ? (disabled ? tw.black : tw.neutral[200]) : tw.neutral[100]};
-    color: ${({ altDisabledStyle, disabled }) =>
-      altDisabledStyle ? (disabled ? tw.white : tw.neutral[200]) : tw.neutral[400]};
+    background-color: ${({ altDisabledStyle, disabled, theme }) =>
+      altDisabledStyle ? (disabled ? theme.backgroundContrast : theme.backgroundModule) : theme.backgroundOutline};
+    color: ${({ altDisabledStyle, disabled, theme }) =>
+      altDisabledStyle ? (disabled ? theme.textContrast : theme.accentActive) : theme.accentActive};
     cursor: auto;
     box-shadow: none;
     border: 1px solid transparent;
@@ -97,37 +82,27 @@ export const SmallButtonPrimary = styled(ButtonPrimary)`
   width: auto;
   font-size: 16px;
   padding: 10px 16px;
-  border-radius: 12px;
 `
 
-const BaseButtonLight = styled(BaseButton)`
-  background-color: ${tw.neutral[200]};
-  color: ${tw.black};
+export const ButtonLight = styled(BaseButton)`
+  background-color: ${({ theme }) => theme.backgroundModule};
+  color: ${({ theme }) => theme.textPrimary};
   font-size: 20px;
   font-weight: 600;
 
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ disabled }) => !disabled && tw.neutral[400]};
-    background-color: ${({ disabled }) => !disabled && tw.neutral[400]};
+    box-shadow: 0 0 0 1pt ${({ disabled, theme }) => !disabled && theme.accentActiveSoft};
+    background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
   &:hover {
-    background-color: ${({ disabled }) => !disabled && tw.neutral[400]};
+    background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ disabled }) => !disabled && tw.neutral[400]};
-    background-color: ${({ disabled }) => !disabled && tw.neutral[400]};
-  }
-
-  :hover {
-    ${ButtonOverlay} {
-      background-color: ${({ theme }) => theme.stateOverlayHover};
-    }
-  }
-
-  :active {
-    ${ButtonOverlay} {
-      background-color: ${({ theme }) => theme.stateOverlayPressed};
-    }
+    box-shadow: 0 0 0 1pt ${({ disabled, theme }) => !disabled && theme.accentActiveSoft};
+    background-color: ${({ disabled, theme }) => !disabled && theme.accentActive};
+    color: ${({ disabled, theme }) => !disabled && theme.textContrast};
   }
 
   :disabled {
@@ -143,37 +118,36 @@ const BaseButtonLight = styled(BaseButton)`
 `
 
 export const ButtonGray = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.deprecated_bg1};
+  background-color: ${({ theme }) => theme.backgroundModule};
   color: ${({ theme }) => theme.textSecondary};
   font-size: 16px;
   font-weight: 500;
 
   &:hover {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.backgroundInteractive)};
+    background-color: ${({ theme, disabled }) => !disabled && theme.backgroundInteractive};
   }
   &:active {
-    background-color: ${({ theme, disabled }) => !disabled && darken(0.1, theme.backgroundInteractive)};
+    background-color: ${({ theme, disabled }) => !disabled && theme.backgroundInteractive};
   }
 `
 
 export const ButtonSecondary = styled(BaseButton)`
-  border: 1px solid ${({ theme }) => theme.deprecated_primary4};
-  color: ${({ theme }) => theme.accentAction};
+  border: 1px solid ${({ theme }) => theme.textSecondary};
+  color: ${({ theme }) => theme.textSecondary};
   background-color: transparent;
   font-size: 16px;
-  border-radius: 12px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.deprecated_primary4};
-    border: 1px solid ${({ theme }) => theme.deprecated_primary3};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};
+    border: 1px solid ${({ theme }) => theme.accentActiveSoft};
   }
   &:hover {
-    border: 1px solid ${({ theme }) => theme.deprecated_primary3};
+    border: 1px solid ${({ theme }) => theme.accentActiveSoft};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => theme.deprecated_primary4};
-    border: 1px solid ${({ theme }) => theme.deprecated_primary3};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};
+    border: 1px solid ${({ theme }) => theme.accentActiveSoft};
   }
   &:disabled {
     opacity: 50%;
@@ -189,13 +163,13 @@ export const ButtonOutlined = styled(BaseButton)`
   background-color: transparent;
   color: ${({ theme }) => theme.textPrimary};
   &:focus {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.deprecated_bg4};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.accentActiveSoft};
   }
   &:hover {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.textTertiary};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.accentActiveSoft};
   }
   &:active {
-    box-shadow: 0 0 0 1px ${({ theme }) => theme.deprecated_bg4};
+    box-shadow: 0 0 0 1px ${({ theme }) => theme.accentActiveSoft};
   }
   &:disabled {
     opacity: 50%;
@@ -210,7 +184,7 @@ export const ButtonYellow = styled(BaseButton)`
     background-color: ${({ theme }) => theme.accentWarningSoft};
   }
   &:hover {
-    background: ${({ theme }) => theme.stateOverlayHover};
+    background-color: ${({ theme }) => theme.accentWarningSoft};
     mix-blend-mode: normal;
   }
   &:active {
@@ -225,7 +199,7 @@ export const ButtonYellow = styled(BaseButton)`
 
 export const ButtonEmpty = styled(BaseButton)`
   background-color: transparent;
-  color: ${({ theme }) => theme.accentAction};
+  color: ${({ theme }) => theme.textPrimary};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -283,15 +257,15 @@ const ButtonErrorStyle = styled(BaseButton)`
   border: 1px solid ${({ theme }) => theme.accentFailure};
 
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.accentFailure)};
-    background-color: ${({ theme }) => darken(0.05, theme.accentFailure)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentFailureSoft};
+    background-color: ${({ theme }) => theme.accentFailureSoft};
   }
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.accentFailure)};
+    background-color: ${({ theme }) => theme.accentFailureSoft};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.accentFailure)};
-    background-color: ${({ theme }) => darken(0.1, theme.accentFailure)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentFailureSoft};
+    background-color: ${({ theme }) => theme.accentFailureSoft};
   }
   &:disabled {
     opacity: 50%;
@@ -321,30 +295,6 @@ export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProp
     return <ButtonPrimary {...rest} />
   }
 }
-
-// [MAUVE-DISABLED]
-// export function ButtonDropdown({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
-//   return (
-//     <ButtonPrimary {...rest} disabled={disabled}>
-//       <RowBetween>
-//         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
-//         <ChevronDown size={24} />
-//       </RowBetween>
-//     </ButtonPrimary>
-//   )
-// }
-
-// [MAUVE-DISABLED]
-// export function ButtonDropdownLight({ disabled = false, children, ...rest }: { disabled?: boolean } & ButtonProps) {
-//   return (
-//     <ButtonOutlined {...rest} disabled={disabled}>
-//       <RowBetween>
-//         <div style={{ display: 'flex', alignItems: 'center' }}>{children}</div>
-//         <ChevronDown size={24} />
-//       </RowBetween>
-//     </ButtonOutlined>
-//   )
-// }
 
 const ActiveOutlined = styled(ButtonOutlined)`
   border: 1px solid;
@@ -389,171 +339,11 @@ export function ButtonRadioChecked({ active = false, children, ...rest }: { acti
           {children}
           <CheckboxWrapper>
             <Circle>
-              <ResponsiveCheck size={13} stroke={theme.white} />
+              <ResponsiveCheck size={13} stroke={theme.textContrast} />
             </Circle>
           </CheckboxWrapper>
         </RowBetween>
       </ActiveOutlined>
     )
   }
-}
-
-// enum ButtonSize {
-//   small,
-//   medium,
-//   large,
-// }
-// enum ButtonEmphasis {
-//   high,
-//   promotional,
-//   highSoft,
-//   medium,
-//   low,
-//   warning,
-//   destructive,
-// }
-// interface BaseThemeButtonProps {
-//   size: ButtonSize
-//   emphasis: ButtonEmphasis
-// }
-
-// function pickThemeButtonBackgroundColor({ theme, emphasis }: { theme: DefaultTheme; emphasis: ButtonEmphasis }) {
-//   switch (emphasis) {
-//     case ButtonEmphasis.high:
-//       return theme.accentAction
-//     case ButtonEmphasis.promotional:
-//       return theme.accentTextLightPrimary
-//     case ButtonEmphasis.highSoft:
-//       return tw.neutral[400]
-//     case ButtonEmphasis.low:
-//       return 'transparent'
-//     case ButtonEmphasis.warning:
-//       return theme.accentWarningSoft
-//     case ButtonEmphasis.destructive:
-//       return theme.accentCritical
-//     case ButtonEmphasis.medium:
-//     default:
-//       return theme.backgroundInteractive
-//   }
-// }
-// function pickThemeButtonFontSize({ size }: { size: ButtonSize }) {
-//   switch (size) {
-//     case ButtonSize.large:
-//       return '20px'
-//     case ButtonSize.medium:
-//       return '16px'
-//     case ButtonSize.small:
-//       return '14px'
-//     default:
-//       return '16px'
-//   }
-// }
-// function pickThemeButtonLineHeight({ size }: { size: ButtonSize }) {
-//   switch (size) {
-//     case ButtonSize.large:
-//       return '24px'
-//     case ButtonSize.medium:
-//       return '20px'
-//     case ButtonSize.small:
-//       return '16px'
-//     default:
-//       return '20px'
-//   }
-// }
-// function pickThemeButtonPadding({ size }: { size: ButtonSize }) {
-//   switch (size) {
-//     case ButtonSize.large:
-//       return '16px'
-//     case ButtonSize.medium:
-//       return '10px 12px'
-//     case ButtonSize.small:
-//       return '8px'
-//     default:
-//       return '10px 12px'
-//   }
-// }
-// function pickThemeButtonTextColor({ theme, emphasis }: { theme: DefaultTheme; emphasis: ButtonEmphasis }) {
-//   switch (emphasis) {
-//     case ButtonEmphasis.high:
-//     case ButtonEmphasis.promotional:
-//       return theme.accentTextLightPrimary
-//     case ButtonEmphasis.highSoft:
-//       return theme.accentAction
-//     case ButtonEmphasis.low:
-//       return theme.textSecondary
-//     case ButtonEmphasis.warning:
-//       return theme.accentWarning
-//     case ButtonEmphasis.destructive:
-//       return theme.accentTextDarkPrimary
-//     case ButtonEmphasis.medium:
-//     default:
-//       return theme.textPrimary
-//   }
-// }
-
-// const BaseThemeButton = styled.button<BaseThemeButtonProps>`
-//   align-items: center;
-//   background-color: ${pickThemeButtonBackgroundColor};
-//   border-radius: 16px;
-//   border: 0;
-//   color: ${pickThemeButtonTextColor};
-//   cursor: pointer;
-//   display: flex;
-//   flex-direction: row;
-//   font-size: ${pickThemeButtonFontSize};
-//   font-weight: 600;
-//   gap: 12px;
-//   justify-content: center;
-//   line-height: ${pickThemeButtonLineHeight};
-//   padding: ${pickThemeButtonPadding};
-//   position: relative;
-//   transition: 150ms ease opacity;
-//   user-select: none;
-
-//   :active {
-//     ${ButtonOverlay} {
-//       background-color: ${({ theme }) => theme.stateOverlayPressed};
-//     }
-//   }
-//   :focus {
-//     ${ButtonOverlay} {
-//       background-color: ${({ theme }) => theme.stateOverlayPressed};
-//     }
-//   }
-//   :hover {
-//     ${ButtonOverlay} {
-//       background-color: ${({ theme }) => theme.stateOverlayHover};
-//     }
-//   }
-//   :disabled {
-//     cursor: default;
-//     opacity: 0.6;
-//   }
-//   :disabled:active,
-//   :disabled:focus,
-//   :disabled:hover {
-//     ${ButtonOverlay} {
-//       background-color: transparent;
-//     }
-//   }
-// `
-
-// interface ThemeButtonProps extends React.ComponentPropsWithoutRef<'button'>, BaseThemeButtonProps {}
-
-// const ThemeButton = ({ children, ...rest }: ThemeButtonProps) => {
-//   return (
-//     <BaseThemeButton {...rest}>
-//       <ButtonOverlay />
-//       {children}
-//     </BaseThemeButton>
-//   )
-// }
-
-export const ButtonLight = ({ children, ...rest }: BaseButtonProps) => {
-  return (
-    <BaseButtonLight {...rest}>
-      <ButtonOverlay />
-      {children}
-    </BaseButtonLight>
-  )
 }

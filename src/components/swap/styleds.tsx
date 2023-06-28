@@ -25,16 +25,12 @@ export const PageWrapper = styled.div`
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
 export const SwapWrapper = styled.main`
   position: relative;
-  background: ${({ theme }) => theme.backgroundSurface};
+  background: ${({ theme }) => theme.background};
   border-radius: 16px;
-  border: 1px solid ${({ theme }) => theme.backgroundOutline};
+  border: 1px solid ${({ theme }) => theme.backgroundFloating};
   padding: 2rem;
   z-index: ${Z_INDEX.deprecated_content};
   transition: transform 250ms ease;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.backgroundOutline};
-  }
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -46,8 +42,7 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   margin-bottom: -18px;
   margin-left: auto;
   margin-right: auto;
-  /* THIS IS HERE BECAUSE WE CAN'T USE TRANSPARENCY FOR THIS COMPONENT */
-  background-color: #e6e7eb;
+  background-color: ${({ theme }) => theme.backgroundModule};
   border: 4px solid white;
 
   z-index: 2;
@@ -103,7 +98,7 @@ export const Dots = styled.span`
 `
 
 const SwapCallbackErrorInner = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.accentFailure)};
+  background-color: ${({ theme }) => theme.accentFailureSoft};
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -121,7 +116,7 @@ const SwapCallbackErrorInner = styled.div`
 `
 
 const SwapCallbackErrorInnerAlertTriangle = styled.div`
-  background-color: ${({ theme }) => transparentize(0.9, theme.accentFailure)};
+  background-color: ${({ theme }) => theme.accentFailureSoft};
   display: flex;
   align-items: center;
   justify-content: center;

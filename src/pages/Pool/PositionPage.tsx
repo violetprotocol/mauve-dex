@@ -806,7 +806,7 @@ export function PositionPage() {
                               </ThemedText.DeprecatedMain>
                             ) : (
                               <>
-                                <ThemedText.DeprecatedMain color={theme.white}>
+                                <ThemedText.DeprecatedMain color={theme.textContrast}>
                                   <Trans>Collect fees</Trans>
                                 </ThemedText.DeprecatedMain>
                               </>
