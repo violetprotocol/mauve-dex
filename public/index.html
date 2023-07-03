@@ -2,6 +2,7 @@
 <html translate="no">
   <head>
     <meta charset="utf-8" />
+    <script async type="text/javascript" src="mauveNewRelicDev.js"></script>
 
     <title>Mauve</title>
     <!-- <meta
@@ -22,8 +23,9 @@
     <meta name="theme-color" content="#3250EE" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com 'unsafe-inline'"
+      content="script-src 'self' https://www.google-analytics.com https://www.googletagmanager.com 'unsafe-inline'; script-src-elem 'self' 'unsafe-eval' https://js-agent.newrelic.com"
     />
+
 
     <!--
       manifest.json provides metadata used when the app is installed as a PWA.
