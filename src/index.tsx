@@ -13,7 +13,7 @@ import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
-import { isSentryEnabled } from 'utils/env'
+import { isDevelopmentEnv, isSentryEnabled } from 'utils/env'
 
 import Web3Provider from './components/Web3Provider'
 import { LanguageProvider } from './i18n'
@@ -53,8 +53,12 @@ const queryClient = new QueryClient()
 
 const container = document.getElementById('root') as HTMLElement
 
+const newRelicDevAgent = <script async type="text/javascript" src="/public/mauveNewRelicDev.js" />
+const newRelicProdAgent = <script async type="text/javascript" src="/public/mauveNewRelicProd.js" />
+
 createRoot(container).render(
   <StrictMode>
+    {isDevelopmentEnv() ? newRelicDevAgent : newRelicProdAgent}
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <HashRouter>
