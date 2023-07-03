@@ -58,9 +58,6 @@ const container = document.getElementById('root') as HTMLElement
 
 createRoot(container).render(
   <StrictMode>
-    <script async type="text/javascript" src="/public/mauveNewRelicDev.js" />
-    <script async type="text/javascript" src="/mauveNewRelicDev.js" />
-    <script async type="text/javascript" src="mauveNewRelicDev.js" />
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <HashRouter>
