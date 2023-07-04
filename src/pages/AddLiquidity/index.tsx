@@ -290,21 +290,22 @@ export default function AddLiquidity() {
 
         if (!violet) {
           console.log(error)
-          return
+          throw new Error(error?.code + 'Failed to get Violet EAT')
         }
         const eat = JSON.parse(atob(violet.token))
         eat.signature = splitSignature(eat.signature)
         if (!eat?.signature || !eat?.expiry) {
-          throw new Error('Failed to get EAT')
+          throw new Error('Failed to get Violet EAT')
         }
         const { v, r, s } = eat.signature
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
+        throw new Error(error + 'Failed generating a Violet EAT')
       }
 
       if (!calldata) {
-        throw new Error('Failed to generate calldata')
+        throw new Error('Failed to generate calldata from violet EAT')
       }
 
       let txn: { to: string; data: string; value: string } = {
@@ -378,6 +379,7 @@ export default function AddLiquidity() {
             // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
+          throw new Error(error + 'violet add liquidity')
         })
     } else {
       return

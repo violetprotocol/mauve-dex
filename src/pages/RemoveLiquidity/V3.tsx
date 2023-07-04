@@ -139,7 +139,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
-      return
+      throw new Error(`Failed to get calldata with Violet EAT`)
     }
 
     const txn = {
@@ -180,6 +180,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
+        throw new Error(error + 'error removing liquidity with violet EAT')
       })
   }, [
     positionManager,
