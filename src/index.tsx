@@ -53,9 +53,6 @@ const queryClient = new QueryClient()
 
 const container = document.getElementById('root') as HTMLElement
 
-// const newRelicDevAgent = <script async type="text/javascript" src="/public/mauveNewRelicDev.js" />
-// const newRelicProdAgent = <script async type="text/javascript" src="/public/mauveNewRelicProd.js" />
-
 createRoot(container).render(
   <StrictMode>
     <Provider store={store}>
