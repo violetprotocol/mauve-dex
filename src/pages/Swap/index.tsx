@@ -384,6 +384,7 @@ export default function Swap({ className }: { className?: string }) {
           swapErrorMessage: error.message,
           txHash: undefined,
         })
+        throw error
       })
   }, [
     swapCallback,
