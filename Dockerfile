@@ -44,7 +44,7 @@ RUN yarn build
 ############################## nginx ##############################
 # Kubernetes build target for the release
 # nginx state for serving content
-FROM nginx:1.23.2-alpine as release
+FROM nginx:1.25.1-alpine as release
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build_kubernetes /app/build /usr/share/nginx/html
 RUN touch /var/run/nginx.pid
@@ -52,4 +52,3 @@ RUN chown -R nginx:nginx /var/run/nginx.pid /usr/share/nginx/html /var/cache/ngi
 USER nginx
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
-
