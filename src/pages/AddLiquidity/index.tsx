@@ -247,7 +247,6 @@ export default function AddLiquidity() {
   )
 
   async function onAdd() {
-    const environment = process.env.REACT_APP_VIOLET_ENV
     if (!chainId || !provider || !account) return
 
     if (!positionManager || !baseCurrency || !quoteCurrency) {
