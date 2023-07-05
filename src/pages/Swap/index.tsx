@@ -33,7 +33,7 @@ import { InterfaceTrade } from 'state/routing/types'
 import { TradeState } from 'state/routing/types'
 import styled, { useTheme } from 'styled-components/macro'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/formatNumbers'
-import { logErrorWithNewRelic, NewRelicError } from 'utils/newRelicErrorIngestion'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
