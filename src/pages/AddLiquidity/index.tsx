@@ -246,6 +246,7 @@ export default function AddLiquidity() {
   )
 
   async function onAdd() {
+    const environment = process.env.REACT_APP_VIOLET_ENV
     if (!chainId || !provider || !account) return
 
     if (!positionManager || !baseCurrency || !quoteCurrency) {
@@ -301,7 +302,9 @@ export default function AddLiquidity() {
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
-        throw new Error(error + 'Failed generating a Violet EAT')
+        if (environment != 'local') {
+          throw new Error(error + 'Failed generating a Violet EAT')
+        }
       }
 
       if (!calldata) {
@@ -379,7 +382,9 @@ export default function AddLiquidity() {
             // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
-          throw new Error(error + 'violet add liquidity')
+          if (environment != 'local') {
+            throw new Error(error + 'violet add liquidity')
+          }
         })
     } else {
       return

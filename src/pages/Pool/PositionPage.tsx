@@ -463,6 +463,7 @@ export function PositionPage() {
       address: positionManager.address,
     }
 
+    const environment = process.env.REACT_APP_VIOLET_ENV
     const violetEATResult = await getVioletAuthorizedCall({
       call,
       account,
@@ -471,6 +472,9 @@ export function PositionPage() {
 
     if (!violetEATResult?.calldata) {
       console.error('Failed to get calldata with EAT')
+      if (environment != 'local') {
+        throw new Error('Failed to get calldata with Violet EAT')
+      }
       return
     }
 
@@ -514,6 +518,9 @@ export function PositionPage() {
       .catch((error) => {
         setCollecting(false)
         console.error(error)
+        if (environment != 'local') {
+          throw new Error('Failed to collect fees with violet EAT' + error)
+        }
       })
   }, [
     chainId,

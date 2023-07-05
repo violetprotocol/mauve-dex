@@ -114,6 +114,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       return
     }
 
+    const environment = process.env.REACT_APP_VIOLET_ENV
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
     const callParameters = NonfungiblePositionManager.removeCallParameters(positionSDK, {
@@ -139,7 +140,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
-      throw new Error(`Failed to get calldata with Violet EAT`)
+      if (environment != 'local') {
+        throw new Error(`Failed to get calldata with Violet EAT`)
+      }
+      return
     }
 
     const txn = {
@@ -180,7 +184,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
-        throw new Error(error + 'error removing liquidity with violet EAT')
+        if (environment != 'local') {
+          throw new Error(error + 'error removing liquidity with violet EAT')
+        }
       })
   }, [
     positionManager,

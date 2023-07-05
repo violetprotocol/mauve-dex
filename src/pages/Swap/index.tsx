@@ -348,6 +348,7 @@ export default function Swap({ className }: { className?: string }) {
   )
 
   const handleSwap = useCallback(() => {
+    const environment = process.env.REACT_APP_VIOLET_ENV
     if (!swapCallback) {
       return
     }
@@ -384,7 +385,9 @@ export default function Swap({ className }: { className?: string }) {
           swapErrorMessage: error.message,
           txHash: undefined,
         })
-        throw error
+        if (environment != 'local') {
+          throw error
+        }
       })
   }, [
     swapCallback,

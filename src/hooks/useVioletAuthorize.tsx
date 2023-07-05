@@ -61,14 +61,23 @@ export const getVioletAuthorizedCall = async ({
 
       if (!eat?.signature || !eat?.expiry) {
         console.error('EAT malformed')
+        if (environment != 'local') {
+          throw new Error('Violet EAT malformed')
+        }
         return null
       }
     } else {
       console.error(error)
+      if (environment != 'local') {
+        throw new Error('Violet EAT not retrieved')
+      }
       return null
     }
   } else {
     console.error('No response from Violet while fetching an EAT')
+    if (environment != 'local') {
+      throw new Error('No response from Violet while fetching an EAT')
+    }
     return null
   }
 
@@ -89,6 +98,9 @@ export const getVioletAuthorizedCall = async ({
 
   if (!calldata) {
     console.error('Failed to get callata from EAT')
+    if (environment != 'local') {
+      throw new Error('Failed to get callata from violet EAT')
+    }
     return null
   }
 
