@@ -37,6 +37,7 @@ import { ExternalLink, HideExtraSmall, ThemedText } from 'theme'
 import { currencyId } from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatTickPrice } from 'utils/formatTickPrice'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
@@ -463,7 +464,6 @@ export function PositionPage() {
       address: positionManager.address,
     }
 
-    const environment = process.env.REACT_APP_VIOLET_ENV
     const violetEATResult = await getVioletAuthorizedCall({
       call,
       account,
@@ -472,10 +472,7 @@ export function PositionPage() {
 
     if (!violetEATResult?.calldata) {
       console.error('Failed to get calldata with EAT')
-      if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-        const error = new Error('Failed to get callata from violet EAT')
-        window.newrelic.noticeError(error)
-      }
+      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
       return
     }
 
@@ -519,9 +516,7 @@ export function PositionPage() {
       .catch((error) => {
         setCollecting(false)
         console.error(error)
-        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-          window.newrelic.noticeError('Failed to collect fees with violet EAT' + error)
-        }
+        logErrorWithNewRelic({ error, errorString: 'Failed to collect fees with violet EAT' })
       })
   }, [
     chainId,

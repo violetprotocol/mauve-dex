@@ -33,6 +33,7 @@ import { InterfaceTrade } from 'state/routing/types'
 import { TradeState } from 'state/routing/types'
 import styled, { useTheme } from 'styled-components/macro'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/formatNumbers'
+import { logErrorWithNewRelic, NewRelicError } from 'utils/newRelicErrorIngestion'
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -348,7 +349,6 @@ export default function Swap({ className }: { className?: string }) {
   )
 
   const handleSwap = useCallback(() => {
-    const environment = process.env.REACT_APP_VIOLET_ENV
     if (!swapCallback) {
       return
     }
@@ -385,9 +385,7 @@ export default function Swap({ className }: { className?: string }) {
           swapErrorMessage: error.message,
           txHash: undefined,
         })
-        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-          window.newrelic.noticeError(error)
-        }
+        logErrorWithNewRelic({ error })
       })
   }, [
     swapCallback,

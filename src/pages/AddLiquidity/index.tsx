@@ -22,6 +22,7 @@ import {
   useV3MintState,
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
@@ -302,9 +303,7 @@ export default function AddLiquidity() {
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
-        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-          window.newrelic.noticeError(error + 'Failed generating a Violet EAT')
-        }
+        logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
       }
 
       if (!calldata) {
@@ -382,9 +381,7 @@ export default function AddLiquidity() {
             // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
-          if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-            window.newrelic.noticeError(error + 'violet add liquidity')
-          }
+          logErrorWithNewRelic({ error, errorString: 'violet add liquidity' })
         })
     } else {
       return

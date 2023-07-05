@@ -32,6 +32,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippageToleranceWithDefault } from 'state/user/hooks'
 import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
@@ -114,7 +115,6 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       return
     }
 
-    const environment = process.env.REACT_APP_VIOLET_ENV
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
     const callParameters = NonfungiblePositionManager.removeCallParameters(positionSDK, {
@@ -140,10 +140,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
-      if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-        const error = new Error('Failed to get callata from violet EAT')
-        window.newrelic.noticeError(error)
-      }
+      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
       return
     }
 
@@ -185,9 +182,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
-        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
-          window.newrelic.noticeError(error + 'error removing liquidity with violet EAT')
-        }
+        logErrorWithNewRelic({ error, errorString: 'error removing liquidity with violet EAT' })
       })
   }, [
     positionManager,
