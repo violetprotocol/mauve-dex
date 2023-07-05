@@ -302,8 +302,8 @@ export default function AddLiquidity() {
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
-        if (environment != 'local') {
-          throw new Error(error + 'Failed generating a Violet EAT')
+        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+          window.newrelic.noticeError(error + 'Failed generating a Violet EAT')
         }
       }
 
@@ -382,8 +382,8 @@ export default function AddLiquidity() {
             // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
-          if (environment != 'local') {
-            throw new Error(error + 'violet add liquidity')
+          if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+            window.newrelic.noticeError(error + 'violet add liquidity')
           }
         })
     } else {

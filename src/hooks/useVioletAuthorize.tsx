@@ -61,22 +61,25 @@ export const getVioletAuthorizedCall = async ({
 
       if (!eat?.signature || !eat?.expiry) {
         console.error('EAT malformed')
-        if (environment != 'local') {
-          throw new Error('Violet EAT malformed')
+        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+          const error = new Error('Violet EAT malformed')
+          window.newrelic.noticeError(error)
         }
         return null
       }
     } else {
       console.error(error)
-      if (environment != 'local') {
-        throw new Error('Violet EAT not retrieved')
+      if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+        const error = new Error('Violet EAT not retrieved')
+        window.newrelic.noticeError(error)
       }
       return null
     }
   } else {
     console.error('No response from Violet while fetching an EAT')
-    if (environment != 'local') {
-      throw new Error('No response from Violet while fetching an EAT')
+    if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+      const error = new Error('No response from Violet while fetching an EAT')
+      window.newrelic.noticeError(error)
     }
     return null
   }
@@ -98,8 +101,9 @@ export const getVioletAuthorizedCall = async ({
 
   if (!calldata) {
     console.error('Failed to get callata from EAT')
-    if (environment != 'local') {
-      throw new Error('Failed to get callata from violet EAT')
+    if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+      const error = new Error('Failed to get callata from violet EAT')
+      window.newrelic.noticeError(error)
     }
     return null
   }

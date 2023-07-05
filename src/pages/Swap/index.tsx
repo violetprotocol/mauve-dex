@@ -385,8 +385,8 @@ export default function Swap({ className }: { className?: string }) {
           swapErrorMessage: error.message,
           txHash: undefined,
         })
-        if (environment != 'local') {
-          throw error
+        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+          window.newrelic.noticeError(error)
         }
       })
   }, [

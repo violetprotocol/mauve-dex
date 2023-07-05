@@ -140,8 +140,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
-      if (environment != 'local') {
-        throw new Error(`Failed to get calldata with Violet EAT`)
+      if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+        const error = new Error('Failed to get callata from violet EAT')
+        window.newrelic.noticeError(error)
       }
       return
     }
@@ -184,8 +185,8 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
-        if (environment != 'local') {
-          throw new Error(error + 'error removing liquidity with violet EAT')
+        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+          window.newrelic.noticeError(error + 'error removing liquidity with violet EAT')
         }
       })
   }, [

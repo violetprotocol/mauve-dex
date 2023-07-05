@@ -472,8 +472,9 @@ export function PositionPage() {
 
     if (!violetEATResult?.calldata) {
       console.error('Failed to get calldata with EAT')
-      if (environment != 'local') {
-        throw new Error('Failed to get calldata with Violet EAT')
+      if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+        const error = new Error('Failed to get callata from violet EAT')
+        window.newrelic.noticeError(error)
       }
       return
     }
@@ -518,8 +519,8 @@ export function PositionPage() {
       .catch((error) => {
         setCollecting(false)
         console.error(error)
-        if (environment != 'local') {
-          throw new Error('Failed to collect fees with violet EAT' + error)
+        if (window.newrelic?.noticeError !== undefined && environment != 'local') {
+          window.newrelic.noticeError('Failed to collect fees with violet EAT' + error)
         }
       })
   }, [
