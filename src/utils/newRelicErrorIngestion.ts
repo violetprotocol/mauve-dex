@@ -1,4 +1,4 @@
-export interface NewRelicError {
+interface NewRelicError {
   error?: Error
   errorString?: string
 }
