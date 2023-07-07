@@ -34,13 +34,10 @@ on:
         required: false
         type: string
         default: eu-central-1
-    secrets:
-      PUSH_IMAGES_ECR_AWS_ACCESS_KEY_ID:
-        required: true
-      PUSH_IMAGES_ECR_AWS_SECRET_ACCESS_KEY:
-        required: true
-      PUSH_IMAGES_ECR_AWS_ACCOUNT_ID:
-        required: true
+
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
 
 jobs:
   set_environment:
@@ -95,8 +92,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1 # https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
         with:
-          aws-access-key-id: ${{ secrets.PUSH_IMAGES_ECR_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PUSH_IMAGES_ECR_AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::910202846130:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.region }}
 
       - name: Login to Amazon ECR
