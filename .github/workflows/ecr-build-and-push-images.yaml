@@ -116,6 +116,11 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+
+  notify-always:
+    needs: [set_environment, build]
+    if: always()
+    runs-on: ubuntu-latest # included software: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
       - name: Checkout product-infra repository
         uses: actions/checkout@v3 # https://github.com/marketplace/actions/checkout
         with:
@@ -151,11 +156,6 @@ jobs:
             fi
           done
           fi
-
-  notify-always:
-    needs: [set_environment, build]
-    if: always()
-    runs-on: ubuntu-latest # included software: https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners
     steps:
       - name: Variables
         id: vars
