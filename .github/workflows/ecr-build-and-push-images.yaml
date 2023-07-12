@@ -116,41 +116,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Checkout product-infra repository
-        uses: actions/checkout@v3 # https://github.com/marketplace/actions/checkout
-        with:
-          repository: violetprotocol/product-infra
-          token: ${{ secrets.PRODUCT_INFRA_GITHUB_TOKEN }}
-          path: product-infra
-
-      - name: Tag image in product-infra
-        id: tag
-        env:
-          UNIT: ${{ inputs.unit }}
-          ENVIRONMENT: ${{ needs.set_environment.outputs.environment }}
-          IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.repo }}
-          TAG: ${{ needs.set_environment.outputs.environment }}-${{ github.run_number }}-${{ needs.set_environment.outputs.short_sha }}
-          GH_TOKEN: ${{ secrets.PRODUCT_INFRA_GITHUB_TOKEN }}
-        run: |
-          cd "product-infra/units/${UNIT}/components/${ENVIRONMENT}_image/"
-          git config user.name github-actions
-          git config user.email no-reply+github-actions@violet.co
-          yq e 'with(.images.[]; . | select(.name == strenv(IMAGE)) | .newTag = strenv(TAG)) | .' -i kustomization.yaml
-          git add kustomization.yaml
-          git commit -m "${ENVIRONMENT} chore(ci): set ${UNIT} image tag to ${TAG}"
-          if [ "${ENVIRONMENT}" = "prod" ]; then
-            git branch -m "${ENVIRONMENT}_${UNIT}_${TAG}"
-            git push origin HEAD
-            gh pr create --title "${ENVIRONMENT} chore(ci): set ${UNIT} image tag to ${TAG}" --body "bump image tag" --base main --assignee sudoFerraz
-          else
-          for i in $(seq 5); do
-            if ! git push origin HEAD; then
-              sleep $((RANDOM % 5)) && git pull --rebase
-            else
-              break
-            fi
-          done
-          fi
 
   notify-always:
     needs: [set_environment, build]
