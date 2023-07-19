@@ -22,6 +22,7 @@ import {
   useV3MintState,
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
@@ -290,21 +291,22 @@ export default function AddLiquidity() {
 
         if (!violet) {
           console.log(error)
-          return
+          throw new Error(error?.code + 'Failed to get Violet EAT')
         }
         const eat = JSON.parse(atob(violet.token))
         eat.signature = splitSignature(eat.signature)
         if (!eat?.signature || !eat?.expiry) {
-          throw new Error('Failed to get EAT')
+          throw new Error('Failed to get Violet EAT')
         }
         const { v, r, s } = eat.signature
         calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
       } catch (error) {
         console.error('Error generating an EAT: ', error)
+        logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
       }
 
       if (!calldata) {
-        throw new Error('Failed to generate calldata')
+        throw new Error('Failed to generate calldata from violet EAT')
       }
 
       let txn: { to: string; data: string; value: string } = {
@@ -378,6 +380,7 @@ export default function AddLiquidity() {
             // TODO: Handle error gracefully if the EAT is expired
             console.error(error)
           }
+          logErrorWithNewRelic({ error, errorString: 'violet add liquidity' })
         })
     } else {
       return

@@ -32,6 +32,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippageToleranceWithDefault } from 'state/user/hooks'
 import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
@@ -139,6 +140,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     if (!violetEATResult?.calldata) {
       console.error(`Failed to get calldata with EAT`)
+      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
       return
     }
 
@@ -180,6 +182,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
+        logErrorWithNewRelic({ error, errorString: 'error removing liquidity with violet EAT' })
       })
   }, [
     positionManager,

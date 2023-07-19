@@ -3,6 +3,7 @@ import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize } from '@violetprotocol/sdk'
 import { useCallback } from 'react'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 const environment = process.env.REACT_APP_VIOLET_ENV
@@ -61,14 +62,17 @@ export const getVioletAuthorizedCall = async ({
 
       if (!eat?.signature || !eat?.expiry) {
         console.error('EAT malformed')
+        logErrorWithNewRelic({ errorString: 'Violet EAT malformed' })
         return null
       }
     } else {
       console.error(error)
+      logErrorWithNewRelic({ errorString: 'Violet EAT not retrieved' })
       return null
     }
   } else {
     console.error('No response from Violet while fetching an EAT')
+    logErrorWithNewRelic({ errorString: 'No response from Violet while fetching an EAT' })
     return null
   }
 
@@ -89,6 +93,7 @@ export const getVioletAuthorizedCall = async ({
 
   if (!calldata) {
     console.error('Failed to get callata from EAT')
+    logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
     return null
   }
 

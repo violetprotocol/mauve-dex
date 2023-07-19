@@ -37,6 +37,7 @@ import { ExternalLink, HideExtraSmall, ThemedText } from 'theme'
 import { currencyId } from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatTickPrice } from 'utils/formatTickPrice'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
@@ -471,6 +472,7 @@ export function PositionPage() {
 
     if (!violetEATResult?.calldata) {
       console.error('Failed to get calldata with EAT')
+      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
       return
     }
 
@@ -514,6 +516,7 @@ export function PositionPage() {
       .catch((error) => {
         setCollecting(false)
         console.error(error)
+        logErrorWithNewRelic({ error, errorString: 'Failed to collect fees with violet EAT' })
       })
   }, [
     chainId,
