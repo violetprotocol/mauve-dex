@@ -1,3 +1,9 @@
+import { isDevelopmentEnv, isProductionEnv, isStagingEnv } from "utils/env"
+
+export const MAUVE_TESTNETS_LIST_URL =
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json?token=GHSAT0AAAAAACCDTXCUNVNLJAZHGP33NWN4ZGLPC4Q'
+export const MAUVE_MAINNETS_LIST_URL =
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json?token=GHSAT0AAAAAACCDTXCUNVNLJAZHGP33NWN4ZGLPC4Q'
 export const UNI_LIST = 'https://tokens.uniswap.org'
 export const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
 const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
@@ -19,6 +25,12 @@ export const CELO_LIST = 'https://celo-org.github.io/celo-token-list/celo.tokenl
 export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST, UNI_UNSUPPORTED_LIST]
 
 // default lists to be 'active' aka searched across
+export const MAUVE_ACTIVE_LIST = () => {
+  if (isDevelopmentEnv()) return MAUVE_TESTNETS_LIST_URL
+  if (isStagingEnv()) return MAUVE_TESTNETS_LIST_URL
+  if (isProductionEnv()) return MAUVE_MAINNETS_LIST_URL
+  return MAUVE_TESTNETS_LIST_URL
+}
 export const DEFAULT_ACTIVE_LIST_URLS: string[] = [UNI_LIST]
 export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   UNI_EXTENDED_LIST,
@@ -37,4 +49,4 @@ export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   ...UNSUPPORTED_LIST_URLS,
 ]
 
-export const DEFAULT_LIST_OF_LISTS: string[] = [...DEFAULT_ACTIVE_LIST_URLS, ...DEFAULT_INACTIVE_LIST_URLS]
+export const DEFAULT_LIST_OF_LISTS: string[] = [...[MAUVE_ACTIVE_LIST()], ...DEFAULT_INACTIVE_LIST_URLS]
