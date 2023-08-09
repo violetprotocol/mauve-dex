@@ -5,7 +5,7 @@ import sortByListPriority from 'utils/listSort'
 
 import BROKEN_LIST from '../../constants/tokenLists/broken.tokenlist.json'
 import { AppState } from '../index'
-import { MAUVE_ACTIVE_LIST, UNSUPPORTED_LIST_URLS } from './../../constants/lists'
+import { getMauveActiveList, UNSUPPORTED_LIST_URLS } from './../../constants/lists'
 
 export type TokenAddressMap = ChainTokenMap
 
@@ -68,7 +68,7 @@ function useCombinedTokenMapFromUrls(urls: string[] | undefined): TokenAddressMa
 
 // get all the tokens from active lists, combine with local default tokens
 export function useCombinedActiveList(): TokenAddressMap {
-  const activeTokens = useCombinedTokenMapFromUrls([MAUVE_ACTIVE_LIST()])
+  const activeTokens = useCombinedTokenMapFromUrls([getMauveActiveList()])
   return activeTokens
 }
 

@@ -1,7 +1,7 @@
 import { TokenInfo } from '@uniswap/token-lists'
 
 import store from '../state'
-import { MAUVE_ACTIVE_LIST, UNSUPPORTED_LIST_URLS } from './lists'
+import { getMauveActiveList, UNSUPPORTED_LIST_URLS } from './lists'
 import brokenTokenList from './tokenLists/broken.tokenlist.json'
 import { NATIVE_CHAIN_ID } from './tokens'
 
@@ -19,7 +19,7 @@ class TokenSafetyLookupTable {
     const dict: { [key: string]: TOKEN_LIST_TYPES } = {}
 
     // Initialize mauve tokens first
-    store.getState().lists.byUrl[MAUVE_ACTIVE_LIST()].current?.tokens.forEach((token) => {
+    store.getState().lists.byUrl[getMauveActiveList()].current?.tokens.forEach((token) => {
       dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.MAUVE
     })
 
