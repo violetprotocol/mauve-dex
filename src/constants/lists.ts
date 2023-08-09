@@ -1,9 +1,9 @@
 import { isDevelopmentEnv, isProductionEnv, isStagingEnv } from "utils/env"
 
 export const MAUVE_TESTNETS_LIST_URL =
-  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json?token=GHSAT0AAAAAACCDTXCUNVNLJAZHGP33NWN4ZGLPC4Q'
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json'
 export const MAUVE_MAINNETS_LIST_URL =
-  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json?token=GHSAT0AAAAAACCDTXCUNVNLJAZHGP33NWN4ZGLPC4Q'
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json'
 export const UNI_LIST = 'https://tokens.uniswap.org'
 export const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
 const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
