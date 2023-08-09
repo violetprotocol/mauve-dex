@@ -93,4 +93,5 @@ export function checkWarning(tokenAddress: string) {
     case TOKEN_LIST_TYPES.BROKEN:
       return BlockedWarning
   }
+  return null
 }
