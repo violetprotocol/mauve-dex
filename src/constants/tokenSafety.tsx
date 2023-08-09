@@ -59,12 +59,6 @@ export type Warning = {
   canProceed: boolean
 }
 
-const MediumWarning: Warning = {
-  level: WARNING_LEVEL.MEDIUM,
-  message: <Trans>Caution</Trans>,
-  canProceed: true,
-}
-
 const StrongWarning: Warning = {
   level: WARNING_LEVEL.UNKNOWN,
   message: <Trans>Warning</Trans>,

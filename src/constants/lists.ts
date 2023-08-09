@@ -31,7 +31,6 @@ export const MAUVE_ACTIVE_LIST = () => {
   if (isProductionEnv()) return MAUVE_MAINNETS_LIST_URL
   return MAUVE_TESTNETS_LIST_URL
 }
-const DEFAULT_ACTIVE_LIST_URLS: string[] = [UNI_LIST]
 export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   UNI_EXTENDED_LIST,
   COMPOUND_LIST,
