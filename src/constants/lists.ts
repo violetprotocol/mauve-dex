@@ -1,11 +1,11 @@
-import { isDevelopmentEnv, isProductionEnv, isStagingEnv } from "utils/env"
+import { isDevelopmentEnv, isProductionEnv, isStagingEnv } from 'utils/env'
 
-export const MAUVE_TESTNETS_LIST_URL =
+const MAUVE_TESTNETS_LIST_URL =
   'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json'
-export const MAUVE_MAINNETS_LIST_URL =
+const MAUVE_MAINNETS_LIST_URL =
   'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json'
-export const UNI_LIST = 'https://tokens.uniswap.org'
-export const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
+const UNI_LIST = 'https://tokens.uniswap.org'
+const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
 const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
 const AAVE_LIST = 'tokenlist.aave.eth'
 const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/sec-notice-list/master/ba-sec-list.json'
@@ -31,7 +31,7 @@ export const MAUVE_ACTIVE_LIST = () => {
   if (isProductionEnv()) return MAUVE_MAINNETS_LIST_URL
   return MAUVE_TESTNETS_LIST_URL
 }
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [UNI_LIST]
+const DEFAULT_ACTIVE_LIST_URLS: string[] = [UNI_LIST]
 export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   UNI_EXTENDED_LIST,
   COMPOUND_LIST,
