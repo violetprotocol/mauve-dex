@@ -1,18 +1,17 @@
 export function isDevelopmentEnv(): boolean {
-  return process.env.NODE_ENV === 'development'
+  return process.env.REACT_APP_VIOLET_ENV === 'development'
 }
 
 export function isTestEnv(): boolean {
-  return process.env.NODE_ENV === 'test'
+  return process.env.REACT_APP_VIOLET_ENV === 'test'
 }
 
 export function isStagingEnv(): boolean {
-  // NB: This is set in vercel builds.
-  return Boolean(process.env.REACT_APP_STAGING)
+  return process.env.REACT_APP_VIOLET_ENV === 'staging'
 }
 
 export function isProductionEnv(): boolean {
-  return process.env.NODE_ENV === 'production' && !isStagingEnv()
+  return process.env.REACT_APP_VIOLET_ENV === 'production'
 }
 
 export function isSentryEnabled(): boolean {
