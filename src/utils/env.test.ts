@@ -9,7 +9,7 @@ describe('env', () => {
   function setEnv(env: Record<string, unknown>) {
     process.env = {
       PUBLIC_URL: 'http://example.com',
-      NODE_ENV: "test",
+      NODE_ENV: 'test',
       REACT_APP_VIOLET_ENV: 'development',
       ...env,
     }
