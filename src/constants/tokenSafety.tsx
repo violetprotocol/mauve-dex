@@ -59,12 +59,6 @@ export type Warning = {
   canProceed: boolean
 }
 
-const MediumWarning: Warning = {
-  level: WARNING_LEVEL.MEDIUM,
-  message: <Trans>Caution</Trans>,
-  canProceed: true,
-}
-
 const StrongWarning: Warning = {
   level: WARNING_LEVEL.UNKNOWN,
   message: <Trans>Warning</Trans>,
@@ -82,10 +76,8 @@ export function checkWarning(tokenAddress: string) {
     return null
   }
   switch (WarningCache.checkToken(tokenAddress.toLowerCase())) {
-    case TOKEN_LIST_TYPES.UNI_DEFAULT:
+    case TOKEN_LIST_TYPES.MAUVE:
       return null
-    case TOKEN_LIST_TYPES.UNI_EXTENDED:
-      return MediumWarning
     case TOKEN_LIST_TYPES.UNKNOWN:
       return StrongWarning
     case TOKEN_LIST_TYPES.BLOCKED:
