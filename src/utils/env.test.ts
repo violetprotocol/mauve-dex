@@ -26,19 +26,12 @@ describe('env', () => {
   })
 
   it('isStagingEnv is true REACT_APP_STAGING=1', () => {
-    setEnv({ REACT_APP_STAGING: 1 })
+    setEnv({ REACT_APP_VIOLET_ENV: 'staging' })
     expect(isStagingEnv()).toBe(true)
   })
 
-  describe('isProductionEnv', () => {
-    it('is true if REACT_APP_VIOLET_ENV=production', () => {
-      setEnv({ REACT_APP_VIOLET_ENV: 'production' })
-      expect(isProductionEnv()).toBe(true)
-    })
-
-    it('is false if REACT_APP_VIOLET_ENV=production and REACT_APP_STAGING=1', () => {
-      setEnv({ REACT_APP_VIOLET_ENV: 'production', REACT_APP_STAGING: 1 })
-      expect(isProductionEnv()).toBe(false)
-    })
+  it('is true if REACT_APP_VIOLET_ENV=production', () => {
+    setEnv({ REACT_APP_VIOLET_ENV: 'production' })
+    expect(isProductionEnv()).toBe(true)
   })
 })
