@@ -19,11 +19,15 @@ class TokenSafetyLookupTable {
     const dict: { [key: string]: TOKEN_LIST_TYPES } = {}
 
     // Initialize mauve tokens first
-    getMauveActiveList().forEach((list) => {
-      store.getState().lists.byUrl[list].current?.tokens.forEach((token) => {
-        dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.MAUVE
-      })
-    })
+    for (let list of getMauveActiveList()) {
+      let tokenList = store.getState().lists.byUrl[list].current?.tokens
+      
+      if (tokenList) {
+        for (let token of tokenList) {
+          dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.MAUVE
+        }
+      }
+    }
 
     // TODO: Figure out if this list is still relevant
     brokenTokenList.tokens.forEach((token) => {
