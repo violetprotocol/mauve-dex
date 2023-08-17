@@ -60,18 +60,16 @@ export default function MauveBases({
   searchQuery: string
   isAddressSearch: string | false
 }) {
-  const defaultTokens = useAllTokens();
-  const tokens = Object.values(defaultTokens).map(token => {
-    return { 
-      isNative: token.isNative, 
-      isToken: token.isToken, 
-      ...(token as WrappedTokenInfo).tokenInfo, 
-      wrapped: token
+  const defaultTokens = useAllTokens()
+  const tokens = Object.values(defaultTokens).map((token) => {
+    return {
+      isNative: token.isNative,
+      isToken: token.isToken,
+      ...(token as WrappedTokenInfo).tokenInfo,
+      wrapped: token,
     } as Currency
-  });
+  })
   const bases = typeof chainId !== 'undefined' ? tokens ?? [] : []
-
-  console.log(defaultTokens);
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">
@@ -111,7 +109,7 @@ export default function MauveBases({
 function CurrencyLogoFromList({ currency }: { currency: Currency }) {
   const token = useTokenInfoFromActiveList(currency)
 
-  console.log(token);
+  console.log(token)
 
   return <CurrencyLogo currency={token} style={{ marginRight: 8 }} />
 }

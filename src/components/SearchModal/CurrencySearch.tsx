@@ -26,8 +26,8 @@ import Column from '../Column'
 import Row, { RowBetween } from '../Row'
 import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
-import { PaddedColumn, SearchInput, Separator } from './styleds'
 import MauveBases from './MauveBases'
+import { PaddedColumn, SearchInput, Separator } from './styleds'
 
 const ContentWrapper = styled(Column)`
   background-color: ${({ theme }) => theme.backgroundSurface};
@@ -113,7 +113,7 @@ export function CurrencySearch({
   const searchCurrencies: Currency[] = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
 
-    const tokens = filteredSortedTokens.filter((t) => !(/*t.equals(wrapped) || */(disableNonToken /*&& t.isNative*/)))
+    const tokens = filteredSortedTokens.filter((t) => !(/*t.equals(wrapped) || */ disableNonToken /*&& t.isNative*/))
     const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
       (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
     )
