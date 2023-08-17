@@ -131,13 +131,13 @@ export const USDT_POLYGON = new Token(
   'USDT',
   'Tether USD'
 )
-const WBTC_POLYGON = new Token(
-  SupportedChainId.POLYGON,
-  '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6',
-  8,
-  'WBTC',
-  'Wrapped BTC'
-)
+// const WBTC_POLYGON = new Token(
+//   SupportedChainId.POLYGON,
+//   '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6',
+//   8,
+//   'WBTC',
+//   'Wrapped BTC'
+// )
 export const USDT = new Token(
   SupportedChainId.MAINNET,
   '0xdAC17F958D2ee523a2206206994597C13D831ec7',
@@ -243,13 +243,13 @@ export const SWISE = new Token(
   'SWISE',
   'StakeWise'
 )
-const WETH_POLYGON_MUMBAI = new Token(
-  SupportedChainId.POLYGON_MUMBAI,
-  '0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa',
-  18,
-  'WETH',
-  'Wrapped Ether'
-)
+// const WETH_POLYGON_MUMBAI = new Token(
+//   SupportedChainId.POLYGON_MUMBAI,
+//   '0xa6fa4fb5f76172d178d61b04b0ecd319c5d1c0aa',
+//   18,
+//   'WETH',
+//   'Wrapped Ether'
+// )
 
 export const WETH_POLYGON = new Token(
   SupportedChainId.POLYGON,
@@ -294,20 +294,20 @@ const CELO_CELO_ALFAJORES = new Token(
   'CELO',
   'Celo'
 )
-const CUSD_CELO_ALFAJORES = new Token(
-  SupportedChainId.CELO_ALFAJORES,
-  '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
-  18,
-  'CUSD',
-  'Celo Dollar'
-)
-const CEUR_CELO_ALFAJORES = new Token(
-  SupportedChainId.CELO_ALFAJORES,
-  '0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F',
-  18,
-  'CEUR',
-  'Celo Euro Stablecoin'
-)
+// const CUSD_CELO_ALFAJORES = new Token(
+//   SupportedChainId.CELO_ALFAJORES,
+//   '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
+//   18,
+//   'CUSD',
+//   'Celo Dollar'
+// )
+// const CEUR_CELO_ALFAJORES = new Token(
+//   SupportedChainId.CELO_ALFAJORES,
+//   '0x10c892A6EC43a53E45D0B916B4b7D383B1b78C0F',
+//   18,
+//   'CEUR',
+//   'Celo Euro Stablecoin'
+// )
 
 export const UNI: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),

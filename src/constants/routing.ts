@@ -1,5 +1,5 @@
 // a list of tokens by chain
-import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
+import { Token } from '@violetprotocol/mauve-sdk-core'
 
 import { SupportedChainId } from './chains'
 import {
@@ -39,9 +39,9 @@ type ChainTokenList = {
   readonly [chainId: number]: Token[]
 }
 
-type ChainCurrencyList = {
-  readonly [chainId: number]: Currency[]
-}
+// type ChainCurrencyList = {
+//   readonly [chainId: number]: Currency[]
+// }
 
 const WRAPPED_NATIVE_CURRENCIES_ONLY: ChainTokenList = Object.fromEntries(
   Object.entries(WRAPPED_NATIVE_CURRENCY)
