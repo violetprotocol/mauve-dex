@@ -61,12 +61,11 @@ export default function MauveBases({
   isAddressSearch: string | false
 }) {
   const defaultTokens = useAllTokens()
-  console.log(defaultTokens)
   const tokens = Object.values(defaultTokens).map((token) => {
     return {
       isNative: token.isNative,
       isToken: token.isToken,
-      ...(token as WrappedTokenInfo).tokenInfo,
+      ...((token as WrappedTokenInfo).tokenInfo ? (token as WrappedTokenInfo).tokenInfo : token),
       wrapped: token,
     } as Currency
   })
