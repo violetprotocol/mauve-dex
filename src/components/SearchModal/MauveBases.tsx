@@ -61,7 +61,7 @@ export default function MauveBases({
   isAddressSearch: string | false
 }) {
   const defaultTokens = useAllTokens()
-  console.log(defaultTokens);
+  console.log(defaultTokens)
   const tokens = Object.values(defaultTokens).map((token) => {
     return {
       isNative: token.isNative,
