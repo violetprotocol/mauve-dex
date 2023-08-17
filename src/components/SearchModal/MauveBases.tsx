@@ -70,7 +70,6 @@ export default function MauveBases({
     } as Currency
   })
   const bases = typeof chainId !== 'undefined' ? tokens ?? [] : []
-  console.log(bases)
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">
