@@ -19,8 +19,10 @@ class TokenSafetyLookupTable {
     const dict: { [key: string]: TOKEN_LIST_TYPES } = {}
 
     // Initialize mauve tokens first
-    store.getState().lists.byUrl[getMauveActiveList()].current?.tokens.forEach((token) => {
-      dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.MAUVE
+    getMauveActiveList().forEach( list => {
+      store.getState().lists.byUrl[list].current?.tokens.forEach((token) => {
+        dict[token.address.toLowerCase()] = TOKEN_LIST_TYPES.MAUVE
+      })
     })
 
     // TODO: Figure out if this list is still relevant
