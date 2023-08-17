@@ -70,6 +70,7 @@ export default function MauveBases({
     } as Currency
   })
   const bases = typeof chainId !== 'undefined' ? tokens ?? [] : []
+  console.log(bases)
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">
@@ -108,8 +109,6 @@ export default function MauveBases({
 /** helper component to retrieve a base currency from the active token lists */
 function CurrencyLogoFromList({ currency }: { currency: Currency }) {
   const token = useTokenInfoFromActiveList(currency)
-
-  console.log(token)
 
   return <CurrencyLogo currency={token} style={{ marginRight: 8 }} />
 }
