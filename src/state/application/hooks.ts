@@ -41,13 +41,13 @@ export function useToggleSettingsMenu(): () => void {
 //   return useModalIsOpen(ApplicationModal.CLAIM_POPUP)
 // }
 
-export function useToggleShowClaimPopup(): () => void {
-  return useToggleModal(ApplicationModal.CLAIM_POPUP)
-}
+// export function useToggleShowClaimPopup(): () => void {
+//   return useToggleModal(ApplicationModal.CLAIM_POPUP)
+// }
 
-export function useToggleSelfClaimModal(): () => void {
-  return useToggleModal(ApplicationModal.SELF_CLAIM)
-}
+// export function useToggleSelfClaimModal(): () => void {
+//   return useToggleModal(ApplicationModal.SELF_CLAIM)
+// }
 // [MAUVE-DISABLED]: Governance is disabled
 // export function useToggleDelegateModal(): () => void {
 //   return useToggleModal(ApplicationModal.DELEGATE)
