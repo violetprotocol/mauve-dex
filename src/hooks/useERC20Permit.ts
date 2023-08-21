@@ -84,6 +84,7 @@ interface AllowedSignatureData extends BaseSignatureData {
   allowed: true
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export type SignatureData = StandardSignatureData | AllowedSignatureData
 
 const EIP712_DOMAIN_TYPE = [
@@ -132,7 +133,7 @@ function useERC20Permit(
   const nonceInputs = useMemo(() => [account ?? undefined], [account])
   const tokenNonceState = useSingleCallResult(eip2612Contract, 'nonces', nonceInputs)
   const permitInfo =
-    overridePermitInfo ?? (chainId && tokenAddress) /* ? PERMITTABLE_TOKENS[chainId]?.[tokenAddress]  : undefined*/
+    overridePermitInfo ?? /* (chainId && tokenAddress) ? PERMITTABLE_TOKENS[chainId]?.[tokenAddress] :  */ undefined
 
   const [signatureData, setSignatureData] = useState<SignatureData | null>(null)
 

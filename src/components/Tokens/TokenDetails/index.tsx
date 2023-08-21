@@ -178,7 +178,7 @@ export default function TokenDetails({
                 <TokenSymbol>{token.symbol ?? <Trans>Symbol not found</Trans>}</TokenSymbol>
               </TokenNameCell>
               <TokenActions>
-                <ShareButton currency={token} />
+                <ShareButton /* currency={token} */ />
               </TokenActions>
             </TokenInfoContainer>
             <ChartSection tokenPriceQuery={tokenPriceQuery} onChangeTimePeriod={onChangeTimePeriod} />
