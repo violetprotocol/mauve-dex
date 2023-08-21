@@ -68,7 +68,8 @@ const PRICE_PARAMS = {
 export const routingApi = createApi({
   reducerPath: 'routingApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.uniswap.org/v1/',
+    // TODO check if we need this
+    // baseUrl: 'https://api.uniswap.org/v1/',
   }),
   endpoints: (build) => ({
     getQuote: build.query<

@@ -679,7 +679,7 @@ export default function Swap({ className }: { className?: string }) {
                             </ThemedText.SubHeader>
                           ) : (
                             <ThemedText.SubHeader width="100%" textAlign="center" color="white">
-                              <Trans>Allow the Uniswap Protocol to use your {currencies[Field.INPUT]?.symbol}</Trans>
+                              <Trans>Allow Mauve to use your {currencies[Field.INPUT]?.symbol}</Trans>
                             </ThemedText.SubHeader>
                           )}
 
@@ -692,7 +692,7 @@ export default function Swap({ className }: { className?: string }) {
                             <MouseoverTooltip
                               text={
                                 <Trans>
-                                  You must give the Uniswap smart contracts permission to use your{' '}
+                                  You must give Mauve smart contracts permission to use your{' '}
                                   {currencies[Field.INPUT]?.symbol}. You only have to do this once per token.
                                 </Trans>
                               }

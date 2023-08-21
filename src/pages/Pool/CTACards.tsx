@@ -97,13 +97,14 @@ export default function CTACards() {
 
   return (
     <CTASection>
-      <CTA1 href="https://help.uniswap.org/en/articles/5391541-providing-liquidity-on-uniswap-v3">
+      {/* TODO add link for prividing liquidity */}
+      <CTA1 href="#">
         <ResponsiveColumn>
           <HeaderText>
             <Trans>Learn about providing liquidity</Trans> ↗
           </HeaderText>
           <ThemedText.DeprecatedBody fontWeight={400} style={{ alignItems: 'center', display: 'flex' }}>
-            <Trans>Check out our v3 LP walkthrough and migration guides.</Trans>
+            <Trans>Check out our walkthrough and migration guides.</Trans>
           </ThemedText.DeprecatedBody>
         </ResponsiveColumn>
       </CTA1>
@@ -113,7 +114,7 @@ export default function CTACards() {
             <Trans>Top pools</Trans> ↗
           </HeaderText>
           <ThemedText.DeprecatedBody fontWeight={400} style={{ alignSelf: 'flex-start' }}>
-            <Trans>Explore Uniswap Analytics.</Trans>
+            <Trans>Explore Mauve Analytics.</Trans>
           </ThemedText.DeprecatedBody>
         </ResponsiveColumn>
       </CTA2>

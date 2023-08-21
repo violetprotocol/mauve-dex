@@ -37,9 +37,9 @@ export function useToggleSettingsMenu(): () => void {
   return useToggleModal(ApplicationModal.SETTINGS)
 }
 
-export function useShowClaimPopup(): boolean {
-  return useModalIsOpen(ApplicationModal.CLAIM_POPUP)
-}
+// export function useShowClaimPopup(): boolean {
+//   return useModalIsOpen(ApplicationModal.CLAIM_POPUP)
+// }
 
 export function useToggleShowClaimPopup(): () => void {
   return useToggleModal(ApplicationModal.CLAIM_POPUP)
