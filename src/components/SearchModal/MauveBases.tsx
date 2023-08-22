@@ -4,10 +4,11 @@ import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { AutoColumn } from 'components/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AutoRow } from 'components/Row'
-import { COMMON_BASES } from 'constants/routing'
+import { useAllTokens } from 'hooks/Tokens'
 import { useTokenInfoFromActiveList } from 'hooks/useTokenInfoFromActiveList'
 import { getTokenAddress } from 'lib/utils/analytics'
 import { Text } from 'rebass'
+import { WrappedTokenInfo } from 'state/lists/wrappedTokenInfo'
 import styled from 'styled-components/macro'
 import { currencyId } from 'utils/currencyId'
 
@@ -46,7 +47,7 @@ const formatAnalyticsEventProperties = (currency: Currency, searchQuery: string,
     : { search_token_address_input: isAddressSearch }),
 })
 
-export default function CommonBases({
+export default function MauveBases({
   chainId,
   onSelect,
   selectedCurrency,
@@ -59,7 +60,16 @@ export default function CommonBases({
   searchQuery: string
   isAddressSearch: string | false
 }) {
-  const bases = typeof chainId !== 'undefined' ? COMMON_BASES[chainId] ?? [] : []
+  const defaultTokens = useAllTokens()
+  const tokens = Object.values(defaultTokens).map((token) => {
+    return {
+      isNative: token.isNative,
+      isToken: token.isToken,
+      ...((token as WrappedTokenInfo).tokenInfo ? (token as WrappedTokenInfo).tokenInfo : token),
+      wrapped: token,
+    } as Currency
+  })
+  const bases = typeof chainId !== 'undefined' ? tokens ?? [] : []
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">
