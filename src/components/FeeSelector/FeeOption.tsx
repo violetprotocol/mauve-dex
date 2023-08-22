@@ -8,7 +8,6 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
 
-import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
 
 const ResponsiveText = styled(ThemedText.DeprecatedLabel)`
@@ -29,7 +28,7 @@ interface FeeOptionProps {
   onClick: () => void
 }
 
-export function FeeOption({ feeAmount, active, poolState, distributions, onClick }: FeeOptionProps) {
+export function FeeOption({ feeAmount, active, onClick }: FeeOptionProps) {
   return (
     <ButtonRadioChecked active={active} onClick={onClick}>
       <AutoColumn gap="sm" justify="flex-start">
@@ -41,10 +40,6 @@ export function FeeOption({ feeAmount, active, poolState, distributions, onClick
             {FEE_AMOUNT_DETAIL[feeAmount].description}
           </ThemedText.DeprecatedMain>
         </AutoColumn>
-
-        {distributions && (
-          <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
-        )}
       </AutoColumn>
     </ButtonRadioChecked>
   )
