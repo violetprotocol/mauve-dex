@@ -3,8 +3,8 @@ import contenthashToUri from 'lib/utils/contenthashToUri'
 import parseENSAddress from 'lib/utils/parseENSAddress'
 import uriToHttp from 'lib/utils/uriToHttp'
 
-// TODO change this to use mauve
-export const DEFAULT_TOKEN_LIST = '#'
+export const DEFAULT_TOKEN_LIST =
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json'
 
 const listCache = new Map<string, TokenList>()
 
