@@ -10,15 +10,15 @@ import { RowBetween, RowFixed } from 'components/Row'
 import { SwitchLocaleLink } from 'components/SwitchLocaleLink'
 import { isSupportedChain } from 'constants/chains'
 import { useV3Positions } from 'hooks/useV3Positions'
-import { AlertTriangle, BookOpen, ChevronDown, ChevronsRight, Inbox, Layers, PlusCircle } from 'react-feather'
+import { AlertTriangle, ChevronDown, Inbox, PlusCircle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { useToggleWalletModal } from 'state/application/hooks'
 import { useUserHideClosedPositions } from 'state/user/hooks'
 import styled, { css, useTheme } from 'styled-components/macro'
-import { HideSmall, ThemedText } from 'theme'
+import { ThemedText } from 'theme'
 import { PositionDetails } from 'types/position'
 
-import CTACards from './CTACards'
+// import CTACards from './CTACards'
 import { LoadingRows } from './styleds'
 
 const PageWrapper = styled(AutoColumn)`
@@ -229,36 +229,16 @@ export default function Pool() {
       link: '/add/ETH',
       external: false,
     },
-    {
-      content: (
-        <PoolMenuItem>
-          <Trans>Migrate</Trans>
-          <ChevronsRight size={16} />
-        </PoolMenuItem>
-      ),
-      link: '/migrate/v2',
-      external: false,
-    },
-    {
-      content: (
-        <PoolMenuItem>
-          <Trans>V2 liquidity</Trans>
-          <Layers size={16} />
-        </PoolMenuItem>
-      ),
-      link: '/pool/v2',
-      external: false,
-    },
-    {
-      content: (
-        <PoolMenuItem>
-          <Trans>Learn</Trans>
-          <BookOpen size={16} />
-        </PoolMenuItem>
-      ),
-      link: 'https://docs.mauve.org/',
-      external: true,
-    },
+    // {
+    //   content: (
+    //     <PoolMenuItem>
+    //       <Trans>Learn</Trans>
+    //       <BookOpen size={16} />
+    //     </PoolMenuItem>
+    //   ),
+    //   link: 'https://docs.mauve.org/',
+    //   external: true,
+    // },
   ]
 
   return (
@@ -334,9 +314,9 @@ export default function Pool() {
                 </ErrorContainer>
               )}
             </MainContentWrapper>
-            <HideSmall>
+            {/* <HideSmall>
               <CTACards />
-            </HideSmall>
+            </HideSmall> */}
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>
