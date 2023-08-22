@@ -68,11 +68,7 @@ export const getVioletAuthorizedCall = async ({
     } else {
       console.error(error)
       logErrorWithNewRelic({ errorString: 'Violet EAT not retrieved' })
-      // @TODO Add a separate function to handle error codes with custom messages
-      // when we handle more than one
-      if (error?.code === 'ENROLLMENT_PENDING') {
-        throw new Error(`Your business enrollment is pending, we will contact you soon!`)
-      }
+      handleErrorCodes(error?.code)
       return null
     }
   } else {
@@ -103,6 +99,62 @@ export const getVioletAuthorizedCall = async ({
   }
 
   return { calldata }
+}
+
+const handleErrorCodes = (errorCode?: string) => {
+  switch (errorCode) {
+    case 'USER_CANCELLED':
+      throw new Error(`
+          You must complete the enrollment with Violet before using Mauve
+      `)
+    case 'FAILED_GEOLOCATION':
+      throw new Error(`
+          You have failed geolocation, please turn off your VPN or any software
+          that changes your location in case you are in an authorized zone and
+          try again
+      `)
+    case 'ADDRESS_LOCATION_FAILED':
+      throw new Error(`
+          The address you provided doesn't match your current location{
+      `)
+    case 'UNKNOWN_WALLET_ADDRESS':
+      throw new Error(`
+          Violet did not recognize your wallet address, make sure you are
+          connected with the correct wallet and try again
+      `)
+    case 'ENROLLMENT_PENDING':
+      throw new Error(`
+          Your enrollment is pending, please wait from an email from the Violet
+          team and try again
+      `)
+    case 'AUTHENTICATION_FAILED':
+      throw new Error(`
+          Authentication has failed, please try again if the issue persists
+          contact the Violet team on our Discord
+      `)
+    case 'ENROLLMENT_FAILED':
+      throw new Error(`
+          Enrollment has failed, please try again if the issue persists contact
+          the Violet team on our Discord
+      `)
+    case 'AUTHORIZATION_FAILED':
+      throw new Error(`
+          Authorization has failed, please try again if the issue persists
+          contact the Violet team on our Discord
+      `)
+    case 'USER_ALREADY_EXISTS':
+      throw new Error(`
+          Our system detected that you already have an account with Violet if
+          you think this is an error, please contact us
+      `)
+    case 'SOMETHING_WENT_WRONG':
+      throw new Error(`
+          Something went wrong while authorizing your transaction; Please try
+          again, and if the issue persists contact the Violet team on our
+          Discord
+      `)
+  }
+  return
 }
 
 const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
