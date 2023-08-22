@@ -68,6 +68,11 @@ export const getVioletAuthorizedCall = async ({
     } else {
       console.error(error)
       logErrorWithNewRelic({ errorString: 'Violet EAT not retrieved' })
+      // @TODO Add a separate function to handle error codes with custom messages
+      // when we handle more than one
+      if (error?.code === 'ENROLLMENT_PENDING') {
+        throw new Error(`Your business enrollment is pending, we will contact you soon!`)
+      }
       return null
     }
   } else {
