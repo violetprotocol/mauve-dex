@@ -8,7 +8,6 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
 
-import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
 
 const ResponsiveText = styled(ThemedText.DeprecatedLabel)`
@@ -41,7 +40,7 @@ export function FeeOption({ feeAmount, active, poolState, distributions, onClick
             {FEE_AMOUNT_DETAIL[feeAmount].description}
           </ThemedText.DeprecatedMain>
         </AutoColumn>
-{/* 
+        {/* 
         {distributions && (
           <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
         )} */}
