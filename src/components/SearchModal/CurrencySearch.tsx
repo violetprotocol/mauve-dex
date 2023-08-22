@@ -24,9 +24,9 @@ import { CloseIcon, ThemedText } from '../../theme'
 import { isAddress } from '../../utils'
 import Column from '../Column'
 import Row, { RowBetween } from '../Row'
-import CommonBases from './CommonBases'
 import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
+import MauveBases from './MauveBases'
 import { PaddedColumn, SearchInput, Separator } from './styleds'
 
 const ContentWrapper = styled(Column)`
@@ -53,7 +53,7 @@ export function CurrencySearch({
   otherSelectedCurrency,
   showCommonBases,
   showCurrencyAmount,
-  disableNonToken,
+  // disableNonToken,
   onDismiss,
   isOpen,
 }: CurrencySearchProps) {
@@ -108,17 +108,18 @@ export function CurrencySearch({
   const filteredSortedTokens = useSortTokensByQuery(debouncedQuery, sortedTokens)
 
   const native = useNativeCurrency()
-  const wrapped = native.wrapped
+  // const wrapped = native.wrapped
 
   const searchCurrencies: Currency[] = useMemo(() => {
-    const s = debouncedQuery.toLowerCase().trim()
+    // const s = debouncedQuery.toLowerCase().trim()
 
-    const tokens = filteredSortedTokens.filter((t) => !(t.equals(wrapped) || (disableNonToken && t.isNative)))
-    const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
-      (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
-    )
-    return [...natives, ...tokens]
-  }, [debouncedQuery, filteredSortedTokens, wrapped, disableNonToken, native])
+    const tokens = filteredSortedTokens
+    // const tokens = filteredSortedTokens.filter((t) => !(t.equals(wrapped) || disableNonToken && t.isNative))
+    // const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
+    //   (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
+    // )
+    return [...tokens]
+  }, [/*debouncedQuery, */ filteredSortedTokens /*wrapped, disableNonToken, native*/])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency, hasWarning?: boolean) => {
@@ -206,7 +207,7 @@ export function CurrencySearch({
             />
           </Row>
           {showCommonBases && (
-            <CommonBases
+            <MauveBases
               chainId={chainId}
               onSelect={handleCurrencySelect}
               selectedCurrency={selectedCurrency}
