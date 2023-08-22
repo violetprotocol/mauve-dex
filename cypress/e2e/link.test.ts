@@ -1,3 +1,4 @@
+// see https://github.com/Uniswap/interface/pull/4115
 describe('Link', () => {
   it('should update route', () => {
     cy.visit('/')

@@ -322,7 +322,7 @@ export default function WalletModal({
 
       const content = (
         <Trans>
-          By connecting a wallet, you agree to Mauves’{' '}
+          By connecting a wallet, you agree to Mauve’s{' '}
           <ExternalLink href="https://mauve.org/terms-of-use/">Terms of Use</ExternalLink> and consent to its{' '}
           <ExternalLink href="https://mauve.org/privacy-notice">Privacy Policy</ExternalLink>.
         </Trans>
