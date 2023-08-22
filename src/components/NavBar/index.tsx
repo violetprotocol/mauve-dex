@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
-import VioletTestButton from 'components/VioletTest'
 import Web3Status from 'components/Web3Status'
 import { chainIdToBackendName } from 'graphql/data/util'
 import { Box } from 'nft/components/Box'
@@ -90,9 +89,6 @@ const Navbar = () => {
                   })
                 }}
               />
-            </Box>
-            <Box>
-              <VioletTestButton />
             </Box>
           </Box>
 
