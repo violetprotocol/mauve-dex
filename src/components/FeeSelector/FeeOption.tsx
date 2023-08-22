@@ -41,10 +41,10 @@ export function FeeOption({ feeAmount, active, poolState, distributions, onClick
             {FEE_AMOUNT_DETAIL[feeAmount].description}
           </ThemedText.DeprecatedMain>
         </AutoColumn>
-
+{/* 
         {distributions && (
           <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
-        )}
+        )} */}
       </AutoColumn>
     </ButtonRadioChecked>
   )
