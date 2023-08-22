@@ -96,9 +96,6 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
               <Trans>Settings</Trans>
             </Text>
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
-            <Text fontWeight={600} fontSize={14}>
-              <Trans>Interface Settings</Trans>
-            </Text>
           </AutoColumn>
         </MenuFlyout>
       )}
