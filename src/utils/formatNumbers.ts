@@ -1,4 +1,3 @@
-/* Copied from Uniswap/v-3: https://github.com/Uniswap/v3-info/blob/master/src/utils/numbers.ts */
 import { Currency, CurrencyAmount, Price } from '@violetprotocol/mauve-sdk-core'
 import { DEFAULT_LOCALE } from 'constants/locales'
 import numbro from 'numbro'

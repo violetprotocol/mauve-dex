@@ -2,22 +2,16 @@
 import { t, Trans } from '@lingui/macro'
 import { Percent } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
 import { isSupportedChainId } from 'lib/hooks/routing/clientSideSmartOrderRouter'
 import { useRef } from 'react'
 import { Sliders } from 'react-feather'
 import { Text } from 'rebass'
-import styled, { useTheme } from 'styled-components/macro'
+import styled from 'styled-components/macro'
 
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { useModalIsOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import { ApplicationModal } from '../../state/application/reducer'
-import { useClientSideRouter } from '../../state/user/hooks'
-import { ThemedText } from '../../theme'
 import { AutoColumn } from '../Column'
-import QuestionHelper from '../QuestionHelper'
-import { RowBetween, RowFixed } from '../Row'
-import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
 
 const StyledMenuButton = styled.button<{ disabled: boolean }>`
@@ -83,10 +77,6 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
   const open = useModalIsOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
 
-  const theme = useTheme()
-
-  const [clientSideRouter, setClientSideRouter] = useClientSideRouter()
-
   useOnClickOutside(node, open ? toggle : undefined)
 
   return (
@@ -109,27 +99,6 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
             <Text fontWeight={600} fontSize={14}>
               <Trans>Interface Settings</Trans>
             </Text>
-            {isSupportedChainId(chainId) && (
-              <RowBetween>
-                <RowFixed>
-                  <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.textSecondary}>
-                    <Trans>Auto Router API</Trans>
-                  </ThemedText.DeprecatedBlack>
-                  <QuestionHelper text={<Trans>Use the Uniswap Labs API to get faster quotes.</Trans>} />
-                </RowFixed>
-                <Toggle
-                  id="toggle-optimized-router-button"
-                  isActive={!clientSideRouter}
-                  toggle={() => {
-                    sendEvent({
-                      category: 'Routing',
-                      action: clientSideRouter ? 'enable routing API' : 'disable routing API',
-                    })
-                    setClientSideRouter(!clientSideRouter)
-                  }}
-                />
-              </RowBetween>
-            )}
           </AutoColumn>
         </MenuFlyout>
       )}

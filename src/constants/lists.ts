@@ -4,8 +4,8 @@ const MAUVE_TESTNETS_LIST_URL =
   'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json'
 const MAUVE_MAINNETS_LIST_URL =
   'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json'
-const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
-const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
+// const UNI_EXTENDED_LIST = 'https://extendedtokens.uniswap.org/'
+// const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
 const AAVE_LIST = 'tokenlist.aave.eth'
 const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/sec-notice-list/master/ba-sec-list.json'
 const CMC_ALL_LIST = 'https://api.coinmarketcap.com/data-api/v3/uniswap/all.json'
@@ -21,7 +21,7 @@ export const OPTIMISM_LIST = 'https://static.optimism.io/optimism.tokenlist.json
 export const ARBITRUM_LIST = 'https://bridge.arbitrum.io/token-list-42161.json'
 export const CELO_LIST = 'https://celo-org.github.io/celo-token-list/celo.tokenlist.json'
 
-export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST, UNI_UNSUPPORTED_LIST]
+export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST /* , UNI_UNSUPPORTED_LIST */]
 
 // default lists to be 'active' aka searched across
 export const getMauveActiveList = () => {
@@ -31,7 +31,7 @@ export const getMauveActiveList = () => {
   return [MAUVE_TESTNETS_LIST_URL]
 }
 export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
-  UNI_EXTENDED_LIST,
+  // UNI_EXTENDED_LIST,
   COMPOUND_LIST,
   AAVE_LIST,
   CMC_ALL_LIST,

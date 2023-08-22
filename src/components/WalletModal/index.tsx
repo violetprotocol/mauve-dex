@@ -322,9 +322,9 @@ export default function WalletModal({
 
       const content = (
         <Trans>
-          By connecting a wallet, you agree to Uniswap Labs’{' '}
-          <ExternalLink href="https://uniswap.org/terms-of-service/">Terms of Service</ExternalLink> and consent to its{' '}
-          <ExternalLink href="https://uniswap.org/privacy-policy">Privacy Policy</ExternalLink>.
+          By connecting a wallet, you agree to Mauve’s{' '}
+          <ExternalLink href="https://mauve.org/terms-of-use/">Terms of Use</ExternalLink> and consent to its{' '}
+          <ExternalLink href="https://mauve.org/privacy-notice">Privacy Policy</ExternalLink>.
         </Trans>
       )
       return (

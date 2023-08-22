@@ -3,7 +3,8 @@ import contenthashToUri from 'lib/utils/contenthashToUri'
 import parseENSAddress from 'lib/utils/parseENSAddress'
 import uriToHttp from 'lib/utils/uriToHttp'
 
-export const DEFAULT_TOKEN_LIST = 'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
+export const DEFAULT_TOKEN_LIST =
+  'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.mainnets.json'
 
 const listCache = new Map<string, TokenList>()
 

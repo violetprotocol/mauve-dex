@@ -1,10 +1,6 @@
 import { Trans } from '@lingui/macro'
-import { Currency } from '@violetprotocol/mauve-sdk-core'
-import { NATIVE_CHAIN_ID } from 'constants/tokens'
-import { chainIdToBackendName } from 'graphql/data/util'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useRef } from 'react'
-import { Twitter } from 'react-feather'
 import { useModalIsOpen, useToggleModal } from 'state/application/hooks'
 import { ApplicationModal } from 'state/application/reducer'
 import styled, { useTheme } from 'styled-components/macro'
@@ -16,8 +12,8 @@ import { Z_INDEX } from 'theme/zIndex'
 import { ReactComponent as ShareIcon } from '../../../assets/svg/share.svg'
 import { CopyHelper } from '../../../theme'
 
-const TWITTER_WIDTH = 560
-const TWITTER_HEIGHT = 480
+// const TWITTER_WIDTH = 560
+// const TWITTER_HEIGHT = 480
 
 const ShareButtonDisplay = styled.div`
   display: flex;
@@ -64,28 +60,28 @@ const ShareAction = styled.div`
   }
 `
 
-export default function ShareButton({ currency }: { currency: Currency }) {
+export default function ShareButton(/* { currency }: { currency: Currency } */) {
   const theme = useTheme()
   const node = useRef<HTMLDivElement | null>(null)
   const open = useModalIsOpen(ApplicationModal.SHARE)
   const toggleShare = useToggleModal(ApplicationModal.SHARE)
   useOnClickOutside(node, open ? toggleShare : undefined)
-  const positionX = (window.screen.width - TWITTER_WIDTH) / 2
-  const positionY = (window.screen.height - TWITTER_HEIGHT) / 2
-  const address = currency.isNative ? NATIVE_CHAIN_ID : currency.wrapped.address
+  // const positionX = (window.screen.width - TWITTER_WIDTH) / 2
+  // const positionY = (window.screen.height - TWITTER_HEIGHT) / 2
+  // const address = currency.isNative ? NATIVE_CHAIN_ID : currency.wrapped.address
 
-  const shareTweet = () => {
-    toggleShare()
-    window.open(
-      `https://twitter.com/intent/tweet?text=Check%20out%20${currency.name}%20(${
-        currency.symbol
-      })%20https://app.uniswap.org/%23/tokens/${chainIdToBackendName(
-        currency.chainId
-      ).toLowerCase()}/${address}%20via%20@uniswap`,
-      'newwindow',
-      `left=${positionX}, top=${positionY}, width=${TWITTER_WIDTH}, height=${TWITTER_HEIGHT}`
-    )
-  }
+  // const shareTweet = () => {
+  //   toggleShare()
+  //   window.open(
+  //     `https://twitter.com/intent/tweet?text=Check%20out%20${currency.name}%20(${
+  //       currency.symbol
+  //     })%20https://app.uniswap.org/%23/tokens/${chainIdToBackendName(
+  //       currency.chainId
+  //     ).toLowerCase()}/${address}%20via%20@uniswap`,
+  //     'newwindow',
+  //     `left=${positionX}, top=${positionY}, width=${TWITTER_WIDTH}, height=${TWITTER_HEIGHT}`
+  //   )
+  // }
 
   const copyHelperRef = useRef<CopyHelperRefType>(null)
 
@@ -106,10 +102,10 @@ export default function ShareButton({ currency }: { currency: Currency }) {
             </CopyHelper>
           </ShareAction>
 
-          <ShareAction onClick={shareTweet}>
+          {/* <ShareAction onClick={shareTweet}>
             <Twitter color={theme.textPrimary} size={20} strokeWidth={1.5} />
             <Trans>Share to Twitter</Trans>
-          </ShareAction>
+          </ShareAction> */}
         </ShareActions>
       )}
     </ShareButtonDisplay>

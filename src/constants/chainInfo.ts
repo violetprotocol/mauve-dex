@@ -53,6 +53,7 @@ type ChainInfoMap = { readonly [chainId: number]: L1ChainInfo | L2ChainInfo } & 
   readonly [chainId in SupportedL2ChainId]: L2ChainInfo
 } & { readonly [chainId in SupportedL1ChainId]: L1ChainInfo }
 
+// TODO change these to use mauve
 const CHAIN_INFO: ChainInfoMap = {
   [SupportedChainId.MAINNET]: {
     networkType: NetworkType.L1,

@@ -68,7 +68,7 @@ const PRICE_PARAMS = {
 export const routingApi = createApi({
   reducerPath: 'routingApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.uniswap.org/v1/',
+    // baseUrl: 'https://api.uniswap.org/v1/',
   }),
   endpoints: (build) => ({
     getQuote: build.query<
@@ -106,6 +106,7 @@ export const routingApi = createApi({
             })
             result = await fetch(`quote?${query}`)
           } else {
+            // Mauve always uses this one
             const router = getRouter(args.tokenInChainId)
             result = await getClientSideQuote(
               args,
