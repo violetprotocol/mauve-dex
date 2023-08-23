@@ -45,6 +45,7 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
   onFieldBInput: (typedValue: string) => void
   onLeftRangeInput: (typedValue: string) => void
   onRightRangeInput: (typedValue: string) => void
+  onBothRangeInput: (leftTypedValue: string, rightTypedValue: string) => void
   onStartPriceInput: (typedValue: string) => void
 } {
   const dispatch = useAppDispatch()
@@ -82,6 +83,15 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
     [dispatch, navigate, search]
   )
 
+  const onBothRangeInput = useCallback(
+    (leftTypedValue: string, rightTypedValue: string) => {
+      dispatch(typeRightRangeInput({ typedValue: rightTypedValue }))
+      dispatch(typeLeftRangeInput({ typedValue: leftTypedValue }))
+      navigate({ search: replaceURLParam(replaceURLParam(search, 'maxPrice', rightTypedValue), 'minPrice', leftTypedValue) }, { replace: true })
+    },
+    [dispatch, navigate, search]
+  )
+
   const onStartPriceInput = useCallback(
     (typedValue: string) => {
       dispatch(typeStartPriceInput({ typedValue }))
@@ -94,6 +104,7 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
     onFieldBInput,
     onLeftRangeInput,
     onRightRangeInput,
+    onBothRangeInput,
     onStartPriceInput,
   }
 }

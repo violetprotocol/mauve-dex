@@ -159,7 +159,7 @@ export default function AddLiquidity() {
     existingPosition
   )
 
-  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
+  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onBothRangeInput, onStartPriceInput } =
     useV3MintActionHandlers(noLiquidity)
 
   const isValid = !errorMessage && !invalidRange
@@ -474,6 +474,11 @@ export default function AddLiquidity() {
 
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
     useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
+
+  const clearAndSetFullRange = () => {
+    onBothRangeInput('','');
+    getSetFullRange();
+  }
 
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA =
@@ -933,7 +938,7 @@ export default function AddLiquidity() {
                                     width="auto"
                                     onClick={() => {
                                       setShowCapitalEfficiencyWarning(false)
-                                      getSetFullRange()
+                                      clearAndSetFullRange()
                                     }}
                                   >
                                     <ThemedText.DeprecatedBlack fontSize={13} color="black">
