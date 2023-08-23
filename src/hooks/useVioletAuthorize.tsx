@@ -56,7 +56,7 @@ export const getVioletAuthorizedCall = async ({
   if (response) {
     const [violet, error] = response
     if (violet) {
-      eat = JSON.parse(atob(violet.token))
+      eat = JSON.parse(atob(violet.rawEAT))
 
       eat.signature = splitSignature(eat.signature)
 

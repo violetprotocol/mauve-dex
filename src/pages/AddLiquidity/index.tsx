@@ -293,7 +293,7 @@ export default function AddLiquidity() {
           console.log(error)
           throw new Error(error?.code + 'Failed to get Violet EAT')
         }
-        const eat = JSON.parse(atob(violet.token))
+        const eat = JSON.parse(atob(violet.rawEAT))
         eat.signature = splitSignature(eat.signature)
         if (!eat?.signature || !eat?.expiry) {
           throw new Error('Failed to get Violet EAT')

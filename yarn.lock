@@ -5637,10 +5637,10 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@violetprotocol/sdk@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.7.tgz#8709371d13e179427f1804b4589fcaadada52fa7"
-  integrity sha512-foa2Y4+FhZY0IdFmMj/Q5Ggno27nWTdJJ+U3gX4PqS0wBBZMJvkdmkTaQQIdr5kqLH9S0xB6LTxotVZjjqBcvQ==
+"@violetprotocol/sdk@0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.12.tgz#c2f56f48d32e871b332a62b82bc26314563e3a99"
+  integrity sha512-IHlK2dMpZqkzDqq0II/CXBTv9y2AIJpAFQvI8nO3PDTvFZusvcmSJDbgDLnv6SjUBayI1FWM9/FpTCfqDIlD4w==
 
 "@violetprotocol/violetid@1.2.3":
   version "1.2.3"
