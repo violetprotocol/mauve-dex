@@ -476,8 +476,8 @@ export default function AddLiquidity() {
     useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
 
   const clearAndSetFullRange = () => {
-    onBothRangeInput('','');
-    getSetFullRange();
+    onBothRangeInput('', '')
+    getSetFullRange()
   }
 
   // we need an existence check on parsed amounts for single-asset deposits

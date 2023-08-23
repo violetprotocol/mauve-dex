@@ -87,7 +87,10 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
     (leftTypedValue: string, rightTypedValue: string) => {
       dispatch(typeRightRangeInput({ typedValue: rightTypedValue }))
       dispatch(typeLeftRangeInput({ typedValue: leftTypedValue }))
-      navigate({ search: replaceURLParam(replaceURLParam(search, 'maxPrice', rightTypedValue), 'minPrice', leftTypedValue) }, { replace: true })
+      navigate(
+        { search: replaceURLParam(replaceURLParam(search, 'maxPrice', rightTypedValue), 'minPrice', leftTypedValue) },
+        { replace: true }
+      )
     },
     [dispatch, navigate, search]
   )
