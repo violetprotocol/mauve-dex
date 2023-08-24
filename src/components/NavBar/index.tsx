@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro'
-import { useWeb3React } from '@web3-react/core'
 import Web3Status from 'components/Web3Status'
-import { chainIdToBackendName } from 'graphql/data/util'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
 import { MauveIcon } from 'nft/components/icons'
@@ -43,8 +41,6 @@ const MenuItem = ({ href, dataTestId, id, isActive, children }: MenuItemProps) =
 
 export const PageTabs = () => {
   const { pathname } = useLocation()
-  const { chainId: connectedChainId } = useWeb3React()
-  const chainName = chainIdToBackendName(connectedChainId)
 
   const isPoolActive =
     pathname.startsWith('/pool') ||

@@ -22,7 +22,6 @@ import { PositionPage } from './Pool/PositionPage'
 import RemoveLiquidityV3 from './RemoveLiquidity/V3'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
-import Tokens from './Tokens'
 import VioletCallback from './VioletCallback'
 
 const TokenDetails = lazy(() => import('./TokenDetails'))
@@ -194,8 +193,9 @@ export default function App() {
               <Route path="/" element={<Navigate to="/swap" replace />} />
               {/* <Route path="tokens" element={<Tokens />}>
                 <Route path=":chainName" />
-              </Route>*/}
+              </Route>
               <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
+              */}
               {/* // [MAUVE-DISABLED] */}
               {/* <Route
                   path="vote/*"
