@@ -132,6 +132,12 @@ const handleErrorCodes = (errorCode?: string) => {
           Authentication has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
       `)
+    case 'AUTHENTICATION_FAILED_AFTER_ENROLLMENT':
+      throw new Error(`
+          Thank you for your patience, you are now registered with Violet. 
+          Authentication has failed, please try again. If the issue persists,
+          contact the Violet team on our Discord.
+      `)
     case 'ENROLLMENT_FAILED':
       throw new Error(`
           Enrollment has failed, please try again. If the issue persists, contact
@@ -142,10 +148,36 @@ const handleErrorCodes = (errorCode?: string) => {
           Authorization has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
       `)
+    case 'AUTHORIZATION_FAILED_AFTER_ENROLLMENT':
+      throw new Error(`
+          Thank you for your patience, you are now registered with Violet. 
+          Authorization has failed, please try again. If the issue persists,
+          contact the Violet team on our Discord.
+      `)
     case 'USER_ALREADY_EXISTS':
       throw new Error(`
           Our system detected that you already have an account with Violet. If
           you think this is an error, please contact us.
+      `)
+    case 'UNAUTHORIZED_COUNTRY':
+      throw new Error(`
+          Thank you for your patience, you are now registered with Violet. Unfortunately
+          we currently do not support US customers, and so we weren't able to create your
+          mauve transaction.
+      `)
+    case 'UNAUTHORIZED_COUNTRY_AFTER_ENROLLMENT':
+      throw new Error(`
+          Unfortunately we currently do not support US customers, and so we weren't able to create your
+          mauve transaction.
+      `)
+    case 'COMPLIANCE_FAILED':
+      throw new Error(`
+          There was an issue with the application, please contact support at compliance@violet.co
+      `)
+    case 'COMPLIANCE_FAILED_AFTER_ENROLLMENT':
+      throw new Error(`
+          Thank you for your patience, you are now registered with Violet. 
+          There was an issue with the application, please contact support at compliance@violet.co
       `)
     case 'SOMETHING_WENT_WRONG':
       throw new Error(`
