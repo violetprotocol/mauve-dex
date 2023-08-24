@@ -5637,6 +5637,14 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
+"@violetprotocol/sdk-web3-react@0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk-web3-react/-/sdk-web3-react-0.0.2.tgz#75aebb6fb377b3a445befaa365116285713a7ec1"
+  integrity sha512-enyNDCjePegajjWFy2O1YSXHuI2mPeXJgvQLQ3nIb/dsTm+PwEacCeit2HCbUFEOxt84uhxtSi0w2Z/EmYoXYQ==
+  dependencies:
+    "@violetprotocol/sdk" "0.0.12"
+    "@web3-react/core" "^8.2.0"
+
 "@violetprotocol/sdk@0.0.12":
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.12.tgz#c2f56f48d32e871b332a62b82bc26314563e3a99"
@@ -6017,6 +6025,17 @@
   optionalDependencies:
     "@ethersproject/providers" "^5"
 
+"@web3-react/core@^8.2.0":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@web3-react/core/-/core-8.2.2.tgz#f1a76e42f30a8c36bc0cc3b6e59f5cc89b357398"
+  integrity sha512-4AFWqOBisBBMj22/RB3+w6px66YxtK0iVIReQj1h1Rssko2ptIHjGMLyyRInN8eVemx8QaOE481odOHfFKZkUQ==
+  dependencies:
+    "@web3-react/store" "^8.2.2"
+    "@web3-react/types" "^8.2.2"
+    zustand "4.4.0"
+  optionalDependencies:
+    "@ethersproject/providers" "^5"
+
 "@web3-react/eip1193@8.0.26-beta.0":
   version "8.0.26-beta.0"
   resolved "https://registry.yarnpkg.com/@web3-react/eip1193/-/eip1193-8.0.26-beta.0.tgz#2e36423bab637a1fbc57b36d4f0f38ac531fd541"
@@ -6065,12 +6084,28 @@
     "@web3-react/types" "^8.0.20-beta.0"
     zustand "^4.0.0-rc.0"
 
+"@web3-react/store@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@web3-react/store/-/store-8.2.2.tgz#d85a560e2655919030d237e2e0e6e2529ff038e0"
+  integrity sha512-ITMkLzyw8tSTTEf8NcjIdewphbCpWHwK4EmwRxPCZMMRs+apZwoj3R/YNflMBoPMC+ybWKnVVpDd6CprF1TU9A==
+  dependencies:
+    "@ethersproject/address" "^5"
+    "@web3-react/types" "^8.2.2"
+    zustand "4.4.0"
+
 "@web3-react/types@8.0.20-beta.0", "@web3-react/types@^8.0.20-beta.0":
   version "8.0.20-beta.0"
   resolved "https://registry.yarnpkg.com/@web3-react/types/-/types-8.0.20-beta.0.tgz#6b4509bef8c5c7eb866e49295880c865c20fb565"
   integrity sha512-qOZYMyUmsm3Um6t6Pg3OgnE86ufhWZpB5/VxsooB8cdpXc/C/f8KMyYSeM63GoKSMScOKwfqV6yODFL7g/Qc8g==
   dependencies:
     zustand "^4.0.0-rc.0"
+
+"@web3-react/types@^8.2.2":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@web3-react/types/-/types-8.2.2.tgz#1ae7f11069d9a9c711aa4152f95331747fb1e551"
+  integrity sha512-PrPrJNjJhUX3lL/365llAZwY0bpUm9N52OjGMFyzCIX7IR13f7WLUk/LyQa9ALneCBu3cJUVTZANuFdqdREuvw==
+  dependencies:
+    zustand "4.4.0"
 
 "@web3-react/url@8.0.25-beta.0":
   version "8.0.25-beta.0"
@@ -20899,6 +20934,13 @@ zen-observable@0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
+
+zustand@4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/zustand/-/zustand-4.4.0.tgz#13b3e8ca959dd53d536034440aec382ff91b65c3"
+  integrity sha512-2dq6wq4dSxbiPTamGar0NlIG/av0wpyWZJGeQYtUOLegIUvhM2Bf86ekPlmgpUtS5uR7HyetSiktYrGsdsyZgQ==
+  dependencies:
+    use-sync-external-store "1.2.0"
 
 zustand@^4.0.0-rc.0, zustand@^4.0.0-rc.1:
   version "4.3.5"
