@@ -192,9 +192,9 @@ export default function App() {
           <Suspense fallback={<Loader />}>
             <Routes>
               <Route path="/" element={<Navigate to="/swap" replace />} />
-              <Route path="tokens" element={<Tokens />}>
+              {/* <Route path="tokens" element={<Tokens />}>
                 <Route path=":chainName" />
-              </Route>
+              </Route>*/}
               <Route path="tokens/:chainName/:tokenAddress" element={<TokenDetails />} />
               {/* // [MAUVE-DISABLED] */}
               {/* <Route
