@@ -412,12 +412,11 @@ const _VioletEmbeddedAuthorization = ({ call }: { call: any }) => {
   const violetRef = useIFrameExecutor()
   const content = useMemo(
     () => (
-      <>
-        <h1>{Date.now()}</h1>
+      <Wrapper>
         <VioletEmbeddedAuthorization ref={violetRef} apiUrl={apiUrl} authz={authz} />
-      </>
+      </Wrapper>
     ),
-    [authz]
+    [apiUrl, authz, violetRef]
   )
 
   return content
