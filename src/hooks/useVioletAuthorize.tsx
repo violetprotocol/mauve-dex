@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { authorize } from '@violetprotocol/sdk'
+import { authorize, AuthorizeProps } from '@violetprotocol/sdk'
 import { useCallback } from 'react'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
@@ -18,10 +18,38 @@ export type Call = {
   deadline?: BigNumber
 }
 
-type VioletTxAuthorizationPayload = {
+// eslint-disable-next-line import/no-unused-modules
+export type VioletTxAuthorizationPayload = {
   call: Call | null
   account?: string
   chainId?: number
+}
+
+// eslint-disable-next-line import/no-unused-modules
+export const VioletTxAuthorizationPayload = {
+  toAuthorizeProps({ call, account: address, chainId }: Required<VioletTxAuthorizationPayload>): AuthorizeProps {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const environment = process.env.REACT_APP_VIOLET_ENV!
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID!
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { parameters: data, functionSignature, address: targetContract } = call!
+
+    return {
+      clientId,
+      apiUrl: baseUrlByEnvironment(environment.toString()),
+      redirectUrl: redirectUrlByEnvironment(environment.toString()),
+      transaction: {
+        data,
+        functionSignature,
+        targetContract,
+      },
+      address,
+      chainId,
+    }
+  },
 }
 
 export const getVioletAuthorizedCall = async ({
@@ -38,18 +66,7 @@ export const getVioletAuthorizedCall = async ({
     return null
   }
 
-  const response = await authorize({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
-    transaction: {
-      data: call.parameters,
-      functionSignature: call.functionSignature,
-      targetContract: call.address,
-    },
-    address: account,
-    chainId,
-  })
+  const response = await authorize(VioletTxAuthorizationPayload.toAuthorizeProps({ call, account, chainId }))
 
   let eat
 
@@ -189,6 +206,8 @@ const handleErrorCodes = (errorCode?: string) => {
   return
 }
 
+export type VioletCallback = () => Promise<{ calldata: string } | null>
+
 const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
   const violetCallback = useCallback(async () => {
     return await getVioletAuthorizedCall({ call, account, chainId })
@@ -199,4 +218,5 @@ const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPay
   }
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export default useVioletAuthorize

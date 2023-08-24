@@ -21,6 +21,7 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { VioletCallback } from 'hooks/useVioletAuthorize'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -144,7 +145,13 @@ function largerPercentValue(a?: Percent, b?: Percent) {
 
 const TRADE_STRING = 'SwapRouter'
 
+export type VioletAuthorizationCallback = (
+  result: { status: 'issued'; eat: string } | { status: 'failed'; error: unknown }
+) => void
+
 export default function Swap({ className }: { className?: string }) {
+  console.log(`>>> SWAP PAGE RE-RENDERED`)
+
   const navigate = useNavigate()
   const { account, chainId } = useWeb3React()
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -260,18 +267,24 @@ export default function Swap({ className }: { className?: string }) {
   }, [navigate])
 
   // modal and loading
-  const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
+  const [{ showConfirm, tradeToConfirm, swapErrorMessage, attemptingTxn, txHash, violetEAT }, setSwapState] = useState<{
     showConfirm: boolean
     tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
+    violetEAT:
+      | { status: 'idle' }
+      | { status: 'authorizing' }
+      | { status: 'issued'; eat: string }
+      | { status: 'failed'; error: unknown }
   }>({
     showConfirm: false,
     tradeToConfirm: undefined,
     attemptingTxn: false,
     swapErrorMessage: undefined,
     txHash: undefined,
+    violetEAT: { status: 'idle' },
   })
 
   const formattedAmounts = useMemo(
@@ -340,12 +353,36 @@ export default function Swap({ className }: { className?: string }) {
   )
   const showMaxButton = Boolean(maxInputAmount?.greaterThan(0) && !parsedAmounts[Field.INPUT]?.equalTo(maxInputAmount))
 
+  const violetCallback: VioletCallback = () => {
+    switch (violetEAT.status) {
+      case 'idle':
+      case 'authorizing':
+        throw Error(`THIS SHOULD NOT BE CALLED WHEN THE STATUS IS ${violetEAT.status}`)
+      case 'failed':
+        return Promise.reject(violetEAT.error)
+      case 'issued':
+        return Promise.resolve({ calldata: violetEAT.eat })
+    }
+  }
+
+  const violetAuthorizationCallback: VioletAuthorizationCallback = (result) => {
+    setSwapState({
+      attemptingTxn,
+      tradeToConfirm,
+      showConfirm,
+      swapErrorMessage,
+      txHash,
+      violetEAT: result,
+    })
+  }
+
   // the callback to execute the swap
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
     trade,
     allowedSlippage,
     recipient,
-    signatureData
+    signatureData,
+    violetCallback
   )
 
   const handleSwap = useCallback(() => {
@@ -355,10 +392,39 @@ export default function Swap({ className }: { className?: string }) {
     if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
       return
     }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
+    if (violetEAT.status === 'idle') {
+      setSwapState({
+        attemptingTxn: true,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: undefined,
+        txHash: undefined,
+        violetEAT: { status: 'authorizing' },
+      })
+      return
+    }
+    if (violetEAT.status === 'authorizing') {
+      return
+    }
+    setSwapState({
+      attemptingTxn: true,
+      tradeToConfirm,
+      showConfirm,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+      violetEAT,
+    })
+
     swapCallback()
       .then((hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
+        setSwapState({
+          attemptingTxn: false,
+          tradeToConfirm,
+          showConfirm,
+          swapErrorMessage: undefined,
+          txHash: hash,
+          violetEAT: { status: 'idle' },
+        })
         sendEvent({
           category: 'Swap',
           action: 'transaction hash',
@@ -384,6 +450,7 @@ export default function Swap({ className }: { className?: string }) {
           showConfirm,
           swapErrorMessage: error.message,
           txHash: undefined,
+          violetEAT: { status: 'idle' },
         })
         logErrorWithNewRelic({ error })
       })
@@ -397,6 +464,7 @@ export default function Swap({ className }: { className?: string }) {
     account,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol,
+    violetEAT,
   ])
 
   // errors
@@ -422,7 +490,14 @@ export default function Swap({ className }: { className?: string }) {
     !(priceImpactSeverity > 3)
 
   const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ showConfirm: false, tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    setSwapState({
+      showConfirm: false,
+      tradeToConfirm,
+      attemptingTxn,
+      swapErrorMessage,
+      txHash,
+      violetEAT: { status: 'idle' },
+    })
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.INPUT, '')
@@ -430,7 +505,14 @@ export default function Swap({ className }: { className?: string }) {
   }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
 
   const handleAcceptChanges = useCallback(() => {
-    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
+    setSwapState({
+      tradeToConfirm: trade,
+      swapErrorMessage,
+      txHash,
+      attemptingTxn,
+      showConfirm,
+      violetEAT,
+    })
   }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
 
   const handleInputSelect = useCallback(
@@ -498,6 +580,8 @@ export default function Swap({ className }: { className?: string }) {
     !showWrap && userHasSpecifiedInputOutput && (trade || routeIsLoading || routeIsSyncing)
   )
 
+  // const violetContent = <_VioletEmbeddedAuthorization call={swapCall} />
+
   return (
     <Trace page={InterfacePageName.SWAP_PAGE} shouldLogImpression>
       <>
@@ -527,6 +611,10 @@ export default function Swap({ className }: { className?: string }) {
               swapQuoteReceivedDate={swapQuoteReceivedDate}
               fiatValueInput={fiatValueInput}
               fiatValueOutput={fiatValueOutput}
+              signatureData={signatureData}
+              // violetContent={violetContent}
+              violetAuthorizationShow={violetEAT.status === 'authorizing'}
+              violetAuthorizationCallback={violetAuthorizationCallback}
             />
 
             <div style={{ display: 'relative' }}>
@@ -710,6 +798,7 @@ export default function Swap({ className }: { className?: string }) {
                             swapErrorMessage: undefined,
                             showConfirm: true,
                             txHash: undefined,
+                            violetEAT,
                           })
                         }}
                         width="100%"
@@ -744,6 +833,7 @@ export default function Swap({ className }: { className?: string }) {
                         swapErrorMessage: undefined,
                         showConfirm: true,
                         txHash: undefined,
+                        violetEAT,
                       })
                     }}
                     id="swap-button"

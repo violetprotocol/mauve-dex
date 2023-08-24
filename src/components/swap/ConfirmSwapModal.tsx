@@ -3,6 +3,8 @@ import { Trace } from '@uniswap/analytics'
 import { InterfaceModalName } from '@uniswap/analytics-events'
 import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { SignatureData } from 'hooks/useERC20Permit'
+import { VioletAuthorizationCallback } from 'pages/Swap'
 import { ReactNode, useCallback, useMemo, useState } from 'react'
 import { InterfaceTrade } from 'state/routing/types'
 import { tradeMeaningfullyDiffers } from 'utils/tradeMeaningFullyDiffer'
@@ -29,6 +31,9 @@ export default function ConfirmSwapModal({
   swapQuoteReceivedDate,
   fiatValueInput,
   fiatValueOutput,
+  signatureData,
+  violetAuthorizationShow,
+  violetAuthorizationCallback,
 }: {
   isOpen: boolean
   trade: InterfaceTrade<Currency, Currency, TradeType> | undefined
@@ -44,6 +49,9 @@ export default function ConfirmSwapModal({
   swapQuoteReceivedDate: Date | undefined
   fiatValueInput?: CurrencyAmount<Token> | null
   fiatValueOutput?: CurrencyAmount<Token> | null
+  signatureData?: SignatureData | null
+  violetAuthorizationShow: boolean
+  violetAuthorizationCallback: VioletAuthorizationCallback
 }) {
   // shouldLogModalCloseEvent lets the child SwapModalHeader component know when modal has been closed
   // and an event triggered by modal closing should be logged.
@@ -131,6 +139,14 @@ export default function ConfirmSwapModal({
         content={confirmationContent}
         pendingText={pendingText}
         currencyToAdd={trade?.outputAmount.currency}
+        ///
+        trade={trade}
+        allowedSlippage={allowedSlippage}
+        recipient={recipient}
+        signatureData={signatureData}
+        // violetContent={violetContent}
+        violetAuthorizationShow={violetAuthorizationShow}
+        violetAuthorizationCallback={violetAuthorizationCallback}
       />
     </Trace>
   )

@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
-import useVioletAuthorize, { Call } from 'hooks/useVioletAuthorize'
+import { Call, VioletCallback } from 'hooks/useVioletAuthorize'
 import { ReactNode, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
@@ -32,6 +32,7 @@ interface UseSwapCallbackArgs {
   signatureData: SignatureData | null | undefined
   deadline: BigNumber | undefined
   feeOptions?: FeeOptions
+  violetCallback: VioletCallback
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -43,6 +44,7 @@ export function useSwapCallback({
   signatureData,
   deadline,
   feeOptions,
+  violetCallback,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
 
@@ -53,12 +55,6 @@ export function useSwapCallback({
     signatureData,
     deadline,
     feeOptions,
-  })
-
-  const { violetCallback } = useVioletAuthorize({
-    call: swapCall,
-    account,
-    chainId,
   })
 
   const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })

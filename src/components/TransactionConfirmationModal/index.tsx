@@ -1,16 +1,24 @@
 import { Trans } from '@lingui/macro'
-import { Currency } from '@violetprotocol/mauve-sdk-core'
+import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
+import { useIFrameExecutor, VioletEmbeddedAuthorization } from 'components/swap/VioletEmbeddedAuthorization'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
+import { SignatureData } from 'hooks/useERC20Permit'
+import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
+import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { Call, VioletTxAuthorizationPayload } from 'hooks/useVioletAuthorize'
 import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { ReactNode, useCallback, useState } from 'react'
+import { VioletAuthorizationCallback } from 'pages/Swap'
+import { ReactNode, useCallback, useMemo, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { Text } from 'rebass'
+import { InterfaceTrade } from 'state/routing/types'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
 import { isL2ChainId } from 'utils/chains'
+import { baseUrlByEnvironment } from 'utils/temporary/generateEAT'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -331,6 +339,13 @@ interface ConfirmationModalProps {
   attemptingTxn: boolean
   pendingText: ReactNode
   currencyToAdd?: Currency | undefined
+  //
+  trade: InterfaceTrade<Currency, Currency, TradeType> | undefined
+  allowedSlippage: Percent
+  recipient: string | null
+  signatureData?: SignatureData | null
+  violetAuthorizationShow: boolean
+  violetAuthorizationCallback: VioletAuthorizationCallback
 }
 
 export default function TransactionConfirmationModal({
@@ -341,17 +356,36 @@ export default function TransactionConfirmationModal({
   pendingText,
   content,
   currencyToAdd,
+  //
+  trade,
+  allowedSlippage,
+  recipient,
+  signatureData,
+  violetAuthorizationShow,
+  violetAuthorizationCallback,
 }: ConfirmationModalProps) {
   const { chainId } = useWeb3React()
 
-  if (!chainId) return null
+  const deadline = useTransactionDeadline()
+  const swapCall: Call | null = useSwapCallArguments({
+    trade,
+    allowedSlippage,
+    recipientAddressOrName: recipient,
+    signatureData,
+    deadline,
+  })
+
+  if (!chainId || !swapCall) return null
 
   // confirmation screen
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
-      {isL2ChainId(chainId) && (hash || attemptingTxn) ? (
+      {violetAuthorizationShow ? (
+        <_VioletEmbeddedAuthorization call={swapCall} />
+      ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
-      ) : attemptingTxn ? (
+      ) : // <_VioletEmbeddedAuthorization call={swapCall} />
+      attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (
         <TransactionSubmittedContent
@@ -365,4 +399,26 @@ export default function TransactionConfirmationModal({
       )}
     </Modal>
   )
+}
+
+const _VioletEmbeddedAuthorization = ({ call }: { call: any }) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const environment = process.env.REACT_APP_VIOLET_ENV!
+  const apiUrl = baseUrlByEnvironment(environment.toString())
+
+  const { account, chainId } = useWeb3React()
+  const authz = VioletTxAuthorizationPayload.toAuthorizeProps({ call, account: account || '', chainId: chainId || 0 })
+
+  const violetRef = useIFrameExecutor()
+  const content = useMemo(
+    () => (
+      <>
+        <h1>{Date.now()}</h1>
+        <VioletEmbeddedAuthorization ref={violetRef} apiUrl={apiUrl} authz={authz} />
+      </>
+    ),
+    [authz]
+  )
+
+  return content
 }
