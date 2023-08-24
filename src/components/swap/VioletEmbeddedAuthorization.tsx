@@ -3,11 +3,6 @@
 import { AuthorizeProps, buildAuthorizationUrl } from '@violetprotocol/sdk'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
 import { forwardRef, RefObject, useEffect, useRef } from 'react'
-import styled from 'styled-components/macro'
-
-const StyledIframe = styled.iframe`
-  border: none;
-`
 
 // const deadline = useTransactionDeadline()
 // const swapCall: Call | null = useSwapCallArguments({
@@ -62,7 +57,7 @@ interface IFrameProps {
 }
 
 const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ authnorizationUrl }, ref) {
-  return <StyledIframe ref={ref} src={authnorizationUrl} width="386px" height="220px" />
+  return <iframe ref={ref} src={authnorizationUrl} width="386px" height="220px" />
 })
 
 ///////
