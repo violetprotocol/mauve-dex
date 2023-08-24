@@ -3,7 +3,7 @@ import { InterfacePageName } from '@uniswap/analytics-events'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
 import { opacify } from 'polished'
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
@@ -24,8 +24,8 @@ import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import VioletCallback from './VioletCallback'
 
-const TokenDetails = lazy(() => import('./TokenDetails'))
 // [MAUVE-DISABLED]
+// const TokenDetails = lazy(() => import('./TokenDetails'))
 // const Vote = lazy(() => import('./Vote'))
 
 // [MAUVE-DISABLED] Analytics is disabled
