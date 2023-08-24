@@ -46,7 +46,7 @@ enum VioletEvent {
   COMPLETED = 'COMPLETED',
 }
 
-const useListenVioletEvents = () => {
+const useListenVioletEvents = (call: Call) => {
   const [payload, setPayload] = useState<{ event: VioletEvent; data: { [key: string]: any } }>({
     event: VioletEvent.INACTIVE,
     data: {},
@@ -86,7 +86,13 @@ const useListenVioletEvents = () => {
 
         setPayload({
           event: VioletEvent.COMPLETED,
-          data: { token: event.data.token, txId: event.data.tx_id, signature, expiry: parsedEAT.expiry },
+          data: {
+            token: event.data.token,
+            txId: event.data.tx_id,
+            signature,
+            expiry: parsedEAT.expiry,
+            call,
+          },
         })
 
         return
@@ -98,7 +104,7 @@ const useListenVioletEvents = () => {
     channel.addEventListener('message', listener, {
       once: true,
     })
-  }, [])
+  }, [call])
 
   return payload
 }
@@ -107,11 +113,11 @@ const useListenVioletEvents = () => {
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
   function VioletEmbeddedAuthorization({ apiUrl, authz, onIssued, onFailed, call }, ref) {
-    const payload = useListenVioletEvents()
+    const payload = useListenVioletEvents(call)
 
     useEffect(() => {
       if (payload.event === VioletEvent.COMPLETED) {
-        onIssued({ ...payload.data, call })
+        onIssued({ ...payload.data })
       }
 
       if (payload.event === VioletEvent.ERROR) {

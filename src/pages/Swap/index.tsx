@@ -8,7 +8,7 @@ import {
   InterfaceSectionName,
   SwapEventName,
 } from '@uniswap/analytics-events'
-import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { EATMulticallExtended, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
@@ -19,6 +19,7 @@ import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter
 import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { isSupportedChain } from 'constants/chains'
+import { Signature } from 'ethers/lib/ethers'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { Call, VioletCallback } from 'hooks/useVioletAuthorize'
@@ -146,7 +147,16 @@ function largerPercentValue(a?: Percent, b?: Percent) {
 const TRADE_STRING = 'SwapRouter'
 
 export type VioletAuthorizationCallback = (
-  result: { status: 'issued'; eat: string; call: Call } | { status: 'failed'; error: unknown }
+  result:
+    | {
+        status: 'issued'
+        token: string
+        txId: string
+        signature: Signature
+        expiry: number
+        call: Call
+      }
+    | { status: 'failed'; code: string; txId?: string }
 ) => void
 
 export default function Swap({ className }: { className?: string }) {
@@ -274,8 +284,23 @@ export default function Swap({ className }: { className?: string }) {
     violetEAT:
       | { status: 'idle' }
       | { status: 'authorizing' }
-      | { status: 'issued'; eat: string }
-      | { status: 'failed'; error: unknown }
+      | {
+          status: 'issued'
+          data: {
+            token: string
+            txId: string
+            signature: any
+            expiry: number
+            call: Call
+          }
+        }
+      | {
+          status: 'failed'
+          data: {
+            code: string
+            txId?: string
+          }
+        }
   }>({
     showConfirm: false,
     tradeToConfirm: undefined,
@@ -357,9 +382,23 @@ export default function Swap({ className }: { className?: string }) {
       case 'authorizing':
         throw Error(`THIS SHOULD NOT BE CALLED WHEN THE STATUS IS ${violetEAT.status}`)
       case 'failed':
-        return Promise.reject(violetEAT.error)
-      case 'issued':
-        return Promise.resolve({ calldata: violetEAT.eat })
+        return Promise.reject(violetEAT.data.code)
+      case 'issued': {
+        const { signature, expiry, call } = violetEAT.data
+
+        const { v, r, s } = signature
+
+        const calldata = EATMulticallExtended.encodePostsignMulticallExtended(
+          v,
+          r,
+          s,
+          expiry,
+          call.calls,
+          call?.deadline?.toString()
+        )
+
+        return Promise.resolve({ calldata })
+      }
     }
   }
 
@@ -369,7 +408,10 @@ export default function Swap({ className }: { className?: string }) {
         ...prevState,
         violetEAT: {
           status: 'failed',
-          error: result.error,
+          data: {
+            code: result.code,
+            txId: result.txId,
+          },
         },
       }))
     }
@@ -377,10 +419,15 @@ export default function Swap({ className }: { className?: string }) {
     if (result.status === 'issued') {
       setSwapState((prevState) => ({
         ...prevState,
-        call: result.call,
         violetEAT: {
           status: 'issued',
-          eat: result.eat,
+          data: {
+            token: result.token,
+            txId: result.txId,
+            signature: result.signature,
+            expiry: result.expiry,
+            call: result.call,
+          },
         },
       }))
     }

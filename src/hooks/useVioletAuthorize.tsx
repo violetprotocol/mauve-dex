@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { authorize, AuthorizeProps } from '@violetprotocol/sdk'
+import { authorize, AuthorizeProps, AuthorizeResponse, EAT } from '@violetprotocol/sdk'
 import { useCallback } from 'react'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
@@ -52,22 +52,26 @@ export const VioletTxAuthorizationPayload = {
   },
 }
 
-export const getVioletAuthorizedCall = async ({
+const generateCalldata = ({ eat, call }: { eat: EAT; call: Call }) => {
+  const { v, r, s } = eat.signature
+
+  return EATMulticallExtended.encodePostsignMulticallExtended(
+    v,
+    r,
+    s,
+    eat.expiry,
+    call.calls,
+    call?.deadline?.toString()
+  )
+}
+
+const parseVioletAuthorizeResponse = ({
+  response,
   call,
-  account,
-  chainId,
-}: VioletTxAuthorizationPayload): Promise<{ calldata: string } | null> => {
-  if (!call || !account || !chainId) {
-    return null
-  }
-
-  if (!environment || !clientId) {
-    console.error('Invalid environment')
-    return null
-  }
-
-  const response = await authorize(VioletTxAuthorizationPayload.toAuthorizeProps({ call, account, chainId }))
-
+}: {
+  response: AuthorizeResponse | void
+  call: Call
+}): { calldata: string } | null => {
   let eat
 
   if (response) {
@@ -84,38 +88,54 @@ export const getVioletAuthorizedCall = async ({
       }
     } else {
       console.error(error)
-      logErrorWithNewRelic({ errorString: `Violet EAT not retrieved, errorCode: ${error?.code}` })
+      logErrorWithNewRelic({
+        errorString: `Violet EAT not retrieved, errorCode: ${error?.code}`,
+      })
       handleErrorCodes(error?.code)
       return null
     }
   } else {
     console.error('No response from Violet while fetching an EAT')
-    logErrorWithNewRelic({ errorString: 'No response from Violet while fetching an EAT' })
+    logErrorWithNewRelic({
+      errorString: 'No response from Violet while fetching an EAT',
+    })
     return null
   }
 
   let calldata
 
   if (eat?.signature) {
-    const { v, r, s } = eat.signature
-
-    calldata = EATMulticallExtended.encodePostsignMulticallExtended(
-      v,
-      r,
-      s,
-      eat.expiry,
-      call.calls,
-      call?.deadline?.toString()
-    )
+    calldata = generateCalldata({ eat, call })
   }
 
   if (!calldata) {
     console.error('Failed to get callata from EAT')
-    logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
+    logErrorWithNewRelic({
+      errorString: 'Failed to get calldata from violet EAT',
+    })
     return null
   }
 
   return { calldata }
+}
+
+export const getVioletAuthorizedCall = async ({
+  call,
+  account,
+  chainId,
+}: VioletTxAuthorizationPayload): Promise<{ calldata: string } | null> => {
+  if (!call || !account || !chainId) {
+    return null
+  }
+
+  if (!environment || !clientId) {
+    console.error('Invalid environment')
+    return null
+  }
+
+  const response = await authorize(VioletTxAuthorizationPayload.toAuthorizeProps({ call, account, chainId }))
+
+  return parseVioletAuthorizeResponse({ response, call })
 }
 
 const handleErrorCodes = (errorCode?: string) => {

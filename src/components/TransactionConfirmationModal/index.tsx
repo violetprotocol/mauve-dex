@@ -389,13 +389,16 @@ export default function TransactionConfirmationModal({
       {violetAuthorizationShow ? (
         <_VioletEmbeddedAuthorization
           call={swapCall}
-          onIssued={(data: any) => violetAuthorizationCallback({ status: 'issued', eat: data.token, call: data.call })}
-          onFailed={(error: any) => violetAuthorizationCallback({ status: 'failed', error: error.code })}
+          onIssued={(data: { token: string; txId: string; signature: any; expiry: number; call: Call }) =>
+            violetAuthorizationCallback({ status: 'issued', ...data })
+          }
+          onFailed={(error: { code: string; txId?: string }) =>
+            violetAuthorizationCallback({ status: 'failed', ...error })
+          }
         />
       ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
-      ) : // <_VioletEmbeddedAuthorization call={swapCall} />
-      attemptingTxn ? (
+      ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (
         <TransactionSubmittedContent
