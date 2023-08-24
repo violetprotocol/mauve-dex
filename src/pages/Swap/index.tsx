@@ -21,7 +21,7 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { VioletCallback } from 'hooks/useVioletAuthorize'
+import { Call, VioletCallback } from 'hooks/useVioletAuthorize'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -146,12 +146,10 @@ function largerPercentValue(a?: Percent, b?: Percent) {
 const TRADE_STRING = 'SwapRouter'
 
 export type VioletAuthorizationCallback = (
-  result: { status: 'issued'; eat: string } | { status: 'failed'; error: unknown }
+  result: { status: 'issued'; eat: string; call: Call } | { status: 'failed'; error: unknown }
 ) => void
 
 export default function Swap({ className }: { className?: string }) {
-  console.log(`>>> SWAP PAGE RE-RENDERED`)
-
   const navigate = useNavigate()
   const { account, chainId } = useWeb3React()
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -366,14 +364,26 @@ export default function Swap({ className }: { className?: string }) {
   }
 
   const violetAuthorizationCallback: VioletAuthorizationCallback = (result) => {
-    setSwapState({
-      attemptingTxn,
-      tradeToConfirm,
-      showConfirm,
-      swapErrorMessage,
-      txHash,
-      violetEAT: result,
-    })
+    if (result.status === 'failed') {
+      setSwapState((prevState) => ({
+        ...prevState,
+        violetEAT: {
+          status: 'failed',
+          error: result.error,
+        },
+      }))
+    }
+
+    if (result.status === 'issued') {
+      setSwapState((prevState) => ({
+        ...prevState,
+        call: result.call,
+        violetEAT: {
+          status: 'issued',
+          eat: result.eat,
+        },
+      }))
+    }
   }
 
   // the callback to execute the swap
@@ -386,13 +396,21 @@ export default function Swap({ className }: { className?: string }) {
   )
 
   const handleSwap = useCallback(() => {
+    console.log('VIOLET_EAT_HANDLE_SWAP')
+
     if (!swapCallback) {
+      console.log('VIOLET_EAT_SWAP_CALLBACK_NOT_FOUND')
       return
     }
+
     if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
+      console.log('VIOLET_EAT_PRICE_IMPACT_TOO_HIGH')
       return
     }
+
     if (violetEAT.status === 'idle') {
+      console.log('VIOLET_EAT_IDLE')
+
       setSwapState({
         attemptingTxn: true,
         tradeToConfirm,
@@ -403,9 +421,17 @@ export default function Swap({ className }: { className?: string }) {
       })
       return
     }
+
     if (violetEAT.status === 'authorizing') {
+      console.log('VIOLET_EAT_AUTHORIZING')
+
       return
     }
+
+    console.log('VIOLET_EAT_SWAP_CALLBACK_FOUND')
+
+    console.log('EAT', violetEAT)
+
     setSwapState({
       attemptingTxn: true,
       tradeToConfirm,
@@ -454,9 +480,12 @@ export default function Swap({ className }: { className?: string }) {
         })
         logErrorWithNewRelic({ error })
       })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     swapCallback,
     stablecoinPriceImpact,
+    violetEAT,
     tradeToConfirm,
     showConfirm,
     recipient,
@@ -464,8 +493,13 @@ export default function Swap({ className }: { className?: string }) {
     account,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol,
-    violetEAT,
   ])
+
+  useEffect(() => {
+    if (violetEAT.status === 'issued') {
+      handleSwap()
+    }
+  }, [violetEAT.status, handleSwap])
 
   // errors
   const [swapQuoteReceivedDate, setSwapQuoteReceivedDate] = useState<Date | undefined>()
@@ -513,7 +547,7 @@ export default function Swap({ className }: { className?: string }) {
       showConfirm,
       violetEAT,
     })
-  }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash])
+  }, [attemptingTxn, showConfirm, swapErrorMessage, trade, txHash, violetEAT])
 
   const handleInputSelect = useCallback(
     (inputCurrency: Currency) => {

@@ -314,7 +314,13 @@ function L2Content({
             ) : (
               <div>
                 <Trans>Transaction completed in </Trans>
-                <span style={{ fontWeight: 500, marginLeft: '4px', color: theme.textPrimary }}>
+                <span
+                  style={{
+                    fontWeight: 500,
+                    marginLeft: '4px',
+                    color: theme.textPrimary,
+                  }}
+                >
                   {secondsToConfirm} seconds 🎉
                 </span>
               </div>
@@ -381,7 +387,11 @@ export default function TransactionConfirmationModal({
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {violetAuthorizationShow ? (
-        <_VioletEmbeddedAuthorization call={swapCall} />
+        <_VioletEmbeddedAuthorization
+          call={swapCall}
+          onIssued={(data: any) => violetAuthorizationCallback({ status: 'issued', eat: data.token, call: data.call })}
+          onFailed={(error: any) => violetAuthorizationCallback({ status: 'failed', error: error.code })}
+        />
       ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : // <_VioletEmbeddedAuthorization call={swapCall} />
@@ -401,23 +411,42 @@ export default function TransactionConfirmationModal({
   )
 }
 
-const _VioletEmbeddedAuthorization = ({ call }: { call: any }) => {
+const _VioletEmbeddedAuthorization = ({ call, onIssued, onFailed }: { call: any; onIssued: any; onFailed: any }) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const environment = process.env.REACT_APP_VIOLET_ENV!
   const apiUrl = baseUrlByEnvironment(environment.toString())
 
   const { account, chainId } = useWeb3React()
-  const authz = VioletTxAuthorizationPayload.toAuthorizeProps({ call, account: account || '', chainId: chainId || 0 })
+  const authz = useMemo(() => {
+    if (!account || !chainId) throw new Error('ACCOUNT_OR_CHAINID_NOT_FOUND')
+
+    return VioletTxAuthorizationPayload.toAuthorizeProps({
+      call,
+      account,
+      chainId,
+    })
+
+    // WHOLE ISSUE IS HERE
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, chainId /* , call */])
 
   const violetRef = useIFrameExecutor()
   const content = useMemo(
     () => (
-      <>
-        <h1>{Date.now()}</h1>
-        <VioletEmbeddedAuthorization ref={violetRef} apiUrl={apiUrl} authz={authz} />
-      </>
+      <Wrapper>
+        <VioletEmbeddedAuthorization
+          ref={violetRef}
+          apiUrl={apiUrl}
+          authz={authz}
+          call={call}
+          onIssued={onIssued}
+          onFailed={onFailed}
+        />
+      </Wrapper>
     ),
-    [authz]
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [violetRef, apiUrl, authz, onIssued, onFailed]
   )
 
   return content

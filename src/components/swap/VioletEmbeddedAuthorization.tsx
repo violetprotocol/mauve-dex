@@ -1,21 +1,18 @@
 'use client'
 
-import { AuthorizeProps, buildAuthorizationUrl } from '@violetprotocol/sdk'
+import { splitSignature } from '@ethersproject/bytes'
+import {
+  AuthorizeProps,
+  AuthorizeVioletResponse,
+  buildAuthorizationUrl,
+  VIOLET_AUTHORIZATION_CHANNEL,
+} from '@violetprotocol/sdk'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
-import { forwardRef, RefObject, useEffect, useRef } from 'react'
-
-// const deadline = useTransactionDeadline()
-// const swapCall: Call | null = useSwapCallArguments({
-//   trade,
-//   allowedSlippage,
-//   recipientAddressOrName,
-//   signatureData,
-//   deadline,
-// })
-// const environment = process.env.REACT_APP_VIOLET_ENV!
-// const violetRef = useIFrameExecutor()
-// const apiUrl = baseUrlByEnvironment(environment.toString())
-// <VioletEmbeddedAuthorization ref={violetRef} call={swapCall} />
+import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components/macro'
+const StyledIframe = styled.iframe`
+  border: none;
+`
 
 // TODO: Move this to @violetprotocol/sdk-web3-react and replace the original useIFrameExecutor
 // eslint-disable-next-line import/no-unused-modules
@@ -37,12 +34,91 @@ export const useIFrameExecutor = () => {
 interface VioletEmbeddedAuthorizationProps {
   apiUrl: string
   authz: AuthorizeProps
+  onIssued: (data: any) => void
+  onFailed: (error: any) => void
+  call: Call
+}
+
+enum VioletEvent {
+  INACTIVE = 'INACTIVE',
+  LISTENING = 'LISTENING',
+  ERROR = 'ERROR',
+  COMPLETED = 'COMPLETED',
+}
+
+const useListenVioletEvents = () => {
+  const [payload, setPayload] = useState<{ event: VioletEvent; data: { [key: string]: any } }>({
+    event: VioletEvent.INACTIVE,
+    data: {},
+  })
+
+  useEffect(() => {
+    const channel = new BroadcastChannel(VIOLET_AUTHORIZATION_CHANNEL)
+    setPayload({ event: VioletEvent.LISTENING, data: {} })
+
+    const listener = (event: MessageEvent<AuthorizeVioletResponse>) => {
+      if (!event.isTrusted) {
+        setPayload({ event: VioletEvent.LISTENING, data: { code: 'EVENT_NOT_TRUSTED' } })
+
+        return
+      }
+
+      if ('error_code' in event.data) {
+        setPayload({
+          event: VioletEvent.ERROR,
+          data: { code: event.data.error_code.toUpperCase(), txId: event.data.tx_id },
+        })
+
+        return
+      }
+
+      if ('token' in event.data) {
+        const eat = event.data.token
+        const parsedEAT = JSON.parse(atob(eat))
+
+        if (!parsedEAT?.signature || !parsedEAT?.expiry) {
+          setPayload({ event: VioletEvent.ERROR, data: { code: 'EAT_PARSING_FAILED', txId: event.data.tx_id } })
+
+          return
+        }
+
+        const signature = splitSignature(parsedEAT.signature)
+
+        setPayload({
+          event: VioletEvent.COMPLETED,
+          data: { token: event.data.token, txId: event.data.tx_id, signature, expiry: parsedEAT.expiry },
+        })
+
+        return
+      }
+
+      throw new Error('UNKNOWN_ERROR_VIOLET_EMBEDDED_AUTHORIZATION')
+    }
+
+    channel.addEventListener('message', listener, {
+      once: true,
+    })
+  }, [])
+
+  return payload
 }
 
 // TODO: Move this to
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
-  function VioletEmbeddedAuthorization({ apiUrl, authz }, ref) {
+  function VioletEmbeddedAuthorization({ apiUrl, authz, onIssued, onFailed, call }, ref) {
+    const payload = useListenVioletEvents()
+
+    useEffect(() => {
+      if (payload.event === VioletEvent.COMPLETED) {
+        onIssued({ ...payload.data, call })
+      }
+
+      if (payload.event === VioletEvent.ERROR) {
+        onFailed({ ...payload.data })
+      }
+    })
+
     const url = buildAuthorizationUrl({
       ...authz,
       apiUrl,
@@ -57,13 +133,14 @@ interface IFrameProps {
 }
 
 const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ authnorizationUrl }, ref) {
-  return <iframe ref={ref} src={authnorizationUrl} width="386px" height="220px" />
+  return <StyledIframe ref={ref} src={authnorizationUrl} width="386px" height="220px" />
 })
 
 ///////
 
 import { useIFrameTransport } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
+import { Call } from 'hooks/useVioletAuthorize'
 
 interface UseIFrameExecutorProps {
   sourceRef: RefObject<any>
