@@ -159,13 +159,13 @@ const handleErrorCodes = (errorCode?: string) => {
           Our system detected that you already have an account with Violet. If
           you think this is an error, please contact us.
       `)
-    case 'US_UNAUTHORIZED':
+    case 'UNAUTHORIZED_COUNTRY':
       throw new Error(`
           Thank you for your patience, you are now registered with Violet. Unfortunately
           we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
       `)
-    case 'US_UNAUTHORIZED_AFTER_ENROLLMENT':
+    case 'UNAUTHORIZED_COUNTRY_AFTER_ENROLLMENT':
       throw new Error(`
           Unfortunately we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
