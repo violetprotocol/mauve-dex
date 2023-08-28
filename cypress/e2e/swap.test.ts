@@ -37,7 +37,6 @@ describe('Swap', () => {
       // CurrencyList without having to search for it.
       cy.get('#token-search-input').type('USDC')
       cy.contains('USD Coin').click()
-      cy.contains('I understand').click()
     }
     selectTokenToSwapTo()
 
