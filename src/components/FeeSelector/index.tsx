@@ -32,13 +32,6 @@ const FocusedOutlineCard = styled(Card)<{ pulsing: boolean }>`
   align-self: center;
 `
 
-const Select = styled.div`
-  align-items: flex-start;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 8px;
-`
-
 export default function FeeSelector({
   disabled = false,
   feeAmount,
@@ -52,7 +45,6 @@ export default function FeeSelector({
   currencyA?: Currency | undefined
   currencyB?: Currency | undefined
 }) {
-
   // get pool data on-chain for latest states
   const pools = usePools([
     [currencyA, currencyB, FeeAmount.LOWEST],
@@ -69,11 +61,11 @@ export default function FeeSelector({
   useEffect(() => {
     if (!feeAmount) {
       const initializedPool = pools.find(([state]) => state == PoolState.EXISTS)
-      const feeToUse = initializedPool && initializedPool[1]?.fee;
+      const feeToUse = initializedPool && initializedPool[1]?.fee
       if (feeToUse) {
-        setFeeAmountToUse(feeToUse);
+        setFeeAmountToUse(feeToUse)
       } else {
-        console.log("No initialized pool for this pair.")
+        console.log('No initialized pool for this pair.')
       }
     }
     return () => {
@@ -82,10 +74,10 @@ export default function FeeSelector({
   }, [feeAmount, currencyA, currencyB, pools])
 
   useEffect(() => {
-    if (feeAmountToUse && (feeAmountToUse != previousFeeAmount)) {
-      handleFeePoolSelect(feeAmountToUse);
+    if (feeAmountToUse && feeAmountToUse != previousFeeAmount) {
+      handleFeePoolSelect(feeAmountToUse)
     }
-  }, [feeAmountToUse])
+  }, [feeAmountToUse, handleFeePoolSelect, previousFeeAmount])
 
   useEffect(() => {
     if (feeAmount && previousFeeAmount !== feeAmount) {
@@ -96,27 +88,18 @@ export default function FeeSelector({
   return (
     <AutoColumn gap="16px">
       <DynamicSection gap="md" disabled={disabled}>
-        <FocusedOutlineCard
-          pulsing={pulsing}
-          onAnimationEnd={() => setPulsing(false)}
-        >
+        <FocusedOutlineCard pulsing={pulsing} onAnimationEnd={() => setPulsing(false)}>
           <RowBetween>
             <AutoColumn id="add-liquidity-selected-fee">
               {!feeAmount ? (
-                  <ThemedText.DeprecatedLabel>
-                    <Trans>No pool available for this pair</Trans>
-                  </ThemedText.DeprecatedLabel>
+                <ThemedText.DeprecatedLabel>
+                  <Trans>No pool available for this pair</Trans>
+                </ThemedText.DeprecatedLabel>
               ) : (
                 <>
                   <ThemedText.DeprecatedLabel className="selected-fee-label">
-                    <Trans>
-                      {FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier
-                    </Trans>
-                    <ThemedText.DeprecatedMain
-                      fontWeight={400}
-                      fontSize="12px"
-                      textAlign="left"
-                    >
+                    <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Trans>
+                    <ThemedText.DeprecatedMain fontWeight={400} fontSize="12px" textAlign="left">
                       <Trans>The % you will earn in fees.</Trans>
                     </ThemedText.DeprecatedMain>
                   </ThemedText.DeprecatedLabel>
@@ -125,8 +108,7 @@ export default function FeeSelector({
             </AutoColumn>
           </RowBetween>
         </FocusedOutlineCard>
-
       </DynamicSection>
     </AutoColumn>
-  );
+  )
 }

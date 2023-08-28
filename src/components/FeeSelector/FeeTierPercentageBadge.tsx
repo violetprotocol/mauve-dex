@@ -6,6 +6,7 @@ import { PoolState } from 'hooks/usePools'
 import React from 'react'
 import { ThemedText } from 'theme'
 
+// eslint-disable-next-line import/no-unused-modules
 export function FeeTierPercentageBadge({
   feeAmount,
   distributions,

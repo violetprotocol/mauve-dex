@@ -28,6 +28,7 @@ interface FeeOptionProps {
   onClick: () => void
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export function FeeOption({ feeAmount, active, onClick }: FeeOptionProps) {
   return (
     <ButtonRadioChecked active={active} onClick={onClick}>
