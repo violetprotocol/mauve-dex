@@ -161,13 +161,13 @@ const handleErrorCodes = (errorCode?: string) => {
       `)
     case 'UNAUTHORIZED_COUNTRY':
       throw new Error(`
-          Thank you for your patience, you are now registered with Violet. Unfortunately
-          we currently do not support US customers, and so we weren't able to create your
+          Unfortunately we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
       `)
     case 'UNAUTHORIZED_COUNTRY_AFTER_ENROLLMENT':
       throw new Error(`
-          Unfortunately we currently do not support US customers, and so we weren't able to create your
+          Thank you for your patience, you are now registered with Violet. Unfortunately
+          we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
       `)
     case 'COMPLIANCE_FAILED':
