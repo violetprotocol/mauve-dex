@@ -691,10 +691,10 @@ export default function Swap({ className }: { className?: string }) {
                           ) : (
                             <MouseoverTooltip
                               text={
-                                <a>
+                                <p>
                                   You must give Mauve smart contracts permission to use your{' '}
                                   {currencies[Field.INPUT]?.symbol}. You only have to do this once per token.
-                                </a>
+                                </p>
                               }
                             >
                               <HelpCircle size="20" color={theme.textContrast} style={{ marginLeft: '8px' }} />
