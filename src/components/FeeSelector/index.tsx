@@ -128,6 +128,8 @@ export default function FeeSelector({
         category: 'FeePoolSelect',
         action: ' Recommended',
       })
+
+      handleFeePoolSelect(largestUsageFeeTier)
     }
   }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
 
