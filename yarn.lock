@@ -5576,18 +5576,6 @@
     base64-sol "1.0.1"
     hardhat-watcher "^2.1.1"
 
-"@violetprotocol/mauve-router-sdk@1.6.4":
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.6.4.tgz#1115b165130839539f7eb3e6eafd1c6787374a0a"
-  integrity sha512-NY2cpXxYQuqbkIKPRkqoWywN1PZDoNbeg2Jkbw7DTz9CrWoTDwNAuF4HvaFNt8xQbfVQVwCfn2vxoVuzdIgUrw==
-  dependencies:
-    "@violetprotocol/ethereum-access-token-helpers" "^0.2.0"
-    "@violetprotocol/mauve-sdk-core" "3.2.0"
-    "@violetprotocol/mauve-swap-router-contracts" "1.5.2"
-    "@violetprotocol/mauve-v2-sdk" "3.1.0"
-    "@violetprotocol/mauve-v3-sdk" "4.2.3"
-    ethers "^5.7.2"
-
 "@violetprotocol/mauve-router-sdk@1.6.5":
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.6.5.tgz#1d6c605b295fc353d52c99cf8762b91afec34791"
@@ -5612,18 +5600,18 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@violetprotocol/mauve-smart-order-router@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.3.tgz#5d1621a5f8a0d1805bf97442ea8ede9f0832ccbe"
-  integrity sha512-jGsa8AgqGIji+q16wytZ1N/RUZXU3S/n/+Vts37Z9vJtceD72p10Mh5J341UhsOv4HImzDFBcYW50tDES2rQQw==
+"@violetprotocol/mauve-smart-order-router@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.6.tgz#47e72d2b245d7d0c33ebcb8a9d67cbbd4ce69b3c"
+  integrity sha512-iwa6UBeBw1yousC7hwe2gLC5QFyiMPxwxgTsmZsI8cfUjNd7EAUa+1svDOiCtZHlU+k/dTEx3crdmSp4zfvcXA==
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
     "@uniswap/token-lists" "^1.0.0-beta.25"
-    "@violetprotocol/mauve-router-sdk" "1.6.4"
-    "@violetprotocol/mauve-swap-router-contracts" "1.5.2"
+    "@violetprotocol/mauve-router-sdk" "1.6.5"
+    "@violetprotocol/mauve-swap-router-contracts" "1.5.4"
     "@violetprotocol/mauve-v2-sdk" "3.1.0"
-    "@violetprotocol/mauve-v3-sdk" "4.2.3"
+    "@violetprotocol/mauve-v3-sdk" "4.2.4"
     async-retry "^1.3.1"
     await-timeout "^1.1.1"
     axios "^0.21.1"
@@ -5667,20 +5655,6 @@
     "@ethersproject/address" "^5.0.0"
     "@ethersproject/solidity" "^5.0.0"
     "@violetprotocol/mauve-sdk-core" "3.2.0"
-    tiny-invariant "^1.1.0"
-    tiny-warning "^1.0.3"
-
-"@violetprotocol/mauve-v3-sdk@4.2.3":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-v3-sdk/-/mauve-v3-sdk-4.2.3.tgz#39db55963dd2cf7e33eafe7e4ecec00895cbf785"
-  integrity sha512-AShiWFu8ebgPYxwIZAm7EQ7ztLYm5k3kW65vCKFq5Ohe/NAqZ+FGTk+gksZghxstUoP/Pemv4oY5Ms8beS7rdQ==
-  dependencies:
-    "@ethersproject/solidity" "^5.0.9"
-    "@violetprotocol/ethereum-access-token-helpers" "^0.2.0"
-    "@violetprotocol/mauve-periphery" "1.8.6"
-    "@violetprotocol/mauve-sdk-core" "3.2.0"
-    "@violetprotocol/mauve-swap-router-contracts" "1.5.2"
-    ethers "^5.7.2"
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
