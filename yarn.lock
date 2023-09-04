@@ -5588,6 +5588,18 @@
     "@violetprotocol/mauve-v3-sdk" "4.2.3"
     ethers "^5.7.2"
 
+"@violetprotocol/mauve-router-sdk@1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-router-sdk/-/mauve-router-sdk-1.6.5.tgz#1d6c605b295fc353d52c99cf8762b91afec34791"
+  integrity sha512-jQAWdDvG34zK17q3y2u5B3Zr3Emq4i5WtjHoeKZv1gLmcN+JOZKbeQI6xY6hpkUziaA4tB3mwrSXYoOTumO4LA==
+  dependencies:
+    "@violetprotocol/ethereum-access-token-helpers" "^0.2.0"
+    "@violetprotocol/mauve-sdk-core" "3.2.0"
+    "@violetprotocol/mauve-swap-router-contracts" "1.5.2"
+    "@violetprotocol/mauve-v2-sdk" "3.1.0"
+    "@violetprotocol/mauve-v3-sdk" "4.2.4"
+    ethers "^5.7.2"
+
 "@violetprotocol/mauve-sdk-core@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-sdk-core/-/mauve-sdk-core-3.2.0.tgz#847747bd0cdfe025049c8187194ae7ba81447850"

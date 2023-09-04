@@ -152,7 +152,7 @@
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
     "@violetprotocol/mauve-core": "1.2.4",
     "@violetprotocol/mauve-periphery": "1.8.6",
-    "@violetprotocol/mauve-router-sdk": "1.6.4",
+    "@violetprotocol/mauve-router-sdk": "1.6.5",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
     "@violetprotocol/mauve-smart-order-router": "4.0.3",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
