@@ -17,7 +17,6 @@ import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { RowBetween, RowFixed } from 'components/Row'
 import { Dots } from 'components/swap/styleds'
 import Toggle from 'components/Toggle'
-import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import { useToken } from 'hooks/Tokens'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/useIsTickAtLimit'
@@ -605,7 +604,7 @@ export function PositionPage() {
     <Trace page={InterfacePageName.POOL_PAGE} shouldLogImpression>
       <>
         <PageWrapper>
-          <TransactionConfirmationModal
+          {/* <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={() => setShowConfirm(false)}
             attemptingTxn={collecting}
@@ -618,7 +617,7 @@ export function PositionPage() {
               />
             )}
             pendingText={<Trans>Collecting fees</Trans>}
-          />
+          /> */}
           <AutoColumn gap="md">
             <AutoColumn gap="sm">
               <Link

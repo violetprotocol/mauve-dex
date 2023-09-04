@@ -68,6 +68,7 @@ export default function useSendSwapTransaction({
         }
 
         const { address, value, calldata } = swapCallEncodedWithEAT
+        console.log('!!!!!!!!!!!', calldata)
 
         const tx =
           !value || isZero(value)

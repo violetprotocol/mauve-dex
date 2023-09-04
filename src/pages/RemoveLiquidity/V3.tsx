@@ -33,7 +33,6 @@ import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
 import { TransactionType } from '../../state/transactions/types'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
@@ -288,7 +287,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   )
   return (
     <AutoColumn>
-      <TransactionConfirmationModal
+      {/* <TransactionConfirmationModal
         isOpen={showConfirm}
         onDismiss={handleDismissConfirmation}
         attemptingTxn={attemptingTxn}
@@ -301,7 +300,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           />
         )}
         pendingText={pendingText}
-      />
+      /> */}
       <AppBody $maxWidth="unset">
         <AddRemoveTabs
           creating={false}

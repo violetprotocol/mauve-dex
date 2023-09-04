@@ -396,6 +396,7 @@ export default function Swap({ className }: { className?: string }) {
           call.calls,
           call?.deadline?.toString()
         )
+        console.log('11111111', calldata)
 
         return Promise.resolve({ calldata })
       }
@@ -490,6 +491,7 @@ export default function Swap({ className }: { className?: string }) {
 
     swapCallback()
       .then((hash) => {
+        console.log('HASH???????', hash)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -517,6 +519,7 @@ export default function Swap({ className }: { className?: string }) {
         })
       })
       .catch((error) => {
+        console.log('ERROR???????', error)
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -544,6 +547,7 @@ export default function Swap({ className }: { className?: string }) {
 
   useEffect(() => {
     if (violetEAT.status === 'issued') {
+      console.log('handleswap')
       handleSwap()
     }
   }, [violetEAT.status, handleSwap])

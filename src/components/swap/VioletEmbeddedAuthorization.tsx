@@ -84,6 +84,7 @@ const useListenVioletEvents = (call: Call) => {
 
         const signature = splitSignature(parsedEAT.signature)
 
+        console.log('??????????', call)
         setPayload({
           event: VioletEvent.COMPLETED,
           data: {
@@ -112,7 +113,7 @@ const useListenVioletEvents = (call: Call) => {
 // TODO: Move this to
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
-  function VioletEmbeddedAuthorization({ apiUrl, authz, onIssued, onFailed, call }, ref) {
+  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed, call }, ref) {
     const payload = useListenVioletEvents(call)
 
     useEffect(() => {
@@ -123,7 +124,7 @@ export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletE
       if (payload.event === VioletEvent.ERROR) {
         onFailed({ ...payload.data })
       }
-    })
+    }, [payload, onIssued, onFailed])
 
     const url = buildAuthorizationUrl({
       ...authz,
