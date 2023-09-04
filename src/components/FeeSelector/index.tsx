@@ -184,23 +184,25 @@ export default function FeeSelector({
 
         {chainId && showOptions && (
           <Select>
-            {[FeeAmount.LOWEST, FeeAmount.LOWER, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
-              const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-              console.log(`Fee amount: ${_feeAmount} pool state: ${poolsByFeeTier[_feeAmount]}`);
-              if (supportedChains.includes(chainId) && poolsByFeeTier[_feeAmount] == PoolState.EXISTS) {
-                return (
-                  <FeeOption
-                    feeAmount={_feeAmount}
-                    active={feeAmount === _feeAmount}
-                    onClick={() => handleFeePoolSelectWithEvent(_feeAmount)}
-                    distributions={distributions}
-                    poolState={poolsByFeeTier[_feeAmount]}
-                    key={i}
-                  />
-                )
+            {[FeeAmount.LOWEST, FeeAmount.LOWER, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map(
+              (_feeAmount, i) => {
+                const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
+                console.log(`Fee amount: ${_feeAmount} pool state: ${poolsByFeeTier[_feeAmount]}`)
+                if (supportedChains.includes(chainId) && poolsByFeeTier[_feeAmount] == PoolState.EXISTS) {
+                  return (
+                    <FeeOption
+                      feeAmount={_feeAmount}
+                      active={feeAmount === _feeAmount}
+                      onClick={() => handleFeePoolSelectWithEvent(_feeAmount)}
+                      distributions={distributions}
+                      poolState={poolsByFeeTier[_feeAmount]}
+                      key={i}
+                    />
+                  )
+                }
+                return <></>
               }
-              return <></>
-            })}
+            )}
           </Select>
         )}
       </DynamicSection>
