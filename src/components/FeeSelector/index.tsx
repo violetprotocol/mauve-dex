@@ -187,7 +187,6 @@ export default function FeeSelector({
             {[FeeAmount.LOWEST, FeeAmount.LOWER, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map(
               (_feeAmount, i) => {
                 const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-                console.log(`Fee amount: ${_feeAmount} pool state: ${poolsByFeeTier[_feeAmount]}`)
                 if (supportedChains.includes(chainId) && poolsByFeeTier[_feeAmount] == PoolState.EXISTS) {
                   return (
                     <FeeOption
