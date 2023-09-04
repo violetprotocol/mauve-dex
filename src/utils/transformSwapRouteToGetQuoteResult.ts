@@ -65,7 +65,14 @@ export function transformSwapRouteToGetQuoteResult(
           amountOut: edgeAmountOut,
         })
       } else {
-        console.log('Unexpected V2 pool, discarding.')
+        console.error(`nextPool received is not an instance of Pool.`)
+        throw new Error(
+          `Pool received is not an instance of Pool. Make sure the versions of the dependencies are in sync. nexPool: ${JSON.stringify(
+            nextPool,
+            null,
+            2
+          )}`
+        )
       }
     }
 
