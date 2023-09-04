@@ -66,6 +66,7 @@ export default function FeeSelector({
   // get pool data on-chain for latest states
   const pools = usePools([
     [currencyA, currencyB, FeeAmount.LOWEST],
+    [currencyA, currencyB, FeeAmount.LOWER],
     [currencyA, currencyB, FeeAmount.LOW],
     [currencyA, currencyB, FeeAmount.MEDIUM],
     [currencyA, currencyB, FeeAmount.HIGH],
@@ -84,6 +85,7 @@ export default function FeeSelector({
         {
           // default all states to NOT_EXISTS
           [FeeAmount.LOWEST]: PoolState.NOT_EXISTS,
+          [FeeAmount.LOWER]: PoolState.NOT_EXISTS,
           [FeeAmount.LOW]: PoolState.NOT_EXISTS,
           [FeeAmount.MEDIUM]: PoolState.NOT_EXISTS,
           [FeeAmount.HIGH]: PoolState.NOT_EXISTS,
@@ -182,22 +184,24 @@ export default function FeeSelector({
 
         {chainId && showOptions && (
           <Select>
-            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount, i) => {
-              const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-              if (supportedChains.includes(chainId) && poolsByFeeTier[_feeAmount] == PoolState.EXISTS) {
-                return (
-                  <FeeOption
-                    feeAmount={_feeAmount}
-                    active={feeAmount === _feeAmount}
-                    onClick={() => handleFeePoolSelectWithEvent(_feeAmount)}
-                    distributions={distributions}
-                    poolState={poolsByFeeTier[_feeAmount]}
-                    key={i}
-                  />
-                )
+            {[FeeAmount.LOWEST, FeeAmount.LOWER, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map(
+              (_feeAmount, i) => {
+                const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
+                if (supportedChains.includes(chainId) && poolsByFeeTier[_feeAmount] == PoolState.EXISTS) {
+                  return (
+                    <FeeOption
+                      feeAmount={_feeAmount}
+                      active={feeAmount === _feeAmount}
+                      onClick={() => handleFeePoolSelectWithEvent(_feeAmount)}
+                      distributions={distributions}
+                      poolState={poolsByFeeTier[_feeAmount]}
+                      key={i}
+                    />
+                  )
+                }
+                return <></>
               }
-              return <></>
-            })}
+            )}
           </Select>
         )}
       </DynamicSection>
