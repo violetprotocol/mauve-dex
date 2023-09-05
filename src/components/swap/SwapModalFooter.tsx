@@ -151,6 +151,7 @@ export default function SwapModalFooter({
             disabled={disabledConfirm}
             style={{ margin: '10px 0 0 0' }}
             id={InterfaceElementName.CONFIRM_SWAP_BUTTON}
+            violetProtected
           >
             <Text fontSize={20} fontWeight={500}>
               <Trans>Confirm Swap</Trans>
