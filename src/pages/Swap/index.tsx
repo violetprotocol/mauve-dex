@@ -413,7 +413,7 @@ export default function Swap({ className }: { className?: string }) {
         showConfirm,
         swapErrorMessage: undefined,
         txHash: undefined,
-        violetEAT,
+        violetEAT: { status: 'authorizing' },
       })
       return
     }
