@@ -222,6 +222,7 @@ export const lightTheme = {
   backgroundModule: tw.neutral[100],
   backgroundInteractive: tw.neutral[200],
   backgroundContrast: tw.neutral[900],
+  backgroundPrimary: tw.primary[600],
 
   backgroundFloating: opacify(16, tw.neutral[700]),
   backgroundOutline: opacify(80, tw.neutral[400]),

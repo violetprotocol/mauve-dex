@@ -100,11 +100,27 @@ export {}
 //           <HeaderText>
 //             <Trans>Learn about providing liquidity</Trans> ↗
 //           </HeaderText>
-//           <ThemedText.DeprecatedBody fontWeight={400} style={{ alignItems: 'center', display: 'flex' }}>
+//           <ThemedText.DeprecatedBody
+//             fontWeight={400}
+//             style={{ alignItems: "center", display: "flex" }}
+//           >
 //             <Trans>Check out our walkthrough and migration guides.</Trans>
 //           </ThemedText.DeprecatedBody>
 //         </ResponsiveColumn>
 //       </CTA1>
+//       <CTA2 data-testid="cta-infolink" href={infoLink + "pools"}>
+//         <ResponsiveColumn>
+//           <HeaderText style={{ alignSelf: "flex-start" }}>
+//             <Trans>Top pools</Trans> ↗
+//           </HeaderText>
+//           <ThemedText.DeprecatedBody
+//             fontWeight={400}
+//             style={{ alignSelf: "flex-start" }}
+//           >
+//             <Trans>Explore Uniswap Analytics.</Trans>
+//           </ThemedText.DeprecatedBody>
+//         </ResponsiveColumn>
+//       </CTA2>
 //     </CTASection>
-//   )
+//   );
 // }

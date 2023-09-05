@@ -69,7 +69,7 @@ const CurrencySelect = styled(ButtonGray)<{
   outline: none;
   user-select: none;
   border: none;
-  font-size: 24px;
+  font-size: 1rem;
   font-weight: 400;
   width: ${({ hideInput }) => (hideInput ? '100%' : 'initial')};
   padding: ${({ selected }) => (selected ? '0.5rem 0.75rem 0.5rem 0.5rem' : '0.675rem 0.675rem 0.675rem 0.75rem')};
@@ -143,7 +143,6 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.25rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
-  font-size: 20px;
   font-weight: 600;
 `
 
