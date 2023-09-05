@@ -2,6 +2,7 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { SwapCallbackState, useSwapCallback as useLibSwapCallBack } from 'lib/hooks/swap/useSwapCallback'
+import { IssuedEAT } from 'pages/Swap/types'
 import { ReactNode, useMemo } from 'react'
 
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -10,7 +11,6 @@ import { currencyId } from '../utils/currencyId'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 import useTransactionDeadline from './useTransactionDeadline'
-import { VioletCallback } from './useVioletAuthorize'
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
@@ -18,9 +18,12 @@ export function useSwapCallback(
   trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
   allowedSlippage: Percent, // in bips
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
-  signatureData: SignatureData | undefined | null,
-  violetCallback: VioletCallback
-): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: ReactNode | null } {
+  signatureData: SignatureData | undefined | null
+): {
+  state: SwapCallbackState
+  callback: null | ((eat: IssuedEAT) => Promise<string>)
+  error: ReactNode | null
+} {
   const { account } = useWeb3React()
 
   const deadline = useTransactionDeadline()
@@ -40,15 +43,14 @@ export function useSwapCallback(
     recipientAddressOrName: recipient,
     signatureData,
     deadline,
-    violetCallback,
   })
 
   const swapCallback = libCallback
 
   const callback = useMemo(() => {
     if (!trade || !swapCallback) return null
-    return () =>
-      swapCallback().then((response) => {
+    return (eat: IssuedEAT) =>
+      swapCallback(eat).then((response) => {
         addTransaction(
           response,
           trade.tradeType === TradeType.EXACT_INPUT

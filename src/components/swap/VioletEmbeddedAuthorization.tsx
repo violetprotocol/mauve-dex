@@ -84,7 +84,6 @@ const useListenVioletEvents = (call: Call) => {
 
         const signature = splitSignature(parsedEAT.signature)
 
-        console.log('??????????', call)
         setPayload({
           event: VioletEvent.COMPLETED,
           data: {

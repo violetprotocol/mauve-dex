@@ -431,7 +431,7 @@ const _VioletEmbeddedAuthorization = ({ call, onIssued, onFailed }: { call: any;
 
     // WHOLE ISSUE IS HERE
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, chainId /* , call */])
+  }, [account, chainId, call])
 
   const violetRef = useIFrameExecutor()
   const content = useMemo(

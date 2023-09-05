@@ -9,7 +9,8 @@ import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
-import { Call, VioletCallback } from 'hooks/useVioletAuthorize'
+import { Call } from 'hooks/useVioletAuthorize'
+import { IssuedEAT } from 'pages/Swap/types'
 import { ReactNode, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
@@ -22,7 +23,7 @@ export enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: () => Promise<TransactionResponse>
+  callback?: (cd: IssuedEAT) => Promise<TransactionResponse>
   error?: ReactNode
 }
 interface UseSwapCallbackArgs {
@@ -32,7 +33,6 @@ interface UseSwapCallbackArgs {
   signatureData: SignatureData | null | undefined
   deadline: BigNumber | undefined
   feeOptions?: FeeOptions
-  violetCallback: VioletCallback
 }
 
 // returns a function that will execute a swap, if the parameters are all valid
@@ -44,7 +44,6 @@ export function useSwapCallback({
   signatureData,
   deadline,
   feeOptions,
-  violetCallback,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
 
@@ -57,7 +56,7 @@ export function useSwapCallback({
     feeOptions,
   })
 
-  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })
+  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall })
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
@@ -76,7 +75,7 @@ export function useSwapCallback({
 
     return {
       state: SwapCallbackState.VALID,
-      callback: async () => callback(),
+      callback,
     }
   }, [trade, provider, account, chainId, callback, recipient, recipientAddressOrName])
 }

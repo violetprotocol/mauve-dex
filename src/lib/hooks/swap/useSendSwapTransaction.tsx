@@ -4,10 +4,11 @@ import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/provid
 import { t, Trans } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
-import { Trade } from '@violetprotocol/mauve-router-sdk'
+import { EATMulticallExtended, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { SwapCall } from 'hooks/useSwapCallArguments'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
+import { IssuedEAT } from 'pages/Swap/types'
 import { useMemo } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import isZero from 'utils/isZero'
@@ -36,17 +37,15 @@ export default function useSendSwapTransaction({
   provider,
   trade,
   swapCall,
-  violetCallback,
 }: {
   account?: string | null
   chainId?: number
   provider?: JsonRpcProvider
   trade?: Trade<Currency, Currency, TradeType> // trade to execute, required
   swapCall: SwapCall | null
-  violetCallback: () => Promise<{ calldata: string } | null>
-}): { callback: null | (() => Promise<TransactionResponse>) } {
+}): { callback: null | ((eat: IssuedEAT) => Promise<TransactionResponse>) } {
   return useMemo(() => {
-    if (!trade || !provider || !account || !chainId || !violetCallback) {
+    if (!trade || !provider || !account || !chainId) {
       return { callback: null }
     }
 
@@ -55,20 +54,26 @@ export default function useSendSwapTransaction({
     }
 
     return {
-      callback: async function onSwap(): Promise<TransactionResponse> {
-        const violetResponse = await violetCallback()
+      callback: async function onSwap(eat: IssuedEAT): Promise<TransactionResponse> {
+        const { signature, expiry, call } = eat.data
 
-        if (!violetResponse) {
-          throw new Error(t`Unexpected error. Could not get proper response from Violet.`)
-        }
+        const { v, r, s } = signature
+
+        const calldata = EATMulticallExtended.encodePostsignMulticallExtended(
+          v,
+          r,
+          s,
+          expiry,
+          call.calls,
+          call?.deadline?.toString()
+        )
 
         const swapCallEncodedWithEAT = {
-          ...swapCall,
-          calldata: violetResponse.calldata,
+          ...call,
+          calldata,
         }
 
-        const { address, value, calldata } = swapCallEncodedWithEAT
-        console.log('!!!!!!!!!!!', calldata)
+        const { address, value } = swapCallEncodedWithEAT
 
         const tx =
           !value || isZero(value)
@@ -163,5 +168,5 @@ export default function useSendSwapTransaction({
           })
       },
     }
-  }, [account, chainId, provider, swapCall, trade, violetCallback])
+  }, [account, chainId, provider, swapCall, trade])
 }
