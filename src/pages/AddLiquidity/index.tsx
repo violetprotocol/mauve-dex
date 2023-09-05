@@ -25,7 +25,14 @@ import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
-import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow, VioletProtectedButtonPrimary } from '../../components/Button'
+import {
+  ButtonError,
+  ButtonLight,
+  ButtonPrimary,
+  ButtonText,
+  ButtonYellow,
+  VioletProtectedButtonPrimary,
+} from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'

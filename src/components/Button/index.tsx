@@ -1,7 +1,6 @@
 import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
-import styled, { useTheme } from 'styled-components/macro'
-import { keyframes } from 'styled-components'
+import styled, { useTheme, keyframes } from 'styled-components/macro'
 
 import { RowBetween } from '../Row'
 
@@ -88,25 +87,26 @@ const rotate = keyframes`
 
 export const VioletProtectedButtonPrimary = styled(ButtonPrimary)`
   @property --angle {
-    syntax: "<angle>";
+    syntax: '<angle>';
     initial-value: 0deg;
     inherits: true;
   }
   --angle: 0deg;
 
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.backgroundContrast}, ${({ theme }) => theme.backgroundContrast}),
+  background-image: linear-gradient(
+      to right,
+      ${({ theme }) => theme.backgroundContrast},
+      ${({ theme }) => theme.backgroundContrast}
+    ),
     conic-gradient(from var(--angle), #802dcc, #35085e);
   background-origin: border-box;
-    background-clip:
-      padding-box, /* Clip white semi-transparent to the padding-box */
-      border-box /* Clip colored boxes to the border-box (default) */
-    ;
-    border: 0.3rem dotted transparent;
-    animation-name: ${rotate};
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+  background-clip: padding-box,
+    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
+  border: 0.3rem dotted transparent;
+  animation-name: ${rotate};
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 `
 
 export const SmallButtonPrimary = styled(ButtonPrimary)`
@@ -285,25 +285,26 @@ const ButtonConfirmedStyle = styled(BaseButton)`
 
 const VioletProtectedButtonConfirmedStyle = styled(ButtonConfirmedStyle)`
   @property --angle {
-    syntax: "<angle>";
+    syntax: '<angle>';
     initial-value: 0deg;
     inherits: true;
   }
   --angle: 0deg;
 
-  background-image:
-    linear-gradient(to right, ${({ theme }) => theme.backgroundContrast}, ${({ theme }) => theme.backgroundContrast}),
+  background-image: linear-gradient(
+      to right,
+      ${({ theme }) => theme.backgroundContrast},
+      ${({ theme }) => theme.backgroundContrast}
+    ),
     conic-gradient(from var(--angle), #802dcc, #35085e);
   background-origin: border-box;
-    background-clip:
-      padding-box, /* Clip white semi-transparent to the padding-box */
-      border-box /* Clip colored boxes to the border-box (default) */
-    ;
-    border: 0.3rem dotted transparent;
-    animation-name: ${rotate};
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+  background-clip: padding-box,
+    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
+  border: 0.3rem dotted transparent;
+  animation-name: ${rotate};
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 `
 
 const ButtonErrorStyle = styled(BaseButton)`
@@ -332,24 +333,25 @@ const ButtonErrorStyle = styled(BaseButton)`
 
 const VioletProtectedButtonError = styled(ButtonErrorStyle)`
   @property --angle {
-    syntax: "<angle>";
+    syntax: '<angle>';
     initial-value: 0deg;
     inherits: false;
-    }
-    --angle: 0deg;
-    background-image:
-      linear-gradient(to right, ${({ theme }) => theme.accentFailure}, ${({ theme }) => theme.accentFailure}),
-      conic-gradient(from var(--angle), #802dcc, #35085e);
-    background-origin: border-box;
-    background-clip:
-      padding-box, /* Clip white semi-transparent to the padding-box */
-      border-box /* Clip colored boxes to the border-box (default) */
-    ;
-    border: 0.3rem dotted transparent;
-    animation-name: ${rotate};
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+  }
+  --angle: 0deg;
+  background-image: linear-gradient(
+      to right,
+      ${({ theme }) => theme.accentFailure},
+      ${({ theme }) => theme.accentFailure}
+    ),
+    conic-gradient(from var(--angle), #802dcc, #35085e);
+  background-origin: border-box;
+  background-clip: padding-box,
+    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
+  border: 0.3rem dotted transparent;
+  animation-name: ${rotate};
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 `
 
 export function ButtonConfirmed({
@@ -359,24 +361,24 @@ export function ButtonConfirmed({
   ...rest
 }: { confirmed?: boolean; altDisabledStyle?: boolean; violetProtected?: boolean } & ButtonProps) {
   if (confirmed) {
-    if (violetProtected)
-      return <VioletProtectedButtonConfirmedStyle {...rest}/>
+    if (violetProtected) return <VioletProtectedButtonConfirmedStyle {...rest} />
     return <ButtonConfirmedStyle {...rest} />
   } else {
-    if (violetProtected)
-      return <VioletProtectedButtonPrimary {...rest} altDisabledStyle={altDisabledStyle}/>
+    if (violetProtected) return <VioletProtectedButtonPrimary {...rest} altDisabledStyle={altDisabledStyle} />
     return <ButtonPrimary {...rest} altDisabledStyle={altDisabledStyle} />
   }
 }
 
-export function ButtonError({ error, violetProtected, ...rest }: { error?: boolean, violetProtected?: boolean } & ButtonProps) {
+export function ButtonError({
+  error,
+  violetProtected,
+  ...rest
+}: { error?: boolean; violetProtected?: boolean } & ButtonProps) {
   if (error) {
-    if (violetProtected)
-      return <VioletProtectedButtonError {...rest} />
+    if (violetProtected) return <VioletProtectedButtonError {...rest} />
     return <ButtonErrorStyle {...rest} />
   } else {
-    if (violetProtected)
-      return <VioletProtectedButtonPrimary {...rest} />
+    if (violetProtected) return <VioletProtectedButtonPrimary {...rest} />
     return <ButtonPrimary {...rest} />
   }
 }
