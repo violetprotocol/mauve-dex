@@ -413,22 +413,24 @@ export default function Swap({ className }: { className?: string }) {
         showConfirm,
         swapErrorMessage: undefined,
         txHash: undefined,
-        violetEAT: { status: 'authorizing' },
+        violetEAT,
       })
       return
     }
 
     if (violetEAT.status === 'authorizing') {
-      console.log('VIOLET_EAT_AUTHORIZING')
-
       return
     }
 
-    console.log('VIOLET_EAT_SWAP_CALLBACK_FOUND')
-
-    console.log('EAT', violetEAT)
-
     if (violetEAT.status === 'issued') {
+      setSwapState({
+        attemptingTxn: true,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: undefined,
+        txHash: undefined,
+        violetEAT,
+      })
       swapCallback(violetEAT)
         .then((hash) => {
           setSwapState({
@@ -472,7 +474,6 @@ export default function Swap({ className }: { className?: string }) {
           logErrorWithNewRelic({ error })
         })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     violetEAT,
     swapCallback,

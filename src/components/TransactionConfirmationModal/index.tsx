@@ -345,7 +345,6 @@ interface ConfirmationModalProps {
   attemptingTxn: boolean
   pendingText: ReactNode
   currencyToAdd?: Currency | undefined
-  //
   trade: InterfaceTrade<Currency, Currency, TradeType> | undefined
   allowedSlippage: Percent
   recipient: string | null
@@ -428,9 +427,6 @@ const _VioletEmbeddedAuthorization = ({ call, onIssued, onFailed }: { call: any;
       account,
       chainId,
     })
-
-    // WHOLE ISSUE IS HERE
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account, chainId, call])
 
   const violetRef = useIFrameExecutor()
@@ -448,8 +444,7 @@ const _VioletEmbeddedAuthorization = ({ call, onIssued, onFailed }: { call: any;
       </Wrapper>
     ),
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [violetRef, apiUrl, authz, onIssued, onFailed]
+    [violetRef, apiUrl, authz, onIssued, onFailed, call]
   )
 
   return content

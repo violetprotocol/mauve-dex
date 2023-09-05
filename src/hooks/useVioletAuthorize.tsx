@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { authorize, AuthorizeProps, AuthorizeResponse, EAT } from '@violetprotocol/sdk'
+import { authorize, AuthorizeProps, AuthorizeResponse } from '@violetprotocol/sdk'
 import { useCallback } from 'react'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
@@ -52,19 +52,6 @@ export const VioletTxAuthorizationPayload = {
   },
 }
 
-const generateCalldata = ({ eat, call }: { eat: EAT; call: Call }) => {
-  const { v, r, s } = eat.signature
-
-  return EATMulticallExtended.encodePostsignMulticallExtended(
-    v,
-    r,
-    s,
-    eat.expiry,
-    call.calls,
-    call?.deadline?.toString()
-  )
-}
-
 const parseVioletAuthorizeResponse = ({
   response,
   call,
@@ -105,7 +92,16 @@ const parseVioletAuthorizeResponse = ({
   let calldata
 
   if (eat?.signature) {
-    calldata = generateCalldata({ eat, call })
+    const { v, r, s } = eat.signature
+
+    calldata = EATMulticallExtended.encodePostsignMulticallExtended(
+      v,
+      r,
+      s,
+      eat.expiry,
+      call.calls,
+      call?.deadline?.toString()
+    )
   }
 
   if (!calldata) {
@@ -225,8 +221,6 @@ const handleErrorCodes = (errorCode?: string) => {
   }
   return
 }
-
-export type VioletCallback = () => Promise<{ calldata: string } | null>
 
 const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
   const violetCallback = useCallback(async () => {
