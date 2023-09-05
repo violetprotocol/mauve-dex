@@ -1,5 +1,4 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { splitSignature } from '@ethersproject/bytes'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize } from '@violetprotocol/sdk'
 import { useCallback } from 'react'
@@ -18,7 +17,7 @@ export type Call = {
   deadline?: BigNumber
 }
 
-type VioletTxAuthorizationPayload = {
+export type VioletTxAuthorizationPayload = {
   call: Call | null
   account?: string
   chainId?: number
@@ -51,29 +50,26 @@ export const getVioletAuthorizedCall = async ({
     chainId,
   })
 
-  let eat
-
-  if (response) {
-    const [violet, error] = response
-    if (violet) {
-      eat = JSON.parse(atob(violet.token))
-
-      eat.signature = splitSignature(eat.signature)
-
-      if (!eat?.signature || !eat?.expiry) {
-        console.error('EAT malformed')
-        logErrorWithNewRelic({ errorString: 'Violet EAT malformed' })
-        return null
-      }
-    } else {
-      console.error(error)
-      logErrorWithNewRelic({ errorString: `Violet EAT not retrieved, errorCode: ${error?.code}` })
-      handleErrorCodes(error?.code)
-      return null
-    }
-  } else {
+  if (!response) {
     console.error('No response from Violet while fetching an EAT')
     logErrorWithNewRelic({ errorString: 'No response from Violet while fetching an EAT' })
+    return null
+  }
+
+  const [violet, error] = response
+
+  if (!violet) {
+    console.error(error)
+    logErrorWithNewRelic({ errorString: `Violet EAT not retrieved, errorCode: ${error?.code}` })
+    handleErrorCodes(error?.code)
+    return null
+  }
+
+  const eat = violet.eat
+
+  if (!eat?.signature || !eat?.expiry) {
+    console.error('EAT malformed')
+    logErrorWithNewRelic({ errorString: 'Violet EAT malformed' })
     return null
   }
 
@@ -134,7 +130,7 @@ const handleErrorCodes = (errorCode?: string) => {
       `)
     case 'AUTHENTICATION_FAILED_AFTER_ENROLLMENT':
       throw new Error(`
-          Thank you for your patience, you are now registered with Violet. 
+          Thank you for your patience, you are now registered with Violet.
           Authentication has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
       `)
@@ -150,7 +146,7 @@ const handleErrorCodes = (errorCode?: string) => {
       `)
     case 'AUTHORIZATION_FAILED_AFTER_ENROLLMENT':
       throw new Error(`
-          Thank you for your patience, you are now registered with Violet. 
+          Thank you for your patience, you are now registered with Violet.
           Authorization has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
       `)
@@ -176,7 +172,7 @@ const handleErrorCodes = (errorCode?: string) => {
       `)
     case 'COMPLIANCE_FAILED_AFTER_ENROLLMENT':
       throw new Error(`
-          Thank you for your patience, you are now registered with Violet. 
+          Thank you for your patience, you are now registered with Violet.
           There was an issue with the application, please contact support at compliance@violet.co
       `)
     case 'SOMETHING_WENT_WRONG':
