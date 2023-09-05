@@ -6,7 +6,7 @@ import { NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
-import { ButtonConfirmed, ButtonPrimary } from 'components/Button'
+import { ButtonConfirmed, VioletProtectedButtonPrimary } from 'components/Button'
 import { LightCard } from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
@@ -271,9 +271,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             </RowBetween>
           </>
         ) : null}
-        <ButtonPrimary mt="16px" onClick={burn}>
+        <VioletProtectedButtonPrimary mt="16px" onClick={burn}>
           <Trans>Remove</Trans>
-        </ButtonPrimary>
+        </VioletProtectedButtonPrimary>
       </AutoColumn>
     )
   }
