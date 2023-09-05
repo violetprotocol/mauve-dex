@@ -5,12 +5,12 @@ import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
-import { useViolet } from '@violetprotocol/sdk'
+import { EAT, useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
-import { splitSignature } from 'ethers/lib/utils'
 import useParsedQueryString from 'hooks/useParsedQueryString'
+import { Call } from 'hooks/useVioletAuthorize'
 import { useCallback, useEffect, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -24,6 +24,7 @@ import {
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
+import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
 import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
@@ -62,6 +63,7 @@ import approveAmountCalldata from '../../utils/approveAmountCalldata'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
+import { useIsRegisteredWithViolet } from '../../utils/temporary/useIsRegistered'
 import { Dots } from '../Pool/styleds'
 import { Review } from './Review'
 import {
@@ -97,6 +99,9 @@ export default function AddLiquidity() {
   if (!environment || !clientId) {
     throw new Error('Invalid environment')
   }
+  const [call, setCall] = useState<Call | null>(null)
+  const [showVioletEmbed, setShowVioletEmbed] = useState(false)
+  const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
   const { authorize } = useViolet({
     clientId,
     apiUrl: baseUrlByEnvironment(environment.toString()),
@@ -246,144 +251,202 @@ export default function AddLiquidity() {
     outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE
   )
 
+  async function submitTransaction({ to, data, value }: { to: string; data: string; value: string }) {
+    if (!chainId || !provider || !baseCurrency || !quoteCurrency || !position) {
+      throw new Error('Missing parameters to submit the transaction')
+    }
+
+    let txn: { to: string; data: string; value: string } = {
+      to,
+      data,
+      value,
+    }
+
+    if (argentWalletContract) {
+      const amountA = parsedAmounts[Field.CURRENCY_A]
+      const amountB = parsedAmounts[Field.CURRENCY_B]
+      const batch = [
+        ...(amountA && amountA.currency.isToken
+          ? [approveAmountCalldata(amountA, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId])]
+          : []),
+        ...(amountB && amountB.currency.isToken
+          ? [approveAmountCalldata(amountB, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId])]
+          : []),
+        {
+          to: txn.to,
+          data: txn.data,
+          value: txn.value,
+        },
+      ]
+      const data = argentWalletContract.interface.encodeFunctionData('wc_multiCall', [batch])
+      txn = {
+        to: argentWalletContract.address,
+        data,
+        value: '0x0',
+      }
+    }
+
+    setAttemptingTxn(true)
+
+    provider
+      .getSigner()
+      .estimateGas(txn)
+      .then((estimate) => {
+        const newTxn = {
+          ...txn,
+          gasLimit: calculateGasMargin(estimate),
+        }
+
+        return provider
+          .getSigner()
+          .sendTransaction(newTxn)
+          .then((response: TransactionResponse) => {
+            setAttemptingTxn(false)
+            addTransaction(response, {
+              type: TransactionType.ADD_LIQUIDITY_V3_POOL,
+              baseCurrencyId: currencyId(baseCurrency),
+              quoteCurrencyId: currencyId(quoteCurrency),
+              createPool: Boolean(noLiquidity),
+              expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+              expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+              feeAmount: position.pool.fee,
+            })
+            setTxHash(response.hash)
+            sendEvent({
+              category: 'Liquidity',
+              action: 'Add',
+              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+            })
+          })
+      })
+      .catch((error) => {
+        console.error('Failed to send transaction', error)
+        setAttemptingTxn(false)
+        // we only care if the error is something _other_ than the user rejected the tx
+        if (error?.code !== 4001) {
+          // TODO: Handle error gracefully if the EAT is expired
+          console.error(error)
+        }
+        logErrorWithNewRelic({ error, errorString: 'violet add liquidity' })
+      })
+      .finally(() => {
+        setShowVioletEmbed(false)
+        setCall(null)
+      })
+  }
+
+  type HandleVioletResponseAndSubmitTransactionProps = {
+    to: string
+    value: string
+    v: EAT['signature']['v']
+    r: EAT['signature']['r']
+    s: EAT['signature']['s']
+    expiry: EAT['expiry']
+    calls: Call['calls']
+  }
+
+  const handleVioletResponseAndSubmitTransaction = ({
+    to,
+    value,
+    v,
+    r,
+    s,
+    expiry,
+    calls,
+  }: HandleVioletResponseAndSubmitTransactionProps) => {
+    // Might be helpful to leave this console.log?
+    console.log(
+      `TX payload to submit: ${JSON.stringify(
+        {
+          to,
+          value,
+          v,
+          r,
+          s,
+          expiry,
+          calls,
+        },
+        null,
+        2
+      )}`
+    )
+
+    const calldata = EATMulticall.encodePostsignMulticall(v, r, s, expiry, calls)
+    if (!calldata) {
+      throw new Error('Failed to generate calldata from violet EAT')
+    }
+
+    return submitTransaction({ to, data: calldata, value })
+  }
+
+  // Main function triggered when "Add" is clicked on the Add Liquidity preview modal
   async function onAdd() {
     if (!chainId || !provider || !account) return
 
-    if (!positionManager || !baseCurrency || !quoteCurrency) {
+    if (!positionManager || !baseCurrency || !quoteCurrency || !position || !account || !deadline) {
       return
     }
 
-    if (position && account && deadline) {
-      const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
-      const { calls, value } =
-        hasExistingPosition && tokenId
-          ? NonfungiblePositionManager.addCallParameters(position, {
-              tokenId,
-              slippageTolerance: allowedSlippage,
-              deadline: deadline.toString(),
-              useNative,
-            })
-          : NonfungiblePositionManager.addCallParameters(position, {
-              slippageTolerance: allowedSlippage,
-              recipient: account,
-              deadline: deadline.toString(),
-              useNative,
-              createPool: noLiquidity,
-            })
+    const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+    const { calls, value } =
+      hasExistingPosition && tokenId
+        ? NonfungiblePositionManager.addCallParameters(position, {
+            tokenId,
+            slippageTolerance: allowedSlippage,
+            deadline: deadline.toString(),
+            useNative,
+          })
+        : NonfungiblePositionManager.addCallParameters(position, {
+            slippageTolerance: allowedSlippage,
+            recipient: account,
+            deadline: deadline.toString(),
+            useNative,
+            createPool: noLiquidity,
+          })
 
-      const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
-      let calldata
-      try {
-        const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
+    const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+    try {
+      const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
 
-        const response = await authorize({
-          transaction: {
-            data: parameters,
-            functionSignature,
-            targetContract: to,
-          },
-          address: account,
-          chainId,
-        })
-        if (!response) return
-
-        const [violet, error] = response
-
-        if (!violet) {
-          console.log(error)
-          throw new Error(error?.code + 'Failed to get Violet EAT')
-        }
-        const eat = JSON.parse(atob(violet.token))
-        eat.signature = splitSignature(eat.signature)
-        if (!eat?.signature || !eat?.expiry) {
-          throw new Error('Failed to get Violet EAT')
-        }
-        const { v, r, s } = eat.signature
-        calldata = await EATMulticall.encodePostsignMulticall(v, r, s, eat.expiry, calls)
-      } catch (error) {
-        console.error('Error generating an EAT: ', error)
-        logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
+      // If the user is already enrolled, we take a shortcut and
+      // use Violet iFrame (embedded authentication)
+      if (isRegistered) {
+        // TODO: address is confusing! It can be confused with the user's address
+        setCall({ calls, value, functionSignature, parameters, address: to })
+        setShowVioletEmbed(true)
+        return
       }
 
-      if (!calldata) {
-        throw new Error('Failed to generate calldata from violet EAT')
+      const response = await authorize({
+        transaction: {
+          data: parameters,
+          functionSignature,
+          targetContract: to,
+        },
+        address: account,
+        chainId,
+      })
+
+      if (!response) {
+        throw new Error(`Invalid response from Violet: ${response}`)
       }
 
-      let txn: { to: string; data: string; value: string } = {
-        to,
-        data: calldata,
-        value,
+      const [violet, error] = response
+
+      if (!violet) {
+        console.error(error)
+        throw new Error(error?.code + 'Failed to get Violet EAT')
+      }
+      const eat = violet.eat
+
+      if (!eat?.signature || !eat?.expiry) {
+        throw new Error('Failed to get Violet EAT')
       }
 
-      if (argentWalletContract) {
-        const amountA = parsedAmounts[Field.CURRENCY_A]
-        const amountB = parsedAmounts[Field.CURRENCY_B]
-        const batch = [
-          ...(amountA && amountA.currency.isToken
-            ? [approveAmountCalldata(amountA, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId])]
-            : []),
-          ...(amountB && amountB.currency.isToken
-            ? [approveAmountCalldata(amountB, NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId])]
-            : []),
-          {
-            to: txn.to,
-            data: txn.data,
-            value: txn.value,
-          },
-        ]
-        const data = argentWalletContract.interface.encodeFunctionData('wc_multiCall', [batch])
-        txn = {
-          to: argentWalletContract.address,
-          data,
-          value: '0x0',
-        }
-      }
-
-      setAttemptingTxn(true)
-
-      provider
-        .getSigner()
-        .estimateGas(txn)
-        .then((estimate) => {
-          const newTxn = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate),
-          }
-
-          return provider
-            .getSigner()
-            .sendTransaction(newTxn)
-            .then((response: TransactionResponse) => {
-              setAttemptingTxn(false)
-              addTransaction(response, {
-                type: TransactionType.ADD_LIQUIDITY_V3_POOL,
-                baseCurrencyId: currencyId(baseCurrency),
-                quoteCurrencyId: currencyId(quoteCurrency),
-                createPool: Boolean(noLiquidity),
-                expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-                expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-                feeAmount: position.pool.fee,
-              })
-              setTxHash(response.hash)
-              sendEvent({
-                category: 'Liquidity',
-                action: 'Add',
-                label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
-              })
-            })
-        })
-        .catch((error) => {
-          console.error('Failed to send transaction', error)
-          setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          if (error?.code !== 4001) {
-            // TODO: Handle error gracefully if the EAT is expired
-            console.error(error)
-          }
-          logErrorWithNewRelic({ error, errorString: 'violet add liquidity' })
-        })
-    } else {
-      return
+      return handleVioletResponseAndSubmitTransaction({ ...eat.signature, expiry: eat.expiry, to, value, calls })
+    } catch (error) {
+      console.error('Error generating an EAT: ', error)
+      logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
     }
   }
 
@@ -574,30 +637,51 @@ export default function AddLiquidity() {
           onDismiss={handleDismissConfirmation}
           attemptingTxn={attemptingTxn}
           hash={txHash}
-          content={() => (
-            <ConfirmationModalContent
-              title={<Trans>Add Liquidity</Trans>}
-              onDismiss={handleDismissConfirmation}
-              topContent={() => (
-                <Review
-                  parsedAmounts={parsedAmounts}
-                  position={position}
-                  existingPosition={existingPosition}
-                  priceLower={priceLower}
-                  priceUpper={priceUpper}
-                  outOfRange={outOfRange}
-                  ticksAtLimit={ticksAtLimit}
-                />
-              )}
-              bottomContent={() => (
-                <ButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
-                  <Text fontWeight={500} fontSize={20}>
-                    <Trans>Add</Trans>
-                  </Text>
-                </ButtonPrimary>
-              )}
-            />
-          )}
+          content={() =>
+            showVioletEmbed && isRegistered ? (
+              <VioletEmbeddedAuthorizationWrapper
+                call={call}
+                onIssued={({ signature, expiry }: any) => {
+                  if (!call) {
+                    throw new Error('Missing call following EAT issuance')
+                  }
+                  handleVioletResponseAndSubmitTransaction({
+                    ...signature,
+                    expiry,
+                    to: call.address,
+                    calls: call.calls,
+                    value: call.value,
+                  })
+                }}
+                onFailed={(response: any) =>
+                  console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                }
+              />
+            ) : (
+              <ConfirmationModalContent
+                title={<Trans>Add Liquidity</Trans>}
+                onDismiss={handleDismissConfirmation}
+                topContent={() => (
+                  <Review
+                    parsedAmounts={parsedAmounts}
+                    position={position}
+                    existingPosition={existingPosition}
+                    priceLower={priceLower}
+                    priceUpper={priceUpper}
+                    outOfRange={outOfRange}
+                    ticksAtLimit={ticksAtLimit}
+                  />
+                )}
+                bottomContent={() => (
+                  <ButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
+                    <Text fontWeight={500} fontSize={20}>
+                      <Trans>Add</Trans>
+                    </Text>
+                  </ButtonPrimary>
+                )}
+              />
+            )
+          }
           pendingText={pendingText}
         />
         <PageWrapper wide={!hasExistingPosition}>
