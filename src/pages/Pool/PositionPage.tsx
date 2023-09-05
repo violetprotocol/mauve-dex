@@ -8,7 +8,7 @@ import { NonfungiblePositionManager, Pool, Position } from '@violetprotocol/mauv
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import Badge from 'components/Badge'
-import { ButtonConfirmed, ButtonGray, ButtonPrimary } from 'components/Button'
+import { ButtonConfirmed, ButtonGray, ButtonPrimary, VioletProtectedButtonPrimary } from 'components/Button'
 import { DarkCard, LightCard } from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import DoubleCurrencyLogo from 'components/DoubleLogo'
@@ -570,9 +570,9 @@ export function PositionPage() {
         <ThemedText.DeprecatedItalic>
           <Trans>Collecting fees will withdraw currently available fees for you.</Trans>
         </ThemedText.DeprecatedItalic>
-        <ButtonPrimary onClick={collect}>
+        <VioletProtectedButtonPrimary onClick={collect}>
           <Trans>Collect</Trans>
-        </ButtonPrimary>
+        </VioletProtectedButtonPrimary>
       </AutoColumn>
     )
   }
