@@ -427,6 +427,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                     confirmed={false}
                     disabled={removed || percent === 0 || !liquidityValue0}
                     onClick={() => setShowConfirm(true)}
+                    violetProtected
                   >
                     {removed ? <Trans>Closed</Trans> : error ?? <Trans>Remove</Trans>}
                   </ButtonConfirmed>
