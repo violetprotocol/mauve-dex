@@ -1,6 +1,6 @@
 import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
-import styled, { useTheme, keyframes } from 'styled-components/macro'
+import styled, { keyframes, useTheme } from 'styled-components/macro'
 
 import { RowBetween } from '../Row'
 
