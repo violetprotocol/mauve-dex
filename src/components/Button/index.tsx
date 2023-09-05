@@ -1,6 +1,7 @@
 import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
 import styled, { useTheme } from 'styled-components/macro'
+import { keyframes } from 'styled-components'
 
 import { RowBetween } from '../Row'
 
@@ -34,6 +35,7 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
     opacity: 50%;
     cursor: auto;
     pointer-events: none;
+    background-image: none;
   }
 
   will-change: transform;
@@ -76,6 +78,35 @@ export const ButtonPrimary = styled(BaseButton)`
     border: 1px solid transparent;
     outline: none;
   }
+`
+
+const rotate = keyframes`
+ to {
+    --angle: 360deg;
+ }
+ `
+
+export const VioletProtectedButtonPrimary = styled(ButtonPrimary)`
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: true;
+  }
+  --angle: 0deg;
+
+  background-image:
+    linear-gradient(to right, ${({ theme }) => theme.backgroundContrast}, ${({ theme }) => theme.backgroundContrast}),
+    conic-gradient(from var(--angle), #802dcc, #35085e);
+  background-origin: border-box;
+    background-clip:
+      padding-box, /* Clip white semi-transparent to the padding-box */
+      border-box /* Clip colored boxes to the border-box (default) */
+    ;
+    border: 0.3rem dotted transparent;
+    animation-name: ${rotate};
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 `
 
 export const SmallButtonPrimary = styled(ButtonPrimary)`
@@ -276,6 +307,28 @@ const ButtonErrorStyle = styled(BaseButton)`
   }
 `
 
+const VioletProtectedButtonError = styled(ButtonErrorStyle)`
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+    }
+    --angle: 0deg;
+    background-image:
+      linear-gradient(to right, ${({ theme }) => theme.accentFailure}, ${({ theme }) => theme.accentFailure}),
+      conic-gradient(from var(--angle), #802dcc, #35085e);
+    background-origin: border-box;
+    background-clip:
+      padding-box, /* Clip white semi-transparent to the padding-box */
+      border-box /* Clip colored boxes to the border-box (default) */
+    ;
+    border: 0.3rem dotted transparent;
+    animation-name: ${rotate};
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+`
+
 export function ButtonConfirmed({
   confirmed,
   altDisabledStyle,
@@ -288,10 +341,14 @@ export function ButtonConfirmed({
   }
 }
 
-export function ButtonError({ error, ...rest }: { error?: boolean } & ButtonProps) {
+export function ButtonError({ error, violetProtected, ...rest }: { error?: boolean, violetProtected?: boolean } & ButtonProps) {
   if (error) {
+    if (violetProtected)
+      return <VioletProtectedButtonError {...rest} />
     return <ButtonErrorStyle {...rest} />
   } else {
+    if (violetProtected)
+      return <VioletProtectedButtonPrimary {...rest} />
     return <ButtonPrimary {...rest} />
   }
 }
