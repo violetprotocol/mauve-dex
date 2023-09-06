@@ -40,6 +40,7 @@ export function useSwapCallback(
     deadline,
   })
 
+  console.log(error)
   const swapCallback = libCallback
 
   const callback = useMemo(() => {

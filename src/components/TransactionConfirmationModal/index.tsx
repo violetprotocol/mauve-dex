@@ -4,13 +4,19 @@ import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
+import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
 import { isL2ChainId } from 'utils/chains'
+import { baseUrlByEnvironment } from 'utils/temporary/generateEAT'
+import {
+  useIFrameExecutor,
+  VioletEmbeddedAuthorization,
+} from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -343,13 +349,16 @@ export default function TransactionConfirmationModal({
   currencyToAdd,
 }: ConfirmationModalProps) {
   const { chainId } = useWeb3React()
+  const eatPayload = useVioletEAT((state) => state.eatPayload)
 
   if (!chainId) return null
 
   // confirmation screen
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
-      {isL2ChainId(chainId) && (hash || attemptingTxn) ? (
+      {eatPayload.status === 'authorizing' ? (
+        <_VioletEmbeddedAuthorization />
+      ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
@@ -364,5 +373,34 @@ export default function TransactionConfirmationModal({
         content()
       )}
     </Modal>
+  )
+}
+
+const _VioletEmbeddedAuthorization = () => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const { account, chainId } = useWeb3React()
+  const { setAuthorizeProps, onIssued, onFailed } = useVioletEAT()
+  useEffect(() => {
+    if (account && chainId) {
+      setAuthorizeProps({ account, chainId })
+    }
+  }, [account, chainId, setAuthorizeProps])
+  const environment = process.env.REACT_APP_VIOLET_ENV!
+  const apiUrl = baseUrlByEnvironment(environment.toString())
+
+  const authz = useVioletEAT((state) => state.authorizeProps)
+
+  const violetRef = useIFrameExecutor()
+  if (!authz) return null
+  return (
+    <Wrapper>
+      <VioletEmbeddedAuthorization
+        ref={violetRef}
+        apiUrl={apiUrl}
+        authz={authz}
+        onFailed={onFailed}
+        onIssued={onIssued}
+      />
+    </Wrapper>
   )
 }

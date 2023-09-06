@@ -9,8 +9,9 @@ import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
-import useVioletAuthorize, { Call } from 'hooks/useVioletAuthorize'
-import { ReactNode, useMemo } from 'react'
+import { Call } from 'hooks/useVioletAuthorize'
+import { useVioletEAT } from 'hooks/useVioletSwapEAT'
+import { ReactNode, useEffect, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
 
@@ -45,6 +46,7 @@ export function useSwapCallback({
   feeOptions,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
+  const setCall = useVioletEAT((state) => state.setCall)
 
   const swapCall: Call | null = useSwapCallArguments({
     trade,
@@ -55,13 +57,13 @@ export function useSwapCallback({
     feeOptions,
   })
 
-  const { violetCallback } = useVioletAuthorize({
-    call: swapCall,
-    account,
-    chainId,
-  })
+  useEffect(() => {
+    if (swapCall) {
+      setCall(swapCall)
+    }
+  }, [swapCall, setCall])
 
-  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall, violetCallback })
+  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall })
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress

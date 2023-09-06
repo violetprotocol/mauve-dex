@@ -9,7 +9,6 @@ import {
   VIOLET_AUTHORIZATION_CHANNEL,
 } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Call } from 'hooks/useVioletAuthorize'
 import { Wrapper } from 'pages/AddLiquidity/styled'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
 import { forwardRef, RefObject, useEffect, useMemo, useRef, useState } from 'react'
@@ -43,7 +42,6 @@ interface VioletEmbeddedAuthorizationProps {
   authz: AuthorizeProps
   onIssued: (data: any) => void
   onFailed: (error: any) => void
-  call: Call
 }
 
 enum VioletEvent {
@@ -53,7 +51,7 @@ enum VioletEvent {
   COMPLETED = 'COMPLETED',
 }
 
-const useListenVioletEvents = (call: Call) => {
+const useListenVioletEvents = () => {
   const [payload, setPayload] = useState<{ event: VioletEvent; data: { [key: string]: any } }>({
     event: VioletEvent.INACTIVE,
     data: {},
@@ -100,7 +98,6 @@ const useListenVioletEvents = (call: Call) => {
             txId: event.data.tx_id,
             signature,
             expiry: parsedEAT.expiry,
-            call,
           },
         })
 
@@ -113,7 +110,7 @@ const useListenVioletEvents = (call: Call) => {
     channel.addEventListener('message', listener, {
       once: true,
     })
-  }, [call])
+  }, [])
 
   return payload
 }
@@ -121,8 +118,8 @@ const useListenVioletEvents = (call: Call) => {
 // TODO: Move this to
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
-  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed, call }, ref) {
-    const payload = useListenVioletEvents(call)
+  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed }, ref) {
+    const payload = useListenVioletEvents()
 
     useEffect(() => {
       if (payload.event === VioletEvent.COMPLETED) {
@@ -216,7 +213,6 @@ const VioletEmbeddedAuthorizationWrapper = ({
           ref={violetRef}
           apiUrl={apiUrl}
           authz={authz}
-          call={call}
           onIssued={onIssued}
           onFailed={onFailed}
         />
