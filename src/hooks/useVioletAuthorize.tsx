@@ -1,7 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize } from '@violetprotocol/sdk'
-import { useCallback } from 'react'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
@@ -184,15 +183,3 @@ const handleErrorCodes = (errorCode?: string) => {
   }
   return
 }
-
-const useVioletAuthorize = ({ call, account, chainId }: VioletTxAuthorizationPayload) => {
-  const violetCallback = useCallback(async () => {
-    return await getVioletAuthorizedCall({ call, account, chainId })
-  }, [call, account, chainId])
-
-  return {
-    violetCallback,
-  }
-}
-
-export default useVioletAuthorize

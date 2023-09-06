@@ -4,13 +4,15 @@ import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
+import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { ReactNode, useCallback, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
 import { isL2ChainId } from 'utils/chains'
+import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -342,14 +344,24 @@ export default function TransactionConfirmationModal({
   content,
   currencyToAdd,
 }: ConfirmationModalProps) {
-  const { chainId } = useWeb3React()
+  const { chainId, account } = useWeb3React()
+  const eatPayload = useVioletEAT((state) => state.eatPayload)
+  const { setAuthorizeProps, onIssued, onFailed, authorizeProps } = useVioletEAT()
+
+  useEffect(() => {
+    if (account && chainId && eatPayload.status === 'authorizing') {
+      setAuthorizeProps({ account, chainId })
+    }
+  }, [account, chainId, setAuthorizeProps, eatPayload.status])
 
   if (!chainId) return null
 
   // confirmation screen
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
-      {isL2ChainId(chainId) && (hash || attemptingTxn) ? (
+      {eatPayload.status === 'authorizing' && !!authorizeProps ? (
+        <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
+      ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />

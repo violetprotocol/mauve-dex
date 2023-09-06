@@ -11,7 +11,7 @@ import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { Call } from 'hooks/useVioletAuthorize'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -23,6 +23,7 @@ import {
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
@@ -555,6 +556,17 @@ export default function AddLiquidity() {
     !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
   }`
 
+  const authorizeProps = useMemo(() => {
+    if (!account || !chainId || !call) {
+      return
+    }
+    return getVioletAuthzPayloadFromCall({
+      call,
+      account,
+      chainId,
+    })
+  }, [account, chainId, call])
+
   const Buttons = () =>
     addIsUnsupported ? (
       <ButtonPrimary disabled={true} $borderRadius="12px" padding="12px">
@@ -638,9 +650,9 @@ export default function AddLiquidity() {
           attemptingTxn={attemptingTxn}
           hash={txHash}
           content={() =>
-            showVioletEmbed && isRegistered ? (
+            showVioletEmbed && isRegistered && authorizeProps ? (
               <VioletEmbeddedAuthorizationWrapper
-                call={call}
+                authorizeProps={authorizeProps}
                 onIssued={({ signature, expiry }: any) => {
                   if (!call) {
                     throw new Error('Missing call following EAT issuance')
