@@ -2,7 +2,7 @@ import { AuthorizeProps } from '@violetprotocol/sdk'
 import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
 import create from 'zustand'
 
-import { Call } from './useVioletAuthorize'
+import { Call, getVioletAuthorizedCall } from './useVioletAuthorize'
 
 type EatPayload = { status: 'idle' } | { status: 'authorizing' } | IssuedEATPayload | FailedEATPayload
 
@@ -16,8 +16,6 @@ type FailedEATPayload = {
 type IssuedEATPayload = {
   status: 'issued'
   data: {
-    token: string
-    txId: string
     signature: any
     expiry: number
   }
@@ -33,6 +31,7 @@ type VioletEatProps = {
   setEatPayload: (payload: EatPayload) => void
   onIssued: (issuedPayload: IssuedEATPayload['data']) => void
   onFailed: (failedEATPayload: FailedEATPayload['data']) => void
+  triggerPopup: (props: { account: string; chainId: number }, callback: () => Promise<void>) => void
 }
 
 export const useVioletEAT = create<VioletEatProps>((set, get) => ({
@@ -64,5 +63,14 @@ export const useVioletEAT = create<VioletEatProps>((set, get) => ({
   },
   onFailed: (failedEATPayload: FailedEATPayload['data']) => {
     set({ eatPayload: { data: failedEATPayload, status: 'failed' } })
+  },
+  triggerPopup: ({ account, chainId }, callback) => {
+    const { call } = get()
+    getVioletAuthorizedCall({ call, account, chainId }).then((result) => {
+      if (result) {
+        set({ eatPayload: { data: result.eat, status: 'issued' } })
+        callback()
+      }
+    })
   },
 }))
