@@ -226,11 +226,11 @@ function AddLiquidityV3PoolSummary({
 
   return createPool ? (
     <Trans>
-      Create pool and add {baseCurrency?.symbol}/{quoteCurrency?.symbol} V3 liquidity
+      Create pool and add {baseCurrency?.symbol}/{quoteCurrency?.symbol} Mauve liquidity
     </Trans>
   ) : (
     <Trans>
-      Add {baseCurrency?.symbol}/{quoteCurrency?.symbol} V3 liquidity
+      Add {baseCurrency?.symbol}/{quoteCurrency?.symbol} Mauve liquidity
     </Trans>
   )
 }
