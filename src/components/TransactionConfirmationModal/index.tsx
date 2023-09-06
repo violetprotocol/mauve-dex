@@ -356,7 +356,6 @@ export default function TransactionConfirmationModal({
 
   if (!chainId) return null
 
-  console.log(eatPayload.status === 'authorizing', !!authorizeProps)
   // confirmation screen
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
