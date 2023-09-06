@@ -8,10 +8,10 @@ import { SupportedL2ChainId } from 'constants/chains'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { Call, VioletTxAuthorizationPayload } from 'hooks/useVioletAuthorize'
+import { Call } from 'hooks/useVioletAuthorize'
+import { useVioletEAT } from 'hooks/useVioletEat'
 import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { VioletAuthorizationCallback } from 'pages/Swap'
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { Text } from 'rebass'
 import { InterfaceTrade } from 'state/routing/types'
@@ -350,7 +350,6 @@ interface ConfirmationModalProps {
   recipient: string | null
   signatureData?: SignatureData | null
   violetAuthorizationShow: boolean
-  violetAuthorizationCallback: VioletAuthorizationCallback
 }
 
 export default function TransactionConfirmationModal({
@@ -367,7 +366,6 @@ export default function TransactionConfirmationModal({
   recipient,
   signatureData,
   violetAuthorizationShow,
-  violetAuthorizationCallback,
 }: ConfirmationModalProps) {
   const { chainId } = useWeb3React()
 
@@ -386,15 +384,7 @@ export default function TransactionConfirmationModal({
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {violetAuthorizationShow ? (
-        <_VioletEmbeddedAuthorization
-          call={swapCall}
-          onIssued={(data: { token: string; txId: string; signature: any; expiry: number; call: Call }) =>
-            violetAuthorizationCallback({ status: 'issued', ...data })
-          }
-          onFailed={(error: { code: string; txId?: string }) =>
-            violetAuthorizationCallback({ status: 'failed', ...error })
-          }
-        />
+        <_VioletEmbeddedAuthorization call={swapCall} />
       ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : attemptingTxn ? (
@@ -413,39 +403,25 @@ export default function TransactionConfirmationModal({
   )
 }
 
-const _VioletEmbeddedAuthorization = ({ call, onIssued, onFailed }: { call: any; onIssued: any; onFailed: any }) => {
+const _VioletEmbeddedAuthorization = ({ call }: { call: Call }) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const { account, chainId } = useWeb3React()
+  const setAuthorizeProps = useVioletEAT((state) => state.setAuthorizeProps)
+  useEffect(() => {
+    if (account && chainId && call) {
+      setAuthorizeProps({ account, chainId, call })
+    }
+  }, [account, chainId, call, setAuthorizeProps])
   const environment = process.env.REACT_APP_VIOLET_ENV!
   const apiUrl = baseUrlByEnvironment(environment.toString())
 
-  const { account, chainId } = useWeb3React()
-  const authz = useMemo(() => {
-    if (!account || !chainId) throw new Error('ACCOUNT_OR_CHAINID_NOT_FOUND')
-
-    return VioletTxAuthorizationPayload.toAuthorizeProps({
-      call,
-      account,
-      chainId,
-    })
-  }, [account, chainId, call])
+  const authz = useVioletEAT((state) => state.authorizeProps)
 
   const violetRef = useIFrameExecutor()
-  const content = useMemo(
-    () => (
-      <Wrapper>
-        <VioletEmbeddedAuthorization
-          ref={violetRef}
-          apiUrl={apiUrl}
-          authz={authz}
-          call={call}
-          onIssued={onIssued}
-          onFailed={onFailed}
-        />
-      </Wrapper>
-    ),
-
-    [violetRef, apiUrl, authz, onIssued, onFailed, call]
+  if (!authz) return null
+  return (
+    <Wrapper>
+      <VioletEmbeddedAuthorization ref={violetRef} apiUrl={apiUrl} authz={authz} />
+    </Wrapper>
   )
-
-  return content
 }

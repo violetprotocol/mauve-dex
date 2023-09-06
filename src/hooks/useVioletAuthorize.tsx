@@ -20,7 +20,7 @@ export type Call = {
 
 // eslint-disable-next-line import/no-unused-modules
 export type VioletTxAuthorizationPayload = {
-  call: Call | null
+  call: Call
   account?: string
   chainId?: number
 }

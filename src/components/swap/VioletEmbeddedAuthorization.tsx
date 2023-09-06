@@ -7,6 +7,7 @@ import {
   buildAuthorizationUrl,
   VIOLET_AUTHORIZATION_CHANNEL,
 } from '@violetprotocol/sdk'
+import { useVioletEAT } from 'hooks/useVioletEat'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
 import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
@@ -34,9 +35,6 @@ export const useIFrameExecutor = () => {
 interface VioletEmbeddedAuthorizationProps {
   apiUrl: string
   authz: AuthorizeProps
-  onIssued: (data: any) => void
-  onFailed: (error: any) => void
-  call: Call
 }
 
 enum VioletEvent {
@@ -46,7 +44,7 @@ enum VioletEvent {
   COMPLETED = 'COMPLETED',
 }
 
-const useListenVioletEvents = (call: Call) => {
+const useListenVioletEvents = () => {
   const [payload, setPayload] = useState<{ event: VioletEvent; data: { [key: string]: any } }>({
     event: VioletEvent.INACTIVE,
     data: {},
@@ -91,7 +89,6 @@ const useListenVioletEvents = (call: Call) => {
             txId: event.data.tx_id,
             signature,
             expiry: parsedEAT.expiry,
-            call,
           },
         })
 
@@ -104,7 +101,7 @@ const useListenVioletEvents = (call: Call) => {
     channel.addEventListener('message', listener, {
       once: true,
     })
-  }, [call])
+  }, [])
 
   return payload
 }
@@ -112,16 +109,17 @@ const useListenVioletEvents = (call: Call) => {
 // TODO: Move this to
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
-  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed, call }, ref) {
-    const payload = useListenVioletEvents(call)
+  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz }, ref) {
+    const payload = useListenVioletEvents()
 
+    const { onIssued, onFailed } = useVioletEAT()
     useEffect(() => {
       if (payload.event === VioletEvent.COMPLETED) {
-        onIssued({ ...payload.data })
+        onIssued({ ...payload.data } as any)
       }
 
       if (payload.event === VioletEvent.ERROR) {
-        onFailed({ ...payload.data })
+        onFailed({ ...payload.data } as any)
       }
     }, [payload, onIssued, onFailed])
 
@@ -146,7 +144,6 @@ const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ auth
 
 import { useIFrameTransport } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Call } from 'hooks/useVioletAuthorize'
 
 interface UseIFrameExecutorProps {
   sourceRef: RefObject<any>

@@ -7,8 +7,8 @@ import { SwapEventName } from '@uniswap/analytics-events'
 import { EATMulticallExtended, Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { SwapCall } from 'hooks/useSwapCallArguments'
+import { IssuedEATPayload, useVioletEAT } from 'hooks/useVioletEat'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
-import { IssuedEAT } from 'pages/Swap/types'
 import { useMemo } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 import isZero from 'utils/isZero'
@@ -36,26 +36,22 @@ export default function useSendSwapTransaction({
   chainId,
   provider,
   trade,
-  swapCall,
 }: {
   account?: string | null
   chainId?: number
   provider?: JsonRpcProvider
   trade?: Trade<Currency, Currency, TradeType> // trade to execute, required
-  swapCall: SwapCall | null
-}): { callback: null | ((eat: IssuedEAT) => Promise<TransactionResponse>) } {
-  return useMemo(() => {
-    if (!trade || !provider || !account || !chainId) {
-      return { callback: null }
-    }
+}): { callback: null | ((eat: IssuedEATPayload) => Promise<TransactionResponse>) } {
+  const call = useVioletEAT((state) => state.call)
 
-    if (!swapCall) {
+  return useMemo(() => {
+    if (!trade || !provider || !account || !chainId || !call) {
       return { callback: null }
     }
 
     return {
-      callback: async function onSwap(eat: IssuedEAT): Promise<TransactionResponse> {
-        const { signature, expiry, call } = eat.data
+      callback: async function onSwap(eat: IssuedEATPayload): Promise<TransactionResponse> {
+        const { signature, expiry } = eat.data
 
         const { v, r, s } = signature
 
@@ -168,5 +164,5 @@ export default function useSendSwapTransaction({
           })
       },
     }
-  }, [account, chainId, provider, swapCall, trade])
+  }, [account, chainId, provider, trade])
 }

@@ -10,8 +10,8 @@ import useENS from 'hooks/useENS'
 import { SignatureData } from 'hooks/useERC20Permit'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 import { Call } from 'hooks/useVioletAuthorize'
-import { IssuedEAT } from 'pages/Swap/types'
-import { ReactNode, useMemo } from 'react'
+import { IssuedEATPayload, useVioletEAT } from 'hooks/useVioletEat'
+import { ReactNode, useEffect, useMemo } from 'react'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
 
@@ -23,7 +23,7 @@ export enum SwapCallbackState {
 
 interface UseSwapCallbackReturns {
   state: SwapCallbackState
-  callback?: (cd: IssuedEAT) => Promise<TransactionResponse>
+  callback?: (cd: IssuedEATPayload) => Promise<TransactionResponse>
   error?: ReactNode
 }
 interface UseSwapCallbackArgs {
@@ -46,6 +46,7 @@ export function useSwapCallback({
   feeOptions,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId, provider } = useWeb3React()
+  const setCall = useVioletEAT((state) => state.setCall)
 
   const swapCall: Call | null = useSwapCallArguments({
     trade,
@@ -55,8 +56,13 @@ export function useSwapCallback({
     deadline,
     feeOptions,
   })
+  useEffect(() => {
+    if (swapCall) {
+      setCall(swapCall)
+    }
+  }, [swapCall, setCall])
 
-  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade, swapCall })
+  const { callback } = useSendSwapTransaction({ account, chainId, provider, trade })
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress

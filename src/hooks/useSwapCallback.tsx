@@ -2,7 +2,6 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { SwapCallbackState, useSwapCallback as useLibSwapCallBack } from 'lib/hooks/swap/useSwapCallback'
-import { IssuedEAT } from 'pages/Swap/types'
 import { ReactNode, useMemo } from 'react'
 
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -11,6 +10,7 @@ import { currencyId } from '../utils/currencyId'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 import useTransactionDeadline from './useTransactionDeadline'
+import { IssuedEATPayload } from './useVioletEat'
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
@@ -21,7 +21,7 @@ export function useSwapCallback(
   signatureData: SignatureData | undefined | null
 ): {
   state: SwapCallbackState
-  callback: null | ((eat: IssuedEAT) => Promise<string>)
+  callback: null | ((eat: IssuedEATPayload) => Promise<string>)
   error: ReactNode | null
 } {
   const { account } = useWeb3React()
@@ -49,7 +49,7 @@ export function useSwapCallback(
 
   const callback = useMemo(() => {
     if (!trade || !swapCallback) return null
-    return (eat: IssuedEAT) =>
+    return (eat: IssuedEATPayload) =>
       swapCallback(eat).then((response) => {
         addTransaction(
           response,
