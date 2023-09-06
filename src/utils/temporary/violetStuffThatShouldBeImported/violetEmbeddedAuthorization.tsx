@@ -9,13 +9,11 @@ import {
   VIOLET_AUTHORIZATION_CHANNEL,
 } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
-import { Call } from 'hooks/useVioletAuthorize'
 import { Wrapper } from 'pages/AddLiquidity/styled'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
-import { forwardRef, RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { getVioletAuthzPayloadFromCall } from '../authorizeProps'
 import { baseUrlByEnvironment } from '../generateEAT'
 const StyledIframe = styled.iframe`
   border: none;
@@ -43,7 +41,6 @@ interface VioletEmbeddedAuthorizationProps {
   authz: AuthorizeProps
   onIssued: (data: any) => void
   onFailed: (error: any) => void
-  call: Call
 }
 
 enum VioletEvent {
@@ -53,7 +50,7 @@ enum VioletEvent {
   COMPLETED = 'COMPLETED',
 }
 
-const useListenVioletEvents = (call: Call) => {
+const useListenVioletEvents = () => {
   const [payload, setPayload] = useState<{ event: VioletEvent; data: { [key: string]: any } }>({
     event: VioletEvent.INACTIVE,
     data: {},
@@ -100,7 +97,6 @@ const useListenVioletEvents = (call: Call) => {
             txId: event.data.tx_id,
             signature,
             expiry: parsedEAT.expiry,
-            call,
           },
         })
 
@@ -113,7 +109,7 @@ const useListenVioletEvents = (call: Call) => {
     channel.addEventListener('message', listener, {
       once: true,
     })
-  }, [call])
+  }, [])
 
   return payload
 }
@@ -121,8 +117,8 @@ const useListenVioletEvents = (call: Call) => {
 // TODO: Move this to
 // eslint-disable-next-line import/no-unused-modules
 export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletEmbeddedAuthorizationProps>(
-  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed, call }, ref) {
-    const payload = useListenVioletEvents(call)
+  function VioletEmbeddedAuthorizationDipslayName({ apiUrl, authz, onIssued, onFailed }, ref) {
+    const payload = useListenVioletEvents()
 
     useEffect(() => {
       if (payload.event === VioletEvent.COMPLETED) {
@@ -185,11 +181,11 @@ function _useIFrameExecutor({ sourceRef, targetRef }: UseIFrameExecutorProps) {
 }
 
 const VioletEmbeddedAuthorizationWrapper = ({
-  call,
+  authorizeProps,
   onIssued,
   onFailed,
 }: {
-  call: any
+  authorizeProps: AuthorizeProps
   onIssued: any
   onFailed: any
 }) => {
@@ -197,36 +193,18 @@ const VioletEmbeddedAuthorizationWrapper = ({
   const environment = process.env.REACT_APP_VIOLET_ENV!
   const apiUrl = baseUrlByEnvironment(environment.toString())
 
-  const { account, chainId } = useWeb3React()
-  const authz = useMemo(() => {
-    if (!account || !chainId) throw new Error('ACCOUNT_OR_CHAINID_NOT_FOUND')
-
-    return getVioletAuthzPayloadFromCall({
-      call,
-      account,
-      chainId,
-    })
-  }, [account, chainId, call])
-
   const violetRef = useIFrameExecutor()
-  const content = useMemo(
-    () => (
-      <Wrapper>
-        <VioletEmbeddedAuthorization
-          ref={violetRef}
-          apiUrl={apiUrl}
-          authz={authz}
-          call={call}
-          onIssued={onIssued}
-          onFailed={onFailed}
-        />
-      </Wrapper>
-    ),
-
-    [violetRef, apiUrl, authz, onIssued, onFailed, call]
+  return (
+    <Wrapper>
+      <VioletEmbeddedAuthorization
+        ref={violetRef}
+        apiUrl={apiUrl}
+        authz={authorizeProps}
+        onIssued={onIssued}
+        onFailed={onFailed}
+      />
+    </Wrapper>
   )
-
-  return content
 }
 
 export { VioletEmbeddedAuthorizationWrapper }
