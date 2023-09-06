@@ -25,7 +25,14 @@ import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 
-import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
+import {
+  ButtonError,
+  ButtonLight,
+  ButtonPrimary,
+  ButtonText,
+  ButtonYellow,
+  VioletProtectedButtonPrimary,
+} from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -590,11 +597,11 @@ export default function AddLiquidity() {
                 />
               )}
               bottomContent={() => (
-                <ButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
+                <VioletProtectedButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
                   <Text fontWeight={500} fontSize={20}>
                     <Trans>Add</Trans>
                   </Text>
-                </ButtonPrimary>
+                </VioletProtectedButtonPrimary>
               )}
             />
           )}
