@@ -96,6 +96,12 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.region }}
 
+      - name: 'Inject env'
+        run: |
+              echo REACT_APP_INFURA_KEY=${{ secrets.MAINNET_INFURA_KEY }} >> .env.production
+              echo REACT_APP_VIOLET_ENV="production" >> .env.production
+              echo NODE_ENV="production" >> .env.production
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1 # https://github.com/marketplace/actions/amazon-ecr-login-action-for-github-actions
