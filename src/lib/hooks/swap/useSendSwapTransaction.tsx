@@ -54,7 +54,7 @@ export default function useSendSwapTransaction({
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
         if (!eat || !call) {
-          throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
+          throw new Error(t`Unexpected error. Please close this window and try again.`)
         }
         const { signature, expiry } = eat.data
 

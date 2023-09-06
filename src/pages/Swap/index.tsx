@@ -396,12 +396,16 @@ export default function Swap({ className }: { className?: string }) {
     trade?.outputAmount?.currency?.symbol,
   ])
 
+  // we use a ref here to ensure that we only call handleSwap once
+  // otherwise, handleSwap will get called every time it gets updated
   const handleSwapOnceRef = useRef<boolean>(false)
   useEffect(() => {
     if (eatPayload.status === 'issued' && handleSwapOnceRef.current === false) {
       handleSwapOnceRef.current = true
       handleSwap()
     }
+    // we this ensure that after end of the proces, we reset the ref
+    // so future calls will trigger handleSwap()
     if (eatPayload.status !== 'issued' && handleSwapOnceRef.current === true) {
       handleSwapOnceRef.current = false
     }

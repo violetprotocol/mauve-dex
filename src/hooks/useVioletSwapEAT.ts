@@ -37,13 +37,13 @@ type VioletEatProps = {
 
 export const useVioletEAT = create<VioletEatProps>((set, get) => ({
   call: null,
+  eatPayload: { status: 'idle' },
   setCall: (call) => {
     const eatStatus = get().eatPayload.status
     if (eatStatus !== 'authorizing' && eatStatus !== 'issued') {
       set({ call })
     }
   },
-  eatPayload: { status: 'idle' },
   getIssuedEat: () => {
     const eatPayload = get().eatPayload
     if (eatPayload.status === 'issued') {

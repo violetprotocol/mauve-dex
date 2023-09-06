@@ -11,10 +11,9 @@ import {
 import { useWeb3React } from '@web3-react/core'
 import { Wrapper } from 'pages/AddLiquidity/styled'
 // import { useIFrameExecutor as _useIFrameExecutor } from '@violetprotocol/sdk-web3-react'
-import { forwardRef, RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
-import { getVioletAuthzPayloadFromCall } from '../authorizeProps'
 import { baseUrlByEnvironment } from '../generateEAT'
 const StyledIframe = styled.iframe`
   border: none;
@@ -182,11 +181,11 @@ function _useIFrameExecutor({ sourceRef, targetRef }: UseIFrameExecutorProps) {
 }
 
 const VioletEmbeddedAuthorizationWrapper = ({
-  call,
+  authorizeProps,
   onIssued,
   onFailed,
 }: {
-  call: any
+  authorizeProps: AuthorizeProps
   onIssued: any
   onFailed: any
 }) => {
@@ -194,35 +193,18 @@ const VioletEmbeddedAuthorizationWrapper = ({
   const environment = process.env.REACT_APP_VIOLET_ENV!
   const apiUrl = baseUrlByEnvironment(environment.toString())
 
-  const { account, chainId } = useWeb3React()
-  const authz = useMemo(() => {
-    if (!account || !chainId) throw new Error('ACCOUNT_OR_CHAINID_NOT_FOUND')
-
-    return getVioletAuthzPayloadFromCall({
-      call,
-      account,
-      chainId,
-    })
-  }, [account, chainId, call])
-
   const violetRef = useIFrameExecutor()
-  const content = useMemo(
-    () => (
-      <Wrapper>
-        <VioletEmbeddedAuthorization
-          ref={violetRef}
-          apiUrl={apiUrl}
-          authz={authz}
-          onIssued={onIssued}
-          onFailed={onFailed}
-        />
-      </Wrapper>
-    ),
-
-    [violetRef, apiUrl, authz, onIssued, onFailed, call]
+  return (
+    <Wrapper>
+      <VioletEmbeddedAuthorization
+        ref={violetRef}
+        apiUrl={apiUrl}
+        authz={authorizeProps}
+        onIssued={onIssued}
+        onFailed={onFailed}
+      />
+    </Wrapper>
   )
-
-  return content
 }
 
 export { VioletEmbeddedAuthorizationWrapper }
