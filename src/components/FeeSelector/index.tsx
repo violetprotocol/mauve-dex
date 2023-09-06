@@ -3,7 +3,6 @@ import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
-import { ButtonGray } from 'components/Button'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import { RowBetween } from 'components/Row'
@@ -94,7 +93,7 @@ export default function FeeSelector({
     [pools]
   )
 
-  const [showOptions, setShowOptions] = useState(false)
+  const [onlyInitializedFeeTier, setOnlyInitializedFeeTier] = useState<FeeAmount | undefined>(undefined)
   const [pulsing, setPulsing] = useState(false)
 
   const previousFeeAmount = usePrevious(feeAmount)
@@ -113,16 +112,27 @@ export default function FeeSelector({
   )
 
   useEffect(() => {
+    const initializedPools = pools.filter(([state]) => state == PoolState.EXISTS)
+
+    // Only one initialized pool for this pair
+    if (initializedPools.length == 1) {
+      const [, pool] = initializedPools[0]
+      setOnlyInitializedFeeTier(pool?.fee)
+    } else {
+      setOnlyInitializedFeeTier(undefined)
+    }
+
+    return () => {
+      setOnlyInitializedFeeTier(undefined)
+    }
+  }, [pools])
+
+  useEffect(() => {
     if (feeAmount || isLoading || isError) {
       return
     }
 
-    if (!largestUsageFeeTier) {
-      // cannot recommend, open options
-      setShowOptions(true)
-    } else {
-      setShowOptions(false)
-
+    if (largestUsageFeeTier) {
       recommended.current = true
       sendEvent({
         category: 'FeePoolSelect',
@@ -130,18 +140,22 @@ export default function FeeSelector({
       })
 
       handleFeePoolSelect(largestUsageFeeTier)
+    } else if (onlyInitializedFeeTier) {
+      handleFeePoolSelect(onlyInitializedFeeTier)
     }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
-
-  useEffect(() => {
-    setShowOptions(isError)
-  }, [isError])
+  }, [feeAmount, isLoading, isError, largestUsageFeeTier, onlyInitializedFeeTier, handleFeePoolSelect])
 
   useEffect(() => {
     if (feeAmount && previousFeeAmount !== feeAmount) {
       setPulsing(true)
+      if (poolsByFeeTier[feeAmount] != PoolState.EXISTS) {
+        // No pool exists for the the fee tier in the URL so we
+        // effectively remove it from the URL
+        // @ts-ignore
+        handleFeePoolSelect('')
+      }
     }
-  }, [previousFeeAmount, feeAmount])
+  }, [previousFeeAmount, feeAmount, handleFeePoolSelect, poolsByFeeTier])
 
   return (
     <AutoColumn gap="16px">
@@ -175,14 +189,10 @@ export default function FeeSelector({
                 </>
               )}
             </AutoColumn>
-
-            <ButtonGray onClick={() => setShowOptions(!showOptions)} width="auto" padding="4px" $borderRadius="6px">
-              {showOptions ? <Trans>Hide</Trans> : <Trans>Edit</Trans>}
-            </ButtonGray>
           </RowBetween>
         </FocusedOutlineCard>
 
-        {chainId && showOptions && (
+        {chainId && (
           <Select>
             {[FeeAmount.LOWEST, FeeAmount.LOWER, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map(
               (_feeAmount, i) => {
