@@ -40,7 +40,6 @@ export const useVioletEAT = create<VioletEatProps>((set, get) => ({
   setCall: (call) => {
     const eatStatus = get().eatPayload.status
     if (eatStatus !== 'authorizing' && eatStatus !== 'issued') {
-      console.log('setting call BEFORE AUTH')
       set({ call })
     }
   },
@@ -61,7 +60,6 @@ export const useVioletEAT = create<VioletEatProps>((set, get) => ({
     set({ eatPayload })
   },
   onIssued: (issuedPayload: IssuedEATPayload['data']) => {
-    console.log('onIssued', issuedPayload)
     set({ eatPayload: { data: issuedPayload, status: 'issued' } })
   },
   onFailed: (failedEATPayload: FailedEATPayload['data']) => {
