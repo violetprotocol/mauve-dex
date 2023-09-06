@@ -9,7 +9,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 export const useIsRegisteredWithViolet = ({ ethereumAddress }: { ethereumAddress?: string }) => {
   const [isRegistered, setIsRegistered] = useState<null | boolean>(null)
 
-  const fetchStatus = async (_ethereumAddress: string) => {
+  const fetchStatus = async () => {
     await sleep(1000)
 
     return IS_ALREADY_ENROLLED
@@ -17,7 +17,7 @@ export const useIsRegisteredWithViolet = ({ ethereumAddress }: { ethereumAddress
 
   useEffect(() => {
     if (ethereumAddress) {
-      fetchStatus(ethereumAddress).then((value) => setIsRegistered(value))
+      fetchStatus().then((value) => setIsRegistered(value))
     }
   }, [ethereumAddress])
 
