@@ -60,8 +60,7 @@ export const getVioletAuthorizedCall = async ({
   if (!violet) {
     console.error(error)
     logErrorWithNewRelic({ errorString: `Violet EAT not retrieved, errorCode: ${error?.code}` })
-    handleErrorCodes(error?.code)
-    return null
+    throw new Error(handleErrorCodes(error?.code))
   }
 
   const eat = violet.eat
@@ -96,90 +95,90 @@ export const getVioletAuthorizedCall = async ({
   return { calldata, eat }
 }
 
-const handleErrorCodes = (errorCode?: string) => {
+export const handleErrorCodes = (errorCode?: string) => {
   switch (errorCode) {
     case 'USER_CANCELLED':
-      throw new Error(`
+      return `
           You must complete the enrollment with Violet before using Mauve.
-      `)
+      `
     case 'FAILED_GEOLOCATION':
-      throw new Error(`
+      return `
           You have failed geolocation, please turn off your VPN or any software
           that changes your location in case you are in an authorized zone and
           try again.
-      `)
+      `
     case 'ADDRESS_LOCATION_FAILED':
-      throw new Error(`
+      return `
           The address you provided doesn't match your current location.
-      `)
+      `
     case 'UNKNOWN_WALLET_ADDRESS':
-      throw new Error(`
+      return `
           Violet did not recognize your wallet address, make sure you are
           connected with the correct wallet and try again.
-      `)
+      `
     case 'ENROLLMENT_PENDING':
-      throw new Error(`
+      return `
           Your enrollment is pending, please wait from an email from the Violet
           team and try again.
-      `)
+      `
     case 'AUTHENTICATION_FAILED':
-      throw new Error(`
+      return `
           Authentication has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
-      `)
+      `
     case 'AUTHENTICATION_FAILED_AFTER_ENROLLMENT':
-      throw new Error(`
+      return `
           Thank you for your patience, you are now registered with Violet.
           Authentication has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
-      `)
+      `
     case 'ENROLLMENT_FAILED':
-      throw new Error(`
+      return `
           Enrollment has failed, please try again. If the issue persists, contact
           the Violet team on our Discord.
-      `)
+      `
     case 'AUTHORIZATION_FAILED':
-      throw new Error(`
+      return `
           Authorization has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
-      `)
+      `
     case 'AUTHORIZATION_FAILED_AFTER_ENROLLMENT':
-      throw new Error(`
+      return `
           Thank you for your patience, you are now registered with Violet.
           Authorization has failed, please try again. If the issue persists,
           contact the Violet team on our Discord.
-      `)
+      `
     case 'USER_ALREADY_EXISTS':
-      throw new Error(`
+      return `
           Our system detected that you already have an account with Violet. If
           you think this is an error, please contact us.
-      `)
+      `
     case 'UNAUTHORIZED_COUNTRY':
-      throw new Error(`
+      return `
           Unfortunately we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
-      `)
+      `
     case 'UNAUTHORIZED_COUNTRY_AFTER_ENROLLMENT':
-      throw new Error(`
+      return `
           Thank you for your patience, you are now registered with Violet. Unfortunately
           we currently do not support US customers, and so we weren't able to create your
           mauve transaction.
-      `)
+      `
     case 'COMPLIANCE_FAILED':
-      throw new Error(`
+      return `
           There was an issue with the application, please contact support at compliance@violet.co
-      `)
+      `
     case 'COMPLIANCE_FAILED_AFTER_ENROLLMENT':
-      throw new Error(`
+      return `
           Thank you for your patience, you are now registered with Violet.
           There was an issue with the application, please contact support at compliance@violet.co
-      `)
+      `
     case 'SOMETHING_WENT_WRONG':
-      throw new Error(`
+      return `
           Something went wrong while authorizing your transaction; Please try
           again, and if the issue persists contact the Violet team on our
           Discord.
-      `)
+      `
   }
   return
 }

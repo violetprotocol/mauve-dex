@@ -352,6 +352,13 @@ export default function Swap({ className }: { className?: string }) {
 
   const handleSwap = useCallback(() => {
     if (!swapCallback) {
+      setSwapState({
+        attemptingTxn: false,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: 'Something went wrong, Please try again.',
+        txHash: undefined,
+      })
       return
     }
     swapCallback()
@@ -409,7 +416,17 @@ export default function Swap({ className }: { className?: string }) {
     if (eatPayload.status !== 'issued' && handleSwapOnceRef.current === true) {
       handleSwapOnceRef.current = false
     }
-  }, [handleSwap, eatPayload])
+    if (eatPayload.status === 'failed') {
+      setEatPayload({ status: 'idle' })
+      setSwapState({
+        attemptingTxn: false,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: eatPayload.data.message,
+        txHash: undefined,
+      })
+    }
+  }, [handleSwap, eatPayload, swapCallback, showConfirm, tradeToConfirm, setEatPayload])
 
   // errors
   const [swapQuoteReceivedDate, setSwapQuoteReceivedDate] = useState<Date | undefined>()

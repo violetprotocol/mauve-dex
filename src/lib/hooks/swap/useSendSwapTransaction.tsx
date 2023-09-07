@@ -4,8 +4,7 @@ import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/provid
 import { t, Trans } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
-import { EATMulticallExtended, Trade } from '@violetprotocol/mauve-router-sdk'
-import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
@@ -35,28 +34,26 @@ export default function useSendSwapTransaction({
   account,
   chainId,
   provider,
-  trade,
-  swapCall,
 }: {
   account?: string | null
   chainId?: number
   provider?: JsonRpcProvider
-  trade?: Trade<Currency, Currency, TradeType> // trade to execute, required
-  swapCall: SwapCall | null
 }): { callback: null | (() => Promise<TransactionResponse>) } {
-  const { getIssuedEat, call } = useVioletEAT()
-  const eat = getIssuedEat()
+  const { eatPayload, call, trade } = useVioletEAT()
   return useMemo(() => {
-    if (!trade || !provider || !account || !chainId || !swapCall) {
+    if (!trade || !provider || !account || !chainId) {
       return { callback: null }
     }
 
     return {
       callback: async function onSwap(): Promise<TransactionResponse> {
-        if (!eat || !call) {
+        if (eatPayload?.status === 'failed') {
+          throw new Error(eatPayload.data.message)
+        }
+        if (!eatPayload || !call || eatPayload.status !== 'issued') {
           throw new Error(t`Unexpected error. Please close this window and try again.`)
         }
-        const { signature, expiry } = eat.data
+        const { signature, expiry } = eatPayload.data
 
         const { v, r, s } = signature
 
@@ -168,5 +165,5 @@ export default function useSendSwapTransaction({
           })
       },
     }
-  }, [account, chainId, provider, swapCall, trade, call, eat])
+  }, [account, chainId, provider, trade, call, eatPayload])
 }
