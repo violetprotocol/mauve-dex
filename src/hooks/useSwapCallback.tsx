@@ -84,7 +84,7 @@ export function useSwapCallback(
         )
         return response.hash
       })
-  }, [addTransaction, allowedSlippage, swapCallback, trade])
+  }, [addTransaction, allowedSlippage, swapCallback, storedTrade])
 
   return {
     state,
