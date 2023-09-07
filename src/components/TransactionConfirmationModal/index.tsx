@@ -53,7 +53,7 @@ const StyledLogo = styled.img`
   margin-left: 6px;
 `
 
-function ConfirmationPendingContent({
+export function ConfirmationPendingContent({
   onDismiss,
   pendingText,
   inline,

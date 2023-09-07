@@ -10,7 +10,7 @@ import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
-import { Call } from 'hooks/useVioletAuthorize'
+import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -48,7 +48,11 @@ import PresetsButtons from '../../components/RangeSelector/PresetsButtons'
 import RateToggle from '../../components/RateToggle'
 import Row, { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal, {
+  ConfirmationModalContent,
+  ConfirmationPendingContent,
+  TransactionErrorContent,
+} from '../../components/TransactionConfirmationModal'
 import { NONFUNGIBLE_POSITION_MANAGER_ADDRESSES } from '../../constants/addresses'
 import { ZERO_PERCENT } from '../../constants/misc'
 import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
@@ -109,6 +113,8 @@ export default function AddLiquidity() {
   }
   const [call, setCall] = useState<Call | null>(null)
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
+  const [violetError, setVioletError] = useState<string>('')
+  const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
   const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
   const { authorize } = useViolet({
     clientId,
@@ -425,6 +431,8 @@ export default function AddLiquidity() {
         return
       }
 
+      setPendingVioletAuth(true)
+
       const response = await authorize({
         transaction: {
           data: parameters,
@@ -436,25 +444,30 @@ export default function AddLiquidity() {
       })
 
       if (!response) {
-        throw new Error(`Invalid response from Violet: ${response}`)
+        setVioletError('FAILED_CALL')
+        return
       }
 
       const [violet, error] = response
 
       if (!violet) {
         console.error(error)
-        throw new Error(error?.code + 'Failed to get Violet EAT')
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
       }
       const eat = violet.eat
 
       if (!eat?.signature || !eat?.expiry) {
-        throw new Error('Failed to get Violet EAT')
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
       }
 
       return handleVioletResponseAndSubmitTransaction({ ...eat.signature, expiry: eat.expiry, to, value, calls })
     } catch (error) {
       console.error('Error generating an EAT: ', error)
+      setVioletError(error)
       logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
+      return
     }
   }
 
@@ -527,6 +540,8 @@ export default function AddLiquidity() {
       navigate('/pool')
     }
     setTxHash('')
+    setPendingVioletAuth(false)
+    setVioletError('')
   }, [navigate, onFieldAInput, txHash])
 
   const addIsUnsupported = useIsSwapUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -658,24 +673,36 @@ export default function AddLiquidity() {
           hash={txHash}
           content={() =>
             showVioletEmbed && isRegistered && authorizeProps ? (
-              <VioletEmbeddedAuthorizationWrapper
-                authorizeProps={authorizeProps}
-                onIssued={({ signature, expiry }: any) => {
-                  if (!call) {
-                    throw new Error('Missing call following EAT issuance')
-                  }
-                  handleVioletResponseAndSubmitTransaction({
-                    ...signature,
-                    expiry,
-                    to: call.address,
-                    calls: call.calls,
-                    value: call.value,
-                  })
-                }}
-                onFailed={(response: any) =>
-                  console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
-                }
-              />
+              violetError ? (
+                <TransactionErrorContent
+                  onDismiss={handleDismissConfirmation}
+                  message={handleErrorCodes(violetError)}
+                />
+              ) : (
+                <VioletEmbeddedAuthorizationWrapper
+                  authorizeProps={authorizeProps}
+                  onIssued={({ signature, expiry }: any) => {
+                    if (!call) {
+                      throw new Error('Missing call following EAT issuance')
+                    }
+                    handleVioletResponseAndSubmitTransaction({
+                      ...signature,
+                      expiry,
+                      to: call.address,
+                      calls: call.calls,
+                      value: call.value,
+                    })
+                  }}
+                  onFailed={(response: any) => {
+                    console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                    setVioletError(JSON.stringify(response?.code))
+                  }}
+                />
+              )
+            ) : violetError ? (
+              <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
+            ) : pendingVioletAuth ? (
+              <ConfirmationPendingContent onDismiss={handleDismissConfirmation} pendingText={pendingText} />
             ) : (
               <ConfirmationModalContent
                 title={<Trans>Add Liquidity</Trans>}

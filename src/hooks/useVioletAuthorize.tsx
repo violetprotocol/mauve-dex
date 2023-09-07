@@ -179,6 +179,11 @@ export const handleErrorCodes = (errorCode?: string) => {
           again, and if the issue persists contact the Violet team on our
           Discord.
       `
+    default:
+      return `
+          Something went wrong while authorizing your transaction; Please try
+          again, and if the issue persists contact the Violet team on our
+          Discord.
+      `
   }
-  return
 }
