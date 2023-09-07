@@ -284,9 +284,7 @@ export default function Pool() {
                 <ErrorContainer>
                   <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
                     <InboxIcon strokeWidth={1} style={{ marginTop: '2em' }} />
-                    <div>
-                      <Trans>Your active Mauve liquidity positions will appear here.</Trans>
-                    </div>
+                    <div>Your active Mauve liquidity positions will appear here.</div>
                   </ThemedText.DeprecatedBody>
                   {!showConnectAWallet && closedPositions.length > 0 && (
                     <ButtonText
