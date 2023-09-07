@@ -53,7 +53,7 @@ export function CurrencySearch({
   otherSelectedCurrency,
   showCommonBases,
   showCurrencyAmount,
-  // disableNonToken,
+  disableNonToken,
   onDismiss,
   isOpen,
 }: CurrencySearchProps) {
@@ -108,18 +108,17 @@ export function CurrencySearch({
   const filteredSortedTokens = useSortTokensByQuery(debouncedQuery, sortedTokens)
 
   const native = useNativeCurrency()
-  // const wrapped = native.wrapped
+  const wrapped = native.wrapped
 
   const searchCurrencies: Currency[] = useMemo(() => {
-    // const s = debouncedQuery.toLowerCase().trim()
+    const s = debouncedQuery.toLowerCase().trim()
 
-    const tokens = filteredSortedTokens
-    // const tokens = filteredSortedTokens.filter((t) => !(t.equals(wrapped) || disableNonToken && t.isNative))
-    // const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
-    //   (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
-    // )
-    return [...tokens]
-  }, [/*debouncedQuery, */ filteredSortedTokens /*wrapped, disableNonToken, native*/])
+    const tokens = filteredSortedTokens.filter((t) => !(t.equals(wrapped) || (disableNonToken && t.isNative)))
+    const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
+      (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
+    )
+    return [...natives, ...tokens]
+  }, [debouncedQuery, filteredSortedTokens, wrapped, disableNonToken, native])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency, hasWarning?: boolean) => {
