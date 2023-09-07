@@ -27,7 +27,14 @@ import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
 import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
-import { ButtonError, ButtonLight, ButtonPrimary, ButtonText, ButtonYellow } from '../../components/Button'
+import {
+  ButtonError,
+  ButtonLight,
+  ButtonPrimary,
+  ButtonText,
+  ButtonYellow,
+  VioletProtectedButtonPrimary,
+} from '../../components/Button'
 import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -685,11 +692,11 @@ export default function AddLiquidity() {
                   />
                 )}
                 bottomContent={() => (
-                  <ButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
+                  <VioletProtectedButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
                     <Text fontWeight={500} fontSize={20}>
                       <Trans>Add</Trans>
                     </Text>
-                  </ButtonPrimary>
+                  </VioletProtectedButtonPrimary>
                 )}
               />
             )
