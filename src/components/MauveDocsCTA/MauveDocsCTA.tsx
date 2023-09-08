@@ -40,7 +40,6 @@ const LinkOutToDocs = styled(ExternalLink)`
   font-size: 16px;
   justify-content: space-between;
   padding: 1rem;
-  margin-right: 12px;
   text-decoration: none !important;
   width: 100%;
 `
