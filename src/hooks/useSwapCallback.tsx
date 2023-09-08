@@ -22,7 +22,7 @@ export function useSwapCallback(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   signatureData: SignatureData | undefined | null
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: ReactNode | null } {
-  const { setTxData, trade: storedTrade } = useVioletEAT()
+  const { setCall, trade: storedTrade, setTrade } = useVioletEAT()
 
   const { account } = useWeb3React()
 
@@ -51,9 +51,10 @@ export function useSwapCallback(
 
   useEffect(() => {
     if (swapCall) {
-      setTxData(swapCall, trade)
+      setCall(swapCall)
+      setTrade(trade)
     }
-  }, [swapCall, setTxData, trade])
+  }, [swapCall, setCall, setTrade, trade])
   const swapCallback = libCallback
 
   const callback = useMemo(() => {

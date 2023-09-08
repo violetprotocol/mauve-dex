@@ -1,31 +1,14 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
 // eslint-disable-next-line no-restricted-imports
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useMemo } from 'react'
-import { calculateGasMargin } from 'utils/calculateGasMargin'
 import isZero from 'utils/isZero'
 import { swapErrorToUserReadableMessage } from 'utils/swapErrorToUserReadableMessage'
-
-interface SwapCallEstimate {
-  call: SwapCall
-}
-
-interface SuccessfulCall extends SwapCallEstimate {
-  call: SwapCall
-  gasEstimate: BigNumber
-}
-
-interface FailedCall extends SwapCallEstimate {
-  call: SwapCall
-  error: Error
-}
 
 class InvalidSwapError extends Error {}
 
@@ -82,53 +65,17 @@ export default function useSendSwapTransaction({
                 value,
               }
 
-        const estimatedCall: SwapCallEstimate | SuccessfulCall | FailedCall = await provider
-          .estimateGas(tx)
-          .then((gasEstimate) => {
-            return {
-              call: swapCallEncodedWithEAT,
-              gasEstimate,
-            }
-          })
-          .catch((gasError) => {
-            console.debug('Gas estimate failed, trying eth_call to extract error', swapCallEncodedWithEAT)
-
-            return provider
-              .call(tx)
-              .then((result) => {
-                console.debug(
-                  'Unexpected successful call after failed estimate gas',
-                  swapCallEncodedWithEAT,
-                  gasError,
-                  result
-                )
-                return {
-                  call: swapCallEncodedWithEAT,
-                  error: <Trans>Unexpected issue with estimating the gas. Please try again.</Trans>,
-                }
-              })
-              .catch((callError) => {
-                console.debug('Call threw error', swapCallEncodedWithEAT, callError)
-                return {
-                  call: swapCallEncodedWithEAT,
-                  error: swapErrorToUserReadableMessage(callError),
-                }
-              })
-          })
-
-        if ('error' in estimatedCall) {
-          throw new Error(t`Unexpected error. Could not estimate gas for the swap.`)
-        }
-
         return provider
-          .getSigner()
-          .sendTransaction({
-            from: account,
-            to: address,
-            data: calldata,
-            // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in estimatedCall ? { gasLimit: calculateGasMargin(estimatedCall.gasEstimate) } : {}),
-            ...(value && !isZero(value) ? { value } : {}),
+          .estimateGas(tx)
+          .then((gasLimit) => {
+            return provider.getSigner().sendTransaction({
+              from: account,
+              to: address,
+              data: calldata,
+              // let the wallet try if we can't estimate the gas
+              gasLimit,
+              ...(value && !isZero(value) ? { value } : {}),
+            })
           })
           .then((response) => {
             sendAnalyticsEvent(
@@ -159,7 +106,7 @@ export default function useSendSwapTransaction({
               if (error instanceof InvalidSwapError) {
                 throw error
               } else {
-                throw new Error(t`Swap failed: ${swapErrorToUserReadableMessage(error)}`)
+                throw new Error(t`${swapErrorToUserReadableMessage(error)}`)
               }
             }
           })

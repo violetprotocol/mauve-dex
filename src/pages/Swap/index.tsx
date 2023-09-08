@@ -151,7 +151,7 @@ export default function Swap({ className }: { className?: string }) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
-  const { setEatPayload, eatPayload } = useVioletEAT()
+  const { setEatPayload, eatPayload, onTransactionSuccess } = useVioletEAT()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -369,6 +369,7 @@ export default function Swap({ className }: { className?: string }) {
           action: 'transaction hash',
           label: hash,
         })
+        onTransactionSuccess()
         sendEvent({
           category: 'Swap',
           action:
@@ -401,6 +402,7 @@ export default function Swap({ className }: { className?: string }) {
     account,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol,
+    onTransactionSuccess,
   ])
 
   // we use a ref here to ensure that we only call handleSwap once
@@ -417,7 +419,6 @@ export default function Swap({ className }: { className?: string }) {
       handleSwapOnceRef.current = false
     }
     if (eatPayload.status === 'failed') {
-      setEatPayload({ status: 'idle' })
       setSwapState({
         attemptingTxn: false,
         tradeToConfirm,
@@ -426,7 +427,7 @@ export default function Swap({ className }: { className?: string }) {
         txHash: undefined,
       })
     }
-  }, [handleSwap, eatPayload, swapCallback, showConfirm, tradeToConfirm, setEatPayload])
+  }, [handleSwap, eatPayload, swapCallback, showConfirm, tradeToConfirm])
 
   // errors
   const [swapQuoteReceivedDate, setSwapQuoteReceivedDate] = useState<Date | undefined>()

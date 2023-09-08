@@ -15,14 +15,20 @@ export function swapErrorToUserReadableMessage(error: any): string {
     }
   }
 
-  while (error) {
+  while (error && !reason) {
     reason = error.reason ?? error.message ?? reason
     error = error.error ?? error.data?.originalError
   }
+  console.log(error)
+  console.log(reason)
 
   if (reason?.indexOf('execution reverted: ') === 0) reason = reason.substr('execution reverted: '.length)
 
   switch (reason) {
+    case 'user rejected transaction':
+      return 'Transaction Rejected.'
+    case 'AccessToken: VF':
+      return 'The Ethereum Access Token retrieved from Violet was incorrect for this transaction.'
     case 'TransferHelper: TRANSFER_FROM_FAILED':
       return t`The input token cannot be transferred. There may be an issue with the input token.`
     case 'Too little received':

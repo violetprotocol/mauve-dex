@@ -26,7 +26,8 @@ type IssuedEATPayload = {
 type VioletEatProps = {
   call: Call | null
   trade?: Trade<Currency, Currency, TradeType>
-  setTxData: (call: Call, trade?: any) => void
+  setTrade: (trade: any) => void
+  setCall: (call: Call) => void
   authorizeProps?: AuthorizeProps
   setAuthorizeProps: (props: { account: string; chainId: number }) => void
   eatPayload: EatPayload
@@ -34,19 +35,26 @@ type VioletEatProps = {
   onIssued: (issuedPayload: IssuedEATPayload['data']) => void
   onFailed: (failedEATPayload: FailedEATPayload['data']) => void
   triggerPopup: (props: { account: string; chainId: number }, callback: () => Promise<void>) => void
+  onTransactionSuccess: () => void
 }
 
 export const useVioletEAT = create<VioletEatProps>((set, get) => ({
   call: null,
   eatPayload: { status: 'idle' },
-  setTxData: (call, trade) => {
+  setTrade: (trade) => {
     const eatStatus = get().eatPayload.status
     if (eatStatus !== 'authorizing' && eatStatus !== 'issued') {
-      set({ call, trade })
+      set({ trade })
+    }
+  },
+  setCall: (call) => {
+    const eatStatus = get().eatPayload.status
+    if (eatStatus !== 'authorizing' && eatStatus !== 'issued') {
+      set({ call })
     }
   },
   setAuthorizeProps: (authorizeArgs) => {
-    if (get()?.eatPayload?.status === 'authorizing' && !get().authorizeProps) {
+    if (get()?.eatPayload?.status === 'authorizing') {
       set({ authorizeProps: getVioletAuthzPayloadFromCall({ ...authorizeArgs, call: get().call }) })
     }
   },
@@ -72,5 +80,8 @@ export const useVioletEAT = create<VioletEatProps>((set, get) => ({
       .catch((err) => {
         set({ eatPayload: { status: 'failed', data: { message: err.message } } })
       })
+  },
+  onTransactionSuccess: () => {
+    set({ eatPayload: { status: 'idle' } })
   },
 }))
