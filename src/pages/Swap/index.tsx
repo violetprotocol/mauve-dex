@@ -722,6 +722,7 @@ export default function Swap({ className }: { className?: string }) {
                           priceImpactTooHigh
                         }
                         error={isValid && priceImpactSeverity > 2}
+                        violetProtected
                       >
                         <Text fontSize={16} fontWeight={600}>
                           {priceImpactTooHigh ? (
@@ -751,6 +752,7 @@ export default function Swap({ className }: { className?: string }) {
                       !isValid || routeIsSyncing || routeIsLoading || priceImpactTooHigh || Boolean(swapCallbackError)
                     }
                     error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
+                    violetProtected
                   >
                     <Text fontSize={20} fontWeight={600}>
                       {swapInputError ? (

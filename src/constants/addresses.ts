@@ -3,6 +3,12 @@ import { FACTORY_ADDRESS as V3_FACTORY_ADDRESS } from '@violetprotocol/mauve-v3-
 import { constructSameAddressMap } from '../utils/constructSameAddressMap'
 import { SupportedChainId } from './chains'
 
+// ETHEREUM MAINNET
+const MAINNET_FACTORY_ADDRESS = '0x0569168709a869e7f4Ba142c49BFF7faA14f76C8'
+const MAINNET_SWAP_ROUTER2 = '0x6FAEB511989E280D3A51ca45ED756C90e736b012'
+const MAINNET_POSITION_MANAGER = '0x26c2bd020BfBe8366F79FFDA1A0cfAC5A7b52108'
+const MAINNET_QUOTER = '0xe0303307187E8d66a884E8E7aFA18Dad9217F2A6'
+
 // Re-Deployments
 // GOERLI
 const GOERLI_FACTORY_ADDRESS = '0x1EA6C6917e5b707aFfA07e00B7c6CD8dC346bB36'
@@ -42,6 +48,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
       SupportedChainId.POLYGON,
     ],
     {
+      [SupportedChainId.MAINNET]: MAINNET_FACTORY_ADDRESS,
       [SupportedChainId.GOERLI]: GOERLI_FACTORY_ADDRESS,
       [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_FACTORY_ADDRESS,
     }
@@ -75,6 +82,7 @@ export const SWAP_ROUTER_ADDRESSES: AddressMap = {
       SupportedChainId.POLYGON_MUMBAI,
     ],
     {
+      [SupportedChainId.MAINNET]: MAINNET_SWAP_ROUTER2,
       [SupportedChainId.GOERLI]: GOERLI_SWAP_ROUTER2,
       [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_SWAP_ROUTER2,
     }
@@ -103,6 +111,7 @@ export const QUOTER_ADDRESSES: AddressMap = {
       SupportedChainId.POLYGON,
     ],
     {
+      [SupportedChainId.MAINNET]: MAINNET_QUOTER,
       [SupportedChainId.GOERLI]: GOERLI_QUOTER,
       [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_QUOTER,
     }
@@ -123,6 +132,7 @@ export const NONFUNGIBLE_POSITION_MANAGER_ADDRESSES: AddressMap = {
       SupportedChainId.POLYGON,
     ],
     {
+      [SupportedChainId.MAINNET]: MAINNET_POSITION_MANAGER,
       [SupportedChainId.GOERLI]: GOERLI_POSITION_MANAGER,
       [SupportedChainId.OPTIMISM_GOERLI]: OP_GOERLI_POSITION_MANAGER,
     }
