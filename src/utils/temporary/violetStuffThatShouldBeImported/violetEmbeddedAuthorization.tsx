@@ -15,8 +15,13 @@ import { forwardRef, RefObject, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import { baseUrlByEnvironment } from '../generateEAT'
+
+const IFRAME_WIDTH = 384
+const IFRAME_HEIGHT = 416
+
 const StyledIframe = styled.iframe`
   border: none;
+  background-color: ${({ theme }) => theme.tw.neutral[50]};
 `
 
 // TODO: Move this to @violetprotocol/sdk-web3-react and replace the original useIFrameExecutor
@@ -144,7 +149,7 @@ interface IFrameProps {
 }
 
 const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ authnorizationUrl }, ref) {
-  return <StyledIframe ref={ref} src={authnorizationUrl} width="440px" height="400px" />
+  return <StyledIframe ref={ref} src={authnorizationUrl} width={IFRAME_WIDTH} height={IFRAME_HEIGHT} />
 })
 
 ///////

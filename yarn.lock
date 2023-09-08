@@ -5683,10 +5683,10 @@
   resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.12.tgz#c2f56f48d32e871b332a62b82bc26314563e3a99"
   integrity sha512-IHlK2dMpZqkzDqq0II/CXBTv9y2AIJpAFQvI8nO3PDTvFZusvcmSJDbgDLnv6SjUBayI1FWM9/FpTCfqDIlD4w==
 
-"@violetprotocol/sdk@0.0.15":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.15.tgz#e2674384425a1e202d8ac5d524121f18b1e1bd9d"
-  integrity sha512-5NzUHsIP9hJLNDna+dPUIv1JR49V4eeDoMtCpQ5bcB51iswx0a1bH8lmu/NbETMZLz2eb8J3BYU2mF1TBmulFw==
+"@violetprotocol/sdk@0.0.17":
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.17.tgz#3e57bb7042361d33cffd7765be7ca9217a460a1c"
+  integrity sha512-rdvxLpf3LIRfYnNsTW4OiCx/YeqgoMdXWow8EQRikmtMzPN12Pd96tcUw6BpNsSn5yKy3zsEE0N7ZMrDbytChA==
 
 "@violetprotocol/violetid@1.2.3":
   version "1.2.3"
