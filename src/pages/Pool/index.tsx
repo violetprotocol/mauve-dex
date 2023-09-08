@@ -18,7 +18,6 @@ import styled, { css, useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { PositionDetails } from 'types/position'
 
-// import CTACards from './CTACards'
 import { LoadingRows } from './styleds'
 
 const PageWrapper = styled(AutoColumn)`
@@ -314,9 +313,6 @@ export default function Pool() {
                 </ErrorContainer>
               )}
             </MainContentWrapper>
-            {/* <HideSmall>
-              <CTACards />
-            </HideSmall> */}
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>
