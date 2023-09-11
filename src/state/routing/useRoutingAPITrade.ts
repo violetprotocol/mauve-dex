@@ -45,6 +45,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
 
   const {
     isLoading,
+    isUninitialized,
     isError,
     data: quoteResult,
     currentData,
@@ -66,17 +67,17 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   const isSyncing = currentData !== quoteResult
 
   return useMemo(() => {
-    if (!currencyIn || !currencyOut) {
+    if ((isLoading && !quoteResult) || isUninitialized) {
+      // only on first hook render
       return {
-        state: TradeState.INVALID,
+        state: TradeState.LOADING,
         trade: undefined,
       }
     }
 
-    if (isLoading && !quoteResult) {
-      // only on first hook render
+    if (!currencyIn || !currencyOut) {
       return {
-        state: TradeState.LOADING,
+        state: TradeState.INVALID,
         trade: undefined,
       }
     }
@@ -114,6 +115,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
     currencyOut,
     quoteResult,
     isLoading,
+    isUninitialized,
     tradeType,
     isError,
     route,
