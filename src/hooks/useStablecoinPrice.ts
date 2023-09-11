@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Price, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
+import { USDC_OPTIMISM_GOERLI } from '@violetprotocol/mauve-smart-order-router'
 import { useWeb3React } from '@web3-react/core'
 import tryParseCurrencyAmount from 'lib/utils/tryParseCurrencyAmount'
 import { useMemo, useRef } from 'react'
@@ -7,7 +8,6 @@ import { useRoutingAPITrade } from 'state/routing/useRoutingAPITrade'
 
 import { SupportedChainId } from '../constants/chains'
 import { CUSD_CELO, DAI_OPTIMISM, USDC_ARBITRUM, USDC_MAINNET, USDC_POLYGON } from '../constants/tokens'
-import { USDC_OPTIMISM_GOERLI } from '@violetprotocol/mauve-smart-order-router'
 
 // Stablecoin amounts used when calculating spot price for a given currency.
 // The amount is large enough to filter low liquidity pairs.
