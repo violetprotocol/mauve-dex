@@ -1,6 +1,6 @@
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
-import { ExternalLink, HideSmall } from 'theme'
+import { ExternalLink } from 'theme'
 
 import { AutoRow } from '../Row'
 
@@ -60,9 +60,8 @@ const MauveDocsCTA = () => {
               <Header>
                 <>Mauve is a compliant DEX</>
               </Header>
-              <HideSmall>
-                <>Identity verification through Violet is required.</>
-              </HideSmall>
+
+              <>Identity verification through Violet is required.</>
             </AutoRow>
           </BodyText>
           <StyledArrowUpRight />

@@ -162,7 +162,15 @@ interface IFrameProps {
 }
 
 const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ authnorizationUrl }, ref) {
-  return <StyledIframe ref={ref} src={authnorizationUrl} width={IFRAME_WIDTH} height={IFRAME_HEIGHT} allowFullScreen />
+  return (
+    <StyledIframe
+      ref={ref}
+      src={authnorizationUrl}
+      width={IFRAME_WIDTH}
+      height={IFRAME_HEIGHT}
+      allow="clipboard-write"
+    />
+  )
 })
 
 ///////
