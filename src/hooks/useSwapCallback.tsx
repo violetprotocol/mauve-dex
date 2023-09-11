@@ -2,14 +2,17 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { SwapCallbackState, useSwapCallback as useLibSwapCallBack } from 'lib/hooks/swap/useSwapCallback'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, useEffect, useMemo } from 'react'
 
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { TransactionType } from '../state/transactions/types'
 import { currencyId } from '../utils/currencyId'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
+import { useSwapCallArguments } from './useSwapCallArguments'
 import useTransactionDeadline from './useTransactionDeadline'
+import { Call } from './useVioletAuthorize'
+import { useVioletEAT } from './useVioletSwapEAT'
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
@@ -19,6 +22,8 @@ export function useSwapCallback(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   signatureData: SignatureData | undefined | null
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: ReactNode | null } {
+  const { setCall, trade: storedTrade, setTrade } = useVioletEAT()
+
   const { account } = useWeb3React()
 
   const deadline = useTransactionDeadline()
@@ -33,44 +38,54 @@ export function useSwapCallback(
     callback: libCallback,
     error,
   } = useLibSwapCallBack({
+    recipientAddressOrName: recipient,
+  })
+
+  const swapCall: Call | null = useSwapCallArguments({
     trade,
     allowedSlippage,
-    recipientAddressOrName: recipient,
+    recipientAddressOrName,
     signatureData,
     deadline,
   })
 
+  useEffect(() => {
+    if (swapCall) {
+      setCall(swapCall)
+      setTrade(trade)
+    }
+  }, [swapCall, setCall, setTrade, trade])
   const swapCallback = libCallback
 
   const callback = useMemo(() => {
-    if (!trade || !swapCallback) return null
+    if (!storedTrade || !swapCallback) return null
     return () =>
       swapCallback().then((response) => {
         addTransaction(
           response,
-          trade.tradeType === TradeType.EXACT_INPUT
+          storedTrade.tradeType === TradeType.EXACT_INPUT
             ? {
                 type: TransactionType.SWAP,
                 tradeType: TradeType.EXACT_INPUT,
-                inputCurrencyId: currencyId(trade.inputAmount.currency),
-                inputCurrencyAmountRaw: trade.inputAmount.quotient.toString(),
-                expectedOutputCurrencyAmountRaw: trade.outputAmount.quotient.toString(),
-                outputCurrencyId: currencyId(trade.outputAmount.currency),
-                minimumOutputCurrencyAmountRaw: trade.minimumAmountOut(allowedSlippage).quotient.toString(),
+                inputCurrencyId: currencyId(storedTrade.inputAmount.currency),
+                inputCurrencyAmountRaw: storedTrade.inputAmount.quotient.toString(),
+                expectedOutputCurrencyAmountRaw: storedTrade.outputAmount.quotient.toString(),
+                outputCurrencyId: currencyId(storedTrade.outputAmount.currency),
+                minimumOutputCurrencyAmountRaw: storedTrade.minimumAmountOut(allowedSlippage).quotient.toString(),
               }
             : {
                 type: TransactionType.SWAP,
                 tradeType: TradeType.EXACT_OUTPUT,
-                inputCurrencyId: currencyId(trade.inputAmount.currency),
-                maximumInputCurrencyAmountRaw: trade.maximumAmountIn(allowedSlippage).quotient.toString(),
-                outputCurrencyId: currencyId(trade.outputAmount.currency),
-                outputCurrencyAmountRaw: trade.outputAmount.quotient.toString(),
-                expectedInputCurrencyAmountRaw: trade.inputAmount.quotient.toString(),
+                inputCurrencyId: currencyId(storedTrade.inputAmount.currency),
+                maximumInputCurrencyAmountRaw: storedTrade.maximumAmountIn(allowedSlippage).quotient.toString(),
+                outputCurrencyId: currencyId(storedTrade.outputAmount.currency),
+                outputCurrencyAmountRaw: storedTrade.outputAmount.quotient.toString(),
+                expectedInputCurrencyAmountRaw: storedTrade.inputAmount.quotient.toString(),
               }
         )
         return response.hash
       })
-  }, [addTransaction, allowedSlippage, swapCallback, trade])
+  }, [addTransaction, allowedSlippage, swapCallback, storedTrade])
 
   return {
     state,

@@ -21,9 +21,10 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import JSBI from 'jsbi'
 import { formatSwapQuoteReceivedEventProperties } from 'lib/utils/analytics'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ReactNode } from 'react'
 import { ArrowDown, CheckCircle, HelpCircle } from 'react-feather'
 import { useNavigate } from 'react-router-dom'
@@ -150,6 +151,7 @@ export default function Swap({ className }: { className?: string }) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
+  const { setEatPayload, eatPayload, onTransactionSuccess } = useVioletEAT()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -350,12 +352,15 @@ export default function Swap({ className }: { className?: string }) {
 
   const handleSwap = useCallback(() => {
     if (!swapCallback) {
+      setSwapState({
+        attemptingTxn: false,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: 'Something went wrong, Please try again.',
+        txHash: undefined,
+      })
       return
     }
-    if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
-      return
-    }
-    setSwapState({ attemptingTxn: true, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
       .then((hash) => {
         setSwapState({ attemptingTxn: false, tradeToConfirm, showConfirm, swapErrorMessage: undefined, txHash: hash })
@@ -364,6 +369,7 @@ export default function Swap({ className }: { className?: string }) {
           action: 'transaction hash',
           label: hash,
         })
+        onTransactionSuccess()
         sendEvent({
           category: 'Swap',
           action:
@@ -389,7 +395,6 @@ export default function Swap({ className }: { className?: string }) {
       })
   }, [
     swapCallback,
-    stablecoinPriceImpact,
     tradeToConfirm,
     showConfirm,
     recipient,
@@ -397,7 +402,32 @@ export default function Swap({ className }: { className?: string }) {
     account,
     trade?.inputAmount?.currency?.symbol,
     trade?.outputAmount?.currency?.symbol,
+    onTransactionSuccess,
   ])
+
+  // we use a ref here to ensure that we only call handleSwap once
+  // otherwise, handleSwap will get called every time it gets updated
+  const handleSwapOnceRef = useRef<boolean>(false)
+  useEffect(() => {
+    if (eatPayload.status === 'issued' && handleSwapOnceRef.current === false) {
+      handleSwapOnceRef.current = true
+      handleSwap()
+    }
+    // we this ensure that after end of the proces, we reset the ref
+    // so future calls will trigger handleSwap()
+    if (eatPayload.status !== 'issued' && handleSwapOnceRef.current === true) {
+      handleSwapOnceRef.current = false
+    }
+    if (eatPayload.status === 'failed') {
+      setSwapState({
+        attemptingTxn: false,
+        tradeToConfirm,
+        showConfirm,
+        swapErrorMessage: eatPayload.data.message,
+        txHash: undefined,
+      })
+    }
+  }, [handleSwap, eatPayload, swapCallback, showConfirm, tradeToConfirm])
 
   // errors
   const [swapQuoteReceivedDate, setSwapQuoteReceivedDate] = useState<Date | undefined>()
@@ -521,7 +551,19 @@ export default function Swap({ className }: { className?: string }) {
               txHash={txHash}
               recipient={recipient}
               allowedSlippage={allowedSlippage}
-              onConfirm={handleSwap}
+              onConfirm={() => {
+                if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
+                  return
+                }
+                setSwapState({
+                  attemptingTxn: true,
+                  tradeToConfirm,
+                  showConfirm,
+                  swapErrorMessage: undefined,
+                  txHash: undefined,
+                })
+                setEatPayload({ status: 'authorizing' })
+              }}
               swapErrorMessage={swapErrorMessage}
               onDismiss={handleConfirmDismiss}
               swapQuoteReceivedDate={swapQuoteReceivedDate}
