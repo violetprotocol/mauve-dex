@@ -308,6 +308,7 @@ const VioletProtectedButtonConfirmedStyle = styled(ButtonConfirmedStyle)`
 `
 
 const ButtonErrorStyle = styled(BaseButton)`
+  color: ${({ theme }) => theme.white};
   background-color: ${({ theme }) => theme.accentFailure};
   border: 1px solid ${({ theme }) => theme.accentFailure};
 

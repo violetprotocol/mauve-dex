@@ -6,6 +6,7 @@ import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AutoRow } from 'components/Row'
 import { useAllTokens } from 'hooks/Tokens'
 import { useTokenInfoFromActiveList } from 'hooks/useTokenInfoFromActiveList'
+import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenAddress } from 'lib/utils/analytics'
 import { Text } from 'rebass'
 import { WrappedTokenInfo } from 'state/lists/wrappedTokenInfo'
@@ -69,7 +70,9 @@ export default function MauveBases({
       wrapped: token,
     } as Currency
   })
-  const bases = typeof chainId !== 'undefined' ? tokens ?? [] : []
+
+  const native = useNativeCurrency()
+  const bases = typeof chainId !== 'undefined' ? [native, ...tokens] ?? [] : []
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">

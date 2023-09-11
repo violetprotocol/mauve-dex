@@ -51,8 +51,8 @@ msgid "24H volume"
 msgstr "24H volume"
 
 #: src/components/Tokens/TokenDetails/StatsSection.tsx
-msgid "24H volume is the amount of the asset that has been traded on Uniswap v3 during the past 24 hours."
-msgstr "24H volume is the amount of the asset that has been traded on Uniswap v3 during the past 24 hours."
+msgid "24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours."
+msgstr "24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours."
 
 #: src/pages/RemoveLiquidity/V3.tsx
 msgid "25%"
@@ -175,8 +175,8 @@ msgid "Add {0}"
 msgstr "Add {0}"
 
 #: src/components/AccountDetails/TransactionSummary.tsx
-msgid "Add {0}/{1} V3 liquidity"
-msgstr "Add {0}/{1} V3 liquidity"
+msgid "Add {0}/{1} Mauve liquidity"
+msgstr "Add {0}/{1} Mauve liquidity"
 
 #: src/components/AccountDetailsV2/TransactionBody.tsx
 msgid "Added"
@@ -216,8 +216,8 @@ msgid "Allow high price impact trades and skip the confirm screen. Use at your o
 msgstr "Allow high price impact trades and skip the confirm screen. Use at your own risk."
 
 #: src/pages/Swap/index.tsx
-msgid "Allow the Uniswap Protocol to use your {0}"
-msgstr "Allow the Uniswap Protocol to use your {0}"
+msgid "Allow the Mauve Protocol to use your {0}"
+msgstr "Allow the Mauve Protocol to use your {0}"
 
 #: src/pages/MigrateV2/MigrateV2Pair.tsx
 msgid "Allowed"
@@ -237,8 +237,8 @@ msgid "An error occurred loading tokens. Please try again."
 msgstr "An error occurred loading tokens. Please try again."
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
-msgid "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
-msgstr "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgid "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Mauve."
+msgstr "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Mauve."
 
 #: src/pages/Swap/index.tsx
 msgid "Approval failed. Try again."
@@ -362,8 +362,8 @@ msgid "By adding liquidity you'll earn 0.3% of all trades on this pair proportio
 msgstr "By adding liquidity you'll earn 0.3% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity."
 
 #: src/components/WalletModal/index.tsx
-msgid "By connecting a wallet, you agree to Uniswap Labs’ <0>Terms of Service</0> and consent to its <1>Privacy Policy</1>."
-msgstr "By connecting a wallet, you agree to Uniswap Labs’ <0>Terms of Service</0> and consent to its <1>Privacy Policy</1>."
+msgid "By connecting a wallet, you agree to Mauve's <0>Terms of Service</0> and consent to its <1>Privacy Policy</1>."
+msgstr "By connecting a wallet, you agree to Mauve's <0>Terms of Service</0> and consent to its <1>Privacy Policy</1>."
 
 #: src/pages/Vote/styled.tsx
 msgid "Canceled"
@@ -602,8 +602,8 @@ msgid "Create a pool"
 msgstr "Create a pool"
 
 #: src/components/AccountDetails/TransactionSummary.tsx
-msgid "Create pool and add {0}/{1} V3 liquidity"
-msgstr "Create pool and add {0}/{1} V3 liquidity"
+msgid "Create pool and add {0}/{1} Mauve liquidity"
+msgstr "Create pool and add {0}/{1} Mauve liquidity"
 
 #: src/pages/PoolFinder/index.tsx
 msgid "Create pool."
@@ -823,8 +823,8 @@ msgid "Explore NFTs"
 msgstr "Explore NFTs"
 
 #: src/pages/Pool/CTACards.tsx
-msgid "Explore Uniswap Analytics."
-msgstr "Explore Uniswap Analytics."
+msgid "Explore Mauve Analytics."
+msgstr "Explore Mauve Analytics."
 
 #: src/components/Tokens/TokenDetails/InvalidTokenDetails.tsx
 msgid "Explore tokens"
@@ -867,8 +867,8 @@ msgid "For"
 msgstr "For"
 
 #: src/pages/MigrateV2/index.tsx
-msgid "For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and deposit it into Uniswap V3."
-msgstr "For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and deposit it into Uniswap V3."
+msgid "For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and deposit it into Mauve."
+msgstr "For each pool shown below, click migrate to remove your liquidity from Uniswap V2 and deposit it into Mauve."
 
 #: src/pages/Swap/index.tsx
 msgid "From"
@@ -1121,8 +1121,8 @@ msgid "Migrate V2 Liquidity"
 msgstr "Migrate V2 Liquidity"
 
 #: src/pages/MigrateV2/index.tsx
-msgid "Migrate your liquidity tokens from Uniswap V2 to Uniswap V3."
-msgstr "Migrate your liquidity tokens from Uniswap V2 to Uniswap V3."
+msgid "Migrate your liquidity tokens from Uniswap V2 to Mauve."
+msgstr "Migrate your liquidity tokens from Uniswap V2 to Mauve."
 
 #: src/components/AccountDetails/TransactionSummary.tsx
 msgid "Migrate {0}/{1} liquidity to V3"
@@ -1158,8 +1158,8 @@ msgid "Missing dependencies"
 msgstr "Missing dependencies"
 
 #: src/components/Tokens/TokenDetails/PriceChart.tsx
-msgid "Missing price data due to recently low trading volume on Uniswap v3"
-msgstr "Missing price data due to recently low trading volume on Uniswap v3"
+msgid "Missing price data due to recently low trading volume on Mauve"
+msgstr "Missing price data due to recently low trading volume on Mauve"
 
 #: src/components/FiatOnrampModal/index.tsx
 msgid "Moonpay Fiat On-ramp iframe"
@@ -1309,8 +1309,8 @@ msgid "Pending"
 msgstr "Pending"
 
 #: src/pages/Swap/index.tsx
-msgid "Permission is required for Uniswap to swap each token. This will expire after one month for your security."
-msgstr "Permission is required for Uniswap to swap each token. This will expire after one month for your security."
+msgid "Permission is required for Mauve to swap each token. This will expire after one month for your security."
+msgstr "Permission is required for Mauve to swap each token. This will expire after one month for your security."
 
 #: src/components/vote/ProposalEmptyState.tsx
 msgid "Please connect to Layer 1 Ethereum"
@@ -1773,8 +1773,8 @@ msgid "The % you will earn in fees."
 msgstr "The % you will earn in fees."
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
-msgid "The Uniswap invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
-msgstr "The Uniswap invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
+msgid "The Mauve invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
+msgstr "The Mauve invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
 
 #: src/components/swap/AdvancedSwapDetails.tsx
 msgid "The amount you expect to receive at the current market price. You may receive less or more if the market price changes while your transaction is pending."
@@ -1789,8 +1789,8 @@ msgid "The app fetches on-chain data and constructs contract calls with an Infur
 msgstr "The app fetches on-chain data and constructs contract calls with an Infura API."
 
 #: src/components/PrivacyPolicy/index.tsx
-msgid "The app fetches the optimal trade route from a Uniswap Labs server."
-msgstr "The app fetches the optimal trade route from a Uniswap Labs server."
+msgid "The app fetches the optimal trade route from a Mauve server."
+msgstr "The app fetches the optimal trade route from a Mauve server."
 
 #: src/components/PrivacyPolicy/index.tsx
 msgid "The app logs anonymized usage statistics in order to improve over time."
@@ -1842,8 +1842,8 @@ msgid "The output token cannot be transferred. There may be an issue with the ou
 msgstr "The output token cannot be transferred. There may be an issue with the output token."
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
-msgid "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
-msgstr "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgid "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Mauve."
+msgstr "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Mauve."
 
 #: src/components/Badge/RangeBadge.tsx
 msgid "The price of this pool is outside of your selected range. Your position is not currently earning fees."
@@ -1866,8 +1866,8 @@ msgid "There is no liquidity data."
 msgstr "There is no liquidity data."
 
 #: src/components/ConnectedAccountBlocked/index.tsx
-msgid "This address is blocked on the Uniswap Labs interface because it is associated with one or more"
-msgstr "This address is blocked on the Uniswap Labs interface because it is associated with one or more"
+msgid "This address is blocked on the Mauve interface because it is associated with one or more"
+msgstr "This address is blocked on the Mauve interface because it is associated with one or more"
 
 #: src/components/PrivacyPolicy/index.tsx
 msgid "This app uses the following third-party APIs:"
@@ -1890,8 +1890,8 @@ msgid "This route optimizes your total output by considering split routes, multi
 msgstr "This route optimizes your total output by considering split routes, multiple hops, and the gas cost of each step."
 
 #: src/pages/Tokens/index.tsx
-msgid "This table contains the top tokens by Uniswap volume, sorted based on your input."
-msgstr "This table contains the top tokens by Uniswap volume, sorted based on your input."
+msgid "This table contains the top tokens by Mauve volume, sorted based on your input."
+msgstr "This table contains the top tokens by Mauve volume, sorted based on your input."
 
 #: src/components/Tokens/TokenDetails/InvalidTokenDetails.tsx
 msgid "This token doesn't exist"
@@ -1906,8 +1906,8 @@ msgid "This tool will safely migrate your {0} liquidity to V3. The process is co
 msgstr "This tool will safely migrate your {0} liquidity to V3. The process is completely trustless thanks to the"
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
-msgid "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
-msgstr "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgid "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Mauve."
+msgstr "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Mauve."
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
 msgid "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance."
@@ -1929,8 +1929,8 @@ msgid "To (at least)"
 msgstr "To (at least)"
 
 #: src/components/Popups/FailedNetworkSwitchPopup.tsx
-msgid "To use Uniswap on {0}, switch the network in your wallet’s settings."
-msgstr "To use Uniswap on {0}, switch the network in your wallet’s settings."
+msgid "To use Mauve on {0}, switch the network in your wallet’s settings."
+msgstr "To use Mauve on {0}, switch the network in your wallet’s settings."
 
 #: src/components/Tokens/TokenTable/TokenRow.tsx
 msgid "Token name"
@@ -1946,12 +1946,12 @@ msgid "Top pools"
 msgstr "Top pools"
 
 #: src/pages/Tokens/index.tsx
-msgid "Top tokens on Uniswap"
-msgstr "Top tokens on Uniswap"
+msgid "Top tokens on Mauve"
+msgstr "Top tokens on Mauve"
 
 #: src/components/Tokens/TokenTable/TokenRow.tsx
-msgid "Total value locked (TVL) is the amount of the asset that’s currently in a Uniswap v3 liquidity pool."
-msgstr "Total value locked (TVL) is the amount of the asset that’s currently in a Uniswap v3 liquidity pool."
+msgid "Total value locked (TVL) is the amount of the asset that’s currently in a Mauve liquidity pool."
+msgstr "Total value locked (TVL) is the amount of the asset that’s currently in a Mauve liquidity pool."
 
 #: src/components/swap/RouterLabel.tsx
 msgid "Trade Route"
@@ -2040,12 +2040,12 @@ msgid "Uniswap Governance"
 msgstr "Uniswap Governance"
 
 #: src/components/PrivacyPolicy/index.tsx
-msgid "Uniswap Labs' Terms of Service"
-msgstr "Uniswap Labs' Terms of Service"
+msgid "Mauve's Terms of Service"
+msgstr "Mauve's Terms of Service"
 
 #: src/components/SwitchLocaleLink/index.tsx
-msgid "Uniswap available in: <0>{0}</0>"
-msgstr "Uniswap available in: <0>{0}</0>"
+msgid "Mauve available in: <0>{0}</0>"
+msgstr "Mauve available in: <0>{0}</0>"
 
 #: src/components/vote/ProposalEmptyState.tsx
 msgid "Uniswap governance is only available on Layer 1. Switch your network to Ethereum Mainnet to view Proposals and Vote."
@@ -2060,8 +2060,8 @@ msgid "Uniswap migration contract↗"
 msgstr "Uniswap migration contract↗"
 
 #: src/utils/swapErrorToUserReadableMessage.tsx
-msgid "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
-msgstr "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgid "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Mauve."
+msgstr "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Mauve."
 
 #: src/pages/Vote/Landing.tsx
 #: src/pages/Vote/VotePage.tsx
@@ -2112,8 +2112,8 @@ msgid "Update Delegation"
 msgstr "Update Delegation"
 
 #: src/components/Settings/index.tsx
-msgid "Use the Uniswap Labs API to get faster quotes."
-msgstr "Use the Uniswap Labs API to get faster quotes."
+msgid "Use the Mauve API to get faster quotes."
+msgstr "Use the Mauve API to get faster quotes."
 
 #: src/pages/Pool/v2.tsx
 msgid "V2 Pool is not available on Layer 2. Switch to Layer 1 Ethereum."
@@ -2160,8 +2160,8 @@ msgid "View transaction on Explorer"
 msgstr "View transaction on Explorer"
 
 #: src/components/Tokens/TokenTable/TokenRow.tsx
-msgid "Volume is the amount of the asset that has been traded on Uniswap v3 during the selected time frame."
-msgstr "Volume is the amount of the asset that has been traded on Uniswap v3 during the selected time frame."
+msgid "Volume is the amount of the asset that has been traded on Mauve during the selected time frame."
+msgstr "Volume is the amount of the asset that has been traded on Mauve during the selected time frame."
 
 #: src/pages/Vote/VotePage.tsx
 msgid "Vote Against"
@@ -2280,8 +2280,8 @@ msgid "You are creating a pool"
 msgstr "You are creating a pool"
 
 #: src/pages/MigrateV2/MigrateV2Pair.tsx
-msgid "You are the first liquidity provider for this Uniswap V3 pool. Your liquidity will migrate at the current {0} price."
-msgstr "You are the first liquidity provider for this Uniswap V3 pool. Your liquidity will migrate at the current {0} price."
+msgid "You are the first liquidity provider for this Mauve pool. Your liquidity will migrate at the current {0} price."
+msgstr "You are the first liquidity provider for this Mauve pool. Your liquidity will migrate at the current {0} price."
 
 #: src/pages/AddLiquidityV2/index.tsx
 msgid "You are the first liquidity provider."
@@ -2312,8 +2312,8 @@ msgid "You must connect an account."
 msgstr "You must connect an account."
 
 #: src/pages/Swap/index.tsx
-msgid "You must give the Uniswap smart contracts permission to use your {0}. You only have to do this once per token."
-msgstr "You must give the Uniswap smart contracts permission to use your {0}. You only have to do this once per token."
+msgid "You must give the Mauve smart contracts permission to use your {0}. You only have to do this once per token."
+msgstr "You must give the Mauve smart contracts permission to use your {0}. You only have to do this once per token."
 
 #: src/pages/CreateProposal/index.tsx
 msgid "You must have {formattedProposalThreshold} votes to submit a proposal"
@@ -2324,8 +2324,8 @@ msgid "You receive"
 msgstr "You receive"
 
 #: src/pages/MigrateV2/MigrateV2Pair.tsx
-msgid "You should only deposit liquidity into Uniswap V3 at a price you believe is correct. <0/>If the price seems incorrect, you can either make a swap to move the price or wait for someone else to do so."
-msgstr "You should only deposit liquidity into Uniswap V3 at a price you believe is correct. <0/>If the price seems incorrect, you can either make a swap to move the price or wait for someone else to do so."
+msgid "You should only deposit liquidity into Mauve at a price you believe is correct. <0/>If the price seems incorrect, you can either make a swap to move the price or wait for someone else to do so."
+msgstr "You should only deposit liquidity into Mauve at a price you believe is correct. <0/>If the price seems incorrect, you can either make a swap to move the price or wait for someone else to do so."
 
 #: src/pages/RemoveLiquidity/V3.tsx
 msgid "You will also collect fees earned from this position."
@@ -2341,8 +2341,8 @@ msgid "Your V2 liquidity"
 msgstr "Your V2 liquidity"
 
 #: src/pages/Pool/index.tsx
-msgid "Your active V3 liquidity positions will appear here."
-msgstr "Your active V3 liquidity positions will appear here."
+msgid "Your active Mauve liquidity positions will appear here."
+msgstr "Your active Mauve liquidity positions will appear here."
 
 #: src/components/Tokens/TokenDetails/BalanceSummary.tsx
 msgid "Your balance on {label}"
@@ -2492,16 +2492,16 @@ msgid "to"
 msgstr "to"
 
 #: src/constants/tokenSafety.tsx
-msgid "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges or frequently swapped on Uniswap.} other {These tokens aren't traded on leading U.S. centralized exchanges or frequently swapped on Uniswap.}}"
-msgstr "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges or frequently swapped on Uniswap.} other {These tokens aren't traded on leading U.S. centralized exchanges or frequently swapped on Uniswap.}}"
+msgid "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges or frequently swapped on Mauve.} other {These tokens aren't traded on leading U.S. centralized exchanges or frequently swapped on Mauve.}}"
+msgstr "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges or frequently swapped on Mauve.} other {These tokens aren't traded on leading U.S. centralized exchanges or frequently swapped on Mauve.}}"
 
 #: src/constants/tokenSafety.tsx
 msgid "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges.} other {These tokens aren't traded on leading U.S. centralized exchanges.}}"
 msgstr "{0, plural, =1 {This token isn't traded on leading U.S. centralized exchanges.} other {These tokens aren't traded on leading U.S. centralized exchanges.}}"
 
 #: src/constants/tokenSafety.tsx
-msgid "{0, plural, =1 {You can't trade this token using the Uniswap App.} other {You can't trade these tokens using the Uniswap App.}}"
-msgstr "{0, plural, =1 {You can't trade this token using the Uniswap App.} other {You can't trade these tokens using the Uniswap App.}}"
+msgid "{0, plural, =1 {You can't trade this token using the Mauve App.} other {You can't trade these tokens using the Mauve App.}}"
+msgstr "{0, plural, =1 {You can't trade this token using the Mauve App.} other {You can't trade these tokens using the Mauve App.}}"
 
 #: src/components/CurrencyInputPanel/FiatValue.tsx
 #: src/components/ErrorBoundary/index.tsx

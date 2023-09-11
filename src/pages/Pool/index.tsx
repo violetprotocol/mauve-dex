@@ -10,7 +10,7 @@ import { RowBetween, RowFixed } from 'components/Row'
 import { SwitchLocaleLink } from 'components/SwitchLocaleLink'
 import { isSupportedChain } from 'constants/chains'
 import { useV3Positions } from 'hooks/useV3Positions'
-import { AlertTriangle, ChevronDown, Inbox, PlusCircle } from 'react-feather'
+import { AlertTriangle, BookOpen, ChevronDown, Inbox, PlusCircle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { useToggleWalletModal } from 'state/application/hooks'
 import { useUserHideClosedPositions } from 'state/user/hooks'
@@ -18,7 +18,6 @@ import styled, { css, useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { PositionDetails } from 'types/position'
 
-// import CTACards from './CTACards'
 import { LoadingRows } from './styleds'
 
 const PageWrapper = styled(AutoColumn)`
@@ -229,16 +228,16 @@ export default function Pool() {
       link: '/add/ETH',
       external: false,
     },
-    // {
-    //   content: (
-    //     <PoolMenuItem>
-    //       <Trans>Learn</Trans>
-    //       <BookOpen size={16} />
-    //     </PoolMenuItem>
-    //   ),
-    //   link: 'https://docs.mauve.org/',
-    //   external: true,
-    // },
+    {
+      content: (
+        <PoolMenuItem>
+          <Trans>Learn</Trans>
+          <BookOpen size={16} />
+        </PoolMenuItem>
+      ),
+      link: 'https://docs.mauve.org/',
+      external: true,
+    },
   ]
 
   return (
@@ -284,9 +283,7 @@ export default function Pool() {
                 <ErrorContainer>
                   <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
                     <InboxIcon strokeWidth={1} style={{ marginTop: '2em' }} />
-                    <div>
-                      <Trans>Your active V3 liquidity positions will appear here.</Trans>
-                    </div>
+                    <div>Your active Mauve liquidity positions will appear here.</div>
                   </ThemedText.DeprecatedBody>
                   {!showConnectAWallet && closedPositions.length > 0 && (
                     <ButtonText
@@ -314,9 +311,6 @@ export default function Pool() {
                 </ErrorContainer>
               )}
             </MainContentWrapper>
-            {/* <HideSmall>
-              <CTACards />
-            </HideSmall> */}
           </AutoColumn>
         </AutoColumn>
       </PageWrapper>

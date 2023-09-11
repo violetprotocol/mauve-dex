@@ -12,7 +12,7 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
-import { NetworkAlert } from 'components/NetworkAlert/NetworkAlert'
+import { MauveDocsCTA } from 'components/MauveDocsCTA/MauveDocsCTA'
 import PriceImpactWarning from 'components/swap/PriceImpactWarning'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -814,7 +814,7 @@ export default function Swap({ className }: { className?: string }) {
               </div>
             </AutoColumn>
           </SwapWrapper>
-          <NetworkAlert />
+          <MauveDocsCTA />
         </PageWrapper>
         <SwitchLocaleLink />
         {!swapIsUnsupported ? null : (
