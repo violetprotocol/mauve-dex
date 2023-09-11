@@ -47,7 +47,7 @@ export default async function fetchTokenList(
     const isLast = i === urls.length - 1
     let response
     try {
-      response = await fetch(url, { credentials: 'omit', mode: 'no-cors' })
+      response = await fetch(url, { credentials: 'omit' })
     } catch (error) {
       const message = `failed to fetch list: ${listUrl}`
       console.debug(message, error)
@@ -61,7 +61,6 @@ export default async function fetchTokenList(
       if (isLast) throw new Error(message)
       continue
     }
-
     const json = await response.json()
     // [MAUVE-DISABLED] TODO: Figure out token list validation as part of the token list epic.
     // const list = skipValidation ? json : await validateTokenList(json)
