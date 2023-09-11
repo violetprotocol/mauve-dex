@@ -133,6 +133,36 @@ export function CurrencySearch({
     if (isOpen) setSearchQuery('')
   }, [isOpen])
 
+  // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
+  // // manage focus on modal show
+  // const inputRef = useRef<HTMLInputElement>();
+  // const handleInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  //   const input = event.target.value;
+  //   const checksummedInput = isAddress(input);
+  //   setSearchQuery(checksummedInput || input);
+  //   fixedList.current?.scrollTo(0);
+  // }, []);
+
+  // const handleEnter = useCallback(
+  //   (e: KeyboardEvent<HTMLInputElement>) => {
+  //     if (e.key === "Enter") {
+  //       const s = debouncedQuery.toLowerCase().trim();
+  //       if (s === native?.symbol?.toLowerCase()) {
+  //         handleCurrencySelect(native);
+  //       } else if (searchCurrencies.length > 0) {
+  //         if (
+  //           searchCurrencies[0].symbol?.toLowerCase() ===
+  //             debouncedQuery.trim().toLowerCase() ||
+  //           searchCurrencies.length === 1
+  //         ) {
+  //           handleCurrencySelect(searchCurrencies[0]);
+  //         }
+  //       }
+  //     }
+  //   },
+  //   [debouncedQuery, native, searchCurrencies, handleCurrencySelect]
+  // );
+
   // menu ui
   const [open, toggle] = useToggle(false)
   const node = useRef<HTMLDivElement>()

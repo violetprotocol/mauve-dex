@@ -22,6 +22,7 @@ export const MenuItem = styled(RowBetween)<{ dim?: boolean }>`
   opacity: ${({ disabled, selected, dim }) => (dim || disabled || selected ? 0.4 : 1)};
 `
 
+// [MAUVE-DISABLED]: Not that useful for now
 // export const SearchInput = styled.input`
 //   background: no-repeat scroll 7px 7px;
 //   background-image: url(${searchIcon});
