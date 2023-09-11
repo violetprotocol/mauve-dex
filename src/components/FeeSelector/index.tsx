@@ -132,15 +132,7 @@ export default function FeeSelector({
       return
     }
 
-    if (largestUsageFeeTier) {
-      recommended.current = true
-      sendEvent({
-        category: 'FeePoolSelect',
-        action: ' Recommended',
-      })
-
-      handleFeePoolSelect(largestUsageFeeTier)
-    } else if (onlyInitializedFeeTier) {
+    if (onlyInitializedFeeTier) {
       handleFeePoolSelect(onlyInitializedFeeTier)
     }
   }, [feeAmount, isLoading, isError, largestUsageFeeTier, onlyInitializedFeeTier, handleFeePoolSelect])
