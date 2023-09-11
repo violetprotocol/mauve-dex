@@ -1,5 +1,6 @@
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
+import AppVersion from 'components/AppVersion'
 import Loader from 'components/Loader'
 import TopLevelModals from 'components/TopLevelModals'
 import { opacify } from 'polished'
@@ -186,6 +187,7 @@ export default function App() {
           </BackgroundGlow>
 
           <Popups />
+          <AppVersion />
           <Polling />
           <TopLevelModals />
           <Suspense fallback={<Loader />}>
