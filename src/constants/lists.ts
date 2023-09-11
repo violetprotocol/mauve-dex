@@ -1,4 +1,4 @@
-import { isDevelopmentEnv, isProductionEnv, isStagingEnv } from 'utils/env'
+import { isDevelopmentEnv, isLocalEnv, isProductionEnv, isStagingEnv } from 'utils/env'
 
 const MAUVE_TESTNETS_LIST_URL =
   'https://raw.githubusercontent.com/violetprotocol/mauve-token-list/main/mauve.tokenlist.testnets.json'
@@ -25,7 +25,7 @@ export const UNSUPPORTED_LIST_URLS: string[] = [BA_LIST /* , UNI_UNSUPPORTED_LIS
 
 // default lists to be 'active' aka searched across
 export const getMauveActiveList = () => {
-  if (isDevelopmentEnv()) return [MAUVE_TESTNETS_LIST_URL]
+  if (isDevelopmentEnv() || isLocalEnv()) return [MAUVE_TESTNETS_LIST_URL]
   if (isStagingEnv()) return [MAUVE_MAINNETS_LIST_URL, MAUVE_TESTNETS_LIST_URL]
   if (isProductionEnv()) return [MAUVE_MAINNETS_LIST_URL]
   return [MAUVE_TESTNETS_LIST_URL]

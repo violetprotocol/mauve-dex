@@ -1,5 +1,9 @@
 export function isDevelopmentEnv(): boolean {
-  return process.env.REACT_APP_VIOLET_ENV === 'development' || process.env.REACT_APP_VIOLET_ENV === 'local'
+  return process.env.REACT_APP_VIOLET_ENV === 'development'
+}
+
+export function isLocalEnv(): boolean {
+  return process.env.REACT_APP_VIOLET_ENV === 'local'
 }
 
 export function isTestEnv(): boolean {
