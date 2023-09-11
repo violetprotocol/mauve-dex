@@ -17,11 +17,12 @@ import styled from 'styled-components/macro'
 import { baseUrlByEnvironment } from '../generateEAT'
 
 const IFRAME_WIDTH = 384
-const IFRAME_HEIGHT = 256
+const IFRAME_HEIGHT = 524
 
 const StyledIframe = styled.iframe`
   border: none;
   background-color: ${({ theme }) => theme.tw.neutral[50]};
+  border-radius: 1rem;
 `
 
 const IFrameWrapper = styled.div`
@@ -161,7 +162,7 @@ interface IFrameProps {
 }
 
 const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ authnorizationUrl }, ref) {
-  return <StyledIframe ref={ref} src={authnorizationUrl} width={IFRAME_WIDTH} height={IFRAME_HEIGHT} />
+  return <StyledIframe ref={ref} src={authnorizationUrl} width={IFRAME_WIDTH} height={IFRAME_HEIGHT} allowFullScreen />
 })
 
 ///////
