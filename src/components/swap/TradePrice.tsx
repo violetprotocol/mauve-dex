@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency, Price } from '@violetprotocol/mauve-sdk-core'
 import useStablecoinPrice from 'hooks/useStablecoinPrice'
 import { useCallback, useState } from 'react'
@@ -58,7 +57,7 @@ export default function TradePrice({ price }: TradePriceProps) {
       <ThemedText.BodySmall>{text}</ThemedText.BodySmall>{' '}
       {usdcPrice && (
         <ThemedText.DeprecatedDarkGray>
-          <Trans>({formatDollar({ num: priceToPreciseFloat(usdcPrice), isPrice: true })})</Trans>
+          <>({formatDollar({ num: priceToPreciseFloat(usdcPrice), isPrice: true })})</>
         </ThemedText.DeprecatedDarkGray>
       )}
     </StyledPriceContainer>

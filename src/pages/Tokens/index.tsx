@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { MAX_WIDTH_MEDIA_BREAKPOINT, MEDIUM_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
@@ -79,11 +78,11 @@ const Tokens = () => {
       <ExploreContainer>
         <TitleContainer>
           <MouseoverTooltip
-            text={<Trans>This table contains the top tokens by volume, sorted based on your input.</Trans>}
+            text={<>This table contains the top tokens by volume, sorted based on your input.</>}
             placement="bottom"
           >
             <ThemedText.LargeHeader>
-              <Trans>Top tokens on Mauve</Trans>
+              <>Top tokens on Mauve</>
             </ThemedText.LargeHeader>
           </MouseoverTooltip>
         </TitleContainer>

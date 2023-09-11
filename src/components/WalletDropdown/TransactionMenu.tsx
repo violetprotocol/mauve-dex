@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { getYear, isSameDay, isSameWeek, isSameYear } from 'date-fns'
 import ms from 'ms.macro'
@@ -153,7 +152,7 @@ export const TransactionHistoryMenu = ({ onClose }: { onClose: () => void }) => 
     <SlideOutMenu
       onClose={onClose}
       onClear={transactionGroupsInformation.length > 0 ? clearAllTransactionsCallback : undefined}
-      title={<Trans>Transactions</Trans>}
+      title={<>Transactions</>}
     >
       <Divider />
       {transactionGroupsInformation.length > 0 ? (
@@ -164,7 +163,7 @@ export const TransactionHistoryMenu = ({ onClose }: { onClose: () => void }) => 
         </>
       ) : (
         <EmptyTransaction data-testid="wallet-empty-transaction-text">
-          <Trans>Your transactions will appear here</Trans>
+          <>Your transactions will appear here</>
         </EmptyTransaction>
       )}
     </SlideOutMenu>

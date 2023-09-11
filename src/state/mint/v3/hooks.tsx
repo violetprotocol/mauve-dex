@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency, CurrencyAmount, Price, Rounding, Token } from '@violetprotocol/mauve-sdk-core'
 import {
   encodeSqrtRatioX96,
@@ -239,7 +238,7 @@ export function useV3DerivedMintInfo(
   // if pool exists use it, if not use the mock pool
   const poolForPosition: Pool | undefined = pool ?? mockPool
 
-  // lower and upper limits in the tick space for `feeAmoun<Trans>
+  // lower and upper limits in the tick space for `feeAmoun<>
   const tickSpaceLimits: {
     [bound in Bound]: number | undefined
   } = useMemo(
@@ -446,32 +445,32 @@ export function useV3DerivedMintInfo(
 
   let errorMessage: ReactNode | undefined
   if (!account) {
-    errorMessage = <Trans>Connect Wallet</Trans>
+    errorMessage = <>Connect Wallet</>
   }
 
   if (poolState === PoolState.INVALID) {
-    errorMessage = errorMessage ?? <Trans>Invalid pair</Trans>
+    errorMessage = errorMessage ?? <>Invalid pair</>
   }
 
   if (invalidPrice) {
-    errorMessage = errorMessage ?? <Trans>Invalid price input</Trans>
+    errorMessage = errorMessage ?? <>Invalid price input</>
   }
 
   if (
     (!parsedAmounts[Field.CURRENCY_A] && !depositADisabled) ||
     (!parsedAmounts[Field.CURRENCY_B] && !depositBDisabled)
   ) {
-    errorMessage = errorMessage ?? <Trans>Enter an amount</Trans>
+    errorMessage = errorMessage ?? <>Enter an amount</>
   }
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
-    errorMessage = <Trans>Insufficient {currencies[Field.CURRENCY_A]?.symbol} balance</Trans>
+    errorMessage = <>Insufficient {currencies[Field.CURRENCY_A]?.symbol} balance</>
   }
 
   if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
-    errorMessage = <Trans>Insufficient {currencies[Field.CURRENCY_B]?.symbol} balance</Trans>
+    errorMessage = <>Insufficient {currencies[Field.CURRENCY_B]?.symbol} balance</>
   }
 
   const invalidPool = poolState === PoolState.INVALID

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import searchIcon from 'assets/svg/search.svg'
@@ -76,26 +75,20 @@ export default function SearchBar() {
 
   return (
     <SearchBarContainer>
-      <Trans
-        render={({ translation }) => (
-          <TraceEvent
-            events={[BrowserEvent.onFocus]}
-            name={InterfaceEventName.EXPLORE_SEARCH_SELECTED}
-            element={InterfaceElementName.EXPLORE_SEARCH_INPUT}
-          >
-            <SearchInput
-              type="search"
-              placeholder={`${translation}`}
-              id="searchBar"
-              autoComplete="off"
-              value={localFilterString}
-              onChange={({ target: { value } }) => setLocalFilterString(value)}
-            />
-          </TraceEvent>
-        )}
+      <TraceEvent
+        events={[BrowserEvent.onFocus]}
+        name={InterfaceEventName.EXPLORE_SEARCH_SELECTED}
+        element={InterfaceElementName.EXPLORE_SEARCH_INPUT}
       >
-        Filter tokens
-      </Trans>
+        <SearchInput
+          type="search"
+          placeholder="Filter tokens"
+          id="searchBar"
+          autoComplete="off"
+          value={localFilterString}
+          onChange={({ target: { value } }) => setLocalFilterString(value)}
+        />
+      </TraceEvent>
     </SearchBarContainer>
   )
 }

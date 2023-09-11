@@ -28,7 +28,7 @@ export {}
 //         <LoadingView onDismiss={onDismiss}>
 //           <AutoColumn gap="md" justify="center">
 //             <ThemedText.DeprecatedLargeHeader>
-//               <Trans>Submitting Proposal</Trans>
+//               <>Submitting Proposal</>
 //             </ThemedText.DeprecatedLargeHeader>
 //           </AutoColumn>
 //         </LoadingView>
@@ -36,18 +36,18 @@ export {}
 //         <SubmittedView onDismiss={onDismiss} hash={hash}>
 //           <AutoColumn gap="md" justify="center">
 //             <Text fontWeight={500} fontSize={20} textAlign="center">
-//               <Trans>Proposal Submitted</Trans>
+//               <>Proposal Submitted</>
 //             </Text>
 //             {hash && (
 //               <ExternalLink href={getExplorerLink(1, hash, ExplorerDataType.TRANSACTION)}>
 //                 <Text fontWeight={500} fontSize={14} color={theme.accentAction}>
-//                   <Trans>View on Etherscan</Trans>
+//                   <>View on Etherscan</>
 //                 </Text>
 //               </ExternalLink>
 //             )}
 //             <ButtonPrimary as={Link} to="/vote" onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
 //               <Text fontWeight={500} fontSize={20}>
-//                 <Trans>Return</Trans>
+//                 <>Return</>
 //               </Text>
 //             </ButtonPrimary>
 //           </AutoColumn>

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Percent } from '@violetprotocol/mauve-sdk-core'
 import styled from 'styled-components/macro'
 
@@ -18,7 +17,7 @@ export default function SwapHeader({ allowedSlippage }: { allowedSlippage: Perce
       <RowBetween>
         <RowFixed>
           <ThemedText.DeprecatedBlack fontWeight={600} fontSize={20}>
-            <Trans>Swap</Trans>
+            <>Swap</>
           </ThemedText.DeprecatedBlack>
         </RowFixed>
         <RowFixed>

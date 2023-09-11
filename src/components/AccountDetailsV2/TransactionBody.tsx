@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Fraction, TradeType } from '@violetprotocol/mauve-sdk-core'
 import JSBI from 'jsbi'
 import {
@@ -52,7 +51,7 @@ const formatAmount = (amountRaw: string, decimals: number, sigFigs: number): str
   new Fraction(amountRaw, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals))).toSignificant(sigFigs)
 
 const FailedText = ({ transactionState }: { transactionState: TransactionState }) =>
-  transactionState === TransactionState.Failed ? <Trans>failed</Trans> : <span />
+  transactionState === TransactionState.Failed ? <>failed</> : <span />
 
 const FormattedCurrencyAmount = ({
   rawAmount,
@@ -88,17 +87,16 @@ const SwapSummary = ({
 }) => {
   const actionProps = {
     transactionState,
-    pending: <Trans>Swapping</Trans>,
-    success: <Trans>Swapped</Trans>,
-    failed: <Trans>Swap</Trans>,
+    pending: <>Swapping</>,
+    success: <>Swapped</>,
+    failed: <>Swap</>,
   }
   const { rawAmountFrom, rawAmountTo } = getRawAmounts(info)
 
   return (
     <BodyWrap>
       <Action {...actionProps} />{' '}
-      <FormattedCurrencyAmount rawAmount={rawAmountFrom} currencyId={info.inputCurrencyId} sigFigs={2} />{' '}
-      <Trans>for </Trans>{' '}
+      <FormattedCurrencyAmount rawAmount={rawAmountFrom} currencyId={info.inputCurrencyId} sigFigs={2} /> <>for </>{' '}
       <FormattedCurrencyAmount rawAmount={rawAmountTo} currencyId={info.outputCurrencyId} sigFigs={2} />{' '}
       <FailedText transactionState={transactionState} />
     </BodyWrap>
@@ -116,9 +114,9 @@ const AddLiquidityV3PoolSummary = ({
 
   const actionProps = {
     transactionState,
-    pending: <Trans>Adding</Trans>,
-    success: <Trans>Added</Trans>,
-    failed: <Trans>Add</Trans>,
+    pending: <>Adding</>,
+    success: <>Added</>,
+    failed: <>Add</>,
   }
 
   return (
@@ -129,7 +127,7 @@ const AddLiquidityV3PoolSummary = ({
         <>
           <Action {...actionProps} />{' '}
           <FormattedCurrencyAmount rawAmount={info.expectedAmountBaseRaw} currencyId={baseCurrencyId} sigFigs={2} />{' '}
-          <Trans>and</Trans>{' '}
+          <>and</>{' '}
           <FormattedCurrencyAmount rawAmount={info.expectedAmountQuoteRaw} currencyId={quoteCurrencyId} sigFigs={2} />
         </>
       )}{' '}
@@ -147,16 +145,15 @@ const RemoveLiquidityV3Summary = ({
 }) => {
   const actionProps = {
     transactionState,
-    pending: <Trans>Removing</Trans>,
-    success: <Trans>Removed</Trans>,
-    failed: <Trans>Remove</Trans>,
+    pending: <>Removing</>,
+    success: <>Removed</>,
+    failed: <>Remove</>,
   }
 
   return (
     <BodyWrap>
       <Action {...actionProps} />{' '}
-      <FormattedCurrencyAmount rawAmount={expectedAmountBaseRaw} currencyId={baseCurrencyId} sigFigs={2} />{' '}
-      <Trans>and</Trans>{' '}
+      <FormattedCurrencyAmount rawAmount={expectedAmountBaseRaw} currencyId={baseCurrencyId} sigFigs={2} /> <>and</>{' '}
       <FormattedCurrencyAmount rawAmount={expectedAmountQuoteRaw} currencyId={quoteCurrencyId} sigFigs={2} />{' '}
       <FailedText transactionState={transactionState} />
     </BodyWrap>
@@ -174,9 +171,9 @@ const CreateV3PoolSummary = ({
   const quoteCurrency = useCurrency(quoteCurrencyId)
   const actionProps = {
     transactionState,
-    pending: <Trans>Creating</Trans>,
-    success: <Trans>Created</Trans>,
-    failed: <Trans>Create</Trans>,
+    pending: <>Creating</>,
+    success: <>Created</>,
+    failed: <>Create</>,
   }
 
   return (
@@ -185,7 +182,7 @@ const CreateV3PoolSummary = ({
       <HighlightText>
         {baseCurrency?.symbol}/{quoteCurrency?.symbol}{' '}
       </HighlightText>
-      <Trans>Pool</Trans> <FailedText transactionState={transactionState} />
+      <>Pool</> <FailedText transactionState={transactionState} />
     </BodyWrap>
   )
 }
@@ -200,18 +197,17 @@ const CollectFeesSummary = ({
   const { currencyId0, expectedCurrencyOwed0 = '0', expectedCurrencyOwed1 = '0', currencyId1 } = info
   const actionProps = {
     transactionState,
-    pending: <Trans>Collecting</Trans>,
-    success: <Trans>Collected</Trans>,
-    failed: <Trans>Collect</Trans>,
+    pending: <>Collecting</>,
+    success: <>Collected</>,
+    failed: <>Collect</>,
   }
 
   return (
     <BodyWrap>
       <Action {...actionProps} />{' '}
-      <FormattedCurrencyAmount rawAmount={expectedCurrencyOwed0} currencyId={currencyId0} sigFigs={2} />{' '}
-      <Trans>and</Trans>{' '}
-      <FormattedCurrencyAmount rawAmount={expectedCurrencyOwed1} currencyId={currencyId1} sigFigs={2} />{' '}
-      <Trans>fees</Trans> <FailedText transactionState={transactionState} />
+      <FormattedCurrencyAmount rawAmount={expectedCurrencyOwed0} currencyId={currencyId0} sigFigs={2} /> <>and</>{' '}
+      <FormattedCurrencyAmount rawAmount={expectedCurrencyOwed1} currencyId={currencyId1} sigFigs={2} /> <>fees</>{' '}
+      <FailedText transactionState={transactionState} />
     </BodyWrap>
   )
 }
@@ -226,9 +222,9 @@ const ApprovalSummary = ({
   const token = useToken(info.tokenAddress)
   const actionProps = {
     transactionState,
-    pending: <Trans>Approving</Trans>,
-    success: <Trans>Approved</Trans>,
-    failed: <Trans>Approve</Trans>,
+    pending: <>Approving</>,
+    success: <>Approved</>,
+    failed: <>Approve</>,
   }
 
   return (
@@ -249,9 +245,9 @@ const ClaimSummary = ({
   const { ENSName } = useENSName()
   const actionProps = {
     transactionState,
-    pending: <Trans>Claiming</Trans>,
-    success: <Trans>Claimed</Trans>,
-    failed: <Trans>Claim</Trans>,
+    pending: <>Claiming</>,
+    success: <>Claimed</>,
+    failed: <>Claim</>,
   }
 
   return (
@@ -263,7 +259,7 @@ const ClaimSummary = ({
             {formatAmount(uniAmountRaw, 18, 4)}
             UNI{' '}
           </HighlightText>{' '}
-          <Trans>for</Trans> <HighlightText>{ENSName ?? shortenAddress(recipient)}</HighlightText>
+          <>for</> <HighlightText>{ENSName ?? shortenAddress(recipient)}</HighlightText>
         </>
       )}{' '}
       <FailedText transactionState={transactionState} />
@@ -286,15 +282,15 @@ const WrapSummary = ({
   const actionProps = unwrapped
     ? {
         transactionState,
-        pending: <Trans>Unwrapping</Trans>,
-        success: <Trans>Unwrapped</Trans>,
-        failed: <Trans>Unwrap</Trans>,
+        pending: <>Unwrapping</>,
+        success: <>Unwrapped</>,
+        failed: <>Unwrap</>,
       }
     : {
         transactionState,
-        pending: <Trans>Wrapping</Trans>,
-        success: <Trans>Wrapped</Trans>,
-        failed: <Trans>Wrap</Trans>,
+        pending: <>Wrapping</>,
+        success: <>Wrapped</>,
+        failed: <>Wrap</>,
       }
 
   return (
@@ -303,7 +299,7 @@ const WrapSummary = ({
       <HighlightText>
         {amount} {from}
       </HighlightText>{' '}
-      <Trans>to</Trans>{' '}
+      <>to</>{' '}
       <HighlightText>
         {amount} {to}
       </HighlightText>{' '}

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -155,7 +154,7 @@ export default function FeeSelector({
               <AutoColumn id="add-liquidity-selected-fee">
                 <>
                   <ThemedText.DeprecatedLabel>
-                    <Trans>No pools exist for this pair yet</Trans>
+                    <>No pools exist for this pair yet</>
                   </ThemedText.DeprecatedLabel>
                 </>
               </AutoColumn>

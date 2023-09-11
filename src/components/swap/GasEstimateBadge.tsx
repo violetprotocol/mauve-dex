@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { sendEvent } from 'components/analytics'
 import { AutoColumn } from 'components/Column'
@@ -70,13 +69,13 @@ export default function GasEstimateBadge({
             ) : (
               <AutoColumn gap="4px" justify="center">
                 <ThemedText.DeprecatedMain fontSize="12px" textAlign="center">
-                  <Trans>Estimated network fee</Trans>
+                  <>Estimated network fee</>
                 </ThemedText.DeprecatedMain>
                 <ThemedText.DeprecatedBody textAlign="center" fontWeight={500} style={{ userSelect: 'none' }}>
-                  <Trans>${trade?.gasUseEstimateUSD?.toFixed(2)}</Trans>
+                  <>${trade?.gasUseEstimateUSD?.toFixed(2)}</>
                 </ThemedText.DeprecatedBody>
                 <ThemedText.DeprecatedMain fontSize="10px" textAlign="center" maxWidth="140px" color="text3">
-                  <Trans>Estimate may differ due to your wallet gas settings</Trans>
+                  <>Estimate may differ due to your wallet gas settings</>
                 </ThemedText.DeprecatedMain>
               </AutoColumn>
             )}

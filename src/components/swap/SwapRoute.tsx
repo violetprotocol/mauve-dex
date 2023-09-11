@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Protocol } from '@violetprotocol/mauve-router-sdk'
@@ -99,12 +98,12 @@ export default memo(function SwapRoute({ trade, syncing, fixedOpen = false, ...r
               ) : (
                 <ThemedText.DeprecatedMain fontSize={12} width={400} margin={0}>
                   {trade?.gasUseEstimateUSD && chainId && SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? (
-                    <Trans>Best price route costs ~{formattedGasPriceString} in gas. </Trans>
+                    <>Best price route costs ~{formattedGasPriceString} in gas. </>
                   ) : null}{' '}
-                  <Trans>
+                  <>
                     This route optimizes your total output by considering split routes, multiple hops, and the gas cost
                     of each step.
-                  </Trans>
+                  </>
                 </ThemedText.DeprecatedMain>
               )}
             </>

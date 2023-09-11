@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { formatNumber, NumberType } from '@uniswap/conedison/format'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { ReactNode } from 'react'
@@ -66,28 +65,22 @@ export default function StatsSection(props: StatsSectionProps) {
     return (
       <StatsWrapper data-testid="token-details-stats">
         <Header>
-          <Trans>Stats</Trans>
+          <>Stats</>
         </Header>
         <TokenStatsSection>
           <StatPair>
-            <Stat
-              value={TVL}
-              description={HEADER_DESCRIPTIONS[TokenSortMethod.TOTAL_VALUE_LOCKED]}
-              title={<Trans>TVL</Trans>}
-            />
+            <Stat value={TVL} description={HEADER_DESCRIPTIONS[TokenSortMethod.TOTAL_VALUE_LOCKED]} title={<>TVL</>} />
             <Stat
               value={volume24H}
               description={
-                <Trans>
-                  24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours.
-                </Trans>
+                <>24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours.</>
               }
-              title={<Trans>24H volume</Trans>}
+              title={<>24H volume</>}
             />
           </StatPair>
           <StatPair>
-            <Stat value={priceLow52W} title={<Trans>52W low</Trans>} />
-            <Stat value={priceHigh52W} title={<Trans>52W high</Trans>} />
+            <Stat value={priceLow52W} title={<>52W low</>} />
+            <Stat value={priceHigh52W} title={<>52W high</>} />
           </StatPair>
         </TokenStatsSection>
       </StatsWrapper>

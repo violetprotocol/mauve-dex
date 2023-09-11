@@ -44,7 +44,7 @@ export {}
 //     [ProposalAction.TRANSFER_TOKEN]: [
 //       {
 //         type: ProposalActionDetailField.ADDRESS,
-//         label: <Trans>To</Trans>,
+//         label: <>To</>,
 //       },
 //       {
 //         type: ProposalActionDetailField.CURRENCY,
@@ -53,7 +53,7 @@ export {}
 //     [ProposalAction.APPROVE_TOKEN]: [
 //       {
 //         type: ProposalActionDetailField.ADDRESS,
-//         label: <Trans>To</Trans>,
+//         label: <>To</>,
 //       },
 //       {
 //         type: ProposalActionDetailField.CURRENCY,

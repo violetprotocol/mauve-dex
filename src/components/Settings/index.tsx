@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { t, Trans } from '@lingui/macro'
+import { t } from '@lingui/macro'
 import { Percent } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { isSupportedChainId } from 'lib/hooks/routing/clientSideSmartOrderRouter'
@@ -93,7 +93,7 @@ export default function SettingsTab({ placeholderSlippage }: { placeholderSlippa
         <MenuFlyout>
           <AutoColumn gap="md" style={{ padding: '1rem' }}>
             <Text fontWeight={600} fontSize={14}>
-              <Trans>Settings</Trans>
+              <>Settings</>
             </Text>
             <TransactionSettings placeholderSlippage={placeholderSlippage} />
           </AutoColumn>

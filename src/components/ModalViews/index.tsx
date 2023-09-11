@@ -26,7 +26,7 @@ export {}
 //       <AutoColumn gap="100px" justify="center">
 //         {children}
 //         <ThemedText.DeprecatedSubHeader>
-//           <Trans>Confirm this transaction in your wallet</Trans>
+//           <>Confirm this transaction in your wallet</>
 //         </ThemedText.DeprecatedSubHeader>
 //       </AutoColumn>
 //     </ConfirmOrLoadingWrapper>
@@ -62,7 +62,7 @@ export {}
 //             style={{ marginLeft: '4px' }}
 //           >
 //             <ThemedText.DeprecatedSubHeader>
-//               <Trans>View transaction on Explorer</Trans>
+//               <>View transaction on Explorer</>
 //             </ThemedText.DeprecatedSubHeader>
 //           </ExternalLink>
 //         )}

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { outboundLink } from 'components/analytics'
 import { MOBILE_MEDIA_BREAKPOINT } from 'components/Tokens/constants'
 import useCopyClipboard from 'hooks/useCopyClipboard'
@@ -404,7 +403,7 @@ export const CopyHelper = forwardRef<CopyHelperRefType, CopyHelperProps>(
       <CopyHelperContainer onClick={copy} color={color} clicked={isCopied}>
         <div style={{ display: 'flex', flexDirection: 'row', gap }}>
           {iconPosition === 'left' && <BaseIcon size={iconSize} strokeWidth={1.5} color={iconColor} />}
-          <CopyHelperText fontSize={fontSize}>{isCopied ? <Trans>Copied!</Trans> : children}</CopyHelperText>
+          <CopyHelperText fontSize={fontSize}>{isCopied ? <>Copied!</> : children}</CopyHelperText>
           {iconPosition === 'right' && <BaseIcon size={iconSize} strokeWidth={1.5} color={iconColor} />}
         </div>
       </CopyHelperContainer>

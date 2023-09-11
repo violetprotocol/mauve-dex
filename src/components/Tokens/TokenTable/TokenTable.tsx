@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { PAGE_SIZE, useTopTokens } from 'graphql/data/TopTokens'
 import { validateUrlChainParam } from 'graphql/data/util'
 import { ReactNode } from 'react'
@@ -88,13 +87,13 @@ export default function TokenTable() {
         message={
           <>
             <AlertTriangle size={16} />
-            <Trans>An error occurred loading tokens. Please try again.</Trans>
+            <>An error occurred loading tokens. Please try again.</>
           </>
         }
       />
     )
   } else if (tokens?.length === 0) {
-    return <NoTokensState message={<Trans>No tokens found</Trans>} />
+    return <NoTokensState message={<>No tokens found</>} />
   } else {
     return (
       <GridContainer>

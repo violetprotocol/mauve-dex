@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import Web3Status from 'components/Web3Status'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
@@ -52,10 +51,10 @@ export const PageTabs = () => {
   return (
     <>
       <MenuItem href="/swap" isActive={pathname.startsWith('/swap')}>
-        <Trans>Swap</Trans>
+        <>Swap</>
       </MenuItem>
       <MenuItem href="/pool" id="pool-nav-link" isActive={isPoolActive}>
-        <Trans>Pool</Trans>
+        <>Pool</>
       </MenuItem>
     </>
   )

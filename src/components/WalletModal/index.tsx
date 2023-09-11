@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
 import { sendEvent } from 'components/analytics'
@@ -311,7 +310,7 @@ export default function WalletModal({
       headerRow = (
         <HeaderRow>
           <HoverText>
-            <Trans>Connect a wallet</Trans>
+            <>Connect a wallet</>
           </HoverText>
         </HeaderRow>
       )
@@ -321,11 +320,11 @@ export default function WalletModal({
       if (walletView === WALLET_VIEWS.PENDING) return null
 
       const content = (
-        <Trans>
+        <>
           By connecting a wallet, you agree to Mauve’s{' '}
           <ExternalLink href="https://mauve.org/terms-of-use/">Terms of Use</ExternalLink> and consent to its{' '}
           <ExternalLink href="https://mauve.org/privacy-notice">Privacy Policy</ExternalLink>.
-        </Trans>
+        </>
       )
       return (
         <AutoRow style={{ flexWrap: 'nowrap', padding: '4px 16px' }}>

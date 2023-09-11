@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 // eslint-disable-next-line no-restricted-imports
 import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
@@ -110,14 +109,14 @@ export default function AddressInputPanel({
           <AutoColumn gap="md">
             <RowBetween>
               <ThemedText.DeprecatedBlack color={theme.textSecondary} fontWeight={500} fontSize={14}>
-                {label ?? <Trans>Recipient</Trans>}
+                {label ?? <>Recipient</>}
               </ThemedText.DeprecatedBlack>
               {address && chainId && (
                 <ExternalLink
                   href={getExplorerLink(chainId, name ?? address, ExplorerDataType.ADDRESS)}
                   style={{ fontSize: '14px' }}
                 >
-                  <Trans>(View on Explorer)</Trans>
+                  <>(View on Explorer)</>
                 </ExternalLink>
               )}
             </RowBetween>

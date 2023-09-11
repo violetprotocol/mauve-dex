@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Protocol } from '@violetprotocol/mauve-router-sdk'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
@@ -143,9 +142,7 @@ function Pool({ currency0, currency1, feeAmount }: { currency0: Currency; curren
 
   // TODO - link pool icon to info.uniswap.org via query params
   return (
-    <MouseoverTooltip
-      text={<Trans>{tokenInfo0?.symbol + '/' + tokenInfo1?.symbol + ' ' + feeAmount / 10000}% pool</Trans>}
-    >
+    <MouseoverTooltip text={<>{tokenInfo0?.symbol + '/' + tokenInfo1?.symbol + ' ' + feeAmount / 10000}% pool</>}>
       <PoolBadge>
         <Box margin="0 4px 0 12px">
           <DoubleCurrencyLogo currency0={tokenInfo1} currency1={tokenInfo0} size={20} />

@@ -152,7 +152,7 @@ export {}
 //           <DelegateModal
 //             isOpen={showDelegateModal}
 //             onDismiss={toggleDelegateModal}
-//             title={showUnlockVoting ? <Trans>Unlock Votes</Trans> : <Trans>Update Delegation</Trans>}
+//             title={showUnlockVoting ? <>Unlock Votes</> : <>Update Delegation</>}
 //           />
 //           <TopSection gap="md">
 //             <VoteCard>
@@ -162,15 +162,15 @@ export {}
 //                 <AutoColumn gap="md">
 //                   <RowBetween>
 //                     <ThemedText.DeprecatedWhite fontWeight={600}>
-//                       <Trans>Uniswap Governance</Trans>
+//                       <>Uniswap Governance</>
 //                     </ThemedText.DeprecatedWhite>
 //                   </RowBetween>
 //                   <RowBetween>
 //                     <ThemedText.DeprecatedWhite fontSize={14}>
-//                       <Trans>
+//                       <>
 //                         UNI tokens represent voting shares in Uniswap governance. You can vote on each proposal yourself
 //                         or delegate your votes to a third party.
-//                       </Trans>
+//                       </>
 //                     </ThemedText.DeprecatedWhite>
 //                   </RowBetween>
 //                   <ExternalLink
@@ -182,7 +182,7 @@ export {}
 //                     target="_blank"
 //                   >
 //                     <ThemedText.DeprecatedWhite fontSize={14}>
-//                       <Trans>Read more about Uniswap governance</Trans>
+//                       <>Read more about Uniswap governance</>
 //                     </ThemedText.DeprecatedWhite>
 //                   </ExternalLink>
 //                 </AutoColumn>
@@ -194,7 +194,7 @@ export {}
 //           <TopSection gap="2px">
 //             <WrapSmall>
 //               <ThemedText.DeprecatedMediumHeader style={{ margin: '0.5rem 0.5rem 0.5rem 0', flexShrink: 0 }}>
-//                 <Trans>Proposals</Trans>
+//                 <>Proposals</>
 //               </ThemedText.DeprecatedMediumHeader>
 //               <AutoRow gap="6px" justify="flex-end">
 //                 {loadingProposals || loadingAvailableVotes ? <Loader /> : null}
@@ -205,22 +205,22 @@ export {}
 //                     $borderRadius="8px"
 //                     onClick={toggleDelegateModal}
 //                   >
-//                     <Trans>Unlock Voting</Trans>
+//                     <>Unlock Voting</>
 //                   </ButtonPrimary>
 //                 ) : availableVotes && JSBI.notEqual(JSBI.BigInt(0), availableVotes?.quotient) ? (
 //                   <ThemedText.DeprecatedBody fontWeight={500} mr="6px">
-//                     <Trans>
+//                     <>
 //                       <FormattedCurrencyAmount currencyAmount={availableVotes} /> Votes
-//                     </Trans>
+//                     </>
 //                   </ThemedText.DeprecatedBody>
 //                 ) : uniBalance &&
 //                   userDelegatee &&
 //                   userDelegatee !== ZERO_ADDRESS &&
 //                   JSBI.notEqual(JSBI.BigInt(0), uniBalance?.quotient) ? (
 //                   <ThemedText.DeprecatedBody fontWeight={500} mr="6px">
-//                     <Trans>
+//                     <>
 //                       <FormattedCurrencyAmount currencyAmount={uniBalance} /> Votes
-//                     </Trans>
+//                     </>
 //                   </ThemedText.DeprecatedBody>
 //                 ) : (
 //                   ''
@@ -231,7 +231,7 @@ export {}
 //                   style={{ width: 'fit-content', borderRadius: '8px' }}
 //                   padding="8px"
 //                 >
-//                   <Trans>Create Proposal</Trans>
+//                   <>Create Proposal</>
 //                 </ButtonPrimary>
 //               </AutoRow>
 //             </WrapSmall>
@@ -241,17 +241,17 @@ export {}
 //                 {userDelegatee && userDelegatee !== ZERO_ADDRESS ? (
 //                   <RowFixed>
 //                     <ThemedText.DeprecatedBody fontWeight={500} mr="4px">
-//                       <Trans>Delegated to:</Trans>
+//                       <>Delegated to:</>
 //                     </ThemedText.DeprecatedBody>
 //                     <AddressButton>
 //                       <StyledExternalLink
 //                         href={getExplorerLink(1, userDelegatee, ExplorerDataType.ADDRESS)}
 //                         style={{ margin: '0 4px' }}
 //                       >
-//                         {userDelegatee === account ? <Trans>Self</Trans> : shortenAddress(userDelegatee)}
+//                         {userDelegatee === account ? <>Self</> : shortenAddress(userDelegatee)}
 //                       </StyledExternalLink>
 //                       <TextButton onClick={toggleDelegateModal} style={{ marginLeft: '4px' }}>
-//                         <Trans>(edit)</Trans>
+//                         <>(edit)</>
 //                       </TextButton>
 //                     </AddressButton>
 //                   </RowFixed>
@@ -267,7 +267,7 @@ export {}
 //               <AutoColumn gap="md">
 //                 <RowBetween>
 //                   <ThemedText.DeprecatedMain>
-//                     <Trans>Show Cancelled</Trans>
+//                     <>Show Cancelled</>
 //                   </ThemedText.DeprecatedMain>
 //                   <Toggle
 //                     isActive={!hideCancelled}
@@ -295,7 +295,7 @@ export {}
 //           </TopSection>
 
 //           <ThemedText.DeprecatedSubHeader color="text3">
-//             <Trans>A minimum threshold of 0.25% of the total UNI supply is required to submit proposals</Trans>
+//             <>A minimum threshold of 0.25% of the total UNI supply is required to submit proposals</>
 //           </ThemedText.DeprecatedSubHeader>
 //         </PageWrapper>
 //       </Trace>
