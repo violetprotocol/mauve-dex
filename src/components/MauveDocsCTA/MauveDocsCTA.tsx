@@ -58,7 +58,7 @@ const MauveDocsCTA = () => {
           <BodyText>
             <AutoRow>
               <Header>
-                <>Mauve is a compliant DEX</>
+                <>Mauve is a compliant TESTING</>
               </Header>
               <HideSmall>
                 <>Identity verification through Violet is required.</>
