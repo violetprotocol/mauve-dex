@@ -69,18 +69,16 @@ export default function StatsSection(props: StatsSectionProps) {
         </Header>
         <TokenStatsSection>
           <StatPair>
-            <Stat value={TVL} description={HEADER_DESCRIPTIONS[TokenSortMethod.TOTAL_VALUE_LOCKED]} title={<>TVL</>} />
+            <Stat value={TVL} description={HEADER_DESCRIPTIONS[TokenSortMethod.TOTAL_VALUE_LOCKED]} title="TVL" />
             <Stat
               value={volume24H}
-              description={
-                <>24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours.</>
-              }
-              title={<>24H volume</>}
+              description="24H volume is the amount of the asset that has been traded on Mauve during the past 24 hours."
+              title="24H volume"
             />
           </StatPair>
           <StatPair>
-            <Stat value={priceLow52W} title={<>52W low</>} />
-            <Stat value={priceHigh52W} title={<>52W high</>} />
+            <Stat value={priceLow52W} title="52W low" />
+            <Stat value={priceHigh52W} title="52W high" />
           </StatPair>
         </TokenStatsSection>
       </StatsWrapper>

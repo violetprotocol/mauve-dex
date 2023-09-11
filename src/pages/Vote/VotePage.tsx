@@ -284,7 +284,7 @@ export {}
 //           <DelegateModal
 //             isOpen={showDelegateModal}
 //             onDismiss={toggleDelegateModal}
-//             title={<>Unlock Votes</>}
+//             title="Unlock Votes"
 //           />
 //           <QueueModal isOpen={showQueueModal} onDismiss={toggleQueueModal} proposalId={proposalData?.id} />
 //           <ExecuteModal isOpen={showExecuteModal} onDismiss={toggleExecuteModal} proposalId={proposalData?.id} />

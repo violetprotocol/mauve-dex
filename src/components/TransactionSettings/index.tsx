@@ -168,9 +168,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
           <ThemedText.DeprecatedBlack fontWeight={400} fontSize={14} color={theme.backgroundSurface}>
             <>Slippage tolerance</>
           </ThemedText.DeprecatedBlack>
-          <QuestionHelper
-            text={<>Your transaction will revert if the price changes unfavorably by more than this percentage.</>}
-          />
+          <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
         </RowFixed>
         <RowBetween>
           <Option
@@ -235,9 +233,7 @@ export default function TransactionSettings({ placeholderSlippage }: Transaction
             <ThemedText.DeprecatedBlack fontSize={14} fontWeight={400} color={theme.backgroundSurface}>
               <>Transaction deadline</>
             </ThemedText.DeprecatedBlack>
-            <QuestionHelper
-              text={<>Your transaction will revert if it is pending for more than this period of time.</>}
-            />
+            <QuestionHelper text="Your transaction will revert if it is pending for more than this period of time." />
           </RowFixed>
           <RowFixed>
             <OptionCustom style={{ width: '80px' }} warning={!!deadlineError} tabIndex={-1}>

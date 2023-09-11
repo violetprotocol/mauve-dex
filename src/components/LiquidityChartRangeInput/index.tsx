@@ -170,19 +170,16 @@ export default function LiquidityChartRangeInput({
   return (
     <AutoColumn gap="md" style={{ minHeight: '200px' }}>
       {isUninitialized ? (
-        <InfoBox message={<>Your position will appear here.</>} icon={<Inbox size={56} stroke={theme.textPrimary} />} />
+        <InfoBox message="Your position will appear here." icon={<Inbox size={56} stroke={theme.textPrimary} />} />
       ) : isLoading ? (
         <InfoBox icon={<Loader size="40px" stroke={theme.deprecated_text4} />} />
       ) : error ? (
         <InfoBox
-          message={<>Liquidity data not available.</>}
+          message="Liquidity data not available."
           icon={<CloudOff size={56} stroke={theme.deprecated_text4} />}
         />
       ) : !formattedData || formattedData.length === 0 || !price ? (
-        <InfoBox
-          message={<>There is no liquidity data.</>}
-          icon={<BarChart2 size={56} stroke={theme.deprecated_text4} />}
-        />
+        <InfoBox message="There is no liquidity data." icon={<BarChart2 size={56} stroke={theme.deprecated_text4} />} />
       ) : (
         <ChartWrapper>
           <Chart

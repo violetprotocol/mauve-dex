@@ -704,7 +704,7 @@ export default function AddLiquidity() {
               <ConfirmationPendingContent onDismiss={handleDismissConfirmation} pendingText={pendingText} />
             ) : (
               <ConfirmationModalContent
-                title={<>Add Liquidity</>}
+                title="Add Liquidity"
                 onDismiss={handleDismissConfirmation}
                 topContent={() => (
                   <Review
@@ -821,7 +821,7 @@ export default function AddLiquidity() {
                 {hasExistingPosition && existingPosition && (
                   <PositionPreview
                     position={existingPosition}
-                    title={<>Selected Range</>}
+                    title="Selected Range"
                     inRange={!outOfRange}
                     ticksAtLimit={ticksAtLimit}
                   />

@@ -93,7 +93,7 @@ export default function TokenTable() {
       />
     )
   } else if (tokens?.length === 0) {
-    return <NoTokensState message={<>No tokens found</>} />
+    return <NoTokensState message="No tokens found" />
   } else {
     return (
       <GridContainer>

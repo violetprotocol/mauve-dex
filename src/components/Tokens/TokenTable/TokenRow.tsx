@@ -395,7 +395,7 @@ export function HeaderRow() {
     <TokenRow
       header={true}
       listNumber="#"
-      tokenInfo={<>Token name</>}
+      tokenInfo="Token name"
       price={<HeaderCell category={TokenSortMethod.PRICE} />}
       percentChange={<HeaderCell category={TokenSortMethod.PERCENT_CHANGE} />}
       tvl={<HeaderCell category={TokenSortMethod.TOTAL_VALUE_LOCKED} />}

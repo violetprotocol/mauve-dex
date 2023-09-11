@@ -91,7 +91,7 @@ export function AdvancedSwapDetails({
         <RowBetween>
           <RowFixed>
             <MouseoverTooltip
-              text={<>The impact your trade has on the market price of this pool.</>}
+              text="The impact your trade has on the market price of this pool."
               disableHover={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
@@ -108,12 +108,7 @@ export function AdvancedSwapDetails({
         <RowBetween>
           <RowFixed style={{ marginRight: '20px' }}>
             <MouseoverTooltip
-              text={
-                <>
-                  The minimum amount you are guaranteed to receive. If the price slips any further, your transaction
-                  will revert.
-                </>
-              }
+              text="The minimum amount you are guaranteed to receive. If the price slips any further, your transaction will revert."
               disableHover={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>

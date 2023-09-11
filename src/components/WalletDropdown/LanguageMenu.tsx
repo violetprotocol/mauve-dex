@@ -56,7 +56,7 @@ const LanguageMenu = ({ onClose }: { onClose: () => void }) => {
   const activeLocale = useActiveLocale()
 
   return (
-    <SlideOutMenu title={<>Language</>} onClose={onClose}>
+    <SlideOutMenu title="Language" onClose={onClose}>
       {SUPPORTED_LOCALES.map((locale) => (
         <LanguageMenuItem locale={locale} isActive={activeLocale === locale} key={locale} />
       ))}

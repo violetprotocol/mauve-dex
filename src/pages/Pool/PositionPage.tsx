@@ -611,12 +611,12 @@ export function PositionPage() {
             hash={collectMigrationHash ?? ''}
             content={() => (
               <ConfirmationModalContent
-                title={<>Claim fees</>}
+                title="Claim fees"
                 onDismiss={() => setShowConfirm(false)}
                 topContent={modalHeader}
               />
             )}
-            pendingText={<>Collecting fees</>}
+            pendingText="Collecting fees"
           />
           <AutoColumn gap="md">
             <AutoColumn gap="sm">

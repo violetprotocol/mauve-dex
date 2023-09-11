@@ -183,7 +183,7 @@ export default function Polling() {
         </ExternalLink>
         <StyledPollingBlockNumber breathe={isMounting} hovering={isHover} warning={warning}>
           <ExternalLink href={blockExternalLinkHref}>
-            <MouseoverTooltip text={<>The most recent block number on this network. Prices update on every block.</>}>
+            <MouseoverTooltip text="The most recent block number on this network. Prices update on every block.">
               {blockNumber}&ensp;
             </MouseoverTooltip>
           </ExternalLink>

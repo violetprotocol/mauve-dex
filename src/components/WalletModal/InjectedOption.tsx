@@ -19,7 +19,7 @@ const METAMASK_PROPS = {
 }
 
 export function InstallMetaMaskOption() {
-  return <Option {...METAMASK_PROPS} header={<>Install MetaMask</>} link="https://metamask.io/" />
+  return <Option {...METAMASK_PROPS} header="Install MetaMask" link="https://metamask.io/" />
 }
 
 export function MetaMaskOption({ tryActivation }: { tryActivation: (connector: Connector) => void }) {

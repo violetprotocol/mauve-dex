@@ -152,7 +152,7 @@ export const TransactionHistoryMenu = ({ onClose }: { onClose: () => void }) => 
     <SlideOutMenu
       onClose={onClose}
       onClear={transactionGroupsInformation.length > 0 ? clearAllTransactionsCallback : undefined}
-      title={<>Transactions</>}
+      title="Transactions"
     >
       <Divider />
       {transactionGroupsInformation.length > 0 ? (

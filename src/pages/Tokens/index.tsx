@@ -78,7 +78,7 @@ const Tokens = () => {
       <ExploreContainer>
         <TitleContainer>
           <MouseoverTooltip
-            text={<>This table contains the top tokens by volume, sorted based on your input.</>}
+            text="This table contains the top tokens by volume, sorted based on your input."
             placement="bottom"
           >
             <ThemedText.LargeHeader>
