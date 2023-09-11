@@ -17,11 +17,19 @@ import styled from 'styled-components/macro'
 import { baseUrlByEnvironment } from '../generateEAT'
 
 const IFRAME_WIDTH = 384
-const IFRAME_HEIGHT = 416
+const IFRAME_HEIGHT = 256
 
 const StyledIframe = styled.iframe`
   border: none;
   background-color: ${({ theme }) => theme.tw.neutral[50]};
+`
+
+const IFrameWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 // TODO: Move this to @violetprotocol/sdk-web3-react and replace the original useIFrameExecutor
@@ -140,7 +148,11 @@ export const VioletEmbeddedAuthorization = forwardRef<HTMLIFrameElement, VioletE
       apiUrl,
     })
 
-    return <IFrame ref={ref} authnorizationUrl={url} />
+    return (
+      <IFrameWrapper>
+        <IFrame ref={ref} authnorizationUrl={url} />
+      </IFrameWrapper>
+    )
   }
 )
 
