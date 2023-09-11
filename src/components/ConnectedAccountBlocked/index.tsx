@@ -1,6 +1,5 @@
 export {}
 
-// import { Trans } from '@lingui/macro'
 // import Column from 'components/Column'
 // import { BlockedIcon } from 'components/TokenSafety/TokenSafetyIcon'
 // import styled, { useTheme } from 'styled-components/macro'
@@ -31,20 +30,20 @@ export {}
 //       <ContentWrapper>
 //         <BlockedIcon size="22px" />
 //         <ThemedText.DeprecatedLargeHeader lineHeight={2} marginBottom={1} marginTop={1}>
-//           <Trans>Blocked Address</Trans>
+//           <>Blocked Address</>
 //         </ThemedText.DeprecatedLargeHeader>
 //         <ThemedText.DeprecatedDarkGray fontSize={12} marginBottom={12}>
 //           {props.account}
 //         </ThemedText.DeprecatedDarkGray>
 //         <ThemedText.DeprecatedMain fontSize={14} marginBottom={12}>
-//           <Trans>This address is blocked on the Mauve interface because it is associated with one or more</Trans>{' '}
+//           <>This address is blocked on the Mauve interface because it is associated with one or more</>{' '}
 //           <ExternalLink href="https://help.uniswap.org/en/articles/6149816">
-//             <Trans>blocked activities</Trans>
+//             <>blocked activities</>
 //           </ExternalLink>
 //           .
 //         </ThemedText.DeprecatedMain>
 //         <ThemedText.DeprecatedMain fontSize={12}>
-//           <Trans>If you believe this is an error, please send an email including your address to </Trans>{' '}
+//           <>If you believe this is an error, please send an email including your address to </>{' '}
 //         </ThemedText.DeprecatedMain>
 //         <Copy
 //           toCopy="compliance@uniswap.org"

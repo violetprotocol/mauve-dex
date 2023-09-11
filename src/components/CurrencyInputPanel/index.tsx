@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent, Token } from '@violetprotocol/mauve-sdk-core'
@@ -234,7 +233,7 @@ export default function CurrencyInputPanel({
           <AutoColumn gap="sm" justify="center">
             <Lock />
             <ThemedText.DeprecatedLabel fontSize="12px" textAlign="center" padding="0 12px">
-              <Trans>The market price is outside your specified price range. Single-asset deposit only.</Trans>
+              <>The market price is outside your specified price range. Single-asset deposit only.</>
             </ThemedText.DeprecatedLabel>
           </AutoColumn>
         </FixedContainer>
@@ -282,7 +281,7 @@ export default function CurrencyInputPanel({
                       ? currency.symbol.slice(0, 4) +
                         '...' +
                         currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || <Trans>Select a token</Trans>}
+                      : currency?.symbol) || <>Select a token</>}
                   </StyledTokenName>
                 )}
               </RowFixed>
@@ -309,7 +308,7 @@ export default function CurrencyInputPanel({
                       renderBalance ? (
                         renderBalance(selectedCurrencyBalance)
                       ) : (
-                        <Trans>Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}</Trans>
+                        <>Balance: {formatCurrencyAmount(selectedCurrencyBalance, 4)}</>
                       )
                     ) : null}
                   </ThemedText.DeprecatedBody>
@@ -320,7 +319,7 @@ export default function CurrencyInputPanel({
                       element={InterfaceElementName.MAX_TOKEN_AMOUNT_BUTTON}
                     >
                       <StyledBalanceMax onClick={onMax}>
-                        <Trans>MAX</Trans>
+                        <>MAX</>
                       </StyledBalanceMax>
                     </TraceEvent>
                   ) : null}

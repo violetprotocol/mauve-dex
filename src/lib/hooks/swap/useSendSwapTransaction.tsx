@@ -1,6 +1,4 @@
 import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
-// eslint-disable-next-line no-restricted-imports
-import { t } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
@@ -34,7 +32,7 @@ export default function useSendSwapTransaction({
           throw new Error(eatPayload.data.message)
         }
         if (!eatPayload || !call || eatPayload.status !== 'issued') {
-          throw new Error(t`Unexpected error. Please close this window and try again.`)
+          throw new Error(`Unexpected error. Please close this window and try again.`)
         }
         const { signature, expiry } = eatPayload.data
 
@@ -90,7 +88,7 @@ export default function useSendSwapTransaction({
                 txHash: response.hash,
               })
               throw new InvalidSwapError(
-                t`Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.`
+                `Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.`
               )
             }
             return response
@@ -98,7 +96,7 @@ export default function useSendSwapTransaction({
           .catch((error) => {
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
-              throw new Error(t`Transaction rejected`)
+              throw new Error(`Transaction rejected`)
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, address, calldata, value)
@@ -106,7 +104,7 @@ export default function useSendSwapTransaction({
               if (error instanceof InvalidSwapError) {
                 throw error
               } else {
-                throw new Error(t`${swapErrorToUserReadableMessage(error)}`)
+                throw new Error(`${swapErrorToUserReadableMessage(error)}`)
               }
             }
           })

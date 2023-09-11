@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Connector } from '@web3-react/types'
 import { ButtonEmpty, ButtonPrimary } from 'components/Button'
 import { AlertTriangle } from 'react-feather'
@@ -82,12 +81,12 @@ export default function PendingView({
             <ErrorGroup>
               <AlertTriangleIcon />
               <ThemedText.MediumHeader marginBottom={12}>
-                <Trans>Error connecting</Trans>
+                <>Error connecting</>
               </ThemedText.MediumHeader>
               <ThemedText.BodyPrimary fontSize={16} marginBottom={36} textAlign="center">
-                <Trans>
+                <>
                   The connection attempt failed. Please click try again and follow the steps to connect in your wallet.
-                </Trans>
+                </>
               </ThemedText.BodyPrimary>
               <ButtonPrimary
                 $borderRadius="12px"
@@ -95,11 +94,11 @@ export default function PendingView({
                   tryActivation(connector)
                 }}
               >
-                <Trans>Try Again</Trans>
+                <>Try Again</>
               </ButtonPrimary>
               <ButtonEmpty width="fit-content" padding="0" marginTop={20}>
                 <ThemedText.Link onClick={openOptions}>
-                  <Trans>Back to wallet selection</Trans>
+                  <>Back to wallet selection</>
                 </ThemedText.Link>
               </ButtonEmpty>
             </ErrorGroup>
@@ -110,10 +109,10 @@ export default function PendingView({
                   <Loader strokeWidth={0.8} size="100px" />
                 </LoaderContainer>
                 <ThemedText.MediumHeader>
-                  <Trans>Waiting to connect</Trans>
+                  <>Waiting to connect</>
                 </ThemedText.MediumHeader>
                 <ThemedText.BodyPrimary style={{ paddingTop: '8px' }}>
-                  <Trans>Confirm this connection in your wallet</Trans>
+                  <>Confirm this connection in your wallet</>
                 </ThemedText.BodyPrimary>
               </WaitingToConnectSection>
             </>

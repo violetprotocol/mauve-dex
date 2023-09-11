@@ -16,7 +16,6 @@ import { HashRouter } from 'react-router-dom'
 import { isSentryEnabled } from 'utils/env'
 
 import Web3Provider from './components/Web3Provider'
-import { LanguageProvider } from './i18n'
 import App from './pages/App'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import store from './state'
@@ -58,19 +57,17 @@ createRoot(container).render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <HashRouter>
-          <LanguageProvider>
-            <Web3Provider>
-              <ApolloProvider client={apolloClient}>
-                <BlockNumberProvider>
-                  <Updaters />
-                  <ThemeProvider>
-                    <ThemedGlobalStyle />
-                    <App />
-                  </ThemeProvider>
-                </BlockNumberProvider>
-              </ApolloProvider>
-            </Web3Provider>
-          </LanguageProvider>
+          <Web3Provider>
+            <ApolloProvider client={apolloClient}>
+              <BlockNumberProvider>
+                <Updaters />
+                <ThemeProvider>
+                  <ThemedGlobalStyle />
+                  <App />
+                </ThemeProvider>
+              </BlockNumberProvider>
+            </ApolloProvider>
+          </Web3Provider>
         </HashRouter>
       </QueryClientProvider>
     </Provider>

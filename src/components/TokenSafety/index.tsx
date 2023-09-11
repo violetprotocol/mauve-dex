@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Token } from '@violetprotocol/mauve-sdk-core'
 import { ButtonPrimary } from 'components/Button'
 import { AutoColumn } from 'components/Column'
@@ -85,13 +84,13 @@ const Buttons = ({
   return warning.canProceed ? (
     <>
       <StyledButton onClick={onContinue}>
-        <Trans>I understand</Trans>
+        <>I understand</>
       </StyledButton>
       {showCancel && <StyledCancelButton onClick={onCancel}>Cancel</StyledCancelButton>}
     </>
   ) : (
     <StyledCloseButton onClick={onBlocked ?? onCancel}>
-      <Trans>Close</Trans>
+      <>Close</>
     </StyledCloseButton>
   )
 }
@@ -248,7 +247,7 @@ export default function TokenSafety({
   const { heading, description } = getWarningCopy(displayWarning, plural)
   const learnMoreUrl = (
     <StyledExternalLink href={TOKEN_SAFETY_ARTICLE}>
-      <Trans>Learn more</Trans>
+      <>Learn more</>
     </StyledExternalLink>
   )
 

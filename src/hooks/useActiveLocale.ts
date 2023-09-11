@@ -37,6 +37,7 @@ function storeLocale(): SupportedLocale | undefined {
   return store.getState().user.userLocale ?? undefined
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export const initialLocale =
   parseLocale(parsedQueryString().lng) ?? storeLocale() ?? navigatorLocale() ?? DEFAULT_LOCALE
 

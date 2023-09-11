@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import * as Sentry from '@sentry/react'
 import { ButtonLight, SmallButtonPrimary } from 'components/Button'
 import { ChevronUpIcon } from 'nft/components/icons'
@@ -104,7 +103,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
   const showMoreButton = (
     <ShowMoreButton onClick={() => setExpanded((s) => !s)}>
       <ThemedText.Link color="textSecondary">
-        <Trans>{isExpanded ? 'Show less' : 'Show more'}</Trans>
+        <>{isExpanded ? 'Show less' : 'Show more'}</>
       </ThemedText.Link>
       <ShowMoreIcon $isExpanded={isExpanded} secondaryWidth="20" secondaryHeight="20" />
     </ShowMoreButton>
@@ -120,19 +119,19 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
             <>
               <Column gap="sm">
                 <Title textAlign="center">
-                  <Trans>Something went wrong</Trans>
+                  <>Something went wrong</>
                 </Title>
                 <Description textAlign="center" color="textSecondary">
-                  <Trans>
+                  <>
                     Sorry, an error occured while processing your request. If you request support, be sure to provide
                     your error ID.
-                  </Trans>
+                  </>
                 </Description>
               </Column>
               <CodeBlockWrapper>
                 <CodeTitle>
                   <ThemedText.SubHeader fontWeight={500}>
-                    <Trans>Error ID: {eventId}</Trans>
+                    <>Error ID: {eventId}</>
                   </ThemedText.SubHeader>
                   <CopyToClipboard toCopy={eventId}>
                     <CopyIcon />
@@ -152,13 +151,13 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
             <>
               <Column gap="sm">
                 <Title textAlign="center">
-                  <Trans>Something went wrong</Trans>
+                  <>Something went wrong</>
                 </Title>
                 <Description textAlign="center" color="textSecondary">
-                  <Trans>
+                  <>
                     Sorry, an error occured while processing your request. If you request support, be sure to copy the
                     details of this error.
-                  </Trans>
+                  </>
                 </Description>
               </Column>
               <CodeBlockWrapper>
@@ -177,11 +176,11 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
           )}
           <StretchedRow>
             <SmallButtonPrimary onClick={() => window.location.reload()}>
-              <Trans>Reload the app</Trans>
+              <>Reload the app</>
             </SmallButtonPrimary>
             <ExternalLink id="get-support-on-discord" href="https://discord.gg/FCfyBSbCU5" target="_blank">
               <SmallButtonLight>
-                <Trans>Get support</Trans>
+                <>Get support</>
               </SmallButtonLight>
             </ExternalLink>
           </StretchedRow>

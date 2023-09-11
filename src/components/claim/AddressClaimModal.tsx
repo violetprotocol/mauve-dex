@@ -1,7 +1,6 @@
 export {}
 
 // import { isAddress } from '@ethersproject/address'
-// import { Trans } from '@lingui/macro'
 // import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import { useState } from 'react'
@@ -106,27 +105,27 @@ export {}
 //             <CardSection gap="md">
 //               <RowBetween>
 //                 <ThemedText.DeprecatedWhite fontWeight={500}>
-//                   <Trans>Claim UNI Token</Trans>
+//                   <>Claim UNI Token</>
 //                 </ThemedText.DeprecatedWhite>
 //                 <CloseIcon onClick={wrappedOnDismiss} style={{ zIndex: 99 }} stroke="white" />
 //               </RowBetween>
 //               <ThemedText.DeprecatedWhite fontWeight={700} fontSize={36}>
-//                 <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</Trans>
+//                 <>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</>
 //               </ThemedText.DeprecatedWhite>
 //             </CardSection>
 //             <Break />
 //           </ModalUpper>
 //           <AutoColumn gap="md" style={{ padding: '1rem', paddingTop: '0' }} justify="center">
 //             <ThemedText.DeprecatedSubHeader fontWeight={500}>
-//               <Trans>
+//               <>
 //                 Enter an address to trigger a UNI claim. If the address has any claimable UNI it will be sent to them on
 //                 submission.
-//               </Trans>
+//               </>
 //             </ThemedText.DeprecatedSubHeader>
 //             <AddressInputPanel value={typed} onChange={handleRecipientType} />
 //             {parsedAddress && !hasAvailableClaim && (
 //               <ThemedText.DeprecatedError error={true}>
-//                 <Trans>Address has no available claim</Trans>
+//                 <>Address has no available claim</>
 //               </ThemedText.DeprecatedError>
 //             )}
 //             <ButtonPrimary
@@ -137,7 +136,7 @@ export {}
 //               mt="1rem"
 //               onClick={onClaim}
 //             >
-//               <Trans>Claim UNI</Trans>
+//               <>Claim UNI</>
 //             </ButtonPrimary>
 //           </AutoColumn>
 //         </ContentWrapper>
@@ -160,16 +159,16 @@ export {}
 //           <AutoColumn gap="100px" justify="center">
 //             <AutoColumn gap="md" justify="center">
 //               <ThemedText.DeprecatedLargeHeader fontWeight={600} color="black">
-//                 {claimConfirmed ? <Trans>Claimed</Trans> : <Trans>Claiming</Trans>}
+//                 {claimConfirmed ? <>Claimed</> : <>Claiming</>}
 //               </ThemedText.DeprecatedLargeHeader>
 //               {!claimConfirmed && (
 //                 <Text fontSize={36} color="#ff007a" fontWeight={800}>
-//                   <Trans>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</Trans>
+//                   <>{unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI</>
 //                 </Text>
 //               )}
 //               {parsedAddress && (
 //                 <ThemedText.DeprecatedLargeHeader fontWeight={600} color="black">
-//                   <Trans>for {shortenAddress(parsedAddress)}</Trans>
+//                   <>for {shortenAddress(parsedAddress)}</>
 //                 </ThemedText.DeprecatedLargeHeader>
 //               )}
 //             </AutoColumn>
@@ -179,7 +178,7 @@ export {}
 //                   <span role="img" aria-label="party-hat">
 //                     🎉{' '}
 //                   </span>
-//                   <Trans>Welcome to team Unicorn :) </Trans>
+//                   <>Welcome to team Unicorn :) </>
 //                   <span role="img" aria-label="party-hat">
 //                     🎉
 //                   </span>
@@ -188,12 +187,12 @@ export {}
 //             )}
 //             {attempting && !hash && (
 //               <ThemedText.DeprecatedSubHeader color="black">
-//                 <Trans>Confirm this transaction in your wallet</Trans>
+//                 <>Confirm this transaction in your wallet</>
 //               </ThemedText.DeprecatedSubHeader>
 //             )}
 //             {attempting && hash && !claimConfirmed && chainId && hash && (
 //               <ExternalLink href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)} style={{ zIndex: 99 }}>
-//                 <Trans>View transaction on Explorer</Trans>
+//                 <>View transaction on Explorer</>
 //               </ExternalLink>
 //             )}
 //           </AutoColumn>

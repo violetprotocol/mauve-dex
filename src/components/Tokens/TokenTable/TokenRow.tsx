@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { InterfaceEventName } from '@uniswap/analytics-events'
 import { formatNumber, formatUSDPrice, NumberType } from '@uniswap/conedison/format'
@@ -307,10 +306,10 @@ export const HEADER_DESCRIPTIONS: Record<TokenSortMethod, ReactNode | undefined>
   [TokenSortMethod.PRICE]: undefined,
   [TokenSortMethod.PERCENT_CHANGE]: undefined,
   [TokenSortMethod.TOTAL_VALUE_LOCKED]: (
-    <Trans>Total value locked (TVL) is the amount of the asset that’s currently in a Mauve liquidity pool.</Trans>
+    <>Total value locked (TVL) is the amount of the asset that’s currently in a Mauve liquidity pool.</>
   ),
   [TokenSortMethod.VOLUME]: (
-    <Trans>Volume is the amount of the asset that has been traded on Mauve during the selected time frame.</Trans>
+    <>Volume is the amount of the asset that has been traded on Mauve during the selected time frame.</>
   ),
 }
 
@@ -396,7 +395,7 @@ export function HeaderRow() {
     <TokenRow
       header={true}
       listNumber="#"
-      tokenInfo={<Trans>Token name</Trans>}
+      tokenInfo="Token name"
       price={<HeaderCell category={TokenSortMethod.PRICE} />}
       percentChange={<HeaderCell category={TokenSortMethod.PERCENT_CHANGE} />}
       tvl={<HeaderCell category={TokenSortMethod.TOTAL_VALUE_LOCKED} />}

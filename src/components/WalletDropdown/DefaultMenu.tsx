@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { TransactionSummary } from 'components/AccountDetailsV2'
 import { useMemo } from 'react'
 import { ChevronRight } from 'react-feather'
@@ -100,10 +99,10 @@ const WalletDropdown = ({ setMenu }: { setMenu: (state: MenuState) => void }) =>
 
       <ToggleMenuItem data-testid="wallet-transactions" onClick={() => setMenu(MenuState.TRANSACTIONS)}>
         <DefaultText>
-          <Trans>Transactions</Trans>{' '}
+          <>Transactions</>{' '}
           {pendingTransactions.length > 0 && (
             <PendingBadge>
-              {pendingTransactions.length} <Trans>Pending</Trans>
+              {pendingTransactions.length} <>Pending</>
             </PendingBadge>
           )}
         </DefaultText>

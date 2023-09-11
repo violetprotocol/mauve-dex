@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
 import type { TransactionResponse } from '@ethersproject/providers'
-import { Trans } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import useENS from 'hooks/useENS'
 import { ReactNode, useMemo } from 'react'
@@ -38,11 +37,11 @@ export function useSwapCallback({ recipientAddressOrName }: UseSwapCallbackArgs)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
   return useMemo(() => {
     if (!provider || !account || !chainId || !callback) {
-      return { state: SwapCallbackState.INVALID, error: <Trans>Missing dependencies</Trans> }
+      return { state: SwapCallbackState.INVALID, error: <>Missing dependencies</> }
     }
     if (!recipient) {
       if (recipientAddressOrName !== null) {
-        return { state: SwapCallbackState.INVALID, error: <Trans>Invalid recipient</Trans> }
+        return { state: SwapCallbackState.INVALID, error: <>Invalid recipient</> }
       } else {
         return { state: SwapCallbackState.LOADING }
       }

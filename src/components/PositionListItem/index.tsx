@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Percent, Price, Token } from '@violetprotocol/mauve-sdk-core'
 import { Position } from '@violetprotocol/mauve-v3-sdk'
 import Badge from 'components/Badge'
@@ -218,7 +217,7 @@ export default function PositionListItem({ positionDetails }: PositionListItemPr
           &nbsp;
           <Badge>
             <BadgeText>
-              <Trans>{new Percent(feeAmount, 1_000_000).toSignificant()}%</Trans>
+              <>{new Percent(feeAmount, 1_000_000).toSignificant()}%</>
             </BadgeText>
           </Badge>
         </PrimaryPositionIdData>
@@ -229,12 +228,12 @@ export default function PositionListItem({ positionDetails }: PositionListItemPr
         <RangeLineItem>
           <RangeText>
             <ExtentsText>
-              <Trans>Min: </Trans>
+              <>Min: </>
             </ExtentsText>
-            <Trans>
+            <>
               {formatTickPrice(priceLower, tickAtLimit, Bound.LOWER)} <HoverInlineText text={currencyQuote?.symbol} />{' '}
               per <HoverInlineText text={currencyBase?.symbol ?? ''} />
-            </Trans>
+            </>
           </RangeText>{' '}
           <HideSmall>
             <DoubleArrow>⟷</DoubleArrow>{' '}
@@ -244,12 +243,12 @@ export default function PositionListItem({ positionDetails }: PositionListItemPr
           </SmallOnly>
           <RangeText>
             <ExtentsText>
-              <Trans>Max:</Trans>
+              <>Max:</>
             </ExtentsText>
-            <Trans>
+            <>
               {formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER)} <HoverInlineText text={currencyQuote?.symbol} />{' '}
               per <HoverInlineText maxCharacters={10} text={currencyBase?.symbol} />
-            </Trans>
+            </>
           </RangeText>
         </RangeLineItem>
       ) : (

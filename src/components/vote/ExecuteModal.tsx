@@ -1,6 +1,5 @@
 // [MAUVE-DISABLED]
 export {}
-// import { Trans } from '@lingui/macro'
 // import { useWeb3React } from '@web3-react/core'
 // import { useState } from 'react'
 // import { ArrowUpCircle, X } from 'react-feather'
@@ -84,18 +83,18 @@ export {}
 //           <AutoColumn gap="lg" justify="center">
 //             <RowBetween>
 //               <ThemedText.DeprecatedMediumHeader fontWeight={500}>
-//                 <Trans>Execute Proposal {proposalId}</Trans>
+//                 <>Execute Proposal {proposalId}</>
 //               </ThemedText.DeprecatedMediumHeader>
 //               <StyledClosed onClick={wrappedOnDismiss} />
 //             </RowBetween>
 //             <RowBetween>
 //               <ThemedText.DeprecatedBody>
-//                 <Trans>Executing this proposal will enact the calldata on-chain.</Trans>
+//                 <>Executing this proposal will enact the calldata on-chain.</>
 //               </ThemedText.DeprecatedBody>
 //             </RowBetween>
 //             <ButtonPrimary onClick={onExecute}>
 //               <ThemedText.DeprecatedMediumHeader color="white">
-//                 <Trans>Execute</Trans>
+//                 <>Execute</>
 //               </ThemedText.DeprecatedMediumHeader>
 //             </ButtonPrimary>
 //           </AutoColumn>
@@ -113,11 +112,11 @@ export {}
 //           <AutoColumn gap="100px" justify="center">
 //             <AutoColumn gap="md" justify="center">
 //               <ThemedText.DeprecatedLargeHeader>
-//                 <Trans>Executing</Trans>
+//                 <>Executing</>
 //               </ThemedText.DeprecatedLargeHeader>
 //             </AutoColumn>
 //             <ThemedText.DeprecatedSubHeader>
-//               <Trans>Confirm this transaction in your wallet</Trans>
+//               <>Confirm this transaction in your wallet</>
 //             </ThemedText.DeprecatedSubHeader>
 //           </AutoColumn>
 //         </ConfirmOrLoadingWrapper>
@@ -134,7 +133,7 @@ export {}
 //           <AutoColumn gap="100px" justify="center">
 //             <AutoColumn gap="md" justify="center">
 //               <ThemedText.DeprecatedLargeHeader>
-//                 <Trans>Execution Submitted</Trans>
+//                 <>Execution Submitted</>
 //               </ThemedText.DeprecatedLargeHeader>
 //             </AutoColumn>
 //             {chainId && (
@@ -143,7 +142,7 @@ export {}
 //                 style={{ marginLeft: '4px' }}
 //               >
 //                 <ThemedText.DeprecatedSubHeader>
-//                   <Trans>View transaction on Explorer</Trans>
+//                   <>View transaction on Explorer</>
 //                 </ThemedText.DeprecatedSubHeader>
 //               </ExternalLink>
 //             )}

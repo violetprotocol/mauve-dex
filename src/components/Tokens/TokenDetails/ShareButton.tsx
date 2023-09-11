@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import { useRef } from 'react'
 import { useModalIsOpen, useToggleModal } from 'state/application/hooks'
@@ -98,13 +97,13 @@ export default function ShareButton(/* { currency }: { currency: Currency } */) 
               toCopy={window.location.href}
               ref={copyHelperRef}
             >
-              <Trans>Copy Link</Trans>
+              <>Copy Link</>
             </CopyHelper>
           </ShareAction>
 
           {/* <ShareAction onClick={shareTweet}>
             <Twitter color={theme.textPrimary} size={20} strokeWidth={1.5} />
-            <Trans>Share to Twitter</Trans>
+            <>Share to Twitter</>
           </ShareAction> */}
         </ShareActions>
       )}

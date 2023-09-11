@@ -1,6 +1,3 @@
-import { Trans } from '@lingui/macro'
-// eslint-disable-next-line no-restricted-imports
-import { t } from '@lingui/macro'
 import { formatCurrencyAmount, formatPriceImpact, NumberType } from '@uniswap/conedison/format'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { LoadingBubble } from 'components/Tokens/loading'
@@ -60,8 +57,8 @@ export function FiatValue({
           {priceImpact && (
             <span style={{ color: priceImpactColor }}>
               {' '}
-              <MouseoverTooltip text={t`The estimated difference between the USD values of input and output amounts.`}>
-                (<Trans>{formatPriceImpact(priceImpact)}</Trans>)
+              <MouseoverTooltip text="The estimated difference between the USD values of input and output amounts.">
+                (<>{formatPriceImpact(priceImpact)}</>)
               </MouseoverTooltip>
             </span>
           )}

@@ -1,6 +1,5 @@
 export {}
 
-// import { Trans } from '@lingui/macro'
 // import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 // import { useWeb3React } from '@web3-react/core'
 // import { sendEvent } from 'components/analytics'
@@ -111,20 +110,20 @@ export {}
 //               <span role="img" aria-label="party">
 //                 🎉
 //               </span>{' '}
-//               <Trans>UNI has arrived</Trans>{' '}
+//               <>UNI has arrived</>{' '}
 //               <span role="img" aria-label="party">
 //                 🎉
 //               </span>
 //             </ThemedText.DeprecatedWhite>
 //             <ThemedText.DeprecatedSubHeader style={{ paddingTop: '0.5rem', textAlign: 'center' }} color="white">
-//               <Trans>
+//               <>
 //                 Thanks for being part of the Uniswap community <Heart size={12} />
-//               </Trans>
+//               </>
 //             </ThemedText.DeprecatedSubHeader>
 //           </AutoColumn>
 //           <AutoColumn style={{ zIndex: 10 }} justify="center">
 //             <ButtonPrimary padding="8px" $borderRadius="8px" width="fit-content" onClick={handleToggleSelfClaimModal}>
-//               <Trans>Claim your UNI tokens</Trans>
+//               <>Claim your UNI tokens</>
 //             </ButtonPrimary>
 //           </AutoColumn>
 //         </StyledClaimPopup>

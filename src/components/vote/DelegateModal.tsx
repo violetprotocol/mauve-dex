@@ -1,7 +1,6 @@
 // [MAUVE-DISABLED]
 export {}
 // import { isAddress } from '@ethersproject/address'
-// import { Trans } from '@lingui/macro'
 // import { useWeb3React } from '@web3-react/core'
 // import { ReactNode, useState } from 'react'
 // import { X } from 'react-feather'
@@ -101,20 +100,20 @@ export {}
 //               <StyledClosed stroke="black" onClick={wrappedOnDismiss} />
 //             </RowBetween>
 //             <ThemedText.DeprecatedBody>
-//               <Trans>Earned UNI tokens represent voting shares in Uniswap governance.</Trans>
+//               <>Earned UNI tokens represent voting shares in Uniswap governance.</>
 //             </ThemedText.DeprecatedBody>
 //             <ThemedText.DeprecatedBody>
-//               <Trans>You can either vote on each proposal yourself or delegate your votes to a third party.</Trans>
+//               <>You can either vote on each proposal yourself or delegate your votes to a third party.</>
 //             </ThemedText.DeprecatedBody>
 //             {usingDelegate && <AddressInputPanel value={typed} onChange={handleRecipientType} />}
 //             <ButtonPrimary disabled={!isAddress(parsedAddress ?? '')} onClick={onDelegate}>
 //               <ThemedText.DeprecatedMediumHeader color="white">
-//                 {usingDelegate ? <Trans>Delegate Votes</Trans> : <Trans>Self Delegate</Trans>}
+//                 {usingDelegate ? <>Delegate Votes</> : <>Self Delegate</>}
 //               </ThemedText.DeprecatedMediumHeader>
 //             </ButtonPrimary>
 //             <TextButton onClick={() => setUsingDelegate(!usingDelegate)}>
 //               <ThemedText.DeprecatedBlue>
-//                 {usingDelegate ? <Trans>Remove Delegate</Trans> : <Trans>Add Delegate +</Trans>}
+//                 {usingDelegate ? <>Remove Delegate</> : <>Add Delegate +</>}
 //               </ThemedText.DeprecatedBlue>
 //             </TextButton>
 //           </AutoColumn>
@@ -124,7 +123,7 @@ export {}
 //         <LoadingView onDismiss={wrappedOnDismiss}>
 //           <AutoColumn gap="md" justify="center">
 //             <ThemedText.DeprecatedLargeHeader>
-//               {usingDelegate ? <Trans>Delegating votes</Trans> : <Trans>Unlocking Votes</Trans>}
+//               {usingDelegate ? <>Delegating votes</> : <>Unlocking Votes</>}
 //             </ThemedText.DeprecatedLargeHeader>
 //             <ThemedText.DeprecatedMain fontSize={36}> {formatCurrencyAmount(uniBalance, 4)}</ThemedText.DeprecatedMain>
 //           </AutoColumn>
@@ -134,7 +133,7 @@ export {}
 //         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
 //           <AutoColumn gap="md" justify="center">
 //             <ThemedText.DeprecatedLargeHeader>
-//               <Trans>Transaction Submitted</Trans>
+//               <>Transaction Submitted</>
 //             </ThemedText.DeprecatedLargeHeader>
 //             <ThemedText.DeprecatedMain fontSize={36}>{formatCurrencyAmount(uniBalance, 4)}</ThemedText.DeprecatedMain>
 //           </AutoColumn>

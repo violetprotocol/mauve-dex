@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { ButtonPrimary } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import Modal from 'components/Modal'
@@ -88,7 +87,7 @@ export default function MetamaskConnectionError() {
             </InfoText>
           </ShortColumn>
           <StyledButton onClick={onReconnect}>
-            <Trans>Reload</Trans>
+            <>Reload</>
           </StyledButton>
         </Container>
       </Wrapper>

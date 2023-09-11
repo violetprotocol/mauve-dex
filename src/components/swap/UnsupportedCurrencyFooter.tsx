@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { ButtonEmpty } from 'components/Button'
@@ -72,7 +71,7 @@ export default function UnsupportedCurrencyFooter({
           <AutoColumn gap="lg">
             <RowBetween>
               <ThemedText.DeprecatedMediumHeader>
-                <Trans>Unsupported Assets</Trans>
+                <>Unsupported Assets</>
               </ThemedText.DeprecatedMediumHeader>
               <CloseIcon onClick={() => setShowDetails(false)} />
             </RowBetween>
@@ -99,10 +98,10 @@ export default function UnsupportedCurrencyFooter({
             })}
             <AutoColumn gap="lg">
               <ThemedText.DeprecatedBody fontWeight={500}>
-                <Trans>
+                <>
                   Some assets are not available through this interface because they may not work well with the smart
                   contracts or we are unable to allow trading for legal reasons.
-                </Trans>
+                </>
               </ThemedText.DeprecatedBody>
             </AutoColumn>
           </AutoColumn>
@@ -110,7 +109,7 @@ export default function UnsupportedCurrencyFooter({
       </Modal>
       <StyledButtonEmpty padding="0" onClick={() => setShowDetails(true)}>
         <ThemedText.DeprecatedBlue>
-          <Trans>Read more about unsupported assets</Trans>
+          <>Read more about unsupported assets</>
         </ThemedText.DeprecatedBlue>
       </StyledButtonEmpty>
     </DetailsFooter>

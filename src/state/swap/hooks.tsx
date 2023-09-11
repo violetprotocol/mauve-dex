@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import useAutoSlippageTolerance from 'hooks/useAutoSlippageTolerance'
@@ -143,23 +142,23 @@ export function useDerivedSwapInfo(): {
     let inputError: ReactNode | undefined
 
     if (!account) {
-      inputError = <Trans>Connect Wallet</Trans>
+      inputError = <>Connect Wallet</>
     }
 
     if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-      inputError = inputError ?? <Trans>Select a token</Trans>
+      inputError = inputError ?? <>Select a token</>
     }
 
     if (!parsedAmount) {
-      inputError = inputError ?? <Trans>Enter an amount</Trans>
+      inputError = inputError ?? <>Enter an amount</>
     }
 
     const formattedTo = isAddress(to)
     if (!to || !formattedTo) {
-      inputError = inputError ?? <Trans>Enter a recipient</Trans>
+      inputError = inputError ?? <>Enter a recipient</>
     } else {
       if (BAD_RECIPIENT_ADDRESSES[formattedTo]) {
-        inputError = inputError ?? <Trans>Invalid recipient</Trans>
+        inputError = inputError ?? <>Invalid recipient</>
       }
     }
 
@@ -167,7 +166,7 @@ export function useDerivedSwapInfo(): {
     const [balanceIn, amountIn] = [currencyBalances[Field.INPUT], trade.trade?.maximumAmountIn(allowedSlippage)]
 
     if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-      inputError = <Trans>Insufficient {amountIn.currency.symbol} balance</Trans>
+      inputError = <>Insufficient {amountIn.currency.symbol} balance</>
     }
 
     return inputError

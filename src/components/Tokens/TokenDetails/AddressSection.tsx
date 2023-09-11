@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import styled from 'styled-components/macro'
 import { CopyContractAddress, ThemedText } from 'theme'
 
@@ -26,7 +25,7 @@ export default function AddressSection({ address }: { address: string }) {
   return (
     <ContractAddressSection>
       <ThemedText.SubHeaderSmall>
-        <Trans>Contract address</Trans>
+        <>Contract address</>
       </ThemedText.SubHeaderSmall>
       <ContractAddress>
         <CopyContractAddress address={address} />

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { SupportedChainId } from '@violetprotocol/mauve-sdk-core'
 import { getChainInfo } from 'constants/chainInfo'
 import { darken } from 'polished'
@@ -84,24 +83,24 @@ export function AboutSection({ address, chainId, description, homepageUrl, twitt
   return (
     <AboutContainer data-testid="token-details-about-section">
       <AboutHeader>
-        <Trans>About</Trans>
+        <>About</>
       </AboutHeader>
       <TokenDescriptionContainer>
         {!description && (
           <NoInfoAvailable>
-            <Trans>No token information available</Trans>
+            <>No token information available</>
           </NoInfoAvailable>
         )}
         {tokenDescription}
         {shouldTruncate && (
           <TruncateDescriptionButton onClick={() => setIsDescriptionTruncated(!isDescriptionTruncated)}>
-            {isDescriptionTruncated ? <Trans>Show more</Trans> : <Trans>Hide</Trans>}
+            {isDescriptionTruncated ? <>Show more</> : <>Hide</>}
           </TruncateDescriptionButton>
         )}
       </TokenDescriptionContainer>
       <br />
       <ThemedText.SubHeaderSmall>
-        <Trans>Links</Trans>
+        <>Links</>
       </ThemedText.SubHeaderSmall>
       <ResourcesContainer>
         {baseExplorerUrl && (

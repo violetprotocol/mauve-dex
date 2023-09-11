@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Trace, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName, InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
@@ -169,7 +168,7 @@ function WrongNetworkCard() {
           <AutoColumn gap="lg" style={{ width: '100%' }}>
             <TitleRow padding="0">
               <ThemedText.LargeHeader>
-                <Trans>Pools</Trans>
+                <>Pools</>
               </ThemedText.LargeHeader>
             </TitleRow>
 
@@ -178,7 +177,7 @@ function WrongNetworkCard() {
                 <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
                   <NetworkIcon strokeWidth={1.2} />
                   <div data-testid="pools-unsupported-err">
-                    <Trans>Your connected network is unsupported.</Trans>
+                    <>Your connected network is unsupported.</>
                   </div>
                 </ThemedText.DeprecatedBody>
               </ErrorContainer>
@@ -221,7 +220,7 @@ export default function Pool() {
     {
       content: (
         <PoolMenuItem>
-          <Trans>Create a pool</Trans>
+          <>Create a pool</>
           <PlusCircle size={16} />
         </PoolMenuItem>
       ),
@@ -231,7 +230,7 @@ export default function Pool() {
     {
       content: (
         <PoolMenuItem>
-          <Trans>Learn</Trans>
+          <>Learn</>
           <BookOpen size={16} />
         </PoolMenuItem>
       ),
@@ -247,7 +246,7 @@ export default function Pool() {
           <AutoColumn gap="lg" style={{ width: '100%' }}>
             <TitleRow padding="0">
               <ThemedText.LargeHeader>
-                <Trans>Pools</Trans>
+                <>Pools</>
               </ThemedText.LargeHeader>
               <ButtonRow>
                 {showV2Features && (
@@ -257,7 +256,7 @@ export default function Pool() {
                     ToggleUI={(props: any) => (
                       <MoreOptionsButton {...props}>
                         <MoreOptionsText>
-                          <Trans>More</Trans>
+                          <>More</>
                           <ChevronDown size={15} />
                         </MoreOptionsText>
                       </MoreOptionsButton>
@@ -265,7 +264,7 @@ export default function Pool() {
                   />
                 )}
                 <ResponsiveButtonPrimary data-cy="join-pool-button" id="join-pool-button" as={Link} to="/add/ETH">
-                  + <Trans>New Position</Trans>
+                  + <>New Position</>
                 </ResponsiveButtonPrimary>
               </ButtonRow>
             </TitleRow>
@@ -290,7 +289,7 @@ export default function Pool() {
                       style={{ marginTop: '.5rem' }}
                       onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
                     >
-                      <Trans>Show closed positions</Trans>
+                      <>Show closed positions</>
                     </ButtonText>
                   )}
                   {showConnectAWallet && (
@@ -304,7 +303,7 @@ export default function Pool() {
                         style={{ marginTop: '2em', marginBottom: '2em', padding: '8px 16px' }}
                         onClick={toggleWalletModal}
                       >
-                        <Trans>Connect a wallet</Trans>
+                        <>Connect a wallet</>
                       </ButtonPrimary>
                     </TraceEvent>
                   )}

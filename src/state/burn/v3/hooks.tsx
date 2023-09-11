@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { Position } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
@@ -76,10 +75,10 @@ export function useDerivedV3BurnInfo(
 
   let error: ReactNode | undefined
   if (!account) {
-    error = <Trans>Connect Wallet</Trans>
+    error = <>Connect Wallet</>
   }
   if (percent === 0) {
-    error = error ?? <Trans>Enter a percent</Trans>
+    error = error ?? <>Enter a percent</>
   }
   return {
     position: positionSDK,

@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Percent } from '@violetprotocol/mauve-sdk-core'
 import { OutlineCard } from 'components/Card'
 import styled, { useTheme } from 'styled-components/macro'
@@ -27,16 +26,16 @@ export default function PriceImpactWarning({ priceImpact }: PriceImpactWarningPr
       <AutoColumn gap="sm">
         <MouseoverTooltip
           text={
-            <Trans>
+            <>
               A swap of this size may have a high price impact, given the current liquidity in the pool. There may be a
               large difference between the amount of your input token and what you will receive in the output token
-            </Trans>
+            </>
           }
         >
           <RowBetween>
             <RowFixed>
               <ThemedText.DeprecatedSubHeader color={theme.accentFailure}>
-                <Trans>Price impact warning</Trans>
+                <>Price impact warning</>
               </ThemedText.DeprecatedSubHeader>
             </RowFixed>
             <ThemedText.DeprecatedLabel textAlign="right" fontSize={14} color={theme.accentFailure}>

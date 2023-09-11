@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { sendAnalyticsEvent, Trace, TraceEvent } from '@uniswap/analytics'
 import {
   BrowserEvent,
@@ -575,13 +574,7 @@ export default function Swap({ className }: { className?: string }) {
               <SwapSection>
                 <Trace section={InterfaceSectionName.CURRENCY_INPUT_PANEL}>
                   <SwapCurrencyInputPanel
-                    label={
-                      independentField === Field.OUTPUT && !showWrap ? (
-                        <Trans>From (at most)</Trans>
-                      ) : (
-                        <Trans>From</Trans>
-                      )
-                    }
+                    label={independentField === Field.OUTPUT && !showWrap ? <>From (at most)</> : <>From</>}
                     value={formattedAmounts[Field.INPUT]}
                     showMaxButton={showMaxButton}
                     currency={currencies[Field.INPUT] ?? null}
@@ -626,9 +619,7 @@ export default function Swap({ className }: { className?: string }) {
                     <SwapCurrencyInputPanel
                       value={formattedAmounts[Field.OUTPUT]}
                       onUserInput={handleTypeOutput}
-                      label={
-                        independentField === Field.INPUT && !showWrap ? <Trans>To (at least)</Trans> : <Trans>To</Trans>
-                      }
+                      label={independentField === Field.INPUT && !showWrap ? <>To (at least)</> : <>To</>}
                       showMaxButton={false}
                       hideBalance={false}
                       fiatValue={fiatValueOutput ?? undefined}
@@ -649,7 +640,7 @@ export default function Swap({ className }: { className?: string }) {
                           <ArrowDown size="16" color={theme.textSecondary} />
                         </ArrowWrapper>
                         <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                          <Trans>- Remove recipient</Trans>
+                          <>- Remove recipient</>
                         </LinkStyledButton>
                       </AutoRow>
                       <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
@@ -672,7 +663,7 @@ export default function Swap({ className }: { className?: string }) {
                 {swapIsUnsupported ? (
                   <ButtonPrimary disabled={true}>
                     <ThemedText.DeprecatedMain mb="4px">
-                      <Trans>Unsupported Asset</Trans>
+                      <>Unsupported Asset</>
                     </ThemedText.DeprecatedMain>
                   </ButtonPrimary>
                 ) : !account ? (
@@ -683,7 +674,7 @@ export default function Swap({ className }: { className?: string }) {
                     element={InterfaceElementName.CONNECT_WALLET_BUTTON}
                   >
                     <ButtonLight onClick={toggleWalletModal} fontWeight={600}>
-                      <Trans>Connect Wallet</Trans>
+                      <>Connect Wallet</>
                     </ButtonLight>
                   </TraceEvent>
                 ) : showWrap ? (
@@ -691,14 +682,14 @@ export default function Swap({ className }: { className?: string }) {
                     {wrapInputError ? (
                       <WrapErrorText wrapInputError={wrapInputError} />
                     ) : wrapType === WrapType.WRAP ? (
-                      <Trans>Wrap</Trans>
+                      <>Wrap</>
                     ) : wrapType === WrapType.UNWRAP ? (
-                      <Trans>Unwrap</Trans>
+                      <>Unwrap</>
                     ) : null}
                   </ButtonPrimary>
                 ) : routeNotFound && userHasSpecifiedInputOutput && !routeIsLoading && !routeIsSyncing ? (
                   <LightCard style={{ textAlign: 'center', borderRadius: '100px', fontWeight: 500 }}>
-                    <Trans>Insufficient liquidity for this trade.</Trans>
+                    <>Insufficient liquidity for this trade.</>
                   </LightCard>
                 ) : showApproveFlow ? (
                   <AutoRow style={{ flexWrap: 'nowrap', width: '100%' }}>
@@ -717,7 +708,7 @@ export default function Swap({ className }: { className?: string }) {
                           {/* we need to shorten this string on mobile */}
                           {approvalState === ApprovalState.APPROVED || signatureState === UseERC20PermitState.SIGNED ? (
                             <ThemedText.SubHeader width="100%" textAlign="center" color="textSecondary">
-                              <Trans>You can now trade {currencies[Field.INPUT]?.symbol}</Trans>
+                              <>You can now trade {currencies[Field.INPUT]?.symbol}</>
                             </ThemedText.SubHeader>
                           ) : (
                             <ThemedText.SubHeader width="100%" textAlign="center" color="white">
@@ -768,11 +759,11 @@ export default function Swap({ className }: { className?: string }) {
                       >
                         <Text fontSize={16} fontWeight={600}>
                           {priceImpactTooHigh ? (
-                            <Trans>High Price Impact</Trans>
+                            <>High Price Impact</>
                           ) : trade && priceImpactSeverity > 2 ? (
-                            <Trans>Swap Anyway</Trans>
+                            <>Swap Anyway</>
                           ) : (
-                            <Trans>Swap</Trans>
+                            <>Swap</>
                           )}
                         </Text>
                       </ButtonError>
@@ -800,13 +791,13 @@ export default function Swap({ className }: { className?: string }) {
                       {swapInputError ? (
                         swapInputError
                       ) : routeIsSyncing || routeIsLoading ? (
-                        <Trans>Swap</Trans>
+                        <>Swap</>
                       ) : priceImpactTooHigh ? (
-                        <Trans>Price Impact Too High</Trans>
+                        <>Price Impact Too High</>
                       ) : priceImpactSeverity > 2 ? (
-                        <Trans>Swap Anyway</Trans>
+                        <>Swap Anyway</>
                       ) : (
-                        <Trans>Swap</Trans>
+                        <>Swap</>
                       )}
                     </Text>
                   </ButtonError>

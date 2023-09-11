@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { LOCALE_LABEL, SUPPORTED_LOCALES, SupportedLocale } from 'constants/locales'
 import { useActiveLocale } from 'hooks/useActiveLocale'
 import { useLocationLinkProps } from 'hooks/useLocationLinkProps'
@@ -57,7 +56,7 @@ const LanguageMenu = ({ onClose }: { onClose: () => void }) => {
   const activeLocale = useActiveLocale()
 
   return (
-    <SlideOutMenu title={<Trans>Language</Trans>} onClose={onClose}>
+    <SlideOutMenu title="Language" onClose={onClose}>
       {SUPPORTED_LOCALES.map((locale) => (
         <LanguageMenuItem locale={locale} isActive={activeLocale === locale} key={locale} />
       ))}

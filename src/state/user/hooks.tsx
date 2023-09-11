@@ -43,6 +43,7 @@ export function useUserLocale(): SupportedLocale | null {
   return useAppSelector((state) => state.user.userLocale)
 }
 
+// eslint-disable-next-line import/no-unused-modules
 export function useUserLocaleManager(): [SupportedLocale | null, (newLocale: SupportedLocale) => void] {
   const dispatch = useAppDispatch()
   const locale = useUserLocale()

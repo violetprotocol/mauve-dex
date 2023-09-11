@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
@@ -78,13 +77,13 @@ export function ConfirmationPendingContent({
         </ConfirmedIcon>
         <AutoColumn gap="md" justify="center">
           <Text fontWeight={500} fontSize={20} color={theme.textPrimary} textAlign="center">
-            <Trans>Waiting for confirmation</Trans>
+            <>Waiting for confirmation</>
           </Text>
           <Text fontWeight={600} fontSize={16} color={theme.textPrimary} textAlign="center">
             {pendingText}
           </Text>
           <Text fontWeight={400} fontSize={12} color={theme.textSecondary} textAlign="center" marginBottom="12px">
-            <Trans>Confirm this transaction in your wallet</Trans>
+            <>Confirm this transaction in your wallet</>
           </Text>
         </AutoColumn>
       </AutoColumn>
@@ -140,17 +139,17 @@ function TransactionSubmittedContent({
         </ConfirmedIcon>
         <AutoColumn gap="md" justify="center" style={{ paddingBottom: '12px' }}>
           <ThemedText.MediumHeader textAlign="center">
-            <Trans>Transaction submitted</Trans>
+            <>Transaction submitted</>
           </ThemedText.MediumHeader>
           {currencyToAdd && connector.watchAsset && (
             <ButtonLight mt="12px" padding="6px 12px" width="fit-content" onClick={addToken}>
               {!success ? (
                 <RowFixed>
-                  <Trans>Add {currencyToAdd.symbol}</Trans>
+                  <>Add {currencyToAdd.symbol}</>
                 </RowFixed>
               ) : (
                 <RowFixed>
-                  <Trans>Added {currencyToAdd.symbol} </Trans>
+                  <>Added {currencyToAdd.symbol} </>
                   <CheckCircle size="16px" stroke={theme.accentSuccess} style={{ marginLeft: '6px' }} />
                 </RowFixed>
               )}
@@ -158,13 +157,13 @@ function TransactionSubmittedContent({
           )}
           <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
             <Text fontWeight={600} fontSize={20} color={theme.accentTextLightPrimary}>
-              {inline ? <Trans>Return</Trans> : <Trans>Close</Trans>}
+              {inline ? <>Return</> : <>Close</>}
             </Text>
           </ButtonPrimary>
           {chainId && hash && (
             <ExternalLink href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}>
               <Text fontWeight={600} fontSize={14} color={theme.accentAction}>
-                <Trans>View on Etherscan</Trans>
+                <>View on Etherscan</>
               </Text>
             </ExternalLink>
           )}
@@ -208,7 +207,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: React
       <Section>
         <RowBetween>
           <Text fontWeight={600} fontSize={16}>
-            <Trans>Error</Trans>
+            <>Error</>
           </Text>
           <CloseIcon onClick={onDismiss} />
         </RowBetween>
@@ -219,7 +218,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: React
       </Section>
       <BottomSection gap="12px">
         <ButtonPrimary onClick={onDismiss}>
-          <Trans>Dismiss</Trans>
+          <>Dismiss</>
         </ButtonPrimary>
       </BottomSection>
     </Wrapper>
@@ -282,13 +281,13 @@ function L2Content({
         <AutoColumn gap="md" justify="center">
           <Text fontWeight={500} fontSize={20} textAlign="center">
             {!hash ? (
-              <Trans>Confirm transaction in wallet</Trans>
+              <>Confirm transaction in wallet</>
             ) : !confirmed ? (
-              <Trans>Transaction Submitted</Trans>
+              <>Transaction Submitted</>
             ) : transactionSuccess ? (
-              <Trans>Success</Trans>
+              <>Success</>
             ) : (
-              <Trans>Error</Trans>
+              <>Error</>
             )}
           </Text>
           <Text fontWeight={400} fontSize={16} textAlign="center">
@@ -297,7 +296,7 @@ function L2Content({
           {chainId && hash ? (
             <ExternalLink href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}>
               <Text fontWeight={500} fontSize={14} color={theme.accentAction}>
-                <Trans>View on Explorer</Trans>
+                <>View on Explorer</>
               </Text>
             </ExternalLink>
           ) : (
@@ -308,7 +307,7 @@ function L2Content({
               <div style={{ height: '24px' }} />
             ) : (
               <div>
-                <Trans>Transaction completed in </Trans>
+                <>Transaction completed in </>
                 <span style={{ fontWeight: 500, marginLeft: '4px', color: theme.textPrimary }}>
                   {secondsToConfirm} seconds 🎉
                 </span>
@@ -317,7 +316,7 @@ function L2Content({
           </Text>
           <ButtonPrimary onClick={onDismiss} style={{ margin: '4px 0 0 0' }}>
             <Text fontWeight={500} fontSize={20}>
-              {inline ? <Trans>Return</Trans> : <Trans>Close</Trans>}
+              {inline ? <>Return</> : <>Close</>}
             </Text>
           </ButtonPrimary>
         </AutoColumn>

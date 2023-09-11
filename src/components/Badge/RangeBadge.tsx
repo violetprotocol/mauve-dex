@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import Badge, { BadgeVariant } from 'components/Badge'
 import { AlertCircle } from 'react-feather'
 import styled from 'styled-components/macro'
@@ -34,43 +33,31 @@ export default function RangeBadge({
   return (
     <BadgeWrapper>
       {removed ? (
-        <MouseoverTooltip text={<Trans>Your position has 0 liquidity, and is not earning fees.</Trans>}>
+        <MouseoverTooltip text="Your position has 0 liquidity, and is not earning fees.">
           <Badge variant={BadgeVariant.DEFAULT}>
             <AlertCircle width={14} height={14} />
             &nbsp;
             <BadgeText>
-              <Trans>Closed</Trans>
+              <>Closed</>
             </BadgeText>
           </Badge>
         </MouseoverTooltip>
       ) : inRange ? (
-        <MouseoverTooltip
-          text={
-            <Trans>
-              The price of this pool is within your selected range. Your position is currently earning fees.
-            </Trans>
-          }
-        >
+        <MouseoverTooltip text="The price of this pool is within your selected range. Your position is currently earning fees.">
           <Badge variant={BadgeVariant.DEFAULT}>
             <ActiveDot /> &nbsp;
             <BadgeText>
-              <Trans>In range</Trans>
+              <>In range</>
             </BadgeText>
           </Badge>
         </MouseoverTooltip>
       ) : (
-        <MouseoverTooltip
-          text={
-            <Trans>
-              The price of this pool is outside of your selected range. Your position is not currently earning fees.
-            </Trans>
-          }
-        >
+        <MouseoverTooltip text="The price of this pool is outside of your selected range. Your position is not currently earning fees.">
           <Badge variant={BadgeVariant.WARNING}>
             <AlertCircle width={14} height={14} />
             &nbsp;
             <BadgeText>
-              <Trans>Out of range</Trans>
+              <>Out of range</>
             </BadgeText>
           </Badge>
         </MouseoverTooltip>

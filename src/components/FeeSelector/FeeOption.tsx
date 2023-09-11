@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
 import { ButtonRadioChecked } from 'components/Button'
 import { AutoColumn } from 'components/Column'
@@ -34,7 +33,7 @@ export function FeeOption({ feeAmount, active, onClick }: FeeOptionProps) {
       <AutoColumn gap="sm" justify="flex-start">
         <AutoColumn justify="flex-start" gap="6px">
           <ResponsiveText>
-            <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}%</Trans>
+            <>{FEE_AMOUNT_DETAIL[feeAmount].label}%</>
           </ResponsiveText>
           <ThemedText.DeprecatedMain fontWeight={400} fontSize="12px" textAlign="left">
             {FEE_AMOUNT_DETAIL[feeAmount].description}

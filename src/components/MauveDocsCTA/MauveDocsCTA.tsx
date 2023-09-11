@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ExternalLink, HideSmall } from 'theme'
@@ -59,10 +58,10 @@ const MauveDocsCTA = () => {
           <BodyText>
             <AutoRow>
               <Header>
-                <Trans>Mauve is a compliant DEX</Trans>
+                <>Mauve is a compliant DEX</>
               </Header>
               <HideSmall>
-                <Trans>Identity verification through Violet is required.</Trans>
+                <>Identity verification through Violet is required.</>
               </HideSmall>
             </AutoRow>
           </BodyText>

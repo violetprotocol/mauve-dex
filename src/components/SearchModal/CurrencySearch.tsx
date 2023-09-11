@@ -1,5 +1,4 @@
 // eslint-disable-next-line no-restricted-imports
-import { Trans } from '@lingui/macro'
 import { Trace } from '@uniswap/analytics'
 import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-events'
 import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
@@ -12,7 +11,7 @@ import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
 import { tokenComparator, useSortTokensByQuery } from 'lib/hooks/useTokenList/sorting'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import AutoSizer from 'react-virtualized-auto-sizer'
+import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useAllTokenBalances } from 'state/connection/hooks'
@@ -191,7 +190,7 @@ export function CurrencySearch({
         <PaddedColumn gap="16px">
           <RowBetween>
             <Text fontWeight={500} fontSize={16}>
-              <Trans>Select a token</Trans>
+              <>Select a token</>
             </Text>
             <CloseIcon onClick={onDismiss} />
           </RowBetween>
@@ -240,7 +239,7 @@ export function CurrencySearch({
         ) : searchCurrencies?.length > 0 || filteredInactiveTokens?.length > 0 || isLoading ? (
           <div style={{ flex: '1' }}>
             <AutoSizer disableWidth>
-              {({ height }) => (
+              {({ height }: VerticalSize) => (
                 <CurrencyList
                   height={height}
                   currencies={searchCurrencies}
@@ -260,7 +259,7 @@ export function CurrencySearch({
         ) : (
           <Column style={{ padding: '20px', height: '100%' }}>
             <ThemedText.DeprecatedMain color={theme.textTertiary} textAlign="center" mb="20px">
-              <Trans>No results found.</Trans>
+              <>No results found.</>
             </ThemedText.DeprecatedMain>
           </Column>
         )}

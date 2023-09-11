@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { Position } from '@violetprotocol/mauve-v3-sdk'
 import RangeBadge from 'components/Badge/RangeBadge'
@@ -101,10 +100,10 @@ export const PositionPreview = ({
           <Break />
           <RowBetween>
             <ThemedText.DeprecatedLabel>
-              <Trans>Fee Tier</Trans>
+              <>Fee Tier</>
             </ThemedText.DeprecatedLabel>
             <ThemedText.DeprecatedLabel>
-              <Trans>{position?.pool?.fee / 10000}%</Trans>
+              <>{position?.pool?.fee / 10000}%</>
             </ThemedText.DeprecatedLabel>
           </RowBetween>
         </AutoColumn>
@@ -124,7 +123,7 @@ export const PositionPreview = ({
           <LightCard width="48%" padding="8px">
             <AutoColumn gap="4px" justify="center">
               <ThemedText.DeprecatedMain fontSize="12px">
-                <Trans>Min Price</Trans>
+                <>Min Price</>
               </ThemedText.DeprecatedMain>
               <ThemedText.DeprecatedMediumHeader textAlign="center">{`${formatTickPrice(
                 priceLower,
@@ -132,12 +131,12 @@ export const PositionPreview = ({
                 Bound.LOWER
               )}`}</ThemedText.DeprecatedMediumHeader>
               <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-                <Trans>
+                <>
                   {quoteCurrency.symbol} per {baseCurrency.symbol}
-                </Trans>
+                </>
               </ThemedText.DeprecatedMain>
               <ThemedText.DeprecatedSmall textAlign="center" color={theme.textTertiary} style={{ marginTop: '4px' }}>
-                <Trans>Your position will be 100% composed of {baseCurrency?.symbol} at this price</Trans>
+                <>Your position will be 100% composed of {baseCurrency?.symbol} at this price</>
               </ThemedText.DeprecatedSmall>
             </AutoColumn>
           </LightCard>
@@ -145,7 +144,7 @@ export const PositionPreview = ({
           <LightCard width="48%" padding="8px">
             <AutoColumn gap="4px" justify="center">
               <ThemedText.DeprecatedMain fontSize="12px">
-                <Trans>Max Price</Trans>
+                <>Max Price</>
               </ThemedText.DeprecatedMain>
               <ThemedText.DeprecatedMediumHeader textAlign="center">{`${formatTickPrice(
                 priceUpper,
@@ -153,12 +152,12 @@ export const PositionPreview = ({
                 Bound.UPPER
               )}`}</ThemedText.DeprecatedMediumHeader>
               <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-                <Trans>
+                <>
                   {quoteCurrency.symbol} per {baseCurrency.symbol}
-                </Trans>
+                </>
               </ThemedText.DeprecatedMain>
               <ThemedText.DeprecatedSmall textAlign="center" color={theme.textTertiary} style={{ marginTop: '4px' }}>
-                <Trans>Your position will be 100% composed of {quoteCurrency?.symbol} at this price</Trans>
+                <>Your position will be 100% composed of {quoteCurrency?.symbol} at this price</>
               </ThemedText.DeprecatedSmall>
             </AutoColumn>
           </LightCard>
@@ -166,13 +165,13 @@ export const PositionPreview = ({
         <LightCard padding="12px ">
           <AutoColumn gap="4px" justify="center">
             <ThemedText.DeprecatedMain fontSize="12px">
-              <Trans>Current price</Trans>
+              <>Current price</>
             </ThemedText.DeprecatedMain>
             <ThemedText.DeprecatedMediumHeader>{`${price.toSignificant(5)} `}</ThemedText.DeprecatedMediumHeader>
             <ThemedText.DeprecatedMain textAlign="center" fontSize="12px">
-              <Trans>
+              <>
                 {quoteCurrency.symbol} per {baseCurrency.symbol}
-              </Trans>
+              </>
             </ThemedText.DeprecatedMain>
           </AutoColumn>
         </LightCard>

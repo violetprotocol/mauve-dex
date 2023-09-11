@@ -1,4 +1,3 @@
-import { Trans } from '@lingui/macro'
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
@@ -164,7 +163,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                 </LoadingOpacityContainer>
               ) : loading || syncing ? (
                 <ThemedText.DeprecatedMain fontSize={14}>
-                  <Trans>Fetching best price...</Trans>
+                  <>Fetching best price...</>
                 </ThemedText.DeprecatedMain>
               ) : null}
             </RowFixed>
