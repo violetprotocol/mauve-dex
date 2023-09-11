@@ -426,6 +426,7 @@ export default function Swap({ className }: { className?: string }) {
         swapErrorMessage: eatPayload.data.message,
         txHash: undefined,
       })
+      setEatPayload({ status: 'idle' })
     }
   }, [handleSwap, eatPayload, swapCallback, showConfirm, tradeToConfirm])
 
