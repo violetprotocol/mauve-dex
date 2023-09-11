@@ -33,7 +33,7 @@ function getRouter(chainId: ChainId): AlphaRouter {
 
 // routing API quote params: https://github.com/Uniswap/routing-api/blob/main/lib/handlers/quote/schema/quote-schema.ts
 const API_QUERY_PARAMS = {
-  protocols: 'v2,v3,mixed',
+  protocols: 'v3',
 }
 const CLIENT_PARAMS = {
   protocols: [Protocol.V3],
@@ -42,7 +42,7 @@ const CLIENT_PARAMS = {
 // TODO(zzmp): This will be used after testing router caching.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PRICE_PARAMS = {
-  protocols: [Protocol.V2, Protocol.V3],
+  protocols: [Protocol.V3],
   v2PoolSelection: {
     topN: 2,
     topNDirectSwaps: 1,

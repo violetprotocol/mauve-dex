@@ -143,7 +143,7 @@
     "@violetprotocol/mauve-periphery": "1.8.8",
     "@violetprotocol/mauve-router-sdk": "1.6.5",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
-    "@violetprotocol/mauve-smart-order-router": "4.0.9",
+    "@violetprotocol/mauve-smart-order-router": "4.0.10",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
     "@violetprotocol/mauve-v3-sdk": "4.2.4",
     "@violetprotocol/sdk": "0.0.17",

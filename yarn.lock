@@ -5727,10 +5727,10 @@
     tiny-invariant "^1.1.0"
     toformat "^2.0.0"
 
-"@violetprotocol/mauve-smart-order-router@4.0.9":
-  version "4.0.9"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.9.tgz#981d47e2259fb2cb71bcc1ea977f224ac406bbe7"
-  integrity sha512-kuj2dmKWP2dekhKChtcRVY28M0XuTM1nAx9ws9l+rRx5DbSz5fWfLFdR2jl1j0Nep07vSCq8nqCuJncoBIWmOw==
+"@violetprotocol/mauve-smart-order-router@4.0.10":
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/mauve-smart-order-router/-/mauve-smart-order-router-4.0.10.tgz#d91797412c727913ec6314ab68d7d998a22f56c9"
+  integrity sha512-UqgG8MOJxk/71Aalr1nnTai1q3eQ4fgCRPRPvcK1tzO1FKGZkOLJbVUlC0zjZOBzFp/EpdseDUyRgj3l+TGnEg==
   dependencies:
     "@uniswap/default-token-list" "^2.0.0"
     "@uniswap/permit2-sdk" "^1.2.0"
