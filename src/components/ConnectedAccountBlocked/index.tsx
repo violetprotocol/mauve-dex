@@ -1,6 +1,5 @@
 export {}
 
-// import { Trans } from '@lingui/macro'
 // import Column from 'components/Column'
 // import { BlockedIcon } from 'components/TokenSafety/TokenSafetyIcon'
 // import styled, { useTheme } from 'styled-components/macro'

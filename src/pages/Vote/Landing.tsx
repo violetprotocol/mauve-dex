@@ -1,6 +1,5 @@
 // [MAUVE-DISABLED]
 export {}
-// import { Trans } from '@lingui/macro'
 // import { Trace } from '@uniswap/analytics'
 // import { InterfacePageName } from '@uniswap/analytics-events'
 // import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'

@@ -1,6 +1,5 @@
 // [MAUVE-DISABLED]
 export {}
-// import { Trans } from '@lingui/macro'
 // import { ButtonDropdown } from 'components/Button'
 // import Column from 'components/Column'
 // import Modal from 'components/Modal'

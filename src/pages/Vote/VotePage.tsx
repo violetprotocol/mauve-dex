@@ -1,7 +1,6 @@
 // [MAUVE-DISABLED]
 export {}
 // import { BigNumber } from '@ethersproject/bignumber'
-// import { Trans } from '@lingui/macro'
 // import { Trace } from '@uniswap/analytics'
 // import { InterfacePageName } from '@uniswap/analytics-events'
 // import { CurrencyAmount, Fraction, Token } from '@violetprotocol/mauve-sdk-core'

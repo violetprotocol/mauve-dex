@@ -7,7 +7,6 @@ export {}
 // import type { TransactionResponse } from '@ethersproject/providers'
 // import { toUtf8String, Utf8ErrorFuncs, Utf8ErrorReason } from '@ethersproject/strings'
 // // eslint-disable-next-line no-restricted-imports
-// import { t } from '@lingui/macro'
 // import { abi as GOVERNANCE_ABI } from '@uniswap/governance/build/GovernorAlpha.json'
 // import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
 // import { CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
