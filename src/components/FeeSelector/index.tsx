@@ -10,13 +10,11 @@ import { useFeeTierDistribution } from 'hooks/useFeeTierDistribution'
 import { PoolState, usePools } from 'hooks/usePools'
 import usePrevious from 'hooks/usePrevious'
 import { DynamicSection } from 'pages/AddLiquidity/styled'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Box } from 'rebass'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 
 import { FeeOption } from './FeeOption'
-import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
 
 const pulse = (color: string) => keyframes`
@@ -93,12 +91,11 @@ export default function FeeSelector({
     [pools]
   )
 
-  const [onlyInitializedFeeTier, setOnlyInitializedFeeTier] = useState<FeeAmount | undefined>(undefined)
+  // onlyInitializedFeeTier is undefined when no fee tiers exist, null when more than 1 fee tier exists
+  const [onlyInitializedFeeTier, setOnlyInitializedFeeTier] = useState<FeeAmount | undefined | null>(undefined)
   const [pulsing, setPulsing] = useState(false)
 
   const previousFeeAmount = usePrevious(feeAmount)
-
-  const recommended = useRef(false)
 
   const handleFeePoolSelectWithEvent = useCallback(
     (fee: FeeAmount) => {
@@ -119,7 +116,7 @@ export default function FeeSelector({
       const [, pool] = initializedPools[0]
       setOnlyInitializedFeeTier(pool?.fee)
     } else {
-      setOnlyInitializedFeeTier(undefined)
+      setOnlyInitializedFeeTier(null)
     }
 
     return () => {
@@ -152,37 +149,19 @@ export default function FeeSelector({
   return (
     <AutoColumn gap="16px">
       <DynamicSection gap="md" disabled={disabled}>
+      {!feeAmount && onlyInitializedFeeTier === null && (
         <FocusedOutlineCard pulsing={pulsing} onAnimationEnd={() => setPulsing(false)}>
           <RowBetween>
             <AutoColumn id="add-liquidity-selected-fee">
-              {!feeAmount ? (
                 <>
                   <ThemedText.DeprecatedLabel>
-                    <Trans>Fee tier</Trans>
+                    <Trans>No pools exist for this pair yet</Trans>
                   </ThemedText.DeprecatedLabel>
-                  <ThemedText.DeprecatedMain fontWeight={400} fontSize="12px" textAlign="left">
-                    <Trans>The % you will earn in fees.</Trans>
-                  </ThemedText.DeprecatedMain>
                 </>
-              ) : (
-                <>
-                  <ThemedText.DeprecatedLabel className="selected-fee-label">
-                    <Trans>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Trans>
-                  </ThemedText.DeprecatedLabel>
-                  <Box style={{ width: 'fit-content', marginTop: '8px' }} className="selected-fee-percentage">
-                    {distributions && (
-                      <FeeTierPercentageBadge
-                        distributions={distributions}
-                        feeAmount={feeAmount}
-                        poolState={poolsByFeeTier[feeAmount]}
-                      />
-                    )}
-                  </Box>
-                </>
-              )}
             </AutoColumn>
           </RowBetween>
         </FocusedOutlineCard>
+        )}
 
         {chainId && (
           <Select>
