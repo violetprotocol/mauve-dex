@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
-import { t } from '@lingui/macro'
 import { useWeb3React } from '@web3-react/core'
 import { ChangeEvent, ReactNode, useCallback } from 'react'
 import styled, { useTheme } from 'styled-components/macro'
@@ -127,7 +125,7 @@ export default function AddressInputPanel({
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck="false"
-              placeholder={placeholder ?? t`Wallet Address or ENS name`}
+              placeholder={placeholder ?? `Wallet Address or ENS name`}
               error={error}
               pattern="^(0x[a-fA-F0-9]{40})$"
               onChange={handleInput}
