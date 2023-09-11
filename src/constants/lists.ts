@@ -8,7 +8,6 @@ const MAUVE_MAINNETS_LIST_URL =
 // const UNI_UNSUPPORTED_LIST = 'https://unsupportedtokens.uniswap.org/'
 const AAVE_LIST = 'tokenlist.aave.eth'
 const BA_LIST = 'https://raw.githubusercontent.com/The-Blockchain-Association/sec-notice-list/master/ba-sec-list.json'
-const CMC_ALL_LIST = 'https://api.coinmarketcap.com/data-api/v3/uniswap/all.json'
 const COINGECKO_LIST = 'https://tokens.coingecko.com/uniswap/all.json'
 const COMPOUND_LIST = 'https://raw.githubusercontent.com/compound-finance/token-list/master/compound.tokenlist.json'
 const GEMINI_LIST = 'https://www.gemini.com/uniswap/manifest.json'
@@ -34,7 +33,6 @@ export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   // UNI_EXTENDED_LIST,
   COMPOUND_LIST,
   AAVE_LIST,
-  CMC_ALL_LIST,
   COINGECKO_LIST,
   KLEROS_LIST,
   GEMINI_LIST,
