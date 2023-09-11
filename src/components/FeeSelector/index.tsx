@@ -149,18 +149,18 @@ export default function FeeSelector({
   return (
     <AutoColumn gap="16px">
       <DynamicSection gap="md" disabled={disabled}>
-      {!feeAmount && onlyInitializedFeeTier === null && (
-        <FocusedOutlineCard pulsing={pulsing} onAnimationEnd={() => setPulsing(false)}>
-          <RowBetween>
-            <AutoColumn id="add-liquidity-selected-fee">
+        {!feeAmount && onlyInitializedFeeTier === null && (
+          <FocusedOutlineCard pulsing={pulsing} onAnimationEnd={() => setPulsing(false)}>
+            <RowBetween>
+              <AutoColumn id="add-liquidity-selected-fee">
                 <>
                   <ThemedText.DeprecatedLabel>
                     <Trans>No pools exist for this pair yet</Trans>
                   </ThemedText.DeprecatedLabel>
                 </>
-            </AutoColumn>
-          </RowBetween>
-        </FocusedOutlineCard>
+              </AutoColumn>
+            </RowBetween>
+          </FocusedOutlineCard>
         )}
 
         {chainId && (
