@@ -31,7 +31,7 @@ const StyledAppVersionNumber = styled(ThemedText.DeprecatedSmall)<{
 }>`
   color: ${({ theme }) => theme.accentAction};
   transition: opacity 0.25s ease;
-  opacity: ${({  hovering }) => (hovering ? 1 : 0)};
+  opacity: ${({ hovering }) => (hovering ? 1 : 0)};
   :hover {
     opacity: 1;
   }
@@ -54,9 +54,7 @@ export default function AppVersion() {
   return isProduction || !appVersionNumber ? null : (
     <RowFixed>
       <StyledAppVersion onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-        <StyledAppVersionNumber hovering={isHover}>
-          {appVersionNumber}
-        </StyledAppVersionNumber>
+        <StyledAppVersionNumber hovering={isHover}>{appVersionNumber}</StyledAppVersionNumber>
       </StyledAppVersion>
     </RowFixed>
   )
