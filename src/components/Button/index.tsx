@@ -1,6 +1,6 @@
 import { Check } from 'react-feather'
 import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components'
-import styled, { keyframes, useTheme } from 'styled-components/macro'
+import styled, { AnyStyledComponent, keyframes, useTheme } from 'styled-components/macro'
 
 import { RowBetween } from '../Row'
 
@@ -85,29 +85,33 @@ const rotate = keyframes`
  }
  `
 
-export const VioletProtectedButtonPrimary = styled(ButtonPrimary)`
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: true;
-  }
-  --angle: 0deg;
+const VioletProtected = (button: AnyStyledComponent, fillColorClass: string) => {
+  return styled(button)`
+    @property --angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: true;
+    }
+    --angle: 0deg;
+    
+    background-image: linear-gradient(
+        to right,
+        ${({ theme }) => theme[fillColorClass]},
+        ${({ theme }) => theme[fillColorClass]}
+      ),
+      conic-gradient(from var(--angle), #35085e, #802dcc);
+    background-origin: border-box;
+    background-clip: padding-box,
+      /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
+    border: 0.3rem dotted transparent;
+    animation-name: ${rotate};
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  `
+}
 
-  background-image: linear-gradient(
-      to right,
-      ${({ theme }) => theme.backgroundContrast},
-      ${({ theme }) => theme.backgroundContrast}
-    ),
-    conic-gradient(from var(--angle), #802dcc, #35085e);
-  background-origin: border-box;
-  background-clip: padding-box,
-    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
-  border: 0.3rem dotted transparent;
-  animation-name: ${rotate};
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-`
+export const VioletProtectedButtonPrimary = VioletProtected(ButtonPrimary, "backgroundContrast")
 
 export const SmallButtonPrimary = styled(ButtonPrimary)`
   width: auto;
@@ -283,29 +287,7 @@ const ButtonConfirmedStyle = styled(BaseButton)`
   }
 `
 
-const VioletProtectedButtonConfirmedStyle = styled(ButtonConfirmedStyle)`
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: true;
-  }
-  --angle: 0deg;
-
-  background-image: linear-gradient(
-      to right,
-      ${({ theme }) => theme.backgroundContrast},
-      ${({ theme }) => theme.backgroundContrast}
-    ),
-    conic-gradient(from var(--angle), #802dcc, #35085e);
-  background-origin: border-box;
-  background-clip: padding-box,
-    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
-  border: 0.3rem dotted transparent;
-  animation-name: ${rotate};
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-`
+const VioletProtectedButtonConfirmedStyle = VioletProtected(ButtonConfirmedStyle, "backgroundContrast")
 
 const ButtonErrorStyle = styled(BaseButton)`
   color: ${({ theme }) => theme.white};
@@ -332,28 +314,7 @@ const ButtonErrorStyle = styled(BaseButton)`
   }
 `
 
-const VioletProtectedButtonError = styled(ButtonErrorStyle)`
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-  --angle: 0deg;
-  background-image: linear-gradient(
-      to right,
-      ${({ theme }) => theme.accentFailure},
-      ${({ theme }) => theme.accentFailure}
-    ),
-    conic-gradient(from var(--angle), #802dcc, #35085e);
-  background-origin: border-box;
-  background-clip: padding-box,
-    /* Clip white semi-transparent to the padding-box */ border-box /* Clip colored boxes to the border-box (default) */;
-  border: 0.3rem dotted transparent;
-  animation-name: ${rotate};
-  animation-duration: 4s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-`
+const VioletProtectedButtonError = VioletProtected(ButtonErrorStyle, "accentFailure")
 
 export function ButtonConfirmed({
   confirmed,
