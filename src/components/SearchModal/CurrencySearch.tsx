@@ -195,6 +195,20 @@ export function CurrencySearch({
             </Text>
             <CloseIcon onClick={onDismiss} />
           </RowBetween>
+          {/*   
+          // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
+              <Row>
+                <SearchInput
+                  type="text"
+                  id="token-search-input"
+                  placeholder={t`Search name or paste address`}
+                  autoComplete="off"
+                  value={searchQuery}
+                  ref={inputRef as RefObject<HTMLInputElement>}
+                  onChange={handleInput}
+                  onKeyDown={handleEnter}
+                />
+              </Row> */}
           {showCommonBases && (
             <MauveBases
               chainId={chainId}

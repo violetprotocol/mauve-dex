@@ -225,13 +225,13 @@ function AddLiquidityV3PoolSummary({
   const quoteCurrency = useCurrency(quoteCurrencyId)
 
   return createPool ? (
-    <Trans>
-      Create pool and add {baseCurrency?.symbol}/{quoteCurrency?.symbol} V3 liquidity
-    </Trans>
+    <>
+      Create pool and add {baseCurrency?.symbol}/{quoteCurrency?.symbol} Mauve liquidity
+    </>
   ) : (
-    <Trans>
-      Add {baseCurrency?.symbol}/{quoteCurrency?.symbol} V3 liquidity
-    </Trans>
+    <>
+      Add {baseCurrency?.symbol}/{quoteCurrency?.symbol} Mauve liquidity
+    </>
   )
 }
 
