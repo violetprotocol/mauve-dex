@@ -24,7 +24,7 @@ function useApprovalStateForSpender(
 ): ApprovalState {
   const { account } = useWeb3React()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
-  const [delayedIsPending, setDelayedIsPending] = useState(false)
+  const [delayedPendingApproval, setDelayedPendingApproval] = useState(false)
 
   const { tokenAllowance } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useIsPendingApproval(token, spender)
@@ -34,14 +34,14 @@ function useApprovalStateForSpender(
   // from the chain so the ApprovalState briefly goes back to `NOT_APPROVED` before going to `APPROVED`.
   // Here we keep the pending state a bit longer.
   useEffect(() => {
-    if (delayedIsPending && !pendingApproval) {
+    if (delayedPendingApproval && !pendingApproval) {
       setTimeout(() => {
-        setDelayedIsPending(false)
+        setDelayedPendingApproval(false)
       }, 3000)
-    } else if (!delayedIsPending && pendingApproval) {
-      setDelayedIsPending(true)
+    } else if (!delayedPendingApproval && pendingApproval) {
+      setDelayedPendingApproval(true)
     }
-  }, [delayedIsPending, pendingApproval, setDelayedIsPending])
+  }, [delayedPendingApproval, pendingApproval, setDelayedPendingApproval])
 
   return useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
@@ -49,7 +49,7 @@ function useApprovalStateForSpender(
     // we might not have enough data to know whether or not we need to approve
     if (!tokenAllowance) return ApprovalState.UNKNOWN
 
-    if (pendingApproval || delayedIsPending) {
+    if (pendingApproval || delayedPendingApproval) {
       return ApprovalState.PENDING
     }
 
@@ -59,7 +59,7 @@ function useApprovalStateForSpender(
     } else {
       return ApprovalState.APPROVED
     }
-  }, [amountToApprove, delayedIsPending, pendingApproval, spender, tokenAllowance])
+  }, [amountToApprove, delayedPendingApproval, pendingApproval, spender, tokenAllowance])
 }
 
 export function useApproval(
