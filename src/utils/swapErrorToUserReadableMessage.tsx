@@ -15,6 +15,11 @@ export function swapErrorToUserReadableMessage(error: any): string {
     }
   }
 
+  // NOTE: This should've been handled in error.code === 4001 case, but for some reason wasn't
+  if (error.reason === 'user rejected transaction') {
+    return t`Transaction rejected`
+  }
+
   while (error) {
     reason = error.reason ?? error.message ?? reason
     error = error.error ?? error.data?.originalError
