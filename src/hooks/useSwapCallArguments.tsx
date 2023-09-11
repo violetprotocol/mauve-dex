@@ -9,7 +9,7 @@ import { useMemo } from 'react'
 import useENS from './useENS'
 import { SignatureData } from './useERC20Permit'
 
-export interface SwapCall {
+interface SwapCall {
   address: string
   calls: string[]
   value: string
