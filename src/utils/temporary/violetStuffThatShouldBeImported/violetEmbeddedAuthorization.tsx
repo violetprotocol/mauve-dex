@@ -169,6 +169,7 @@ const IFrame = forwardRef<HTMLIFrameElement, IFrameProps>(function IFrame({ auth
       width={IFRAME_WIDTH}
       height={IFRAME_HEIGHT}
       allow="clipboard-write"
+      sandbox="allow-scripts allow-forms"
     />
   )
 })
