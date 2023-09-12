@@ -34,8 +34,7 @@ interface FormatDollarArgs {
  * Returns a USD dollar or equivalent denominated numerical value formatted
  * in human readable string for use in template.
  *
- * Adheres to guidelines for prices and other numbers defined here:
- * https://www.notion.so/uniswaplabs/Number-standards-fbb9f533f10e4e22820722c2f66d23c0
+ * Adheres to guidelines for prices and other numbers defined:
  * @param num numerical value denominated in USD or USD equivalent
  * @param isPrice whether the amount represents a price or not
  * @param lessPreciseStablecoinValues whether or not we should show less precise values for
@@ -98,8 +97,7 @@ export const formatDollar = ({
  * Returns a numerical amount of any token formatted in human readable string for use in template.
  *
  * For transaction review numbers, such as token quantities, NFT price (token-denominated),
- *  network fees, transaction history items. Adheres to guidelines defined here:
- * https://www.notion.so/uniswaplabs/Number-standards-fbb9f533f10e4e22820722c2f66d23c0
+ *  network fees, transaction history items. Adheres to guidelines defined:
  * @param num numerical value denominated in any token
  * @param maxDigits the maximum number of digits that should be shown for the quantity
  */

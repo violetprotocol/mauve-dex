@@ -9,7 +9,7 @@ import { WrappedTokenInfo } from 'state/lists/wrappedTokenInfo'
 import { hex } from 'wcag-contrast'
 
 function URIForEthToken(address: string) {
-  return `https://raw.githubusercontent.com/uniswap/assets/master/blockchains/ethereum/assets/${address}/logo.png`
+  return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
 }
 
 async function getColorFromToken(token: Token): Promise<string | null> {
