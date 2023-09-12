@@ -1,3 +1,5 @@
+import { isProductionEnv } from "utils/env"
+
 /**
  * List of all the networks supported by the Mauve Interface
  */
@@ -45,6 +47,9 @@ export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(Support
 ) as SupportedChainId[]
 
 export function isSupportedChain(chainId: number | null | undefined): chainId is SupportedChainId {
+  if (isProductionEnv() && chainId !== 1) {
+    return false
+  }
   return !!chainId && !!SupportedChainId[chainId]
 }
 
