@@ -20,7 +20,7 @@ import CurrencyLogo from '../Logo/CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
 import TradePrice from '../swap/TradePrice'
 import { AdvancedSwapDetails } from './AdvancedSwapDetails'
-import { SwapShowAcceptChanges, TruncatedText } from './styleds'
+import { SwapShowAcceptChanges, TruncatedText } from './styled'
 
 const ArrowWrapper = styled.div`
   padding: 4px;

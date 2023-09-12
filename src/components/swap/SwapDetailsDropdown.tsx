@@ -1,24 +1,17 @@
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, SwapEventName } from '@uniswap/analytics-events'
 import { Currency, Percent, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { useWeb3React } from '@web3-react/core'
 import AnimatedDropdown from 'components/AnimatedDropdown'
-import Card, { OutlineCard } from 'components/Card'
-import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer } from 'components/Loader/styled'
 import Row, { RowBetween, RowFixed } from 'components/Row'
-import { MouseoverTooltipContent } from 'components/Tooltip'
-import { SUPPORTED_GAS_ESTIMATE_CHAIN_IDS } from 'constants/chains'
 import { useState } from 'react'
-import { ChevronDown, Info } from 'react-feather'
+import { ChevronDown } from 'react-feather'
 import { InterfaceTrade } from 'state/routing/types'
 import styled, { keyframes, useTheme } from 'styled-components/macro'
-import { HideSmall, ThemedText } from 'theme'
+import { ThemedText } from 'theme'
 
 import { AdvancedSwapDetails } from './AdvancedSwapDetails'
-import GasEstimateBadge from './GasEstimateBadge'
-import { ResponsiveTooltipContainer } from './styleds'
-import SwapRoute from './SwapRoute'
+import GasEstimateTooltip from './GasEstimateTooltip'
 import TradePrice from './TradePrice'
 
 const Wrapper = styled(Row)`
@@ -28,18 +21,14 @@ const Wrapper = styled(Row)`
   padding: 8px 12px;
   margin-top: 0;
   min-height: 32px;
+  display: flex;
+  flex-direction: column;
 `
 
-const StyledInfoIcon = styled(Info)`
-  height: 16px;
-  width: 16px;
-  margin-right: 4px;
-  color: ${({ theme }) => theme.textTertiary};
-`
-
-const StyledCard = styled(OutlineCard)`
-  padding: 4px;
-  border: none;
+const SwapDetailsWrapper = styled.div`
+  padding-top: ${({ theme }) => theme.grids.md};
+  display: flex;
+  flex-direction: column;
 `
 
 const StyledHeaderRow = styled(RowBetween)<{ disabled: boolean; open: boolean }>`
@@ -114,89 +103,56 @@ interface SwapDetailsInlineProps {
 
 export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSlippage }: SwapDetailsInlineProps) {
   const theme = useTheme()
-  const { chainId } = useWeb3React()
   const [showDetails, setShowDetails] = useState(false)
 
   return (
-    <Wrapper style={{ marginTop: '0' }}>
-      <AutoColumn gap="sm" style={{ width: '100%', marginBottom: '-8px' }}>
-        <TraceEvent
-          events={[BrowserEvent.onClick]}
-          name={SwapEventName.SWAP_DETAILS_EXPANDED}
-          element={InterfaceElementName.SWAP_DETAILS_DROPDOWN}
-          shouldLogImpression={!showDetails}
+    <Wrapper>
+      <TraceEvent
+        events={[BrowserEvent.onClick]}
+        name={SwapEventName.SWAP_DETAILS_EXPANDED}
+        element={InterfaceElementName.SWAP_DETAILS_DROPDOWN}
+        shouldLogImpression={!showDetails}
+      >
+        <StyledHeaderRow
+          data-testid="swap-details-header-row"
+          onClick={() => setShowDetails(!showDetails)}
+          disabled={!trade}
+          open={showDetails}
         >
-          <StyledHeaderRow onClick={() => setShowDetails(!showDetails)} disabled={!trade} open={showDetails}>
-            <RowFixed style={{ position: 'relative' }}>
-              {loading || syncing ? (
-                <StyledPolling>
-                  <StyledPollingDot>
-                    <Spinner />
-                  </StyledPollingDot>
-                </StyledPolling>
-              ) : (
-                <HideSmall>
-                  <MouseoverTooltipContent
-                    wrap={false}
-                    content={
-                      <ResponsiveTooltipContainer origin="top right" style={{ padding: '0' }}>
-                        <Card padding="12px">
-                          <AdvancedSwapDetails
-                            trade={trade}
-                            allowedSlippage={allowedSlippage}
-                            syncing={syncing}
-                            hideInfoTooltips={true}
-                          />
-                        </Card>
-                      </ResponsiveTooltipContainer>
-                    }
-                    placement="bottom"
-                    disableHover={showDetails}
-                  >
-                    <StyledInfoIcon color={trade ? theme.textTertiary : theme.deprecated_bg3} />
-                  </MouseoverTooltipContent>
-                </HideSmall>
-              )}
-              {trade ? (
-                <LoadingOpacityContainer $loading={syncing}>
-                  <TradePrice price={trade.executionPrice} />
-                </LoadingOpacityContainer>
-              ) : loading || syncing ? (
-                <ThemedText.DeprecatedMain fontSize={14}>
-                  <>Fetching best price...</>
-                </ThemedText.DeprecatedMain>
-              ) : null}
-            </RowFixed>
-            <RowFixed>
-              {!trade?.gasUseEstimateUSD ||
-              showDetails ||
-              !chainId ||
-              !SUPPORTED_GAS_ESTIMATE_CHAIN_IDS.includes(chainId) ? null : (
-                <GasEstimateBadge
-                  trade={trade}
-                  loading={syncing || loading}
-                  showRoute={!showDetails}
-                  disableHover={showDetails}
-                />
-              )}
-              <RotatingArrow
-                stroke={trade ? theme.textTertiary : theme.deprecated_bg3}
-                open={Boolean(trade && showDetails)}
-              />
-            </RowFixed>
-          </StyledHeaderRow>
-        </TraceEvent>
-        <AnimatedDropdown open={showDetails}>
-          <AutoColumn gap="sm" style={{ padding: '0', paddingBottom: '8px' }}>
+          <RowFixed>
+            {Boolean(loading || syncing) && (
+              <StyledPolling>
+                <StyledPollingDot>
+                  <Spinner />
+                </StyledPollingDot>
+              </StyledPolling>
+            )}
             {trade ? (
-              <StyledCard>
-                <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} syncing={syncing} />
-              </StyledCard>
+              <LoadingOpacityContainer $loading={syncing} data-testid="trade-price-container">
+                <TradePrice price={trade.executionPrice} />
+              </LoadingOpacityContainer>
+            ) : loading || syncing ? (
+              <ThemedText.DeprecatedMain fontSize={14}>
+                <>Fetching best price...</>
+              </ThemedText.DeprecatedMain>
             ) : null}
-            {trade ? <SwapRoute trade={trade} syncing={syncing} /> : null}
-          </AutoColumn>
+          </RowFixed>
+          <RowFixed gap="xs">
+            {!showDetails && <GasEstimateTooltip trade={trade} loading={syncing || loading} />}
+            <RotatingArrow
+              stroke={trade ? theme.textTertiary : theme.backgroundSurface}
+              open={Boolean(trade && showDetails)}
+            />
+          </RowFixed>
+        </StyledHeaderRow>
+      </TraceEvent>
+      {trade && (
+        <AnimatedDropdown open={showDetails}>
+          <SwapDetailsWrapper>
+            <AdvancedSwapDetails trade={trade} allowedSlippage={allowedSlippage} syncing={syncing} />
+          </SwapDetailsWrapper>
         </AnimatedDropdown>
-      </AutoColumn>
+      )}
     </Wrapper>
   )
 }

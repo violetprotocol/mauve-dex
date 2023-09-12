@@ -91,6 +91,16 @@ function getSettings() {
   }
 }
 
+const gapValues = {
+  xs: '4px',
+  sm: '8px',
+  md: '12px',
+  lg: '24px',
+  xl: '32px',
+}
+
+export type Gap = keyof typeof gapValues
+
 // eslint-disable-next-line import/no-unused-modules -- used in styled.d.ts
 export function getTheme() {
   return {

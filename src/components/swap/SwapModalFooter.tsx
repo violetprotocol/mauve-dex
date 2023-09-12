@@ -18,7 +18,7 @@ import { computeRealizedPriceImpact } from 'utils/prices'
 
 import { ButtonError } from '../Button'
 import { AutoRow } from '../Row'
-import { SwapCallbackError } from './styleds'
+import { SwapCallbackError } from './styled'
 import { getTokenPath, RoutingDiagramEntry } from './SwapRoute'
 
 interface AnalyticsEventProps {

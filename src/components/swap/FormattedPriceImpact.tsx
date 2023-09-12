@@ -1,7 +1,7 @@
 import { Percent } from '@violetprotocol/mauve-sdk-core'
 
 import { warningSeverity } from '../../utils/prices'
-import { ErrorText } from './styleds'
+import { ErrorText } from './styled'
 
 export const formatPriceImpact = (priceImpact: Percent) => `${priceImpact.multiply(-1).toFixed(2)}%`
 

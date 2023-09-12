@@ -1,5 +1,3 @@
-import { TooltipContainer } from 'components/Tooltip'
-import { transparentize } from 'polished'
 import { ReactNode } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
@@ -23,13 +21,14 @@ export const PageWrapper = styled.div`
 `
 
 // Mostly copied from `AppBody` but it was getting too hard to maintain backwards compatibility.
-export const SwapWrapper = styled.main`
+export const SwapWrapper = styled.main<{ isDark?: boolean }>`
   position: relative;
   background: ${({ theme }) => theme.background};
   border-radius: 16px;
   border: 1px solid ${({ theme }) => theme.backgroundFloating};
   padding: 2rem;
-  z-index: ${Z_INDEX.deprecated_content};
+
+  z-index: ${Z_INDEX.default};
   transition: transform 250ms ease;
 `
 
@@ -43,7 +42,8 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
   margin-left: auto;
   margin-right: auto;
   background-color: ${({ theme }) => theme.backgroundModule};
-  border: 4px solid white;
+  border: 4px solid;
+  border-color: ${({ theme }) => theme.background};
 
   z-index: 2;
   ${({ clickable }) =>
@@ -55,24 +55,6 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
-`
-
-export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
-  color: ${({ theme, severity }) =>
-    severity === 3 || severity === 4
-      ? theme.accentFailure
-      : severity === 2
-      ? theme.deprecated_yellow2
-      : severity === 1
-      ? theme.textPrimary
-      : theme.textSecondary};
-`
-
-export const TruncatedText = styled(Text)`
-  text-overflow: ellipsis;
-  max-width: 220px;
-  overflow: hidden;
-  text-align: right;
 `
 
 // styles
@@ -111,7 +93,7 @@ const SwapCallbackErrorInner = styled.div`
   p {
     padding: 0;
     margin: 0;
-    font-weight: 500;
+    font-weight: 535;
   }
 `
 
@@ -138,21 +120,27 @@ export function SwapCallbackError({ error }: { error: ReactNode }) {
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => transparentize(0.95, theme.deprecated_primary3)};
-  color: ${({ theme }) => theme.accentAction};
-  padding: 0.5rem;
+  background-color: ${({ theme }) => theme.backgroundSurface};
+  border: 1px solid ${({ theme }) => theme.backgroundInteractive};
+  padding: 12px;
   border-radius: 12px;
   margin-top: 8px;
 `
 
-export const ResponsiveTooltipContainer = styled(TooltipContainer)<{ origin?: string; width?: string }>`
-  background-color: ${({ theme }) => theme.backgroundSurface};
-  border: 1px solid ${({ theme }) => theme.backgroundInteractive};
-  padding: 1rem;
-  width: ${({ width }) => width ?? 'auto'};
+export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
+  color: ${({ theme, severity }) =>
+    severity === 3 || severity === 4
+      ? theme.accentFailure
+      : severity === 2
+      ? theme.deprecated_yellow2
+      : severity === 1
+      ? theme.textPrimary
+      : theme.textSecondary};
+`
 
-  ${({ theme, origin }) => theme.deprecated_mediaWidth.deprecated_upToExtraSmall`
-    transform: scale(0.8);
-    transform-origin: ${origin ?? 'top left'};
-  `}
+export const TruncatedText = styled(Text)`
+  text-overflow: ellipsis;
+  max-width: 220px;
+  overflow: hidden;
+  text-align: right;
 `

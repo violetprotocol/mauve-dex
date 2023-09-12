@@ -73,7 +73,7 @@ export function AdvancedSwapDetails({
                   market price changes while your transaction is pending.
                 </>
               }
-              disableHover={hideInfoTooltips}
+              disabled={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
                 <>Expected Output</>
@@ -92,7 +92,7 @@ export function AdvancedSwapDetails({
           <RowFixed>
             <MouseoverTooltip
               text="The impact your trade has on the market price of this pool."
-              disableHover={hideInfoTooltips}
+              disabled={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textPrimary}>
                 <>Price Impact</>
@@ -109,11 +109,11 @@ export function AdvancedSwapDetails({
           <RowFixed style={{ marginRight: '20px' }}>
             <MouseoverTooltip
               text="The minimum amount you are guaranteed to receive. If the price slips any further, your transaction will revert."
-              disableHover={hideInfoTooltips}
+              disabled={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
-                {trade.tradeType === TradeType.EXACT_INPUT ? <>Minimum received</> : <>Maximum sent</>}{' '}
-                <>after slippage</> ({allowedSlippage.toFixed(2)}%)
+                {trade.tradeType === TradeType.EXACT_INPUT ? <>Min received</> : <>Max sent</>} <>after slippage</> (
+                {allowedSlippage.toFixed(2)}%)
               </ThemedText.DeprecatedSubHeader>
             </MouseoverTooltip>
           </RowFixed>
@@ -131,7 +131,7 @@ export function AdvancedSwapDetails({
               text={
                 <>The fee paid to miners who process your transaction. This must be paid in {nativeCurrency.symbol}.</>
               }
-              disableHover={hideInfoTooltips}
+              disabled={hideInfoTooltips}
             >
               <ThemedText.DeprecatedSubHeader color={theme.textTertiary}>
                 <>Network Fee</>
