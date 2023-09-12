@@ -11,7 +11,7 @@ import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
 import { tokenComparator, useSortTokensByQuery } from 'lib/hooks/useTokenList/sorting'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import AutoSizer, { VerticalSize } from 'react-virtualized-auto-sizer'
+import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useAllTokenBalances } from 'state/connection/hooks'
@@ -239,7 +239,7 @@ export function CurrencySearch({
         ) : searchCurrencies?.length > 0 || filteredInactiveTokens?.length > 0 || isLoading ? (
           <div style={{ flex: '1' }}>
             <AutoSizer disableWidth>
-              {({ height }: VerticalSize) => (
+              {({ height }) => (
                 <CurrencyList
                   height={height}
                   currencies={searchCurrencies}
