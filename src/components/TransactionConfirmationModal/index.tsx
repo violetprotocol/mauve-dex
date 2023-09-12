@@ -443,17 +443,10 @@ export default function TransactionConfirmationModal({
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
         <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
-      ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
+      ) : (hash || attemptingTxn) ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
-      ) : hash ? (
-        <TransactionSubmittedContent
-          chainId={chainId}
-          hash={hash}
-          onDismiss={onDismiss}
-          currencyToAdd={currencyToAdd}
-        />
       ) : (
         content()
       )}
