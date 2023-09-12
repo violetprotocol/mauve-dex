@@ -156,13 +156,13 @@ export const handleErrorCodes = (errorCode?: string) => {
     case 'UNAUTHORIZED_COUNTRY':
       return `
           Unfortunately we currently do not support US customers, and so we weren't able to create your
-          mauve transaction.
+          Mauve transaction.
       `
     case 'UNAUTHORIZED_COUNTRY_AFTER_ENROLLMENT':
       return `
           Thank you for your patience, you are now registered with Violet. Unfortunately
           we currently do not support US customers, and so we weren't able to create your
-          mauve transaction.
+          Mauve transaction.
       `
     case 'COMPLIANCE_FAILED':
       return `
