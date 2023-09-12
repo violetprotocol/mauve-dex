@@ -17,7 +17,7 @@ export const PageWrapper = styled(BodyWrapper)<{ wide: boolean }>`
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 26px 16px;
+  padding: 16px;
   min-width: 480px;
 
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToMedium`
