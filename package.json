@@ -12,7 +12,7 @@
     "graphql:generate:data": "graphql-codegen --config apollo-codegen.ts",
     "graphql:generate:thegraph": "graphql-codegen --config apollo-codegen_thegraph.ts",
     "graphql:generate": "yarn graphql:generate:data && yarn graphql:generate:thegraph",
-    "DEPRECATED:prepare": "yarn contracts:compile && yarn graphql:fetch && yarn graphql:generate",
+    "DEPRECATED:prepare": "yarn contracts:compile && yarn graphql:fetch && yarn graphql:generate && yarn i18n:compile",
     "prepare": "yarn contracts:compile",
     "start": "craco start",
     "build": "craco build",
@@ -231,7 +231,9 @@
     "workbox-routing": "^6.1.0",
     "zustand": "^4.0.0-rc.1"
   },
-  "resolutions": {},
+  "resolutions": {
+    "@lingui/core": "3.14.0"
+  },
   "engines": {
     "npm": "please-use-yarn",
     "node": "16",
