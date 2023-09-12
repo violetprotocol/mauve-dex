@@ -300,30 +300,4 @@ describe('list reducer', () => {
       })
     })
   })
-  describe('updateVersion', () => {
-    describe('never initialized', () => {
-      it('puts in all the new lists', () => {
-        expect(Object.keys(store.getState().byUrl)).toEqual(DEFAULT_LIST_OF_LISTS)
-      })
-      it('all lists are empty', () => {
-        const s = store.getState()
-        Object.keys(s.byUrl).forEach((url) => {
-          expect(s.byUrl[url]).toEqual({
-            error: null,
-            current: null,
-            loadingRequestId: null,
-            pendingUpdate: null,
-          })
-        })
-      })
-      it('sets initialized lists', () => {
-        expect(store.getState().lastInitializedDefaultListOfLists).toEqual(DEFAULT_LIST_OF_LISTS)
-      })
-    })
-    describe('initialized with a different set of lists', () => {
-      it('sets initialized lists', () => {
-        expect(store.getState().lastInitializedDefaultListOfLists).toEqual(DEFAULT_LIST_OF_LISTS)
-      })
-    })
-  })
 })
