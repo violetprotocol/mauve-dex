@@ -237,7 +237,7 @@ export function getChainInfo(
  * SupportedL2ChainId -> returns L2ChainInfo
  */
 export function getChainInfo(chainId: any): any {
-  if (isProductionEnv() && !!chainId && chainId !== 1) {
+  if (isProductionEnv() && chainId !== 1) {
     return undefined
   }
   if (chainId) {
