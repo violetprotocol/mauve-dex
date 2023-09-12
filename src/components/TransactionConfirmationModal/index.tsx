@@ -4,13 +4,11 @@ import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
-import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { ReactNode, SVGProps, useCallback, useEffect, useState } from 'react'
-import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
+import { ReactNode, SVGProps, useEffect } from 'react'
+import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { isL2ChainId } from 'utils/chains'
 import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
 import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
@@ -19,7 +17,7 @@ import { ExternalLink, ThemedText } from '../../theme'
 import { CloseIcon, CustomLightSpinner } from '../../theme'
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
 import { TransactionSummary } from '../AccountDetails/TransactionSummary'
-import { ButtonLight, ButtonPrimary } from '../Button'
+import { ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
 import Modal from '../Modal'
 import { RowBetween, RowFixed } from '../Row'
@@ -148,88 +146,6 @@ export function ConfirmationPendingContent({
           </Text>
         </AutoColumn>
       </AutoColumn>
-    </Wrapper>
-  )
-}
-function TransactionSubmittedContent({
-  onDismiss,
-  chainId,
-  hash,
-  currencyToAdd,
-  inline,
-}: {
-  onDismiss: () => void
-  hash: string | undefined
-  chainId: number
-  currencyToAdd?: Currency | undefined
-  inline?: boolean // not in modal
-}) {
-  const theme = useTheme()
-
-  const { connector } = useWeb3React()
-
-  const token = currencyToAdd?.wrapped
-  const logoURL = useCurrencyLogoURIs(token)[0]
-
-  const [success, setSuccess] = useState<boolean | undefined>()
-
-  const addToken = useCallback(() => {
-    if (!token?.symbol || !connector.watchAsset) return
-    connector
-      .watchAsset({
-        address: token.address,
-        symbol: token.symbol,
-        decimals: token.decimals,
-        image: logoURL,
-      })
-      .then(() => setSuccess(true))
-      .catch(() => setSuccess(false))
-  }, [connector, logoURL, token])
-
-  return (
-    <Wrapper>
-      <Section inline={inline}>
-        {!inline && (
-          <RowBetween>
-            <div />
-            <CloseIcon onClick={onDismiss} />
-          </RowBetween>
-        )}
-        <ConfirmedIcon inline={inline}>
-          <ArrowUpCircle strokeWidth={1} size={inline ? '40px' : '75px'} color={theme.accentActive} />
-        </ConfirmedIcon>
-        <AutoColumn gap="md" justify="center" style={{ paddingBottom: '12px' }}>
-          <ThemedText.MediumHeader textAlign="center">
-            <>Transaction submitted</>
-          </ThemedText.MediumHeader>
-          {currencyToAdd && connector.watchAsset && (
-            <ButtonLight mt="12px" padding="6px 12px" width="fit-content" onClick={addToken}>
-              {!success ? (
-                <RowFixed>
-                  <>Add {currencyToAdd.symbol}</>
-                </RowFixed>
-              ) : (
-                <RowFixed>
-                  <>Added {currencyToAdd.symbol} </>
-                  <CheckCircle size="16px" stroke={theme.accentSuccess} style={{ marginLeft: '6px' }} />
-                </RowFixed>
-              )}
-            </ButtonLight>
-          )}
-          <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
-            <Text fontWeight={600} fontSize={20} color={theme.accentTextLightPrimary}>
-              {inline ? <>Return</> : <>Close</>}
-            </Text>
-          </ButtonPrimary>
-          {chainId && hash && (
-            <ExternalLink href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}>
-              <Text fontWeight={600} fontSize={14} color={theme.accentAction}>
-                <>View on Etherscan</>
-              </Text>
-            </ExternalLink>
-          )}
-        </AutoColumn>
-      </Section>
     </Wrapper>
   )
 }
@@ -419,7 +335,6 @@ export default function TransactionConfirmationModal({
   hash,
   pendingText,
   content,
-  currencyToAdd,
 }: ConfirmationModalProps) {
   const { chainId, account } = useWeb3React()
   const eatPayload = useVioletEAT((state) => state.eatPayload)
@@ -443,17 +358,10 @@ export default function TransactionConfirmationModal({
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
         <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
-      ) : isL2ChainId(chainId) && (hash || attemptingTxn) ? (
+      ) : hash || attemptingTxn ? (
         <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
-      ) : hash ? (
-        <TransactionSubmittedContent
-          chainId={chainId}
-          hash={hash}
-          onDismiss={onDismiss}
-          currencyToAdd={currencyToAdd}
-        />
       ) : (
         content()
       )}
