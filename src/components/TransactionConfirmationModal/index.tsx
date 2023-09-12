@@ -5,7 +5,7 @@ import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import useCurrencyLogoURIs from 'lib/hooks/useCurrencyLogoURIs'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { ReactNode, SVGProps, useCallback, useEffect, useState } from 'react'
 import { AlertCircle, AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
@@ -51,6 +51,67 @@ const StyledLogo = styled.img`
   width: 16px;
   margin-left: 6px;
 `
+
+const VioletAuthorizedWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+`
+
+const VioletAuthorizedColumn = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`
+
+const VerifiedIcon = (props: SVGProps<SVGSVGElement>) => {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <circle opacity="0.12" cx="7.99967" cy="7.99992" r="6.66667" fill="#12C97B" />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M1.83398 8.00016C1.83398 4.59441 4.5949 1.8335 8.00065 1.8335C11.4064 1.8335 14.1673 4.59441 14.1673 8.00016C14.1673 11.4059 11.4064 14.1668 8.00065 14.1668C4.5949 14.1668 1.83398 11.4059 1.83398 8.00016ZM8.00065 0.833496C4.04261 0.833496 0.833984 4.04212 0.833984 8.00016C0.833984 11.9582 4.04261 15.1668 8.00065 15.1668C11.9587 15.1668 15.1673 11.9582 15.1673 8.00016C15.1673 4.04212 11.9587 0.833496 8.00065 0.833496ZM11.0209 6.35372C11.2161 6.15845 11.2161 5.84187 11.0209 5.64661C10.8256 5.45135 10.509 5.45135 10.3138 5.64661L7.33398 8.62639L6.3542 7.64661C6.15894 7.45135 5.84236 7.45135 5.6471 7.64661C5.45184 7.84187 5.45184 8.15845 5.6471 8.35372L6.98043 9.68705C7.0742 9.78082 7.20138 9.8335 7.33398 9.8335C7.46659 9.8335 7.59377 9.78082 7.68754 9.68705L11.0209 6.35372Z"
+        fill="#12C97B"
+      />
+    </svg>
+  )
+}
+
+const VioletBadgeWrapper = styled.div`
+  border-radius: 99999px;
+  background-color: #e5e5e5;
+  padding: 8px 12px;
+  font-size: 11px;
+`
+
+const VioletIcon = styled.span`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #a73cfd;
+  display: inline-block;
+  margin-left: 4px;
+`
+
+const VioletIdWrapper = styled.span`
+  font-weight: bold;
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+`
+
+const VioletBadge = () => {
+  return (
+    <VioletBadgeWrapper>
+      <span>
+        Powered by <VioletIcon /> <VioletIdWrapper>Violet ID</VioletIdWrapper>
+      </span>
+    </VioletBadgeWrapper>
+  )
+}
 
 export function ConfirmationPendingContent({
   onDismiss,
@@ -308,12 +369,28 @@ function L2Content({
             ) : (
               <div>
                 <>Transaction completed in </>
-                <span style={{ fontWeight: 500, marginLeft: '4px', color: theme.textPrimary }}>
+                <span
+                  style={{
+                    fontWeight: 500,
+                    marginLeft: '4px',
+                    color: theme.textPrimary,
+                  }}
+                >
                   {secondsToConfirm} seconds 🎉
                 </span>
               </div>
             )}
           </Text>
+
+          <VioletAuthorizedWrapper>
+            <VioletAuthorizedColumn>
+              <VerifiedIcon /> <span>Authenticated</span>
+            </VioletAuthorizedColumn>
+
+            <VioletAuthorizedColumn>
+              <VioletBadge />
+            </VioletAuthorizedColumn>
+          </VioletAuthorizedWrapper>
           <ButtonPrimary onClick={onDismiss} style={{ margin: '4px 0 0 0' }}>
             <Text fontWeight={500} fontSize={20}>
               {inline ? <>Return</> : <>Close</>}
