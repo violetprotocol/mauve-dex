@@ -1,6 +1,6 @@
 import { getTestSelector, getTestSelectorStartsWith } from '../utils'
 
-describe('Testing tokens on uniswap page', () => {
+describe('Testing tokens on mauve page', () => {
   before(() => {
     cy.visit('/')
   })

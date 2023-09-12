@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import UniswapInterfaceMulticallJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/MauveInterfaceMulticall.sol/MauveInterfaceMulticall.json'
+import MauveInterfaceMulticallJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/MauveInterfaceMulticall.sol/MauveInterfaceMulticall.json'
 import QuoterJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
 import TickLensJson from '@violetprotocol/mauve-periphery/artifacts/contracts/lens/TickLens.sol/TickLens.json'
 import NonfungiblePositionManagerJson from '@violetprotocol/mauve-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
@@ -32,7 +32,7 @@ import { getContract } from '../utils'
 const { abi: QuoterABI } = QuoterJson
 const { abi: QuoterV2ABI } = QuoterV2Json
 const { abi: TickLensABI } = TickLensJson
-const { abi: MulticallABI } = UniswapInterfaceMulticallJson
+const { abi: MulticallABI } = MauveInterfaceMulticallJson
 const { abi: NFTPositionManagerABI } = NonfungiblePositionManagerJson
 
 // returns null on errors

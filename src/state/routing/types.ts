@@ -11,8 +11,6 @@ export enum TradeState {
   SYNCING,
 }
 
-// from https://github.com/Uniswap/routing-api/blob/main/lib/handlers/schema.ts
-
 type TokenInRoute = Pick<Token, 'address' | 'chainId' | 'symbol' | 'decimals'>
 
 export type V3PoolInRoute = {

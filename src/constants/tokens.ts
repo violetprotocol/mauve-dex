@@ -308,14 +308,6 @@ const CELO_CELO_ALFAJORES = new Token(
 //   'Celo Euro Stablecoin'
 // )
 
-// export const UNI: { [chainId: number]: Token } = {
-//   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, UNI_ADDRESS[1], 18, 'UNI', 'Uniswap'),
-//   [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, UNI_ADDRESS[4], 18, 'UNI', 'Uniswap'),
-//   [SupportedChainId.ROPSTEN]: new Token(SupportedChainId.ROPSTEN, UNI_ADDRESS[3], 18, 'UNI', 'Uniswap'),
-//   [SupportedChainId.GOERLI]: new Token(SupportedChainId.GOERLI, UNI_ADDRESS[5], 18, 'UNI', 'Uniswap'),
-//   [SupportedChainId.KOVAN]: new Token(SupportedChainId.KOVAN, UNI_ADDRESS[42], 18, 'UNI', 'Uniswap'),
-// }
-
 export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } = {
   ...(WETH9 as Record<SupportedChainId, Token>),
   [SupportedChainId.OPTIMISM]: new Token(

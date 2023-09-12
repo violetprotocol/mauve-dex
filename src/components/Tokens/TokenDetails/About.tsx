@@ -110,7 +110,7 @@ export function AboutSection({ address, chainId, description, homepageUrl, twitt
             link={`${baseExplorerUrl}${address === 'NATIVE' ? '' : 'address/' + address}`}
           />
         )}
-        {/* <Resource name="More analytics" link={`https://info.uniswap.org/#/tokens/${address}`} /> */}
+        {/* <Resource name="More analytics" link={`https://info.mauve.org/#/tokens/${address}`} /> */}
         {homepageUrl && <Resource name="Website" link={homepageUrl} />}
         {twitterName && <Resource name="Twitter" link={`https://twitter.com/${twitterName}`} />}
       </ResourcesContainer>
