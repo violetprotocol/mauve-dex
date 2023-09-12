@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'
 import { useTokenContract } from 'hooks/useContract'
 import { useTokenAllowance } from 'hooks/useTokenAllowance'
 import { getTokenAddress } from 'lib/utils/analytics'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { calculateGasMargin } from 'utils/calculateGasMargin'
 
 export enum ApprovalState {
@@ -24,9 +24,24 @@ function useApprovalStateForSpender(
 ): ApprovalState {
   const { account } = useWeb3React()
   const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
+  const [delayedPendingApproval, setDelayedPendingApproval] = useState(false)
 
   const { tokenAllowance } = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useIsPendingApproval(token, spender)
+
+  // Small hack: After an approval, there can be a little delay where `pendingApproval` goes
+  // from true (ApprovalState.PENDING) to false but tokenAllowance is not yet updated with the latest allowance
+  // from the chain so the ApprovalState briefly goes back to `NOT_APPROVED` before going to `APPROVED`.
+  // Here we keep the pending state a bit longer.
+  useEffect(() => {
+    if (delayedPendingApproval && !pendingApproval) {
+      setTimeout(() => {
+        setDelayedPendingApproval(false)
+      }, 3000)
+    } else if (!delayedPendingApproval && pendingApproval) {
+      setDelayedPendingApproval(true)
+    }
+  }, [delayedPendingApproval, pendingApproval, setDelayedPendingApproval])
 
   return useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
@@ -34,13 +49,17 @@ function useApprovalStateForSpender(
     // we might not have enough data to know whether or not we need to approve
     if (!tokenAllowance) return ApprovalState.UNKNOWN
 
+    if (pendingApproval || delayedPendingApproval) {
+      return ApprovalState.PENDING
+    }
+
     // amountToApprove will be defined if tokenAllowance is
-    return tokenAllowance.lessThan(amountToApprove)
-      ? pendingApproval
-        ? ApprovalState.PENDING
-        : ApprovalState.NOT_APPROVED
-      : ApprovalState.APPROVED
-  }, [amountToApprove, pendingApproval, spender, tokenAllowance])
+    if (tokenAllowance.lessThan(amountToApprove)) {
+      return ApprovalState.NOT_APPROVED
+    } else {
+      return ApprovalState.APPROVED
+    }
+  }, [amountToApprove, delayedPendingApproval, pendingApproval, spender, tokenAllowance])
 }
 
 export function useApproval(
