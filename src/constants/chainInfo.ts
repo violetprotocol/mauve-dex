@@ -7,6 +7,7 @@ import optimismLogoUrl from 'assets/svg/optimistic_ethereum.svg'
 import polygonMaticLogo from 'assets/svg/polygon-matic-logo.svg'
 import ms from 'ms.macro'
 import { lightTheme } from 'theme/colors'
+import { isProductionEnv } from 'utils/env'
 
 import { SupportedChainId, SupportedL1ChainId, SupportedL2ChainId } from './chains'
 import { ARBITRUM_LIST, CELO_LIST, OPTIMISM_LIST } from './lists'
@@ -236,6 +237,9 @@ export function getChainInfo(
  * SupportedL2ChainId -> returns L2ChainInfo
  */
 export function getChainInfo(chainId: any): any {
+  if (isProductionEnv() && !!chainId && chainId !== 1) {
+    return undefined
+  }
   if (chainId) {
     return CHAIN_INFO[chainId] ?? undefined
   }
