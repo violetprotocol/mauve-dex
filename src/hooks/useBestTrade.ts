@@ -35,7 +35,7 @@ export function useBestTrade(
     tradeType,
     autoRouterSupported && isWindowVisible ? debouncedAmount : undefined,
     debouncedOtherCurrency,
-    RouterPreference.CLIENT // Hardcoded to never use Uniswap Router API
+    RouterPreference.CLIENT // Hardcoded to only use Mauve Router API
   )
 
   const isLoading = routingAPITrade.state === TradeState.LOADING

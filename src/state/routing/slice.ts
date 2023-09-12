@@ -31,7 +31,6 @@ function getRouter(chainId: ChainId): AlphaRouter {
   throw new Error(`Router does not support this chain (chainId: ${chainId}).`)
 }
 
-// routing API quote params: https://github.com/Uniswap/routing-api/blob/main/lib/handlers/quote/schema/quote-schema.ts
 const API_QUERY_PARAMS = {
   protocols: 'v3',
 }
@@ -67,9 +66,7 @@ const PRICE_PARAMS = {
 
 export const routingApi = createApi({
   reducerPath: 'routingApi',
-  baseQuery: fetchBaseQuery({
-    // baseUrl: 'https://api.uniswap.org/v1/',
-  }),
+  baseQuery: fetchBaseQuery({}),
   endpoints: (build) => ({
     getQuote: build.query<
       GetQuoteResult,
