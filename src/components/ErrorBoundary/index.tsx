@@ -6,6 +6,7 @@ import React, { PropsWithChildren, useState } from 'react'
 import { Copy } from 'react-feather'
 import styled from 'styled-components/macro'
 import { isSentryEnabled } from 'utils/env'
+import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
 
 import { CopyToClipboard, ExternalLink, ThemedText } from '../../theme'
 import { Column } from '../Column'
@@ -178,7 +179,7 @@ const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) 
             <SmallButtonPrimary onClick={() => window.location.reload()}>
               <>Reload the app</>
             </SmallButtonPrimary>
-            <ExternalLink id="get-support-on-discord" href="https://discord.gg/FCfyBSbCU5" target="_blank">
+            <ExternalLink id="get-support-on-discord" href={MAUVE_DISCORD_LINK} target="_blank">
               <SmallButtonLight>
                 <>Get support</>
               </SmallButtonLight>

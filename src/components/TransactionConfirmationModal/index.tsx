@@ -9,6 +9,7 @@ import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
+import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
 import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
 import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
@@ -17,7 +18,7 @@ import { ExternalLink, ThemedText } from '../../theme'
 import { CloseIcon, CustomLightSpinner } from '../../theme'
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
 import { TransactionSummary } from '../AccountDetails/TransactionSummary'
-import { ButtonPrimary } from '../Button'
+import { ButtonPrimary, ButtonSecondary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
 import Modal from '../Modal'
 import { RowBetween, RowFixed } from '../Row'
@@ -50,9 +51,9 @@ const StyledLogo = styled.img`
   margin-left: 6px;
 `
 
-const VioletAuthorizedWrapper = styled.div`
+const VioletAuthorizedWrapper = styled.div<{ isRegistered: boolean | null | undefined }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.isRegistered ? 'space-between' : 'center')};
   align-items: center;
   width: 100%;
   padding: 8px;
@@ -177,8 +178,25 @@ export function ConfirmationModalContent({
   )
 }
 
+const DiscordIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="64"
+    height="64"
+    preserveAspectRatio="xMidYMid"
+    viewBox="0 -28.5 256 256"
+    {...props}
+  >
+    <path
+      fill="currentColor"
+      d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z"
+    />
+  </svg>
+)
+
 export function TransactionErrorContent({ message, onDismiss }: { message: ReactNode; onDismiss: () => void }) {
   const theme = useTheme()
+
   return (
     <Wrapper>
       <Section>
@@ -194,6 +212,10 @@ export function TransactionErrorContent({ message, onDismiss }: { message: React
         </AutoColumn>
       </Section>
       <BottomSection gap="12px">
+        <ButtonSecondary onClick={() => window?.open(MAUVE_DISCORD_LINK, '_blank')?.focus()}>
+          Get help on Discord
+          <DiscordIcon width={16} height={16} style={{ marginLeft: 10 }} />
+        </ButtonSecondary>
         <ButtonPrimary onClick={onDismiss}>
           <>Dismiss</>
         </ButtonPrimary>
@@ -208,6 +230,7 @@ function L2Content({
   hash,
   pendingText,
   inline,
+  isRegistered,
 }: {
   onDismiss: () => void
   hash: string | undefined
@@ -215,6 +238,7 @@ function L2Content({
   currencyToAdd?: Currency | undefined
   pendingText: ReactNode
   inline?: boolean // not in modal
+  isRegistered?: boolean | null
 }) {
   const theme = useTheme()
 
@@ -298,9 +322,13 @@ function L2Content({
             )}
           </Text>
 
-          <VioletAuthorizedWrapper>
+          <VioletAuthorizedWrapper isRegistered={isRegistered}>
             <VioletAuthorizedColumn>
-              <VerifiedIcon /> <span>Authenticated</span>
+              {isRegistered ? (
+                <>
+                  <VerifiedIcon /> <span>Authenticated</span>
+                </>
+              ) : null}
             </VioletAuthorizedColumn>
 
             <VioletAuthorizedColumn>
@@ -338,7 +366,7 @@ export default function TransactionConfirmationModal({
 }: ConfirmationModalProps) {
   const { chainId, account } = useWeb3React()
   const eatPayload = useVioletEAT((state) => state.eatPayload)
-  const { setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
+  const { setEatPayload, setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
   const { isRegistered, updateUserIsRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
 
   useEffect(() => {
@@ -351,6 +379,12 @@ export default function TransactionConfirmationModal({
     }
   }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isRegistered, updateUserIsRegistered])
 
+  useEffect(() => {
+    return () => {
+      setEatPayload({ status: 'idle' })
+    }
+  }, [setEatPayload])
+
   if (!chainId) return null
 
   // confirmation screen
@@ -359,7 +393,13 @@ export default function TransactionConfirmationModal({
       {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
         <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
       ) : hash || attemptingTxn ? (
-        <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
+        <L2Content
+          chainId={chainId}
+          hash={hash}
+          onDismiss={onDismiss}
+          pendingText={pendingText}
+          isRegistered={isRegistered}
+        />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : (
