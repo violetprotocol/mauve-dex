@@ -9,6 +9,7 @@ import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
+import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
 import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
 import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
 
@@ -177,8 +178,6 @@ export function ConfirmationModalContent({
   )
 }
 
-const DISCORD_URL = 'https://discord.gg/eHJYaPayXN'
-
 const DiscordIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -213,7 +212,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: React
         </AutoColumn>
       </Section>
       <BottomSection gap="12px">
-        <ButtonSecondary onClick={() => window?.open(DISCORD_URL, '_blank')?.focus()}>
+        <ButtonSecondary onClick={() => window?.open(MAUVE_DISCORD_LINK, '_blank')?.focus()}>
           Get help on Discord
           <DiscordIcon width={16} height={16} style={{ marginLeft: 10 }} />
         </ButtonSecondary>
