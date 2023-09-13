@@ -4,7 +4,7 @@ import { ExternalLink } from 'theme'
 
 import { AutoRow } from '../Row'
 
-const MAUVE_DOCS_URL = 'https://docs.mauve.org'
+const VIOLET_DISCORD_INVITE_URL = 'https://discord.com/invite/hRJpPQtKSh'
 
 const BodyText = styled.div`
   color: ${({ theme }) => theme.white};
@@ -12,7 +12,7 @@ const BodyText = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin: 8px;
-  font-size: 14px;
+  font-size: 12px;
 `
 const RootWrapper = styled.div`
   position: relative;
@@ -25,13 +25,13 @@ const ContentWrapper = styled.div`
   width: 100%;
 `
 const Header = styled.h2`
-  font-weight: 600;
+  font-weight: 800;
   font-size: 16px;
   margin: 0;
   margin-bottom: 8px;
 `
 
-const LinkOutToDocs = styled(ExternalLink)`
+const LinkOutToVioletDiscord = styled(ExternalLink)`
   align-items: center;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.backgroundPrimary};
@@ -54,18 +54,21 @@ const MauveDocsCTA = () => {
   return (
     <RootWrapper>
       <ContentWrapper>
-        <LinkOutToDocs href={MAUVE_DOCS_URL}>
+        <LinkOutToVioletDiscord href={VIOLET_DISCORD_INVITE_URL}>
           <BodyText>
             <AutoRow>
               <Header>
                 <>Mauve is a compliant DEX</>
               </Header>
 
-              <>Identity verification through Violet is required.</>
+              <>
+                Identity verification through Violet is required. If you are experiencing any problems, contact us on
+                Discord.
+              </>
             </AutoRow>
           </BodyText>
           <StyledArrowUpRight />
-        </LinkOutToDocs>
+        </LinkOutToVioletDiscord>
       </ContentWrapper>
     </RootWrapper>
   )
