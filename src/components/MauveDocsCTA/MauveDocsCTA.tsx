@@ -61,10 +61,10 @@ const MauveDocsCTA = () => {
                 <>Mauve is a compliant DEX</>
               </Header>
 
-              <>
-                Identity verification through Violet is required. If you are experiencing any problems, contact us on
-                Discord.
-              </>
+              <p>
+                Identity verification through Violet is required. If you are experiencing any problems, click here to
+                contact us on <b>Discord</b>.
+              </p>
             </AutoRow>
           </BodyText>
           <StyledArrowUpRight />
