@@ -344,7 +344,7 @@ export default function TransactionConfirmationModal({
 }: ConfirmationModalProps) {
   const { chainId, account } = useWeb3React()
   const eatPayload = useVioletEAT((state) => state.eatPayload)
-  const { setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
+  const { setEatPayload, setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
   const { isRegistered, updateUserIsRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
 
   useEffect(() => {
@@ -356,6 +356,12 @@ export default function TransactionConfirmationModal({
       }
     }
   }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isRegistered, updateUserIsRegistered])
+
+  useEffect(() => {
+    return () => {
+      setEatPayload({ status: 'idle' })
+    }
+  }, [])
 
   if (!chainId) return null
 
