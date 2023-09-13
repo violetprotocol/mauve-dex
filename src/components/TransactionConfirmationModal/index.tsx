@@ -50,9 +50,9 @@ const StyledLogo = styled.img`
   margin-left: 6px;
 `
 
-const VioletAuthorizedWrapper = styled.div`
+const VioletAuthorizedWrapper = styled.div<{ isRegistered: boolean | null | undefined }>`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props) => (props.isRegistered ? 'space-between' : 'center')};
   align-items: center;
   width: 100%;
   padding: 8px;
@@ -300,15 +300,13 @@ function L2Content({
             )}
           </Text>
 
-          <VioletAuthorizedWrapper>
+          <VioletAuthorizedWrapper isRegistered={isRegistered}>
             <VioletAuthorizedColumn>
               {isRegistered ? (
                 <>
                   <VerifiedIcon /> <span>Registered</span>
                 </>
-              ) : (
-                <></>
-              )}
+              ) : null}
             </VioletAuthorizedColumn>
 
             <VioletAuthorizedColumn>
