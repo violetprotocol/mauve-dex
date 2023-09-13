@@ -304,7 +304,7 @@ function L2Content({
             <VioletAuthorizedColumn>
               {isRegistered ? (
                 <>
-                  <VerifiedIcon /> <span>Registered</span>
+                  <VerifiedIcon /> <span>Authenticated</span>
                 </>
               ) : null}
             </VioletAuthorizedColumn>
