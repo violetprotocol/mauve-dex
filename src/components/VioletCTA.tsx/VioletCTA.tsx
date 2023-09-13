@@ -50,7 +50,11 @@ const StyledArrowUpRight = styled(ArrowUpRight)`
   color: ${({ theme }) => theme.white};
 `
 
-const MauveDocsCTA = () => {
+const Content = styled.p`
+  margin: 0;
+`
+
+const VioletCTA = () => {
   return (
     <RootWrapper>
       <ContentWrapper>
@@ -61,10 +65,10 @@ const MauveDocsCTA = () => {
                 <>Mauve is a compliant DEX</>
               </Header>
 
-              <p>
+              <Content>
                 Identity verification through Violet is required. If you are experiencing any problems, click here to
                 contact us on <b>Discord</b>.
-              </p>
+              </Content>
             </AutoRow>
           </BodyText>
           <StyledArrowUpRight />
@@ -74,4 +78,4 @@ const MauveDocsCTA = () => {
   )
 }
 
-export { MauveDocsCTA }
+export { VioletCTA }

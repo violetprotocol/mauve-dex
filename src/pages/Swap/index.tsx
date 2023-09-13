@@ -11,12 +11,12 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
-import { MauveDocsCTA } from 'components/MauveDocsCTA/MauveDocsCTA'
 import PriceImpactWarning from 'components/swap/PriceImpactWarning'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { MouseoverTooltip } from 'components/Tooltip'
+import { VioletCTA } from 'components/VioletCTA.tsx/VioletCTA'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
@@ -805,7 +805,7 @@ export default function Swap({ className }: { className?: string }) {
               </div>
             </AutoColumn>
           </SwapWrapper>
-          <MauveDocsCTA />
+          <VioletCTA />
         </PageWrapper>
         <SwitchLocaleLink />
         {!swapIsUnsupported ? null : (
