@@ -1,10 +1,9 @@
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
+import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
 
 import { AutoRow } from '../Row'
-
-const VIOLET_DISCORD_INVITE_URL = 'https://discord.com/invite/hRJpPQtKSh'
 
 const BodyText = styled.div`
   color: ${({ theme }) => theme.white};
@@ -58,7 +57,7 @@ const VioletCTA = () => {
   return (
     <RootWrapper>
       <ContentWrapper>
-        <LinkOutToVioletDiscord href={VIOLET_DISCORD_INVITE_URL}>
+        <LinkOutToVioletDiscord href={MAUVE_DISCORD_LINK}>
           <BodyText>
             <AutoRow>
               <Header>
