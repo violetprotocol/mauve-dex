@@ -4,7 +4,7 @@ import { GnosisSafe } from '@web3-react/gnosis-safe'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
-import { WalletConnect } from '@web3-react/walletconnect'
+import { WalletConnect } from '@web3-react/walletconnect-v2'
 import { SupportedChainId } from 'constants/chains'
 
 import MAUVE_LOGO_URL from '../assets/svg/logo.svg'
@@ -75,11 +75,14 @@ const [web3WalletConnect, web3WalletConnectHooks] = initializeConnector<WalletCo
     }),
     {}
   )
+  const chains = Object.keys(RPC_URLS_WITHOUT_FALLBACKS).map(Number)
   return new WalletConnect({
     actions,
     options: {
       rpc: RPC_URLS_WITHOUT_FALLBACKS,
-      qrcode: true,
+      showQrModal: true,
+      projectId: '2c22b74a3313db29ebf0418e946c5ddc',
+      chains,
     },
     onError,
   })
