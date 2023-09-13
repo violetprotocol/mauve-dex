@@ -208,6 +208,7 @@ function L2Content({
   hash,
   pendingText,
   inline,
+  isRegistered,
 }: {
   onDismiss: () => void
   hash: string | undefined
@@ -215,6 +216,7 @@ function L2Content({
   currencyToAdd?: Currency | undefined
   pendingText: ReactNode
   inline?: boolean // not in modal
+  isRegistered?: boolean | null
 }) {
   const theme = useTheme()
 
@@ -300,7 +302,13 @@ function L2Content({
 
           <VioletAuthorizedWrapper>
             <VioletAuthorizedColumn>
-              <VerifiedIcon /> <span>Authenticated</span>
+              {isRegistered ? (
+                <>
+                  <VerifiedIcon /> <span>Registered</span>
+                </>
+              ) : (
+                <></>
+              )}
             </VioletAuthorizedColumn>
 
             <VioletAuthorizedColumn>
@@ -359,7 +367,13 @@ export default function TransactionConfirmationModal({
       {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
         <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
       ) : hash || attemptingTxn ? (
-        <L2Content chainId={chainId} hash={hash} onDismiss={onDismiss} pendingText={pendingText} />
+        <L2Content
+          chainId={chainId}
+          hash={hash}
+          onDismiss={onDismiss}
+          pendingText={pendingText}
+          isRegistered={isRegistered}
+        />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : (
