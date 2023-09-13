@@ -36,6 +36,7 @@ type VioletEatProps = {
   onFailed: (failedEATPayload: FailedEATPayload['data']) => void
   triggerPopup: (props: { account: string; chainId: number }, callback: () => Promise<void>) => void
   onTransactionSuccess: () => void
+  onTransactionDismiss: () => void
 }
 
 export const useVioletEAT = create<VioletEatProps>((set, get) => ({
