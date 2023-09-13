@@ -84,4 +84,7 @@ export const useVioletEAT = create<VioletEatProps>((set, get) => ({
   onTransactionSuccess: () => {
     set({ eatPayload: { status: 'idle' } })
   },
+  onTransactionDismiss: () => {
+    set({ eatPayload: { status: 'idle' } })
+  },
 }))
