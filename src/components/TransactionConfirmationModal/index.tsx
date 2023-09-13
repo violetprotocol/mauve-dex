@@ -361,7 +361,7 @@ export default function TransactionConfirmationModal({
     return () => {
       setEatPayload({ status: 'idle' })
     }
-  }, [])
+  }, [setEatPayload])
 
   if (!chainId) return null
 
