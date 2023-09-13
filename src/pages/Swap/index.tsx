@@ -150,7 +150,7 @@ export default function Swap({ className }: { className?: string }) {
   const loadedUrlParams = useDefaultsFromURLSearch()
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
-  const { setEatPayload, eatPayload, onTransactionSuccess } = useVioletEAT()
+  const { setEatPayload, eatPayload, onTransactionSuccess, onTransactionDismiss } = useVioletEAT()
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [
@@ -456,7 +456,8 @@ export default function Swap({ className }: { className?: string }) {
     if (txHash) {
       onUserInput(Field.INPUT, '')
     }
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash])
+    onTransactionDismiss()
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, onTransactionDismiss])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
