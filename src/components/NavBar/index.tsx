@@ -22,13 +22,14 @@ const Nav = styled.nav`
 
 const DocsLink = styled(ExternalLink)`
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.backgroundContrast};
+  border: 1px solid ${({ theme }) => theme.backgroundContrast};
   border-radius: ${FULL_BORDER_RADIUS}px;
   color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
   padding: 10px 16px;
+  margin: 5px 16px;
 `
 
 interface MenuItemProps {
@@ -96,6 +97,8 @@ const Navbar = () => {
                   })
                 }}
               />
+
+              <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
             </Box>
           </Box>
 
@@ -105,8 +108,6 @@ const Navbar = () => {
 
           <Box className={styles.rightSideContainer}>
             <Row gap="32">
-              <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
-
               <ChainDisplay />
 
               <Web3Status />
