@@ -1,10 +1,9 @@
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
+import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
 
 import { AutoRow } from '../Row'
-
-const MAUVE_DOCS_URL = 'https://docs.mauve.org'
 
 const BodyText = styled.div`
   color: ${({ theme }) => theme.white};
@@ -12,7 +11,7 @@ const BodyText = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin: 8px;
-  font-size: 14px;
+  font-size: 12px;
 `
 const RootWrapper = styled.div`
   position: relative;
@@ -25,13 +24,13 @@ const ContentWrapper = styled.div`
   width: 100%;
 `
 const Header = styled.h2`
-  font-weight: 600;
+  font-weight: 800;
   font-size: 16px;
   margin: 0;
   margin-bottom: 8px;
 `
 
-const LinkOutToDocs = styled(ExternalLink)`
+const LinkOutToVioletDiscord = styled(ExternalLink)`
   align-items: center;
   border-radius: 16px;
   background-color: ${({ theme }) => theme.backgroundPrimary};
@@ -50,25 +49,32 @@ const StyledArrowUpRight = styled(ArrowUpRight)`
   color: ${({ theme }) => theme.white};
 `
 
-const MauveDocsCTA = () => {
+const Content = styled.p`
+  margin: 0;
+`
+
+const VioletCTA = () => {
   return (
     <RootWrapper>
       <ContentWrapper>
-        <LinkOutToDocs href={MAUVE_DOCS_URL}>
+        <LinkOutToVioletDiscord href={MAUVE_DISCORD_LINK}>
           <BodyText>
             <AutoRow>
               <Header>
                 <>Mauve is a compliant DEX</>
               </Header>
 
-              <>Identity verification through Violet is required.</>
+              <Content>
+                Identity verification through Violet is required. If you are experiencing any problems, click here to
+                contact us on <b>Discord</b>.
+              </Content>
             </AutoRow>
           </BodyText>
           <StyledArrowUpRight />
-        </LinkOutToDocs>
+        </LinkOutToVioletDiscord>
       </ContentWrapper>
     </RootWrapper>
   )
 }
 
-export { MauveDocsCTA }
+export { VioletCTA }
