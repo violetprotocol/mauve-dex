@@ -806,6 +806,7 @@ export default function Swap({ className }: { className?: string }) {
               </div>
             </AutoColumn>
           </SwapWrapper>
+
           <VioletCTA />
         </PageWrapper>
         <SwitchLocaleLink />
