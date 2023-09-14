@@ -5,15 +5,30 @@ import { MauveIcon } from 'nft/components/icons'
 import { ReactNode } from 'react'
 import { NavLink, NavLinkProps, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components/macro'
+import { ExternalLink } from 'theme'
 
 import { ChainDisplay } from './ChainDisplay'
 import * as styles from './style.css'
+
+// https://stackoverflow.com/a/31617326
+const FULL_BORDER_RADIUS = 9999
 
 const Nav = styled.nav`
   padding: 20px 12px;
   width: 100%;
   height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
+`
+
+const DocsLink = styled(ExternalLink)`
+  background-color: transparent;
+  border: 2px solid ${({ theme }) => theme.backgroundContrast};
+  border-radius: ${FULL_BORDER_RADIUS}px;
+  color: ${({ theme }) => theme.textPrimary};
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 16px;
 `
 
 interface MenuItemProps {
@@ -89,7 +104,9 @@ const Navbar = () => {
           </Box>
 
           <Box className={styles.rightSideContainer}>
-            <Row gap="16">
+            <Row gap="32">
+              <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
+
               <ChainDisplay />
 
               <Web3Status />

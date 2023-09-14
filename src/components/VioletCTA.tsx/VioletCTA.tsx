@@ -20,7 +20,8 @@ const RootWrapper = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  justify-items: center;
   width: 100%;
 `
 const Header = styled.h2`
@@ -53,6 +54,11 @@ const Content = styled.p`
   margin: 0;
 `
 
+const USNotice = styled.p`
+  font-size: 12px;
+  text-align: center;
+`
+
 const VioletCTA = () => {
   return (
     <RootWrapper>
@@ -72,6 +78,8 @@ const VioletCTA = () => {
           </BodyText>
           <StyledArrowUpRight />
         </LinkOutToVioletDiscord>
+
+        <USNotice>Note: Mauve isn&apos;t currently accessible to U.S. users</USNotice>
       </ContentWrapper>
     </RootWrapper>
   )

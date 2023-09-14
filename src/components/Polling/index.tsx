@@ -162,14 +162,6 @@ export default function Polling() {
   return (
     <RowFixed>
       <StyledPolling onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-        <ExternalLink href="https://docs.mauve.org/">
-          <RowFixed style={{ marginRight: '8px' }}>
-            <ThemedText.DeprecatedMain fontSize="11px" mr="8px">
-              <>Documentation</>
-            </ThemedText.DeprecatedMain>
-            <StyledGasDot />
-          </RowFixed>
-        </ExternalLink>
         <ExternalLink href="https://etherscan.io/gastracker">
           {!!priceGwei && (
             <RowFixed style={{ marginRight: '8px' }}>
