@@ -29,7 +29,6 @@ const DocsLink = styled(ExternalLink)`
   font-weight: 600;
   font-size: 16px;
   padding: 10px 16px;
-  margin: 5px 16px;
 `
 
 interface MenuItemProps {
@@ -97,9 +96,9 @@ const Navbar = () => {
                   })
                 }}
               />
-
-              <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
             </Box>
+
+            <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
           </Box>
 
           <Box className={styles.centerSideContainer} display={{ sm: 'none', lg: 'flex' }}>

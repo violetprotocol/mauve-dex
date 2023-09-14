@@ -64,20 +64,11 @@ const Web3StatusError = styled(Web3StatusGeneric)`
 const Web3StatusConnected = styled(Web3StatusGeneric)<{
   pending?: boolean
 }>`
-  border-width: 2px;
+  border-width: 1px;
   border-radius: ${FULL_BORDER_RADIUS}px;
   min-width: 44px;
   font-weight: 500;
   font-size: 16px;
-
-  :hover,
-  :focus {
-    border-width: 2px;
-
-    :focus {
-      border-width: 2px;
-    }
-  }
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
     width: ${({ pending }) => !pending && '36px'};
@@ -121,7 +112,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 
 const StyledConnectButton = styled.button`
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.backgroundContrast};
+  border: 1px solid ${({ theme }) => theme.backgroundContrast};
   border-radius: ${FULL_BORDER_RADIUS}px;
   color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
