@@ -59,8 +59,14 @@ export const getVioletAuthorizedCall = async ({
 
   if (!violet) {
     console.error(error)
-    logErrorWithNewRelic({ errorString: `Violet EAT not retrieved, errorCode: ${error?.code}` })
-    throw new Error(handleErrorCodes(error?.code))
+
+    const errorCode = error?.code.toUpperCase() || 'SOMETHING_WENT_WRONG'
+
+    logErrorWithNewRelic({
+      errorString: `Violet EAT not retrieved, errorCode: ${errorCode}`,
+    })
+
+    throw new Error(handleErrorCodes(errorCode))
   }
 
   const eat = violet.eat
@@ -174,11 +180,6 @@ export const handleErrorCodes = (errorCode?: string) => {
           There was an issue with the application, please contact support at compliance@violet.co
       `
     case 'SOMETHING_WENT_WRONG':
-      return `
-          Something went wrong while authorizing your transaction; Please try
-          again, and if the issue persists contact the Violet team on our
-          Discord.
-      `
     default:
       return `
           Something went wrong while authorizing your transaction; Please try
