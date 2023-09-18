@@ -7,7 +7,7 @@ import { sprinkles } from '../../nft/css/sprinkles.css'
 export const logoContainer = style([
   sprinkles({
     display: 'flex',
-    marginRight: { sm: '12', xxl: '20' },
+    marginRight: '12',
     cursor: 'pointer',
   }),
 ])
