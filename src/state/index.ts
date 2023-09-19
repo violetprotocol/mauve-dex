@@ -8,6 +8,7 @@ import application from './application/reducer'
 import burn from './burn/reducer'
 import burnV3 from './burn/v3/reducer'
 import connection from './connection/reducer'
+import registration from './registration/reducer'
 import { updateVersion } from './global/actions'
 import lists from './lists/reducer'
 import logs from './logs/slice'
@@ -19,13 +20,14 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import wallets from './wallets/reducer'
 
-const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists']
+const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'registration']
 
 const store = configureStore({
   reducer: {
     application,
     user,
     connection,
+    registration,
     transactions,
     wallets,
     swap,
