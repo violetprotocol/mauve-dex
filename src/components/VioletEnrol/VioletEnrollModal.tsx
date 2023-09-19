@@ -1,19 +1,19 @@
 import { useWeb3React } from '@web3-react/core'
 import Modal from '../Modal'
-import VioletEnrol from './VioletEnrol'
+import VioletEnroll from './VioletEnroll'
 import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
 import { useAppDispatch } from 'state/hooks'
 import { useCallback, useMemo } from 'react'
 import { useIsUserRegisteredWithViolet } from 'state/registration/hooks'
 import { updateRegistrationState } from 'state/registration/reducer'
 
-export default function VioletEnrolModal() {
+export default function VioletEnrollModal() {
   const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const { isRegistered }  = useIsRegisteredWithViolet({ethereumAddress: account})
   const alreadyRegistered  = useIsUserRegisteredWithViolet()
 
-  // Shows the enrol modal under these conditions:
+  // Shows the enroll modal under these conditions:
   // * This is the first time we are seeing the wallet and it is not enrolled
   // * User switches to a new wallet that is also not enrolled
   // 
@@ -39,14 +39,14 @@ export default function VioletEnrolModal() {
     [account, alreadyRegistered, dispatch]
   )
 
-  const onClose = useCallback(() => {
+  const saveRegistrationStatus = useCallback(() => {
       // now we have seen this wallet for the first time, save the registration status
       if (account) dispatch(updateRegistrationState({ address: account, registrationState: isRegistered ?? undefined }))
   }, [account, isRegistered])
 
   return (
-    <Modal isOpen={showModal} onDismiss={onClose}>
-      <VioletEnrol/>
+    <Modal isOpen={showModal} onDismiss={saveRegistrationStatus}>
+      <VioletEnroll onClose={saveRegistrationStatus}/>
     </Modal>
   )
 }

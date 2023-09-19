@@ -1,15 +1,15 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { Address } from '@uniswap/conedison/types'
 
-interface EnrolmentState {
+interface EnrollmentState {
   isRegistered: Record<Address, Boolean | undefined>
 }
 
-const initialState: EnrolmentState = {
+const initialState: EnrollmentState = {
   isRegistered: {}
 }
 
-export const enrolmentSlice = createSlice({
+export const enrollmentSlice = createSlice({
   name: 'registration',
   initialState,
   reducers: {
@@ -22,5 +22,5 @@ export const enrolmentSlice = createSlice({
   },
 })
 
-export const { updateRegistrationState } = enrolmentSlice.actions
-export default enrolmentSlice.reducer
+export const { updateRegistrationState } = enrollmentSlice.actions
+export default enrollmentSlice.reducer

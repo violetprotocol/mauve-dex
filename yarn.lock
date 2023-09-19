@@ -5831,6 +5831,14 @@
     clsx "^2.0.0"
     tailwind-merge "^1.14.0"
 
+"@violetprotocol/sdk@0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.19.tgz#8ea695c4539bbe9da99dac9b05cc60d4a9031db6"
+  integrity sha512-1YuAzkjr9nRoY0jhBlv27KEzWZrHAKgShJQwbb739s7Tz1+/Qnfx9bmLfKXCdQv9QgaBIneaSN86NUemAzaufQ==
+  dependencies:
+    clsx "^2.0.0"
+    tailwind-merge "^1.14.0"
+
 "@violetprotocol/violetid@1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@violetprotocol/violetid/-/violetid-1.2.3.tgz#9682b09f01c80a21d7ff00b616846b1439fbeb3a"
