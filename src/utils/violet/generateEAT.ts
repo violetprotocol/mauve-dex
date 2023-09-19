@@ -60,7 +60,7 @@ export const getEATForMulticall = async ({
 export const baseUrlByEnvironment = (environment: string) => {
   switch (environment) {
     case 'local':
-      return 'http://localhost:4000'
+      return 'http://localhost:8080'
     case 'staging':
       return 'https://staging.k8s.app.violet.co'
     case 'development':
