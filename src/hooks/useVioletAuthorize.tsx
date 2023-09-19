@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { authorize, EAT } from '@violetprotocol/sdk'
+import { EAT, authorize, enrol } from '@violetprotocol/sdk'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 
@@ -20,6 +20,53 @@ export type VioletTxAuthorizationPayload = {
   call: Call | null
   account?: string
   chainId?: number
+}
+
+export type VioletAuthorizationPayload = {
+  account?: string
+  chainId?: number
+}
+
+export const getVioletEnrolmentCall = async ({
+  account,
+  chainId,
+}: VioletAuthorizationPayload): Promise<string | null> => {
+  if (!account || !chainId) {
+    return null
+  }
+
+  if (!environment || !clientId) {
+    console.error('Invalid environment')
+    return null
+  }
+
+  console.log("mauve dex: about to enrol")
+
+  const response = await enrol({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+    address: account,
+    chainId,
+  })
+
+  console.log("mauve dex: finished enrol")
+
+  if (!response) {
+    console.error('No response from Violet while attempting to enrol')
+    logErrorWithNewRelic({ errorString: 'No response from Violet while attempting to enrol' })
+    return null
+  }
+
+  const [violet, error] = response
+
+  if (!violet) {
+    console.error(error)
+    logErrorWithNewRelic({ errorString: `Violet enrolment failed, errorCode: ${error?.code}` })
+    throw new Error(handleErrorCodes(error?.code))
+  }
+
+  return violet.txId;
 }
 
 export const getVioletAuthorizedCall = async ({
