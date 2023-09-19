@@ -9,6 +9,7 @@ import { ExternalLink } from 'theme'
 
 import { ChainDisplay } from './ChainDisplay'
 import * as styles from './style.css'
+import VioletEnrolModal from 'components/VioletEnrol/VioletEnrolModal'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -96,9 +97,11 @@ const Navbar = () => {
                   })
                 }}
               />
+
             </Box>
 
             <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
+            <VioletEnrolModal/>
           </Box>
 
           <Box className={styles.centerSideContainer} display={{ sm: 'none', lg: 'flex' }}>
