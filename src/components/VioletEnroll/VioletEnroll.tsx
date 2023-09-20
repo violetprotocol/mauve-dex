@@ -42,7 +42,7 @@ const TitleRow = styled.div`
 
 const Title = styled(Text)`
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 24px;
   margin-left: 7px;
 `
@@ -139,7 +139,6 @@ export default function VioletEnroll({
               </TitleRow>
 
               <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
-              <DetailsRow>Lorem ipsum</DetailsRow>
             </Label>
             <RegisterButton onClick={onEnroll} disabled={registering}>
               <Text fontWeight={600} fontSize={15}>
@@ -147,7 +146,7 @@ export default function VioletEnroll({
               </Text>
             </RegisterButton>
             <ShortColumn>
-              <DetailsRow>
+              <DetailsRow style={{fontSize: '11px'}}>
                 <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
               </DetailsRow>
             </ShortColumn>
