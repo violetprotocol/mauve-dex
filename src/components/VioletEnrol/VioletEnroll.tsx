@@ -1,9 +1,14 @@
 import { useWeb3React } from '@web3-react/core'
-import { ButtonPrimary, ButtonText, VioletProtectedButtonPrimary } from 'components/Button'
+import { ButtonPrimary, VioletProtected } from 'components/Button'
 import { AutoColumn } from 'components/Column'
+import Toggle from 'components/Toggle'
 import { getVioletEnrollmentCall } from 'hooks/useVioletAuthorize'
+import { MauveIcon } from 'nft/components/icons'
+import { useState } from 'react'
+import { ArrowRight } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components'
+import { ExternalLink } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
 
@@ -17,39 +22,53 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  padding: 32px 50px;
+  padding: 32px 32px 25px 32px;
   display: flex;
   flex-flow: column;
   align-items: center;
 `
 
-const LogoContainer = styled.div`
-  display: flex;
-  gap: 16px;
+const Label = styled.div<{ color: string; backgroundColor: string }>`
+width: 100%;
+padding: 5px 5px 15px;
+background-color: ${({ backgroundColor }) => backgroundColor};
+border-radius: 16px;
+color: ${({ color }) => color};
+`
+
+const TitleRow = styled.div`
+align-items: center;
+font-weight: 700;
+display: inline-flex;
+`
+
+const Title = styled(Text)`
+font-weight: 600;
+font-size: 16px;
+line-height: 24px;
+margin-left: 7px;
+`
+
+const DetailsRow = styled.div`
+margin-top: 8px;
+font-size: 12px;
+line-height: 16px;
+color: ${({ theme }) => theme.textSecondary};
+`
+
+const StyledLink = styled(ExternalLink)`
+color: ${({ theme }) => theme.textSecondary};
+font-weight: 700;
 `
 
 const ShortColumn = styled(AutoColumn)`
-  margin-top: 10px;
-`
-
-const InfoText = styled(Text)`
-  padding: 0 12px 0 12px;
-  font-size: 14px;
-  line-height: 20px;
-  text-align: center;
+  margin-bottom: 10px;
 `
 
 const StyledButton = styled(ButtonPrimary)`
   margin-top: 24px;
   width: 100%;
   font-weight: 600;
-`
-
-const StyledCancelButton = styled(ButtonText)`
-  margin-top: 16px;
-  color: ${({ theme }) => theme.textSecondary};
-  font-weight: 600;
-  font-size: 14px;
 `
 
 const StyledCloseButton = styled(StyledButton)`
@@ -61,10 +80,16 @@ const StyledCloseButton = styled(StyledButton)`
     opacity: ${({ theme }) => theme.opacity.hover};
     transition: opacity 250ms ease;
   }
+  padding: 8px;
+`
+
+const RegisterButton = styled(VioletProtected(ButtonPrimary, 'backgroundContrast', '0.2rem'))`
+  padding: 10px;
 `
 
 export default function VioletEnroll({onClose} : {onClose: () => void} ) {
   const { account, chainId } = useWeb3React()
+  const [noShow, setNoShow] = useState(false)
   
   const onEnrol = async () => {
     const violetEnrollResult = await getVioletEnrollmentCall({
@@ -79,23 +104,50 @@ export default function VioletEnroll({onClose} : {onClose: () => void} ) {
     }
   }
 
+  const handleToggleNoShow = () => {
+    setNoShow(!noShow);
+  }
+
   return (
     <Wrapper>
-    <Container>
-      {/* <ShortColumn>
-        <InfoText>
-          {heading} {description} {learnMoreUrl}
-        </InfoText>
-      </ShortColumn>
-      <LinkColumn>{urls}</LinkColumn> */}
-      <VioletProtectedButtonPrimary onClick={onEnrol}>
-        <Text fontWeight={500} fontSize={20}>
-          <>Register with Violet</>
-        </Text>
-      </VioletProtectedButtonPrimary>
-      <StyledCancelButton onClick={onClose}>Dismiss</StyledCancelButton>
-    </Container>
-  </Wrapper>
+      <Container>
+        <Label color={"black"} backgroundColor={"light-grey"}>
+          <TitleRow>
+            <Title paddingRight={'8px'}>Welcome to Mauve</Title><MauveIcon width={30}/>
+          </TitleRow>
+
+          <DetailsRow>
+            Mauve is a compliant DEX that requires identity verification with Violet.
+          </DetailsRow>
+          <DetailsRow>
+            Lorem ipsum
+          </DetailsRow>
+        </Label>
+        <RegisterButton onClick={onEnrol}>
+          <Text fontWeight={600} fontSize={15}>
+            <>Register with Violet</>
+          </Text>
+        </RegisterButton>
+        <ShortColumn>
+          <DetailsRow>
+            <StyledLink href={"https://docs.mauve.org"}>
+              Learn more
+            </StyledLink>
+          </DetailsRow>
+        </ShortColumn>
+
+        <StyledCloseButton onClick={onClose}>
+          <Text fontWeight={600} fontSize={12}>
+              <>Continue to App</>
+          </Text>
+          <ArrowRight size={16} style={{flex: 'end'}}/>
+        </StyledCloseButton>
+        
+        {/* <ShortColumn>
+          <Toggle toggle={handleToggleNoShow} isActive={noShow}/>
+        </ShortColumn> */}
+      </Container>
+    </Wrapper>
   )
 }
 

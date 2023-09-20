@@ -87,7 +87,8 @@ const rotate = keyframes`
  }
  `
 
-const VioletProtected = (button: AnyStyledComponent, fillColorClass: string) => {
+// Designed for use only with button components inheriting RebassButton or BaseButton
+export const VioletProtected = (button: AnyStyledComponent, fillColorClass: string, haloWidth: string = '0.3rem') => {
   return styled(button)`
     @property --angle {
       syntax: '<angle>';
@@ -106,7 +107,7 @@ const VioletProtected = (button: AnyStyledComponent, fillColorClass: string) => 
     background-clip: padding-box,
       /* Clip white semi-transparent to the padding-box */ border-box
         /* Clip colored boxes to the border-box (default) */;
-    border: 0.3rem dotted transparent;
+    border: ${haloWidth} dotted transparent;
     animation-name: ${rotate};
     animation-duration: 4s;
     animation-iteration-count: infinite;

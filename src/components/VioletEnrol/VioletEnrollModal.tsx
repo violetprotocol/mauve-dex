@@ -45,7 +45,7 @@ export default function VioletEnrollModal() {
   }, [account, isRegistered])
 
   return (
-    <Modal isOpen={showModal} onDismiss={saveRegistrationStatus}>
+    <Modal isOpen={showModal} onDismiss={saveRegistrationStatus} maxWidth={350}>
       <VioletEnroll onClose={saveRegistrationStatus}/>
     </Modal>
   )
