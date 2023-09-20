@@ -146,7 +146,7 @@ export default function VioletEnroll({
               </Text>
             </RegisterButton>
             <ShortColumn>
-              <DetailsRow style={{fontSize: '11px'}}>
+              <DetailsRow style={{ fontSize: '11px' }}>
                 <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
               </DetailsRow>
             </ShortColumn>
