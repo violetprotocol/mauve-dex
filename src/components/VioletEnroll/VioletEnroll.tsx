@@ -85,7 +85,13 @@ const RegisterButton = styled(VioletProtected(ButtonPrimary, 'backgroundContrast
   padding: 10px;
 `
 
-export default function VioletEnroll({ onClose, keepModalOpen }: { onClose: () => void, keepModalOpen: (open: boolean) => void }) {
+export default function VioletEnroll({
+  onClose,
+  keepModalOpen,
+}: {
+  onClose: () => void
+  keepModalOpen: (open: boolean) => void
+}) {
   const { account, chainId } = useWeb3React()
   // const [noShow, setNoShow] = useState(false)
   const [registering, setRegistering] = useState(false)
@@ -123,30 +129,37 @@ export default function VioletEnroll({ onClose, keepModalOpen }: { onClose: () =
             </TitleRow>
 
             <DetailsRow>You can now safely continue using Mauve.</DetailsRow>
-          </Label>) : (
-          <>
-          <Label color="black" backgroundColor="light-grey">
-            <TitleRow>
-              <Title paddingRight="8px">Welcome to Mauve</Title>
-              <MauveIcon width={30} />
-            </TitleRow>
-
-            <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
-            <DetailsRow>Lorem ipsum</DetailsRow>
           </Label>
-          <RegisterButton onClick={onEnroll} disabled={registering}>
-            <Text fontWeight={600} fontSize={15}>
-              {registering ? <>Registering...</> : enrollmentResult ? <>Registered!</>: <>Register with Violet</>}
-            </Text>
-          </RegisterButton>
-          <ShortColumn>
-            <DetailsRow>
-              <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
-            </DetailsRow>
-          </ShortColumn>
-        </>)}
+        ) : (
+          <>
+            <Label color="black" backgroundColor="light-grey">
+              <TitleRow>
+                <Title paddingRight="8px">Welcome to Mauve</Title>
+                <MauveIcon width={30} />
+              </TitleRow>
 
-        <StyledCloseButton onClick={() => {onClose(); keepModalOpen(false);}}>
+              <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
+              <DetailsRow>Lorem ipsum</DetailsRow>
+            </Label>
+            <RegisterButton onClick={onEnroll} disabled={registering}>
+              <Text fontWeight={600} fontSize={15}>
+                {registering ? <>Registering...</> : enrollmentResult ? <>Registered!</> : <>Register with Violet</>}
+              </Text>
+            </RegisterButton>
+            <ShortColumn>
+              <DetailsRow>
+                <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
+              </DetailsRow>
+            </ShortColumn>
+          </>
+        )}
+
+        <StyledCloseButton
+          onClick={() => {
+            onClose()
+            keepModalOpen(false)
+          }}
+        >
           <Text fontWeight={600} fontSize={12}>
             <>Continue to App</>
           </Text>

@@ -2,7 +2,7 @@ import { createStore, Store } from 'redux'
 
 import reducer, { EnrollmentState, updateRegistrationState } from './reducer'
 
-const ACCOUNT_ADDRESS = "0x33FaabBe19057C30d1405Fd8d16039255ff7EEf4"
+const ACCOUNT_ADDRESS = '0x33FaabBe19057C30d1405Fd8d16039255ff7EEf4'
 
 describe('registration reducer', () => {
   let store: Store<EnrollmentState>
@@ -19,8 +19,8 @@ describe('registration reducer', () => {
         store.dispatch(updateRegistrationState({ address: ACCOUNT_ADDRESS, registrationState: true }))
         expect(store.getState()).toEqual({
           isRegistered: {
-            [ACCOUNT_ADDRESS]: true
-          }
+            [ACCOUNT_ADDRESS]: true,
+          },
         })
       })
     })
@@ -30,8 +30,8 @@ describe('registration reducer', () => {
         store.dispatch(updateRegistrationState({ address: ACCOUNT_ADDRESS, registrationState: false }))
         expect(store.getState()).toEqual({
           isRegistered: {
-            [ACCOUNT_ADDRESS]: false
-          }
+            [ACCOUNT_ADDRESS]: false,
+          },
         })
       })
     })
