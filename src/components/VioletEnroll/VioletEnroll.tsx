@@ -3,6 +3,7 @@ import { ButtonPrimary, VioletProtected } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { getVioletEnrollmentCall } from 'hooks/useVioletAuthorize'
 import { MauveIcon } from 'nft/components/icons'
+import { useState } from 'react'
 import { ArrowRight } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components/macro'
@@ -84,11 +85,15 @@ const RegisterButton = styled(VioletProtected(ButtonPrimary, 'backgroundContrast
   padding: 10px;
 `
 
-export default function VioletEnroll({ onClose }: { onClose: () => void }) {
+export default function VioletEnroll({ onClose, keepModalOpen }: { onClose: () => void, keepModalOpen: (open: boolean) => void }) {
   const { account, chainId } = useWeb3React()
   // const [noShow, setNoShow] = useState(false)
+  const [registering, setRegistering] = useState(false)
+  const [enrollmentResult, setEnrollmentResult] = useState<string>('')
 
-  const onEnrol = async () => {
+  const onEnroll = async () => {
+    setRegistering(true)
+    keepModalOpen(true)
     const violetEnrollResult = await getVioletEnrollmentCall({
       account,
       chainId,
@@ -99,6 +104,9 @@ export default function VioletEnroll({ onClose }: { onClose: () => void }) {
       logErrorWithNewRelic({ errorString: 'Failed to enroll user' })
       return
     }
+
+    setEnrollmentResult(violetEnrollResult)
+    setRegistering(false)
   }
 
   // const handleToggleNoShow = () => {
@@ -108,27 +116,37 @@ export default function VioletEnroll({ onClose }: { onClose: () => void }) {
   return (
     <Wrapper>
       <Container>
-        <Label color="black" backgroundColor="light-grey">
-          <TitleRow>
-            <Title paddingRight="8px">Welcome to Mauve</Title>
-            <MauveIcon width={30} />
-          </TitleRow>
+        {enrollmentResult ? (
+          <Label color="black" backgroundColor="light-grey">
+            <TitleRow>
+              <Title paddingRight="8px">Identity Verified! 🎉</Title>
+            </TitleRow>
 
-          <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
-          <DetailsRow>Lorem ipsum</DetailsRow>
-        </Label>
-        <RegisterButton onClick={onEnrol}>
-          <Text fontWeight={600} fontSize={15}>
-            <>Register with Violet</>
-          </Text>
-        </RegisterButton>
-        <ShortColumn>
-          <DetailsRow>
-            <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
-          </DetailsRow>
-        </ShortColumn>
+            <DetailsRow>You can now safely continue using Mauve.</DetailsRow>
+          </Label>) : (
+          <>
+          <Label color="black" backgroundColor="light-grey">
+            <TitleRow>
+              <Title paddingRight="8px">Welcome to Mauve</Title>
+              <MauveIcon width={30} />
+            </TitleRow>
 
-        <StyledCloseButton onClick={onClose}>
+            <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
+            <DetailsRow>Lorem ipsum</DetailsRow>
+          </Label>
+          <RegisterButton onClick={onEnroll} disabled={registering}>
+            <Text fontWeight={600} fontSize={15}>
+              {registering ? <>Registering...</> : enrollmentResult ? <>Registered!</>: <>Register with Violet</>}
+            </Text>
+          </RegisterButton>
+          <ShortColumn>
+            <DetailsRow>
+              <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
+            </DetailsRow>
+          </ShortColumn>
+        </>)}
+
+        <StyledCloseButton onClick={() => {onClose(); keepModalOpen(false);}}>
           <Text fontWeight={600} fontSize={12}>
             <>Continue to App</>
           </Text>

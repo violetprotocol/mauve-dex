@@ -1,5 +1,5 @@
 import { useWeb3React } from '@web3-react/core'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state/hooks'
 import { useIsUserRegisteredWithViolet } from 'state/registration/hooks'
 import { updateRegistrationState } from 'state/registration/reducer'
@@ -13,6 +13,13 @@ export default function VioletEnrollModal() {
   const dispatch = useAppDispatch()
   const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
   const alreadyRegistered = useIsUserRegisteredWithViolet()
+
+  const [keepOpen, setKeepOpen] = useState(false)
+
+  const saveRegistrationStatus = useCallback(() => {
+    // now we have seen this wallet for the first time, save the registration status
+    if (account) dispatch(updateRegistrationState({ address: account, registrationState: isRegistered ?? undefined }))
+  }, [account, isRegistered, dispatch])
 
   // Shows the enroll modal under these conditions:
   // * This is the first time we are seeing the wallet and it is not enrolled
@@ -28,23 +35,21 @@ export default function VioletEnrollModal() {
     // do not show modal if we have already seen this wallet before
     if (alreadyRegistered !== undefined) return false
 
-    // do not show modal if this newly seen wallet is registered with violet
+    // do not show modal if this newly seen wallet is registered with violet and save
     if (isRegistered) {
+      saveRegistrationStatus()
       return false
     }
 
     // otherwise show modal
     return true
-  }, [account, alreadyRegistered, isRegistered])
+  }, [account, alreadyRegistered, isRegistered, saveRegistrationStatus])
 
-  const saveRegistrationStatus = useCallback(() => {
-    // now we have seen this wallet for the first time, save the registration status
-    if (account) dispatch(updateRegistrationState({ address: account, registrationState: isRegistered ?? undefined }))
-  }, [account, isRegistered, dispatch])
+
 
   return (
-    <Modal isOpen={showModal} onDismiss={saveRegistrationStatus} maxWidth={350}>
-      <VioletEnroll onClose={saveRegistrationStatus} />
+    <Modal isOpen={keepOpen || showModal} onDismiss={saveRegistrationStatus} maxWidth={350}>
+      <VioletEnroll onClose={saveRegistrationStatus} keepModalOpen={setKeepOpen}/>
     </Modal>
   )
 }
