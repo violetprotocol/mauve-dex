@@ -1,16 +1,13 @@
 import { useWeb3React } from '@web3-react/core'
 import { ButtonPrimary, VioletProtected } from 'components/Button'
 import { AutoColumn } from 'components/Column'
-import Toggle from 'components/Toggle'
 import { getVioletEnrollmentCall } from 'hooks/useVioletAuthorize'
 import { MauveIcon } from 'nft/components/icons'
-import { useState } from 'react'
 import { ArrowRight } from 'react-feather'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
-
 
 const Wrapper = styled.div`
   width: 100%;
@@ -29,36 +26,36 @@ const Container = styled.div`
 `
 
 const Label = styled.div<{ color: string; backgroundColor: string }>`
-width: 100%;
-padding: 5px 5px 15px;
-background-color: ${({ backgroundColor }) => backgroundColor};
-border-radius: 16px;
-color: ${({ color }) => color};
+  width: 100%;
+  padding: 5px 5px 15px;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  border-radius: 16px;
+  color: ${({ color }) => color};
 `
 
 const TitleRow = styled.div`
-align-items: center;
-font-weight: 700;
-display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  display: inline-flex;
 `
 
 const Title = styled(Text)`
-font-weight: 600;
-font-size: 16px;
-line-height: 24px;
-margin-left: 7px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 7px;
 `
 
 const DetailsRow = styled.div`
-margin-top: 8px;
-font-size: 12px;
-line-height: 16px;
-color: ${({ theme }) => theme.textSecondary};
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: ${({ theme }) => theme.textSecondary};
 `
 
 const StyledLink = styled(ExternalLink)`
-color: ${({ theme }) => theme.textSecondary};
-font-weight: 700;
+  color: ${({ theme }) => theme.textSecondary};
+  font-weight: 700;
 `
 
 const ShortColumn = styled(AutoColumn)`
@@ -87,10 +84,10 @@ const RegisterButton = styled(VioletProtected(ButtonPrimary, 'backgroundContrast
   padding: 10px;
 `
 
-export default function VioletEnroll({onClose} : {onClose: () => void} ) {
+export default function VioletEnroll({ onClose }: { onClose: () => void }) {
   const { account, chainId } = useWeb3React()
-  const [noShow, setNoShow] = useState(false)
-  
+  // const [noShow, setNoShow] = useState(false)
+
   const onEnrol = async () => {
     const violetEnrollResult = await getVioletEnrollmentCall({
       account,
@@ -104,24 +101,21 @@ export default function VioletEnroll({onClose} : {onClose: () => void} ) {
     }
   }
 
-  const handleToggleNoShow = () => {
-    setNoShow(!noShow);
-  }
+  // const handleToggleNoShow = () => {
+  //   setNoShow(!noShow)
+  // }
 
   return (
     <Wrapper>
       <Container>
-        <Label color={"black"} backgroundColor={"light-grey"}>
+        <Label color="black" backgroundColor="light-grey">
           <TitleRow>
-            <Title paddingRight={'8px'}>Welcome to Mauve</Title><MauveIcon width={30}/>
+            <Title paddingRight="8px">Welcome to Mauve</Title>
+            <MauveIcon width={30} />
           </TitleRow>
 
-          <DetailsRow>
-            Mauve is a compliant DEX that requires identity verification with Violet.
-          </DetailsRow>
-          <DetailsRow>
-            Lorem ipsum
-          </DetailsRow>
+          <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
+          <DetailsRow>Lorem ipsum</DetailsRow>
         </Label>
         <RegisterButton onClick={onEnrol}>
           <Text fontWeight={600} fontSize={15}>
@@ -130,19 +124,17 @@ export default function VioletEnroll({onClose} : {onClose: () => void} ) {
         </RegisterButton>
         <ShortColumn>
           <DetailsRow>
-            <StyledLink href={"https://docs.mauve.org"}>
-              Learn more
-            </StyledLink>
+            <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
           </DetailsRow>
         </ShortColumn>
 
         <StyledCloseButton onClick={onClose}>
           <Text fontWeight={600} fontSize={12}>
-              <>Continue to App</>
+            <>Continue to App</>
           </Text>
-          <ArrowRight size={16} style={{flex: 'end'}}/>
+          <ArrowRight size={16} style={{ flex: 'end' }} />
         </StyledCloseButton>
-        
+
         {/* <ShortColumn>
           <Toggle toggle={handleToggleNoShow} isActive={noShow}/>
         </ShortColumn> */}
@@ -150,4 +142,3 @@ export default function VioletEnroll({onClose} : {onClose: () => void} ) {
     </Wrapper>
   )
 }
-

@@ -1,3 +1,4 @@
+import VioletEnrollModal from 'components/VioletEnroll/VioletEnrollModal'
 import Web3Status from 'components/Web3Status'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
@@ -9,7 +10,6 @@ import { ExternalLink } from 'theme'
 
 import { ChainDisplay } from './ChainDisplay'
 import * as styles from './style.css'
-import VioletEnrollModal from 'components/VioletEnrol/VioletEnrollModal'
 
 // https://stackoverflow.com/a/31617326
 const FULL_BORDER_RADIUS = 9999
@@ -97,11 +97,10 @@ const Navbar = () => {
                   })
                 }}
               />
-
             </Box>
 
             <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
-            <VioletEnrollModal/>
+            <VioletEnrollModal />
           </Box>
 
           <Box className={styles.centerSideContainer} display={{ sm: 'none', lg: 'flex' }}>

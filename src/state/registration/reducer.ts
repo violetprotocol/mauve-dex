@@ -2,20 +2,20 @@ import { createSlice } from '@reduxjs/toolkit'
 import { Address } from '@uniswap/conedison/types'
 
 interface EnrollmentState {
-  isRegistered: Record<Address, Boolean | undefined>
+  isRegistered: Record<Address, boolean | undefined>
 }
 
 const initialState: EnrollmentState = {
-  isRegistered: {}
+  isRegistered: {},
 }
 
-export const enrollmentSlice = createSlice({
+const enrollmentSlice = createSlice({
   name: 'registration',
   initialState,
   reducers: {
     updateRegistrationState(
       state,
-      { payload: { address, registrationState } }: { payload: { address: Address, registrationState: Boolean } }
+      { payload: { address, registrationState } }: { payload: { address: Address; registrationState: boolean } }
     ) {
       state.isRegistered[address] = registrationState
     },

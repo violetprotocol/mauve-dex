@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
-import { EAT, authorize, enroll } from '@violetprotocol/sdk'
+import { authorize, EAT, enroll } from '@violetprotocol/sdk'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 
@@ -22,7 +22,7 @@ export type VioletTxAuthorizationPayload = {
   chainId?: number
 }
 
-export type VioletAuthorizationPayload = {
+type VioletAuthorizationPayload = {
   account?: string
   chainId?: number
 }
@@ -62,7 +62,7 @@ export const getVioletEnrollmentCall = async ({
     throw new Error(handleErrorCodes(error?.code))
   }
 
-  return violet.txId;
+  return violet.txId
 }
 
 export const getVioletAuthorizedCall = async ({

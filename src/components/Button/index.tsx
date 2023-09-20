@@ -88,7 +88,7 @@ const rotate = keyframes`
  `
 
 // Designed for use only with button components inheriting RebassButton or BaseButton
-export const VioletProtected = (button: AnyStyledComponent, fillColorClass: string, haloWidth: string = '0.3rem') => {
+export const VioletProtected = (button: AnyStyledComponent, fillColorClass: string, haloWidth = '0.3rem') => {
   return styled(button)`
     @property --angle {
       syntax: '<angle>';
