@@ -45,18 +45,11 @@
       }
     }
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@craco/craco": "6.4.3",
     "@ethersproject/experimental": "^5.4.0",
@@ -139,15 +132,15 @@
     "@vanilla-extract/dynamic": "^2.0.2",
     "@vanilla-extract/sprinkles": "^1.4.1",
     "@violetprotocol/ethereum-access-token-helpers": "^0.2.0",
-    "@violetprotocol/mauve-core": "1.2.4",
+    "@violetprotocol/mauve-core": "1.2.5",
     "@violetprotocol/mauve-periphery": "1.8.8",
     "@violetprotocol/mauve-router-sdk": "1.6.5",
     "@violetprotocol/mauve-sdk-core": "3.2.0",
     "@violetprotocol/mauve-smart-order-router": "4.0.10",
     "@violetprotocol/mauve-v2-sdk": "3.1.0",
     "@violetprotocol/mauve-v3-sdk": "4.2.4",
-    "@violetprotocol/sdk": "0.0.17",
-    "@violetprotocol/sdk-web3-react": "0.0.2",
+    "@violetprotocol/sdk": "0.0.23",
+    "@violetprotocol/sdk-web3-react": "0.0.6",
     "@visx/axis": "^2.12.2",
     "@visx/event": "^2.6.0",
     "@visx/glyph": "^2.10.0",
@@ -235,10 +228,5 @@
     "npm": "please-use-yarn",
     "node": "16",
     "yarn": ">=1.22"
-  },
-  "volta": {
-    "node": "16.19.1",
-    "yarn": "1.22.19"
-  },
-  "packageManager": "yarn@3.5.0"
+  }
 }

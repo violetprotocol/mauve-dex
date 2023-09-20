@@ -31,6 +31,12 @@ module.exports = {
       // This is required because conedison uses * to redirect all imports to its dist.
       webpackConfig.resolve.alias['@uniswap/conedison'] = '@uniswap/conedison/dist'
 
+      webpackConfig.module.rules.push({
+        type: 'javascript/auto',
+        test: /\.mjs$/,
+        include: /node_modules/,
+      })
+
       return webpackConfig
     },
   },
