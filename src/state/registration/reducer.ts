@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { Address } from '@uniswap/conedison/types'
 
-interface EnrollmentState {
+export interface EnrollmentState {
   isRegistered: Record<Address, boolean | undefined>
 }
 
