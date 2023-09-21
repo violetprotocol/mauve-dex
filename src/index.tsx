@@ -2,6 +2,7 @@ import '@reach/dialog/styles.css'
 import 'inter-ui'
 import 'polyfills'
 import 'components/analytics'
+import '@violetprotocol/sdk/styles.css'
 
 import { ApolloProvider } from '@apollo/client'
 import * as Sentry from '@sentry/react'

@@ -1,4 +1,5 @@
 import { Currency } from '@violetprotocol/mauve-sdk-core'
+import { EmbeddedAuthorization } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
@@ -9,9 +10,10 @@ import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
-import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
-import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
+import { MAUVE_DISCORD_LINK } from 'utils/violet/generateEAT'
+import { EmbeddedAuthWrapper } from 'utils/violet/styled'
+import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
+import { useIsRegisteredWithViolet } from 'utils/violet/useIsRegistered'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -368,6 +370,7 @@ export default function TransactionConfirmationModal({
   const eatPayload = useVioletEAT((state) => state.eatPayload)
   const { setEatPayload, setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
   const { isRegistered, updateUserIsRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
+  const embeddedAuthRef = useEmbeddedAuthRef()
 
   useEffect(() => {
     if (account && chainId && eatPayload.status === 'authorizing') {
@@ -391,7 +394,14 @@ export default function TransactionConfirmationModal({
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
-        <VioletEmbeddedAuthorizationWrapper authorizeProps={authorizeProps} onIssued={onIssued} onFailed={onFailed} />
+        <EmbeddedAuthWrapper>
+          <EmbeddedAuthorization
+            ref={embeddedAuthRef}
+            authorizeProps={authorizeProps}
+            onIssued={onIssued}
+            onFailed={onFailed}
+          />
+        </EmbeddedAuthWrapper>
       ) : hash || attemptingTxn ? (
         <L2Content
           chainId={chainId}

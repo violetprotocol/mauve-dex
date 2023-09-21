@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
-import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
+import { MAUVE_DISCORD_LINK } from 'utils/violet/generateEAT'
 
 import { AutoRow } from '../Row'
 
@@ -22,6 +22,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-items: center;
+  gap: 8px;
   width: 100%;
 `
 const Header = styled.h2`

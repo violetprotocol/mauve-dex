@@ -1,7 +1,7 @@
 import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { AuthorizeProps } from '@violetprotocol/sdk'
-import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
+import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 import { create } from 'zustand'
 
 import { Call, getVioletAuthorizedCall, handleErrorCodes } from './useVioletAuthorize'

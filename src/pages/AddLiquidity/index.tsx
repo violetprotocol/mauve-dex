@@ -4,7 +4,7 @@ import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
-import { EAT, useViolet } from '@violetprotocol/sdk'
+import { EAT, EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -22,9 +22,10 @@ import {
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
-import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
-import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
+import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
+import { EmbeddedAuthWrapper } from 'utils/violet/styled'
+import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
 import {
   ButtonError,
@@ -74,7 +75,7 @@ import approveAmountCalldata from '../../utils/approveAmountCalldata'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { useIsRegisteredWithViolet } from '../../utils/temporary/useIsRegistered'
+import { useIsRegisteredWithViolet } from '../../utils/violet/useIsRegistered'
 import { Dots } from '../Pool/styleds'
 import { Review } from './Review'
 import {
@@ -126,6 +127,7 @@ export default function AddLiquidity() {
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
   const parsedQs = useParsedQueryString()
+  const embeddedAuthRef = useEmbeddedAuthRef()
 
   // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
@@ -678,25 +680,28 @@ export default function AddLiquidity() {
                   message={handleErrorCodes(violetError)}
                 />
               ) : (
-                <VioletEmbeddedAuthorizationWrapper
-                  authorizeProps={authorizeProps}
-                  onIssued={({ signature, expiry }: any) => {
-                    if (!call) {
-                      throw new Error('Missing call following EAT issuance')
-                    }
-                    handleVioletResponseAndSubmitTransaction({
-                      ...signature,
-                      expiry,
-                      to: call.address,
-                      calls: call.calls,
-                      value: call.value,
-                    })
-                  }}
-                  onFailed={(response: any) => {
-                    console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
-                    setVioletError(JSON.stringify(response?.code))
-                  }}
-                />
+                <EmbeddedAuthWrapper>
+                  <EmbeddedAuthorization
+                    ref={embeddedAuthRef}
+                    authorizeProps={authorizeProps}
+                    onIssued={({ signature, expiry }: any) => {
+                      if (!call) {
+                        throw new Error('Missing call following EAT issuance')
+                      }
+                      handleVioletResponseAndSubmitTransaction({
+                        ...signature,
+                        expiry,
+                        to: call.address,
+                        calls: call.calls,
+                        value: call.value,
+                      })
+                    }}
+                    onFailed={(response: any) => {
+                      console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                      setVioletError(JSON.stringify(response?.code))
+                    }}
+                  />
+                </EmbeddedAuthWrapper>
               )
             ) : violetError ? (
               <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
@@ -964,7 +969,11 @@ export default function AddLiquidity() {
                             />
                           </OutlineCard>
                           <RowBetween
-                            style={{ backgroundColor: theme.backgroundSurface, padding: '12px', borderRadius: '12px' }}
+                            style={{
+                              backgroundColor: theme.backgroundSurface,
+                              padding: '12px',
+                              borderRadius: '12px',
+                            }}
                           >
                             <ThemedText.DeprecatedMain>
                               <>Current {baseCurrency?.symbol} Price:</>
@@ -994,7 +1003,11 @@ export default function AddLiquidity() {
                       disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
                     >
                       <StackedContainer>
-                        <StackedItem style={{ opacity: showCapitalEfficiencyWarning ? '0.05' : 1 }}>
+                        <StackedItem
+                          style={{
+                            opacity: showCapitalEfficiencyWarning ? '0.05' : 1,
+                          }}
+                        >
                           <AutoColumn gap="md">
                             {noLiquidity && (
                               <RowBetween>

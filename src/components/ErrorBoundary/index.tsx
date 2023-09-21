@@ -6,7 +6,7 @@ import React, { PropsWithChildren, useState } from 'react'
 import { Copy } from 'react-feather'
 import styled from 'styled-components/macro'
 import { isSentryEnabled } from 'utils/env'
-import { MAUVE_DISCORD_LINK } from 'utils/temporary/generateEAT'
+import { MAUVE_DISCORD_LINK } from 'utils/violet/generateEAT'
 
 import { CopyToClipboard, ExternalLink, ThemedText } from '../../theme'
 import { Column } from '../Column'
