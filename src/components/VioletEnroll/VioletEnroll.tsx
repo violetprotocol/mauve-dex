@@ -6,6 +6,7 @@ import { MauveIcon } from 'nft/components/icons'
 import { useState } from 'react'
 import { ArrowRight } from 'react-feather'
 import { Text } from 'rebass'
+import { useToggleWalletModal } from 'state/application/hooks'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
@@ -85,6 +86,11 @@ const RegisterButton = styled(VioletProtected(ButtonPrimary, 'backgroundContrast
   padding: 10px;
 `
 
+const ConnectButton = styled(ButtonPrimary)`
+  font-size: 16px;
+  font-weight: 600;
+`
+
 export default function VioletEnroll({
   onClose,
   keepModalOpen,
@@ -93,13 +99,14 @@ export default function VioletEnroll({
   keepModalOpen: (open: boolean) => void
 }) {
   const { account, chainId } = useWeb3React()
-  // const [noShow, setNoShow] = useState(false)
   const [registering, setRegistering] = useState(false)
   const [enrollmentResult, setEnrollmentResult] = useState<string>('')
+  const toggleWalletModal = useToggleWalletModal()
 
   const onEnroll = async () => {
     setRegistering(true)
     keepModalOpen(true)
+
     const violetEnrollResult = await getVioletEnrollmentCall({
       account,
       chainId,
@@ -114,10 +121,6 @@ export default function VioletEnroll({
     setEnrollmentResult(violetEnrollResult)
     setRegistering(false)
   }
-
-  // const handleToggleNoShow = () => {
-  //   setNoShow(!noShow)
-  // }
 
   return (
     <Wrapper>
@@ -140,34 +143,46 @@ export default function VioletEnroll({
 
               <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
             </Label>
-            <RegisterButton onClick={onEnroll} disabled={registering}>
-              <Text fontWeight={600} fontSize={15}>
-                {registering ? <>Registering...</> : enrollmentResult ? <>Registered!</> : <>Register with Violet</>}
-              </Text>
-            </RegisterButton>
-            <ShortColumn>
-              <DetailsRow style={{ fontSize: '11px' }}>
-                <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
-              </DetailsRow>
-            </ShortColumn>
+            {account ? (
+              <>
+                <RegisterButton onClick={onEnroll} disabled={registering}>
+                  <Text fontWeight={600} fontSize={15}>
+                    {registering ? (
+                      <>Registering...</>
+                    ) : enrollmentResult ? (
+                      <>Registered!</>
+                    ) : (
+                      <>Register with Violet</>
+                    )}
+                  </Text>
+                </RegisterButton>
+                <ShortColumn>
+                  <DetailsRow style={{ fontSize: '11px' }}>
+                    <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
+                  </DetailsRow>
+                </ShortColumn>
+              </>
+            ) : (
+              <ConnectButton onClick={toggleWalletModal}>
+                <>Connect Wallet</>
+              </ConnectButton>
+            )}
           </>
         )}
 
-        <StyledCloseButton
-          onClick={() => {
-            onClose()
-            keepModalOpen(false)
-          }}
-        >
-          <Text fontWeight={600} fontSize={12}>
-            <>Continue to App</>
-          </Text>
-          <ArrowRight size={16} style={{ flex: 'end' }} />
-        </StyledCloseButton>
-
-        {/* <ShortColumn>
-          <Toggle toggle={handleToggleNoShow} isActive={noShow}/>
-        </ShortColumn> */}
+        {account && (
+          <StyledCloseButton
+            onClick={() => {
+              onClose()
+              keepModalOpen(false)
+            }}
+          >
+            <Text fontWeight={600} fontSize={12}>
+              <>Continue to App</>
+            </Text>
+            <ArrowRight size={16} style={{ flex: 'end' }} />
+          </StyledCloseButton>
+        )}
       </Container>
     </Wrapper>
   )
