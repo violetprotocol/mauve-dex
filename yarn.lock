@@ -5815,15 +5815,6 @@
     clsx "^2.0.0"
     tailwind-merge "^1.14.0"
 
-"@violetprotocol/sdk@0.0.25":
-  version "0.0.25"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.25.tgz#23bd63ccf349b422c127f4d491b2fa1b16cd1454"
-  integrity sha512-Dd5JN+7lUy2cKi1e3lLNNn++lboyJoEuKCe/QDAxI34jVB2WZJ0Z9oAkx2SUqT5pj8Hhq93fp2oI/ojXwH74SQ==
-  dependencies:
-    "@ethersproject/bytes" "^5.7.0"
-    clsx "^2.0.0"
-    tailwind-merge "^1.14.0"
-
 "@violetprotocol/violetid@1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@violetprotocol/violetid/-/violetid-1.2.3.tgz#9682b09f01c80a21d7ff00b616846b1439fbeb3a"
