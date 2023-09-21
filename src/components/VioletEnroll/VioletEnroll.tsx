@@ -158,7 +158,9 @@ export default function VioletEnroll({
                 </RegisterButton>
                 <ShortColumn>
                   <DetailsRow style={{ fontSize: '11px' }}>
-                    <StyledLink href="https://docs.mauve.org">Learn more</StyledLink>
+                    <StyledLink tabIndex={-1} href="https://docs.mauve.org">
+                      Learn more
+                    </StyledLink>
                   </DetailsRow>
                 </ShortColumn>
               </>
@@ -170,20 +172,18 @@ export default function VioletEnroll({
           </>
         )}
 
-        {account && (
-          <StyledCloseButton
-            tabIndex={-1}
-            onClick={() => {
-              onClose()
-              keepModalOpen(false)
-            }}
-          >
-            <Text fontWeight={600} fontSize={12}>
-              <>Continue to App</>
-            </Text>
-            <ArrowRight size={16} style={{ flex: 'end' }} />
-          </StyledCloseButton>
-        )}
+        <StyledCloseButton
+          tabIndex={-1}
+          onClick={() => {
+            onClose()
+            keepModalOpen(false)
+          }}
+        >
+          <Text fontWeight={600} fontSize={12}>
+            <>Continue to App</>
+          </Text>
+          <ArrowRight size={16} style={{ flex: 'end' }} />
+        </StyledCloseButton>
       </Container>
     </Wrapper>
   )

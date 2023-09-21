@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import useDebounce from 'hooks/useDebounce'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state/hooks'
 import { useIsUserRegisteredWithViolet } from 'state/registration/hooks'
 import { updateRegistrationState } from 'state/registration/reducer'
@@ -17,11 +17,24 @@ export default function VioletEnrollModal() {
   const alreadyRegistered = useIsUserRegisteredWithViolet()
 
   const [keepOpen, setKeepOpen] = useState(false)
+  const [peruseAppWithoutWallet, setPeruseAppWithoutWallet] = useState(false)
 
   const saveRegistrationStatus = useCallback(() => {
     // now we have seen this wallet for the first time, save the registration status
     if (account) dispatch(updateRegistrationState({ address: account, registrationState: isRegistered ?? undefined }))
   }, [account, isRegistered, dispatch])
+
+  const dismissModal = () => {
+    saveRegistrationStatus()
+    if (!account && walletFinishedLoading) {
+      setPeruseAppWithoutWallet(true)
+    }
+  }
+
+  // if account change is detected and user has been perusing app without wallet, reset that state
+  useEffect(() => {
+    if (account && walletFinishedLoading && peruseAppWithoutWallet) setPeruseAppWithoutWallet(false)
+  }, [account, walletFinishedLoading, setPeruseAppWithoutWallet])
 
   // Shows the enroll modal under these conditions:
   // * This is the first time we are seeing the wallet and it is not enrolled
@@ -33,14 +46,21 @@ export default function VioletEnrollModal() {
   // * The user is not enrolled but we have seen this wallet before
   // * The user is enrolled
   const showModal = useMemo(() => {
-    // do not show modal if there is no account and we have not finished attempting to load wallet from provider
-    if (!walletFinishedLoading && !account) return false
+    // if there is no connected wallet...
+    if (!account) {
+      // do not show modal if we have not finished attempting to load wallet from provider
+      if (!walletFinishedLoading) return false
 
-    // show modal if there is no connected wallet
-    if (!account) return true
+      // do not show modal if the user has dismissed the modal whilst having no wallet connected
+      if (peruseAppWithoutWallet) return false
+
+      // show modal
+      return true
+    }
 
     // do not show modal if we have already seen this wallet before
     if (alreadyRegistered !== undefined) return false
+
     // do not show modal if this newly seen wallet is registered with violet and save
     if (isRegistered) {
       saveRegistrationStatus()
@@ -49,11 +69,11 @@ export default function VioletEnrollModal() {
 
     // otherwise show modal
     return true
-  }, [account, walletFinishedLoading, alreadyRegistered, isRegistered, saveRegistrationStatus])
+  }, [account, walletFinishedLoading, alreadyRegistered, isRegistered, peruseAppWithoutWallet, saveRegistrationStatus])
 
   return (
-    <Modal isOpen={keepOpen || showModal} onDismiss={saveRegistrationStatus} maxWidth={350}>
-      <VioletEnroll onClose={saveRegistrationStatus} keepModalOpen={setKeepOpen} />
+    <Modal isOpen={keepOpen || showModal} onDismiss={dismissModal} maxWidth={350}>
+      <VioletEnroll onClose={dismissModal} keepModalOpen={setKeepOpen} />
     </Modal>
   )
 }
