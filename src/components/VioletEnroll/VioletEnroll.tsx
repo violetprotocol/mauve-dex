@@ -145,7 +145,7 @@ export default function VioletEnroll({
             </Label>
             {account ? (
               <>
-                <RegisterButton onClick={onEnroll} disabled={registering}>
+                <RegisterButton tabIndex={-1} onClick={onEnroll} disabled={registering}>
                   <Text fontWeight={600} fontSize={15}>
                     {registering ? (
                       <>Registering...</>
@@ -163,7 +163,7 @@ export default function VioletEnroll({
                 </ShortColumn>
               </>
             ) : (
-              <ConnectButton onClick={toggleWalletModal}>
+              <ConnectButton tabIndex={-1} onClick={toggleWalletModal}>
                 <>Connect Wallet</>
               </ConnectButton>
             )}
@@ -172,6 +172,7 @@ export default function VioletEnroll({
 
         {account && (
           <StyledCloseButton
+            tabIndex={-1}
             onClick={() => {
               onClose()
               keepModalOpen(false)
