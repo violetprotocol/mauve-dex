@@ -83,6 +83,11 @@ const [web3WalletConnect, web3WalletConnectHooks] = initializeConnector<WalletCo
       showQrModal: true,
       projectId: '2c22b74a3313db29ebf0418e946c5ddc',
       chains,
+      qrModalOptions: {
+        themeVariables: {
+          '--wcm-z-index': '9999999',
+        },
+      },
     },
     onError,
   })
