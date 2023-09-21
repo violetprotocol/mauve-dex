@@ -11,7 +11,7 @@ import VioletEnroll from './VioletEnroll'
 
 export default function VioletEnrollModal() {
   const { account, isActive } = useWeb3React()
-  const walletFinishedLoading = useDebounce(isActive, 300)
+  const walletFinishedLoading = useDebounce(isActive, 600)
   const dispatch = useAppDispatch()
   const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
   const alreadyRegistered = useIsUserRegisteredWithViolet()
