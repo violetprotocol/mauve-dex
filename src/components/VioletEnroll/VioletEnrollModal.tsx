@@ -34,7 +34,7 @@ export default function VioletEnrollModal() {
   // if account change is detected and user has been perusing app without wallet, reset that state
   useEffect(() => {
     if (account && walletFinishedLoading && peruseAppWithoutWallet) setPeruseAppWithoutWallet(false)
-  }, [account, walletFinishedLoading, setPeruseAppWithoutWallet])
+  }, [account, walletFinishedLoading, peruseAppWithoutWallet, setPeruseAppWithoutWallet])
 
   // Shows the enroll modal under these conditions:
   // * This is the first time we are seeing the wallet and it is not enrolled
