@@ -121,13 +121,14 @@ export default function AddLiquidity() {
     apiUrl: baseUrlByEnvironment(environment.toString()),
     redirectUrl: redirectUrlByEnvironment(environment.toString()),
   })
+  const embeddedAuthRef = useEmbeddedAuthRef()
+
   const theme = useTheme()
 
   const toggleWalletModal = useToggleWalletModal() // toggle wallet when disconnected
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
   const parsedQs = useParsedQueryString()
-  const embeddedAuthRef = useEmbeddedAuthRef()
 
   // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
@@ -271,6 +272,8 @@ export default function AddLiquidity() {
       throw new Error('Missing parameters to submit the transaction')
     }
 
+    setAttemptingTxn(true)
+
     let txn: { to: string; data: string; value: string } = {
       to,
       data,
@@ -300,8 +303,6 @@ export default function AddLiquidity() {
         value: '0x0',
       }
     }
-
-    setAttemptingTxn(true)
 
     provider
       .getSigner()
@@ -396,13 +397,22 @@ export default function AddLiquidity() {
 
   // Main function triggered when "Add" is clicked on the Add Liquidity preview modal
   async function onAdd() {
-    if (!chainId || !provider || !account) return
-
-    if (!positionManager || !baseCurrency || !quoteCurrency || !position || !account || !deadline) {
+    if (
+      !chainId ||
+      !provider ||
+      !account ||
+      !positionManager ||
+      !baseCurrency ||
+      !quoteCurrency ||
+      !position ||
+      !account ||
+      !deadline
+    ) {
       return
     }
 
     const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+
     const { calls, value } =
       hasExistingPosition && tokenId
         ? NonfungiblePositionManager.addCallParameters(position, {
@@ -420,6 +430,7 @@ export default function AddLiquidity() {
           })
 
     const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+
     try {
       const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
 
@@ -429,6 +440,7 @@ export default function AddLiquidity() {
         // TODO: address is confusing! It can be confused with the user's address
         setCall({ calls, value, functionSignature, parameters, address: to })
         setShowVioletEmbed(true)
+
         return
       }
 

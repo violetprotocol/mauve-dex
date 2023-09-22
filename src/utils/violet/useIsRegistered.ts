@@ -1,3 +1,4 @@
+import { isEnrolled } from '@violetprotocol/sdk'
 import { isAddress } from 'ethers/lib/utils'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -7,34 +8,25 @@ const fetchRegisteredStatus = async (ethereumAddress?: string): Promise<boolean 
   if (!process.env.REACT_APP_VIOLET_ENV) {
     throw new Error('Missing VIOLET_ENV env variable')
   }
+
+  if (!ethereumAddress) {
+    return null
+  }
+
   const baseURL = baseUrlByEnvironment(process.env.REACT_APP_VIOLET_ENV.toString())
-  // TODO: there's no reason why we should have to format as caip10 here
-  const URL = `${baseURL}/api/onchain/user/enrolled?from=eip155:1:${ethereumAddress}`
 
   try {
-    const response = await fetch(URL, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      mode: 'cors',
-    })
+    const isUserRegistered = isEnrolled({ address: ethereumAddress, apiUrl: baseURL })
 
-    if (!response.ok) {
-      console.error(`Failed to fetch registered status from Violet for ${ethereumAddress}`)
-    }
-
-    const data = await response.json()
-    return data?.isUserEnrolled
+    return isUserRegistered
   } catch (error) {
     console.error('Error while fetching registered status from Violet:', error)
+
     return null
   }
 }
 
-// TODO: Sth like that should be provided by Violet SDK
-export const useIsRegisteredWithViolet = ({ ethereumAddress }: { ethereumAddress?: string }) => {
+const useIsRegisteredWithViolet = ({ ethereumAddress }: { ethereumAddress?: string }) => {
   const [isRegistered, setIsRegistered] = useState<null | boolean>(null)
 
   const updateUserIsRegistered = useCallback(
@@ -56,3 +48,5 @@ export const useIsRegisteredWithViolet = ({ ethereumAddress }: { ethereumAddress
 
   return { isRegistered, updateUserIsRegistered }
 }
+
+export { useIsRegisteredWithViolet }
