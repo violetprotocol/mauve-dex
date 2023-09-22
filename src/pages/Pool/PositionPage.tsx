@@ -3,7 +3,8 @@ import type { TransactionResponse } from '@ethersproject/providers'
 import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@violetprotocol/mauve-sdk-core'
-import { NonfungiblePositionManager, Pool, Position } from '@violetprotocol/mauve-v3-sdk'
+import { EATMulticall, NonfungiblePositionManager, Pool, Position } from '@violetprotocol/mauve-v3-sdk'
+import { EAT, EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import Badge from 'components/Badge'
@@ -16,7 +17,11 @@ import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { RowBetween, RowFixed } from 'components/Row'
 import { Dots } from 'components/swap/styleds'
 import Toggle from 'components/Toggle'
-import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
+import TransactionConfirmationModal, {
+  ConfirmationModalContent,
+  ConfirmationPendingContent,
+  TransactionErrorContent,
+} from 'components/TransactionConfirmationModal'
 import { useToken } from 'hooks/Tokens'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/useIsTickAtLimit'
@@ -24,28 +29,33 @@ import { PoolState, usePool } from 'hooks/usePools'
 import useStablecoinPrice from 'hooks/useStablecoinPrice'
 import { useV3PositionFees } from 'hooks/useV3PositionFees'
 import { useV3PositionFromTokenId } from 'hooks/useV3Positions'
-import { getVioletAuthorizedCall } from 'hooks/useVioletAuthorize'
+import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
 import { useSingleCallResult } from 'lib/hooks/multicall'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Bound } from 'state/mint/v3/actions'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
+import { TransactionType } from 'state/transactions/types'
 import styled, { useTheme } from 'styled-components/macro'
 import { ExternalLink, HideExtraSmall, ThemedText } from 'theme'
+import { calculateGasMargin } from 'utils/calculateGasMargin'
 import { currencyId } from 'utils/currencyId'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatTickPrice } from 'utils/formatTickPrice'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
+import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
+import { EmbeddedAuthWrapper } from 'utils/violet/styled'
+import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
+import { useIsRegisteredWithViolet } from 'utils/violet/useIsRegistered'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
 import { getPriceOrderingFromPositionForUI } from '../../components/PositionListItem'
 import RateToggle from '../../components/RateToggle'
 import { SwitchLocaleLink } from '../../components/SwitchLocaleLink'
 import { usePositionTokenURI } from '../../hooks/usePositionTokenURI'
-import { TransactionType } from '../../state/transactions/types'
-import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink'
 import { LoadingRows } from './styleds'
 
@@ -326,10 +336,30 @@ const useInverter = ({
   }
 }
 
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
+
 export function PositionPage() {
   const { tokenId: tokenIdFromUrl } = useParams<{ tokenId?: string }>()
   const { chainId, account, provider } = useWeb3React()
   const theme = useTheme()
+
+  if (!environment || !clientId) {
+    throw new Error('Invalid environment')
+  }
+  const [call, setCall] = useState<Call | null>(null)
+  const [showVioletEmbed, setShowVioletEmbed] = useState(false)
+  const [violetError, setVioletError] = useState<string>('')
+  const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
+  const { isRegistered } = useIsRegisteredWithViolet({
+    ethereumAddress: account,
+  })
+  const { authorize } = useViolet({
+    clientId,
+    apiUrl: baseUrlByEnvironment(environment.toString()),
+    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  })
+  const embeddedAuthRef = useEmbeddedAuthRef()
 
   const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
@@ -372,6 +402,17 @@ export function PositionPage() {
 
   const pricesFromPosition = getPriceOrderingFromPositionForUI(position)
   const [manuallyInverted, setManuallyInverted] = useState(false)
+
+  const authorizeProps = useMemo(() => {
+    if (!account || !chainId || !call) {
+      return
+    }
+    return getVioletAuthzPayloadFromCall({
+      call,
+      account,
+      chainId,
+    })
+  }, [account, chainId, call])
 
   // handle manual inversion
   const { priceLower, priceUpper, base } = useInverter({
@@ -435,7 +476,8 @@ export function PositionPage() {
 
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
-  const collect = useCallback(async () => {
+
+  async function submitTransaction({ value, data }: { value: string; data: string }) {
     if (
       !currency0ForFeeCollectionPurposes ||
       !currency1ForFeeCollectionPurposes ||
@@ -444,41 +486,16 @@ export function PositionPage() {
       !account ||
       !tokenId ||
       !provider
-    )
-      return
+    ) {
+      throw new Error('Missing parameters to submit the transaction')
+    }
 
     setCollecting(true)
 
-    // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
-    // vast majority of cases
-    const callParameters = NonfungiblePositionManager.collectCallParameters({
-      tokenId: tokenId.toString(),
-      expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
-      expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
-      recipient: account,
-    })
-
-    const call = {
-      ...callParameters,
-      address: positionManager.address,
-    }
-
-    const violetEATResult = await getVioletAuthorizedCall({
-      call,
-      account,
-      chainId,
-    })
-
-    if (!violetEATResult?.calldata) {
-      console.error('Failed to get calldata with EAT')
-      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
-      return
-    }
-
     const txn = {
       to: positionManager.address,
-      data: violetEATResult.calldata,
-      value: callParameters.value,
+      data,
+      value,
     }
 
     provider
@@ -517,18 +534,144 @@ export function PositionPage() {
         console.error(error)
         logErrorWithNewRelic({ error, errorString: 'Failed to collect fees with violet EAT' })
       })
-  }, [
-    chainId,
-    feeValue0,
-    feeValue1,
-    currency0ForFeeCollectionPurposes,
-    currency1ForFeeCollectionPurposes,
-    positionManager,
-    account,
-    tokenId,
-    addTransaction,
-    provider,
-  ])
+  }
+
+  type HandleVioletResponseAndSubmitTransactionProps = {
+    to: string
+    value: string
+    v: EAT['signature']['v']
+    r: EAT['signature']['r']
+    s: EAT['signature']['s']
+    expiry: EAT['expiry']
+    calls: Call['calls']
+  }
+
+  const handleVioletResponseAndSubmitTransaction = ({
+    value,
+    v,
+    r,
+    s,
+    expiry,
+    calls,
+  }: HandleVioletResponseAndSubmitTransactionProps) => {
+    // Might be helpful to leave this console.log?
+    console.log(
+      `TX payload to submit: ${JSON.stringify(
+        {
+          value,
+          v,
+          r,
+          s,
+          expiry,
+          calls,
+        },
+        null,
+        2
+      )}`
+    )
+
+    const calldata = EATMulticall.encodePostsignMulticall(v, r, s, expiry, calls)
+    if (!calldata) {
+      throw new Error('Failed to generate calldata from violet EAT')
+    }
+
+    return submitTransaction({ data: calldata, value })
+  }
+
+  const onCollect = async () => {
+    if (
+      !currency0ForFeeCollectionPurposes ||
+      !currency1ForFeeCollectionPurposes ||
+      !chainId ||
+      !positionManager ||
+      !account ||
+      !tokenId ||
+      !provider
+    ) {
+      return
+    }
+
+    // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
+    // vast majority of cases
+    const callParameters = NonfungiblePositionManager.collectCallParameters({
+      tokenId: tokenId.toString(),
+      expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
+      expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
+      recipient: account,
+    })
+
+    const { calls, address, value } = {
+      ...callParameters,
+      address: positionManager.address,
+    }
+
+    try {
+      const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
+
+      // If the user is already enrolled, we take a shortcut and
+      // use Violet iFrame (embedded authentication)
+      if (isRegistered) {
+        // TODO: address is confusing! It can be confused with the user's address
+        setCall({
+          calls,
+          value,
+          functionSignature,
+          parameters,
+          address,
+        })
+        setShowVioletEmbed(true)
+
+        return
+      }
+
+      setPendingVioletAuth(true)
+
+      const response = await authorize({
+        transaction: {
+          data: parameters,
+          functionSignature,
+          targetContract: address,
+        },
+        address: account,
+        chainId,
+      })
+
+      if (!response) {
+        setVioletError('FAILED_CALL')
+        return
+      }
+
+      const [violet, error] = response
+
+      if (!violet) {
+        console.error(error)
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
+      }
+      const eat = violet.eat
+
+      if (!eat?.signature || !eat?.expiry) {
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
+      }
+
+      return handleVioletResponseAndSubmitTransaction({
+        ...eat.signature,
+        expiry: eat.expiry,
+        to: address,
+        value,
+        calls,
+      })
+    } catch (error) {
+      console.error('Error generating an EAT: ', error)
+      setVioletError(error)
+      logErrorWithNewRelic({
+        error,
+        errorString: 'Failed generating a Violet EAT',
+      })
+      return
+    }
+  }
 
   const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId]).result?.[0]
   const ownsNFT = owner === account || positionDetails?.operator === account
@@ -569,7 +712,7 @@ export function PositionPage() {
         <ThemedText.DeprecatedItalic>
           <>Collecting fees will withdraw currently available fees for you.</>
         </ThemedText.DeprecatedItalic>
-        <VioletProtectedButtonPrimary onClick={collect}>
+        <VioletProtectedButtonPrimary onClick={onCollect}>
           <>Collect</>
         </VioletProtectedButtonPrimary>
       </AutoColumn>
@@ -584,6 +727,12 @@ export function PositionPage() {
       (currency0.isNative || currency1.isNative) &&
       !collectMigrationHash
   )
+
+  const pendingText = 'Collecting fees'
+
+  const handleDismissConfirmation = () => {
+    setShowConfirm(false)
+  }
 
   return loading || poolState === PoolState.LOADING || !feeAmount ? (
     <LoadingRows>
@@ -609,20 +758,70 @@ export function PositionPage() {
             onDismiss={() => setShowConfirm(false)}
             attemptingTxn={collecting}
             hash={collectMigrationHash ?? ''}
-            content={() => (
-              <ConfirmationModalContent
-                title="Claim fees"
-                onDismiss={() => setShowConfirm(false)}
-                topContent={modalHeader}
-              />
-            )}
-            pendingText="Collecting fees"
+            content={() =>
+              showVioletEmbed && isRegistered && authorizeProps ? (
+                violetError ? (
+                  <TransactionErrorContent
+                    onDismiss={handleDismissConfirmation}
+                    message={handleErrorCodes(violetError)}
+                  />
+                ) : (
+                  <EmbeddedAuthWrapper>
+                    <EmbeddedAuthorization
+                      ref={embeddedAuthRef}
+                      authorizeProps={authorizeProps}
+                      onIssued={({ signature, expiry }: any) => {
+                        if (!call) {
+                          throw new Error('Missing call following EAT issuance')
+                        }
+                        handleVioletResponseAndSubmitTransaction({
+                          ...signature,
+                          expiry,
+                          to: call.address,
+                          calls: call.calls,
+                          value: call.value,
+                        })
+                      }}
+                      onFailed={(response: any) => {
+                        console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                        setVioletError(JSON.stringify(response?.code))
+                      }}
+                    />
+                  </EmbeddedAuthWrapper>
+                )
+              ) : violetError ? (
+                <TransactionErrorContent
+                  onDismiss={handleDismissConfirmation}
+                  message={handleErrorCodes(violetError)}
+                />
+              ) : pendingVioletAuth ? (
+                <ConfirmationPendingContent onDismiss={handleDismissConfirmation} pendingText={pendingText} />
+              ) : (
+                <ConfirmationModalContent
+                  title="Claim fees"
+                  onDismiss={handleDismissConfirmation}
+                  topContent={modalHeader}
+                />
+              )
+            }
+            // content={() => (
+            //   <ConfirmationModalContent
+            //     title="Claim fees"
+            //     onDismiss={handleDismissConfirmation}
+            //     topContent={modalHeader}
+            //   />
+            // )}
+            pendingText={pendingText}
           />
           <AutoColumn gap="md">
             <AutoColumn gap="sm">
               <Link
                 data-cy="visit-pool"
-                style={{ textDecoration: 'none', width: 'fit-content', marginBottom: '0.5rem' }}
+                style={{
+                  textDecoration: 'none',
+                  width: 'fit-content',
+                  marginBottom: '0.5rem',
+                }}
                 to="/pool"
               >
                 <HoverText>
@@ -633,7 +832,8 @@ export function PositionPage() {
                 <RowFixed>
                   <DoubleCurrencyLogo currency0={currencyBase} currency1={currencyQuote} size={24} margin={true} />
                   <ThemedText.DeprecatedLabel fontSize="24px" mr="10px">
-                    &nbsp;{currencyQuote?.symbol}&nbsp;/&nbsp;{currencyBase?.symbol}
+                    &nbsp;{currencyQuote?.symbol}&nbsp;/&nbsp;
+                    {currencyBase?.symbol}
                   </ThemedText.DeprecatedLabel>
                   <Badge style={{ marginRight: '8px' }}>
                     <BadgeText>
@@ -715,7 +915,12 @@ export function PositionPage() {
                       </Label>
                       {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100)) ? (
                         <ThemedText.DeprecatedLargeHeader fontSize="36px" fontWeight={500}>
-                          <>${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}</>
+                          <>
+                            $
+                            {fiatValueOfLiquidity.toFixed(2, {
+                              groupSeparator: ',',
+                            })}
+                          </>
                         </ThemedText.DeprecatedLargeHeader>
                       ) : (
                         <ThemedText.DeprecatedLargeHeader color={theme.textPrimary} fontSize="36px" fontWeight={500}>
@@ -773,7 +978,12 @@ export function PositionPage() {
                               fontSize="36px"
                               fontWeight={500}
                             >
-                              <>${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}</>
+                              <>
+                                $
+                                {fiatValueOfFees.toFixed(2, {
+                                  groupSeparator: ',',
+                                })}
+                              </>
                             </ThemedText.DeprecatedLargeHeader>
                           ) : (
                             <ThemedText.DeprecatedLargeHeader
