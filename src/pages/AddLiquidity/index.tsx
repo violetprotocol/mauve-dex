@@ -4,7 +4,8 @@ import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
-import { EAT, useViolet } from '@violetprotocol/sdk'
+import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -22,9 +23,7 @@ import {
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
-import { getVioletAuthzPayloadFromCall } from 'utils/temporary/authorizeProps'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
-import { VioletEmbeddedAuthorizationWrapper } from 'utils/temporary/violetStuffThatShouldBeImported/violetEmbeddedAuthorization'
+import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 
 import {
   ButtonError,
@@ -74,7 +73,6 @@ import approveAmountCalldata from '../../utils/approveAmountCalldata'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { useIsRegisteredWithViolet } from '../../utils/temporary/useIsRegistered'
 import { Dots } from '../Pool/styleds'
 import { Review } from './Review'
 import {
@@ -94,9 +92,6 @@ import {
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
-const environment = process.env.REACT_APP_VIOLET_ENV
-const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
-
 export default function AddLiquidity() {
   const navigate = useNavigate()
   const {
@@ -107,19 +102,16 @@ export default function AddLiquidity() {
   } = useParams<{ currencyIdA?: string; currencyIdB?: string; feeAmount?: string; tokenId?: string }>()
   const { account, chainId, provider } = useWeb3React()
 
-  if (!environment || !clientId) {
-    throw new Error('Invalid environment')
-  }
   const [call, setCall] = useState<Call | null>(null)
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
-  const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+  const { authorize } = useAuthorization()
+  const { isEnrolled } = useEnrollment({
+    userAddress: account,
   })
+  const embeddedAuthRef = useEmbeddedAuthorizationRef()
+
   const theme = useTheme()
 
   const toggleWalletModal = useToggleWalletModal() // toggle wallet when disconnected
@@ -269,6 +261,8 @@ export default function AddLiquidity() {
       throw new Error('Missing parameters to submit the transaction')
     }
 
+    setAttemptingTxn(true)
+
     let txn: { to: string; data: string; value: string } = {
       to,
       data,
@@ -298,8 +292,6 @@ export default function AddLiquidity() {
         value: '0x0',
       }
     }
-
-    setAttemptingTxn(true)
 
     provider
       .getSigner()
@@ -394,13 +386,22 @@ export default function AddLiquidity() {
 
   // Main function triggered when "Add" is clicked on the Add Liquidity preview modal
   async function onAdd() {
-    if (!chainId || !provider || !account) return
-
-    if (!positionManager || !baseCurrency || !quoteCurrency || !position || !account || !deadline) {
+    if (
+      !chainId ||
+      !provider ||
+      !account ||
+      !positionManager ||
+      !baseCurrency ||
+      !quoteCurrency ||
+      !position ||
+      !account ||
+      !deadline
+    ) {
       return
     }
 
     const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+
     const { calls, value } =
       hasExistingPosition && tokenId
         ? NonfungiblePositionManager.addCallParameters(position, {
@@ -418,15 +419,17 @@ export default function AddLiquidity() {
           })
 
     const to = NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId]
+
     try {
       const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
 
       // If the user is already enrolled, we take a shortcut and
       // use Violet iFrame (embedded authentication)
-      if (isRegistered) {
+      if (isEnrolled) {
         // TODO: address is confusing! It can be confused with the user's address
         setCall({ calls, value, functionSignature, parameters, address: to })
         setShowVioletEmbed(true)
+
         return
       }
 
@@ -671,14 +674,15 @@ export default function AddLiquidity() {
           attemptingTxn={attemptingTxn}
           hash={txHash}
           content={() =>
-            showVioletEmbed && isRegistered && authorizeProps ? (
+            showVioletEmbed && isEnrolled && authorizeProps ? (
               violetError ? (
                 <TransactionErrorContent
                   onDismiss={handleDismissConfirmation}
                   message={handleErrorCodes(violetError)}
                 />
               ) : (
-                <VioletEmbeddedAuthorizationWrapper
+                <EmbeddedAuthorization
+                  ref={embeddedAuthRef}
                   authorizeProps={authorizeProps}
                   onIssued={({ signature, expiry }: any) => {
                     if (!call) {
@@ -964,7 +968,11 @@ export default function AddLiquidity() {
                             />
                           </OutlineCard>
                           <RowBetween
-                            style={{ backgroundColor: theme.backgroundSurface, padding: '12px', borderRadius: '12px' }}
+                            style={{
+                              backgroundColor: theme.backgroundSurface,
+                              padding: '12px',
+                              borderRadius: '12px',
+                            }}
                           >
                             <ThemedText.DeprecatedMain>
                               <>Current {baseCurrency?.symbol} Price:</>
@@ -994,7 +1002,11 @@ export default function AddLiquidity() {
                       disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
                     >
                       <StackedContainer>
-                        <StackedItem style={{ opacity: showCapitalEfficiencyWarning ? '0.05' : 1 }}>
+                        <StackedItem
+                          style={{
+                            opacity: showCapitalEfficiencyWarning ? '0.05' : 1,
+                          }}
+                        >
                           <AutoColumn gap="md">
                             {noLiquidity && (
                               <RowBetween>

@@ -52,10 +52,12 @@ const BaseButton = styled(RebassButton)<BaseButtonProps>`
 
 export const ButtonPrimary = styled(BaseButton)`
   background-color: ${({ theme }) => theme.backgroundContrast};
+  color: ${({ theme }) => theme.textContrast};
+
   font-size: 20px;
   font-weight: 600;
   padding: 16px;
-  color: ${({ theme }) => theme.textContrast};
+
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};
     background-color: ${({ theme }) => theme.textTertiary};
@@ -171,8 +173,10 @@ export const ButtonSecondary = styled(BaseButton)`
   border: 1px solid ${({ theme }) => theme.textSecondary};
   color: ${({ theme }) => theme.textSecondary};
   background-color: transparent;
-  font-size: 16px;
-  padding: ${({ padding }) => (padding ? padding : '10px')};
+
+  font-size: 20px;
+  font-weight: 600;
+  padding: 16px;
 
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => theme.accentActiveSoft};

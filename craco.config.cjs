@@ -30,6 +30,7 @@ module.exports = {
       // Map @uniswap/conedison to its dist folder.
       // This is required because conedison uses * to redirect all imports to its dist.
       webpackConfig.resolve.alias['@uniswap/conedison'] = '@uniswap/conedison/dist'
+      webpackConfig.resolve.alias['@violetprotocol/sdk/styles.css'] = '@violetprotocol/sdk/dist/index.css'
 
       webpackConfig.module.rules.push({
         type: 'javascript/auto',

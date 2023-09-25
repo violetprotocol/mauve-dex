@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
 import { authorize, EAT } from '@violetprotocol/sdk'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/temporary/generateEAT'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 
 const environment = process.env.REACT_APP_VIOLET_ENV
 const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID

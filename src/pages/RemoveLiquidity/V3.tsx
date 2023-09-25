@@ -1,7 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
-import { NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { EATMulticall, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
+import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
@@ -20,7 +22,7 @@ import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useDebouncedChangeHandler from 'hooks/useDebouncedChangeHandler'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3PositionFromTokenId } from 'hooks/useV3Positions'
-import { getVioletAuthorizedCall } from 'hooks/useVioletAuthorize'
+import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { useCallback, useMemo, useState } from 'react'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
@@ -31,8 +33,13 @@ import { useUserSlippageToleranceWithDefault } from 'state/user/hooks'
 import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import TransactionConfirmationModal, {
+  ConfirmationModalContent,
+  ConfirmationPendingContent,
+  TransactionErrorContent,
+} from '../../components/TransactionConfirmationModal'
 import { WRAPPED_NATIVE_CURRENCY } from '../../constants/tokens'
 import { TransactionType } from '../../state/transactions/types'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
@@ -60,10 +67,21 @@ export default function RemoveLiquidityV3() {
 
   return <Remove tokenId={parsedTokenId} />
 }
+
 function Remove({ tokenId }: { tokenId: BigNumber }) {
   const { position } = useV3PositionFromTokenId(tokenId)
   const theme = useTheme()
   const { account, chainId, provider } = useWeb3React()
+  const [call, setCall] = useState<Call | null>(null)
+  const [showVioletEmbed, setShowVioletEmbed] = useState(false)
+  const [violetError, setVioletError] = useState<string>('')
+  const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
+
+  const { authorize } = useAuthorization()
+  const { isEnrolled } = useEnrollment({
+    userAddress: account,
+  })
+  const embeddedAuthorizationRef = useEmbeddedAuthorizationRef()
 
   // flag for receiving WETH
   const [receiveWETH, setReceiveWETH] = useState(false)
@@ -97,8 +115,19 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const [txnHash, setTxnHash] = useState<string | undefined>()
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
-  const burn = useCallback(async () => {
-    setAttemptingTxn(true)
+
+  const authorizeProps = useMemo(() => {
+    if (!account || !chainId || !call) {
+      return
+    }
+    return getVioletAuthzPayloadFromCall({
+      call,
+      account,
+      chainId,
+    })
+  }, [account, chainId, call])
+
+  async function submitTransaction({ value, data }: { value: string; data: string }) {
     if (
       !positionManager ||
       !liquidityValue0 ||
@@ -110,42 +139,15 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       !liquidityPercentage ||
       !provider
     ) {
-      return
+      throw new Error('Missing parameters to submit the transaction')
     }
 
-    // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
-    // vast majority of cases
-    const callParameters = NonfungiblePositionManager.removeCallParameters(positionSDK, {
-      tokenId: tokenId.toString(),
-      liquidityPercentage,
-      slippageTolerance: allowedSlippage,
-      deadline: deadline.toString(),
-      collectOptions: {
-        expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(liquidityValue0.currency, 0),
-        expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(liquidityValue1.currency, 0),
-        recipient: account,
-      },
-    })
-    const call = {
-      ...callParameters,
-      address: positionManager.address,
-    }
-    const violetEATResult = await getVioletAuthorizedCall({
-      call,
-      account,
-      chainId,
-    })
-
-    if (!violetEATResult?.calldata) {
-      console.error(`Failed to get calldata with EAT`)
-      logErrorWithNewRelic({ errorString: 'Failed to get calldata from violet EAT' })
-      return
-    }
+    setAttemptingTxn(true)
 
     const txn = {
       to: positionManager.address,
-      data: violetEATResult.calldata,
-      value: callParameters.value,
+      data,
+      value,
     }
 
     provider
@@ -180,24 +182,155 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
-        logErrorWithNewRelic({ error, errorString: 'error removing liquidity with violet EAT' })
+        logErrorWithNewRelic({
+          error,
+          errorString: 'error removing liquidity with violet EAT',
+        })
       })
-  }, [
-    positionManager,
-    liquidityValue0,
-    liquidityValue1,
-    deadline,
-    account,
-    chainId,
-    feeValue0,
-    feeValue1,
-    positionSDK,
-    liquidityPercentage,
-    provider,
-    tokenId,
-    allowedSlippage,
-    addTransaction,
-  ])
+  }
+
+  type HandleVioletResponseAndSubmitTransactionProps = {
+    to: string
+    value: string
+    v: EAT['signature']['v']
+    r: EAT['signature']['r']
+    s: EAT['signature']['s']
+    expiry: EAT['expiry']
+    calls: Call['calls']
+  }
+
+  const handleVioletResponseAndSubmitTransaction = ({
+    value,
+    v,
+    r,
+    s,
+    expiry,
+    calls,
+  }: HandleVioletResponseAndSubmitTransactionProps) => {
+    // Might be helpful to leave this console.log?
+    console.log(
+      `TX payload to submit: ${JSON.stringify(
+        {
+          value,
+          v,
+          r,
+          s,
+          expiry,
+          calls,
+        },
+        null,
+        2
+      )}`
+    )
+
+    const calldata = EATMulticall.encodePostsignMulticall(v, r, s, expiry, calls)
+    if (!calldata) {
+      throw new Error('Failed to generate calldata from violet EAT')
+    }
+
+    return submitTransaction({ data: calldata, value })
+  }
+
+  const onBurn = async () => {
+    if (
+      !positionManager ||
+      !liquidityValue0 ||
+      !liquidityValue1 ||
+      !deadline ||
+      !account ||
+      !chainId ||
+      !positionSDK ||
+      !liquidityPercentage ||
+      !provider
+    ) {
+      return
+    }
+
+    // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
+    // vast majority of cases
+    const callParameters = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+      tokenId: tokenId.toString(),
+      liquidityPercentage,
+      slippageTolerance: allowedSlippage,
+      deadline: deadline.toString(),
+      collectOptions: {
+        expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(liquidityValue0.currency, 0),
+        expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(liquidityValue1.currency, 0),
+        recipient: account,
+      },
+    })
+    const { calls, address, value } = {
+      ...callParameters,
+      address: positionManager.address,
+    }
+
+    try {
+      const { functionSignature, parameters } = await EATMulticall.encodePresignMulticall(calls)
+
+      // If the user is already enrolled, we take a shortcut and
+      // use Violet iFrame (embedded authentication)
+      if (isEnrolled) {
+        // TODO: address is confusing! It can be confused with the user's address
+        setCall({
+          calls,
+          value,
+          functionSignature,
+          parameters,
+          address,
+        })
+        setShowVioletEmbed(true)
+
+        return
+      }
+
+      setPendingVioletAuth(true)
+
+      const response = await authorize({
+        transaction: {
+          data: parameters,
+          functionSignature,
+          targetContract: address,
+        },
+        address: account,
+        chainId,
+      })
+
+      if (!response) {
+        setVioletError('FAILED_CALL')
+        return
+      }
+
+      const [violet, error] = response
+
+      if (!violet) {
+        console.error(error)
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
+      }
+      const eat = violet.eat
+
+      if (!eat?.signature || !eat?.expiry) {
+        setVioletError(error?.code ?? 'FAILED_CALL')
+        return
+      }
+
+      return handleVioletResponseAndSubmitTransaction({
+        ...eat.signature,
+        expiry: eat.expiry,
+        to: address,
+        value,
+        calls,
+      })
+    } catch (error) {
+      console.error('Error generating an EAT: ', error)
+      setVioletError(error)
+      logErrorWithNewRelic({
+        error,
+        errorString: 'Failed generating a Violet EAT',
+      })
+      return
+    }
+  }
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -270,7 +403,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             </RowBetween>
           </>
         ) : null}
-        <VioletProtectedButtonPrimary mt="16px" onClick={burn}>
+        <VioletProtectedButtonPrimary mt="16px" onClick={onBurn}>
           <>Remove</>
         </VioletProtectedButtonPrimary>
       </AutoColumn>
@@ -292,13 +425,44 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         onDismiss={handleDismissConfirmation}
         attemptingTxn={attemptingTxn}
         hash={txnHash ?? ''}
-        content={() => (
-          <ConfirmationModalContent
-            title="Remove Liquidity"
-            onDismiss={handleDismissConfirmation}
-            topContent={modalHeader}
-          />
-        )}
+        content={() =>
+          showVioletEmbed && isEnrolled && authorizeProps ? (
+            violetError ? (
+              <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
+            ) : (
+              <EmbeddedAuthorization
+                ref={embeddedAuthorizationRef}
+                authorizeProps={authorizeProps}
+                onIssued={({ signature, expiry }: any) => {
+                  if (!call) {
+                    throw new Error('Missing call following EAT issuance')
+                  }
+                  handleVioletResponseAndSubmitTransaction({
+                    ...signature,
+                    expiry,
+                    to: call.address,
+                    calls: call.calls,
+                    value: call.value,
+                  })
+                }}
+                onFailed={(response: any) => {
+                  console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                  setVioletError(JSON.stringify(response?.code))
+                }}
+              />
+            )
+          ) : violetError ? (
+            <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
+          ) : pendingVioletAuth ? (
+            <ConfirmationPendingContent onDismiss={handleDismissConfirmation} pendingText={pendingText} />
+          ) : (
+            <ConfirmationModalContent
+              title="Remove Liquidity"
+              onDismiss={handleDismissConfirmation}
+              topContent={modalHeader}
+            />
+          )
+        }
         pendingText={pendingText}
       />
       <AppBody $maxWidth="unset">
