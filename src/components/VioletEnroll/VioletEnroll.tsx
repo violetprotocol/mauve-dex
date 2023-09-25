@@ -128,10 +128,10 @@ export default function VioletEnroll({
         {enrollmentResult ? (
           <Label color="black" backgroundColor="light-grey">
             <TitleRow>
-              <Title paddingRight="8px">Identity Verified! 🎉</Title>
+              <Title paddingRight="8px">Identity verified and registration completed! 🎉</Title>
             </TitleRow>
 
-            <DetailsRow>You can now safely continue using Mauve.</DetailsRow>
+            <DetailsRow>You can now safely use Mauve.</DetailsRow>
           </Label>
         ) : (
           <>
@@ -141,7 +141,17 @@ export default function VioletEnroll({
                 <MauveIcon width={30} />
               </TitleRow>
 
-              <DetailsRow>Mauve is a compliant DEX that requires identity verification with Violet.</DetailsRow>
+              {account ? (
+                <DetailsRow>
+                  Mauve is a compliant DEX, requiring identity verification and passing AML checks through
+                  <StyledLink tabIndex={-1} href="https://www.violet.co">
+                    {` Violet`}
+                  </StyledLink>
+                  .
+                </DetailsRow>
+              ) : (
+                <DetailsRow>Mauve is a compliant DEX. Trade trustless, fully compliant.</DetailsRow>
+              )}
             </Label>
             {account ? (
               <>
