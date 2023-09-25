@@ -4,7 +4,8 @@ import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, NonfungiblePositionManager, Pool, Position } from '@violetprotocol/mauve-v3-sdk'
-import { EAT, EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
+import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import Badge from 'components/Badge'
@@ -46,8 +47,6 @@ import { formatTickPrice } from 'utils/formatTickPrice'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { EmbeddedAuthWrapper } from 'utils/violet/styled'
-import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
 import { getPriceOrderingFromPositionForUI } from '../../components/PositionListItem'
@@ -344,10 +343,12 @@ export function PositionPage() {
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
 
-  const { authorize, isEnrolled } = useViolet({
-    address: account,
+  const { authorize } = useAuthorization()
+  const { isEnrolled } = useEnrollment({
+    userAddress: account,
   })
-  const embeddedAuthRef = useEmbeddedAuthRef()
+
+  const embeddedAuthorizationRef = useEmbeddedAuthorizationRef()
 
   const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
   const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
@@ -754,28 +755,26 @@ export function PositionPage() {
                     message={handleErrorCodes(violetError)}
                   />
                 ) : (
-                  <EmbeddedAuthWrapper>
-                    <EmbeddedAuthorization
-                      ref={embeddedAuthRef}
-                      authorizeProps={authorizeProps}
-                      onIssued={({ signature, expiry }: any) => {
-                        if (!call) {
-                          throw new Error('Missing call following EAT issuance')
-                        }
-                        handleVioletResponseAndSubmitTransaction({
-                          ...signature,
-                          expiry,
-                          to: call.address,
-                          calls: call.calls,
-                          value: call.value,
-                        })
-                      }}
-                      onFailed={(response: any) => {
-                        console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
-                        setVioletError(JSON.stringify(response?.code))
-                      }}
-                    />
-                  </EmbeddedAuthWrapper>
+                  <EmbeddedAuthorization
+                    ref={embeddedAuthorizationRef}
+                    authorizeProps={authorizeProps}
+                    onIssued={({ signature, expiry }: any) => {
+                      if (!call) {
+                        throw new Error('Missing call following EAT issuance')
+                      }
+                      handleVioletResponseAndSubmitTransaction({
+                        ...signature,
+                        expiry,
+                        to: call.address,
+                        calls: call.calls,
+                        value: call.value,
+                      })
+                    }}
+                    onFailed={(response: any) => {
+                      console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                      setVioletError(JSON.stringify(response?.code))
+                    }}
+                  />
                 )
               ) : violetError ? (
                 <TransactionErrorContent

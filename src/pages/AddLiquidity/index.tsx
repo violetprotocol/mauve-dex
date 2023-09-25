@@ -4,7 +4,8 @@ import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
-import { EAT, EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
+import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -23,8 +24,6 @@ import {
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { EmbeddedAuthWrapper } from 'utils/violet/styled'
-import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
 import {
   ButtonError,
@@ -107,8 +106,11 @@ export default function AddLiquidity() {
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
-  const { authorize, isEnrolled } = useViolet({ address: account })
-  const embeddedAuthRef = useEmbeddedAuthRef()
+  const { authorize } = useAuthorization()
+  const { isEnrolled } = useEnrollment({
+    userAddress: account,
+  })
+  const embeddedAuthRef = useEmbeddedAuthorizationRef()
 
   const theme = useTheme()
 
@@ -679,28 +681,26 @@ export default function AddLiquidity() {
                   message={handleErrorCodes(violetError)}
                 />
               ) : (
-                <EmbeddedAuthWrapper>
-                  <EmbeddedAuthorization
-                    ref={embeddedAuthRef}
-                    authorizeProps={authorizeProps}
-                    onIssued={({ signature, expiry }: any) => {
-                      if (!call) {
-                        throw new Error('Missing call following EAT issuance')
-                      }
-                      handleVioletResponseAndSubmitTransaction({
-                        ...signature,
-                        expiry,
-                        to: call.address,
-                        calls: call.calls,
-                        value: call.value,
-                      })
-                    }}
-                    onFailed={(response: any) => {
-                      console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
-                      setVioletError(JSON.stringify(response?.code))
-                    }}
-                  />
-                </EmbeddedAuthWrapper>
+                <EmbeddedAuthorization
+                  ref={embeddedAuthRef}
+                  authorizeProps={authorizeProps}
+                  onIssued={({ signature, expiry }: any) => {
+                    if (!call) {
+                      throw new Error('Missing call following EAT issuance')
+                    }
+                    handleVioletResponseAndSubmitTransaction({
+                      ...signature,
+                      expiry,
+                      to: call.address,
+                      calls: call.calls,
+                      value: call.value,
+                    })
+                  }}
+                  onFailed={(response: any) => {
+                    console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                    setVioletError(JSON.stringify(response?.code))
+                  }}
+                />
               )
             ) : violetError ? (
               <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />

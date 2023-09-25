@@ -2,7 +2,8 @@ import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { EATMulticall, NonfungiblePositionManager } from '@violetprotocol/mauve-v3-sdk'
-import { EAT, EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
+import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
@@ -33,8 +34,6 @@ import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { EmbeddedAuthWrapper } from 'utils/violet/styled'
-import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -49,9 +48,6 @@ import AppBody from '../AppBody'
 import { Break, ResponsiveHeaderText, SmallMaxButton, Wrapper } from './styled'
 
 const DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE = new Percent(5, 100)
-
-const environment = process.env.REACT_APP_VIOLET_ENV
-const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
 
 // redirect invalid tokenIds
 export default function RemoveLiquidityV3() {
@@ -76,19 +72,16 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const { position } = useV3PositionFromTokenId(tokenId)
   const theme = useTheme()
   const { account, chainId, provider } = useWeb3React()
-
-  if (!environment || !clientId) {
-    throw new Error('Invalid environment')
-  }
   const [call, setCall] = useState<Call | null>(null)
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
 
-  const { authorize, isEnrolled } = useViolet({
-    address: account,
+  const { authorize } = useAuthorization()
+  const { isEnrolled } = useEnrollment({
+    userAddress: account,
   })
-  const embeddedAuthRef = useEmbeddedAuthRef()
+  const embeddedAuthorizationRef = useEmbeddedAuthorizationRef()
 
   // flag for receiving WETH
   const [receiveWETH, setReceiveWETH] = useState(false)
@@ -437,28 +430,26 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             violetError ? (
               <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
             ) : (
-              <EmbeddedAuthWrapper>
-                <EmbeddedAuthorization
-                  ref={embeddedAuthRef}
-                  authorizeProps={authorizeProps}
-                  onIssued={({ signature, expiry }: any) => {
-                    if (!call) {
-                      throw new Error('Missing call following EAT issuance')
-                    }
-                    handleVioletResponseAndSubmitTransaction({
-                      ...signature,
-                      expiry,
-                      to: call.address,
-                      calls: call.calls,
-                      value: call.value,
-                    })
-                  }}
-                  onFailed={(response: any) => {
-                    console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
-                    setVioletError(JSON.stringify(response?.code))
-                  }}
-                />
-              </EmbeddedAuthWrapper>
+              <EmbeddedAuthorization
+                ref={embeddedAuthorizationRef}
+                authorizeProps={authorizeProps}
+                onIssued={({ signature, expiry }: any) => {
+                  if (!call) {
+                    throw new Error('Missing call following EAT issuance')
+                  }
+                  handleVioletResponseAndSubmitTransaction({
+                    ...signature,
+                    expiry,
+                    to: call.address,
+                    calls: call.calls,
+                    value: call.value,
+                  })
+                }}
+                onFailed={(response: any) => {
+                  console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                  setVioletError(JSON.stringify(response?.code))
+                }}
+              />
             )
           ) : violetError ? (
             <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />

@@ -1,5 +1,6 @@
 import { Currency } from '@violetprotocol/mauve-sdk-core'
-import { EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
+import { EmbeddedAuthorization, useEnrollment } from '@violetprotocol/sdk'
+import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
@@ -11,8 +12,6 @@ import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { EmbeddedAuthWrapper } from 'utils/violet/styled'
-import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -370,18 +369,20 @@ export default function TransactionConfirmationModal({
   const { chainId, account } = useWeb3React()
   const eatPayload = useVioletEAT((state) => state.eatPayload)
   const { setEatPayload, setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
-  const { isEnrolled, updateUserIsEnrolled } = useViolet({ address: account })
-  const embeddedAuthRef = useEmbeddedAuthRef()
+  const { isEnrolled, checkEnrollmentStatus } = useEnrollment({
+    userAddress: account,
+  })
+  const embeddedAuthorizationRef = useEmbeddedAuthorizationRef()
 
   useEffect(() => {
     if (account && chainId && eatPayload.status === 'authorizing') {
       if (isEnrolled) {
         setAuthorizeProps({ account, chainId })
       } else {
-        triggerPopup({ account, chainId }, updateUserIsEnrolled)
+        triggerPopup({ account, chainId }, checkEnrollmentStatus)
       }
     }
-  }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isEnrolled, updateUserIsEnrolled])
+  }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isEnrolled, checkEnrollmentStatus])
 
   useEffect(() => {
     return () => {
@@ -395,14 +396,12 @@ export default function TransactionConfirmationModal({
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
       {eatPayload.status === 'authorizing' && !!authorizeProps && isEnrolled ? (
-        <EmbeddedAuthWrapper>
-          <EmbeddedAuthorization
-            ref={embeddedAuthRef}
-            authorizeProps={authorizeProps}
-            onIssued={onIssued}
-            onFailed={onFailed}
-          />
-        </EmbeddedAuthWrapper>
+        <EmbeddedAuthorization
+          ref={embeddedAuthorizationRef}
+          authorizeProps={authorizeProps}
+          onIssued={onIssued}
+          onFailed={onFailed}
+        />
       ) : hash || attemptingTxn ? (
         <L2Content
           chainId={chainId}

@@ -5813,27 +5813,18 @@
     tiny-invariant "^1.1.0"
     tiny-warning "^1.0.3"
 
-"@violetprotocol/sdk-web3-react@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk-web3-react/-/sdk-web3-react-0.0.7.tgz#038b10dd203c66b205fee2238961e2ec2008f779"
-  integrity sha512-rz4WHMZEIt0rQubPJZoI5OmQEOXoDsXSjv/elKKNKcVcLujrKl4iWZeXaw3P0vjXf6z0CMJUWZnbw1HzPWcrCg==
+"@violetprotocol/sdk-web3-react@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk-web3-react/-/sdk-web3-react-0.0.8.tgz#f8a2ffd89153dfb76beb7efa402bda35e038c125"
+  integrity sha512-yTA8sac15iRAoJ1Hee/TPrPNXAnQ6Wy2QaF29xDrHtUz8MYmNDcoa5QL8YwjhY+JTLOBwF47o2m/+WCTpo47/g==
   dependencies:
-    "@violetprotocol/sdk" "0.0.27"
+    "@violetprotocol/sdk" "0.0.33"
     "@web3-react/core" "^8.2.2"
 
-"@violetprotocol/sdk@0.0.27":
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.27.tgz#8473ed5de46747c9e95a33c6c7932ae8a313f238"
-  integrity sha512-k5+7pGt5KeYnhEuv2j0I9YllrZjSA/JVqpspLTMMpk/AemXfogP2aNz+12OfHEOYR5iI5hxliUpAK01vag6LIA==
-  dependencies:
-    "@ethersproject/bytes" "^5.7.0"
-    clsx "^2.0.0"
-    tailwind-merge "^1.14.0"
-
-"@violetprotocol/sdk@0.0.32":
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.32.tgz#a9bce1908531cf147bd16d9f476d1c6412374db6"
-  integrity sha512-ajePFMIgvD+DbRsAIYJS7hDhOmvDHRG41Bomwxb1M3M/AeHyAVSaXWUU+ypzh5en44IUhFeJx1XNjBLo62/N0Q==
+"@violetprotocol/sdk@0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.33.tgz#7a081fe39598cd184bfad71028305750f1d19bf6"
+  integrity sha512-XO4FQ3T9UTXnZ5FD77+ZyebNvk8OMPrmLxEy+yOVRqOlJya+AMlrGXwTCxdouooi/j9Qzu22Zh20jZ0Gtc8cmg==
   dependencies:
     "@ethersproject/address" "^5.7.0"
     "@ethersproject/bytes" "^5.7.0"
