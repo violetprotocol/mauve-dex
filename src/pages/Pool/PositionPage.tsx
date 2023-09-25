@@ -791,13 +791,6 @@ export function PositionPage() {
                 />
               )
             }
-            // content={() => (
-            //   <ConfirmationModalContent
-            //     title="Claim fees"
-            //     onDismiss={handleDismissConfirmation}
-            //     topContent={modalHeader}
-            //   />
-            // )}
             pendingText={pendingText}
           />
           <AutoColumn gap="md">
