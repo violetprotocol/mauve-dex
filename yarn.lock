@@ -5830,6 +5830,16 @@
     clsx "^2.0.0"
     tailwind-merge "^1.14.0"
 
+"@violetprotocol/sdk@0.0.32":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@violetprotocol/sdk/-/sdk-0.0.32.tgz#a9bce1908531cf147bd16d9f476d1c6412374db6"
+  integrity sha512-ajePFMIgvD+DbRsAIYJS7hDhOmvDHRG41Bomwxb1M3M/AeHyAVSaXWUU+ypzh5en44IUhFeJx1XNjBLo62/N0Q==
+  dependencies:
+    "@ethersproject/address" "^5.7.0"
+    "@ethersproject/bytes" "^5.7.0"
+    clsx "^2.0.0"
+    tailwind-merge "^1.14.0"
+
 "@violetprotocol/violetid@1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@violetprotocol/violetid/-/violetid-1.2.3.tgz#9682b09f01c80a21d7ff00b616846b1439fbeb3a"

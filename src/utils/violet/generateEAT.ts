@@ -86,5 +86,3 @@ export const redirectUrlByEnvironment = (environment: string) => {
       throw new Error('Invalid environment')
   }
 }
-
-export const MAUVE_DISCORD_LINK = 'https://discord.gg/uzt5QjNhCc'

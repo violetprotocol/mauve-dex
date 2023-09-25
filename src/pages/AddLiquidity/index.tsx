@@ -23,7 +23,6 @@ import {
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 import { EmbeddedAuthWrapper } from 'utils/violet/styled'
 import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
 
@@ -75,7 +74,6 @@ import approveAmountCalldata from '../../utils/approveAmountCalldata'
 import { calculateGasMargin } from '../../utils/calculateGasMargin'
 import { currencyId } from '../../utils/currencyId'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { useIsRegisteredWithViolet } from '../../utils/violet/useIsRegistered'
 import { Dots } from '../Pool/styleds'
 import { Review } from './Review'
 import {
@@ -95,9 +93,6 @@ import {
 
 const DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE = new Percent(50, 10_000)
 
-const environment = process.env.REACT_APP_VIOLET_ENV
-const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
-
 export default function AddLiquidity() {
   const navigate = useNavigate()
   const {
@@ -108,19 +103,11 @@ export default function AddLiquidity() {
   } = useParams<{ currencyIdA?: string; currencyIdB?: string; feeAmount?: string; tokenId?: string }>()
   const { account, chainId, provider } = useWeb3React()
 
-  if (!environment || !clientId) {
-    throw new Error('Invalid environment')
-  }
   const [call, setCall] = useState<Call | null>(null)
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
-  const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
-  })
+  const { authorize, isEnrolled } = useViolet({ address: account })
   const embeddedAuthRef = useEmbeddedAuthRef()
 
   const theme = useTheme()
@@ -436,7 +423,7 @@ export default function AddLiquidity() {
 
       // If the user is already enrolled, we take a shortcut and
       // use Violet iFrame (embedded authentication)
-      if (isRegistered) {
+      if (isEnrolled) {
         // TODO: address is confusing! It can be confused with the user's address
         setCall({ calls, value, functionSignature, parameters, address: to })
         setShowVioletEmbed(true)
@@ -685,7 +672,7 @@ export default function AddLiquidity() {
           attemptingTxn={attemptingTxn}
           hash={txHash}
           content={() =>
-            showVioletEmbed && isRegistered && authorizeProps ? (
+            showVioletEmbed && isEnrolled && authorizeProps ? (
               violetError ? (
                 <TransactionErrorContent
                   onDismiss={handleDismissConfirmation}

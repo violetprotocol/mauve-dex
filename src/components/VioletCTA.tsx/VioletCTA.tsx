@@ -1,7 +1,7 @@
+import { MAUVE_DISCORD_LINK } from 'constants/violet'
 import { ArrowUpRight } from 'react-feather'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
-import { MAUVE_DISCORD_LINK } from 'utils/violet/generateEAT'
 
 import { AutoRow } from '../Row'
 

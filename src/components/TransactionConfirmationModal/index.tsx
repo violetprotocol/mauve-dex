@@ -1,19 +1,18 @@
 import { Currency } from '@violetprotocol/mauve-sdk-core'
-import { EmbeddedAuthorization } from '@violetprotocol/sdk'
+import { EmbeddedAuthorization, useViolet } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
+import { MAUVE_DISCORD_LINK } from 'constants/violet'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import { ReactNode, SVGProps, useEffect } from 'react'
 import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
-import { MAUVE_DISCORD_LINK } from 'utils/violet/generateEAT'
 import { EmbeddedAuthWrapper } from 'utils/violet/styled'
 import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
-import { useIsRegisteredWithViolet } from 'utils/violet/useIsRegistered'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -53,9 +52,11 @@ const StyledLogo = styled.img`
   margin-left: 6px;
 `
 
-const VioletAuthorizedWrapper = styled.div<{ isRegistered: boolean | null | undefined }>`
+const VioletAuthorizedWrapper = styled.div<{
+  isEnrolled: boolean | null | undefined
+}>`
   display: flex;
-  justify-content: ${(props) => (props.isRegistered ? 'space-between' : 'center')};
+  justify-content: ${(props) => (props.isEnrolled ? 'space-between' : 'center')};
   align-items: center;
   width: 100%;
   padding: 8px;
@@ -232,7 +233,7 @@ function L2Content({
   hash,
   pendingText,
   inline,
-  isRegistered,
+  isEnrolled,
 }: {
   onDismiss: () => void
   hash: string | undefined
@@ -240,7 +241,7 @@ function L2Content({
   currencyToAdd?: Currency | undefined
   pendingText: ReactNode
   inline?: boolean // not in modal
-  isRegistered?: boolean | null
+  isEnrolled?: boolean | null
 }) {
   const theme = useTheme()
 
@@ -324,9 +325,9 @@ function L2Content({
             )}
           </Text>
 
-          <VioletAuthorizedWrapper isRegistered={isRegistered}>
+          <VioletAuthorizedWrapper isEnrolled={isEnrolled}>
             <VioletAuthorizedColumn>
-              {isRegistered ? (
+              {isEnrolled ? (
                 <>
                   <VerifiedIcon /> <span>Authenticated</span>
                 </>
@@ -369,18 +370,18 @@ export default function TransactionConfirmationModal({
   const { chainId, account } = useWeb3React()
   const eatPayload = useVioletEAT((state) => state.eatPayload)
   const { setEatPayload, setAuthorizeProps, onIssued, onFailed, authorizeProps, triggerPopup } = useVioletEAT()
-  const { isRegistered, updateUserIsRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
+  const { isEnrolled, updateUserIsEnrolled } = useViolet({ address: account })
   const embeddedAuthRef = useEmbeddedAuthRef()
 
   useEffect(() => {
     if (account && chainId && eatPayload.status === 'authorizing') {
-      if (isRegistered) {
+      if (isEnrolled) {
         setAuthorizeProps({ account, chainId })
       } else {
-        triggerPopup({ account, chainId }, updateUserIsRegistered)
+        triggerPopup({ account, chainId }, updateUserIsEnrolled)
       }
     }
-  }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isRegistered, updateUserIsRegistered])
+  }, [account, chainId, setAuthorizeProps, eatPayload.status, triggerPopup, isEnrolled, updateUserIsEnrolled])
 
   useEffect(() => {
     return () => {
@@ -393,7 +394,7 @@ export default function TransactionConfirmationModal({
   // confirmation screen
   return (
     <Modal isOpen={isOpen} $scrollOverlay={true} onDismiss={onDismiss} maxHeight={90}>
-      {eatPayload.status === 'authorizing' && !!authorizeProps && isRegistered ? (
+      {eatPayload.status === 'authorizing' && !!authorizeProps && isEnrolled ? (
         <EmbeddedAuthWrapper>
           <EmbeddedAuthorization
             ref={embeddedAuthRef}
@@ -408,7 +409,7 @@ export default function TransactionConfirmationModal({
           hash={hash}
           onDismiss={onDismiss}
           pendingText={pendingText}
-          isRegistered={isRegistered}
+          isEnrolled={isEnrolled}
         />
       ) : attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />

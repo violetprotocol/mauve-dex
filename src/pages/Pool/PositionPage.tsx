@@ -46,10 +46,8 @@ import { formatTickPrice } from 'utils/formatTickPrice'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 import { EmbeddedAuthWrapper } from 'utils/violet/styled'
 import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
-import { useIsRegisteredWithViolet } from 'utils/violet/useIsRegistered'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
 import { getPriceOrderingFromPositionForUI } from '../../components/PositionListItem'
@@ -336,28 +334,18 @@ const useInverter = ({
   }
 }
 
-const environment = process.env.REACT_APP_VIOLET_ENV
-const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
-
 export function PositionPage() {
   const { tokenId: tokenIdFromUrl } = useParams<{ tokenId?: string }>()
   const { chainId, account, provider } = useWeb3React()
   const theme = useTheme()
 
-  if (!environment || !clientId) {
-    throw new Error('Invalid environment')
-  }
   const [call, setCall] = useState<Call | null>(null)
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
-  const { isRegistered } = useIsRegisteredWithViolet({
-    ethereumAddress: account,
-  })
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+
+  const { authorize, isEnrolled } = useViolet({
+    address: account,
   })
   const embeddedAuthRef = useEmbeddedAuthRef()
 
@@ -610,7 +598,7 @@ export function PositionPage() {
 
       // If the user is already enrolled, we take a shortcut and
       // use Violet iFrame (embedded authentication)
-      if (isRegistered) {
+      if (isEnrolled) {
         // TODO: address is confusing! It can be confused with the user's address
         setCall({
           calls,
@@ -759,7 +747,7 @@ export function PositionPage() {
             attemptingTxn={collecting}
             hash={collectMigrationHash ?? ''}
             content={() =>
-              showVioletEmbed && isRegistered && authorizeProps ? (
+              showVioletEmbed && isEnrolled && authorizeProps ? (
                 violetError ? (
                   <TransactionErrorContent
                     onDismiss={handleDismissConfirmation}

@@ -33,10 +33,8 @@ import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
-import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 import { EmbeddedAuthWrapper } from 'utils/violet/styled'
 import { useEmbeddedAuthRef } from 'utils/violet/useEmbeddedAuthRef'
-import { useIsRegisteredWithViolet } from 'utils/violet/useIsRegistered'
 
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
@@ -86,13 +84,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const [showVioletEmbed, setShowVioletEmbed] = useState(false)
   const [violetError, setVioletError] = useState<string>('')
   const [pendingVioletAuth, setPendingVioletAuth] = useState(false)
-  const { isRegistered } = useIsRegisteredWithViolet({
-    ethereumAddress: account,
-  })
-  const { authorize } = useViolet({
-    clientId,
-    apiUrl: baseUrlByEnvironment(environment.toString()),
-    redirectUrl: redirectUrlByEnvironment(environment.toString()),
+
+  const { authorize, isEnrolled } = useViolet({
+    address: account,
   })
   const embeddedAuthRef = useEmbeddedAuthRef()
 
@@ -282,7 +276,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
       // If the user is already enrolled, we take a shortcut and
       // use Violet iFrame (embedded authentication)
-      if (isRegistered) {
+      if (isEnrolled) {
         // TODO: address is confusing! It can be confused with the user's address
         setCall({
           calls,
@@ -439,7 +433,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         attemptingTxn={attemptingTxn}
         hash={txnHash ?? ''}
         content={() =>
-          showVioletEmbed && isRegistered && authorizeProps ? (
+          showVioletEmbed && isEnrolled && authorizeProps ? (
             violetError ? (
               <TransactionErrorContent onDismiss={handleDismissConfirmation} message={handleErrorCodes(violetError)} />
             ) : (

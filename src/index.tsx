@@ -6,6 +6,7 @@ import '@violetprotocol/sdk/styles.css'
 
 import { ApolloProvider } from '@apollo/client'
 import * as Sentry from '@sentry/react'
+import { createVioletClient, VioletProvider } from '@violetprotocol/sdk'
 import { apolloClient } from 'graphql/data/apollo'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import { MulticallUpdater } from 'lib/state/multicall'
@@ -15,6 +16,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 import { isSentryEnabled } from 'utils/env'
+import { baseUrlByEnvironment, redirectUrlByEnvironment } from 'utils/violet/generateEAT'
 
 import Web3Provider from './components/Web3Provider'
 import App from './pages/App'
@@ -51,6 +53,18 @@ function Updaters() {
 
 const queryClient = new QueryClient()
 
+const environment = process.env.REACT_APP_VIOLET_ENV
+const clientId = process.env.REACT_APP_VIOLET_CLIENT_ID
+
+if (!environment) throw new Error('REACT_APP_VIOLET_ENV is not defined')
+if (!clientId) throw new Error('REACT_APP_VIOLET_CLIENT_ID is not defined')
+
+const client = createVioletClient({
+  clientId,
+  apiUrl: baseUrlByEnvironment(environment.toString()),
+  redirectUrl: redirectUrlByEnvironment(environment.toString()),
+})
+
 const container = document.getElementById('root') as HTMLElement
 
 createRoot(container).render(
@@ -59,15 +73,17 @@ createRoot(container).render(
       <QueryClientProvider client={queryClient}>
         <HashRouter>
           <Web3Provider>
-            <ApolloProvider client={apolloClient}>
-              <BlockNumberProvider>
-                <Updaters />
-                <ThemeProvider>
-                  <ThemedGlobalStyle />
-                  <App />
-                </ThemeProvider>
-              </BlockNumberProvider>
-            </ApolloProvider>
+            <VioletProvider client={client}>
+              <ApolloProvider client={apolloClient}>
+                <BlockNumberProvider>
+                  <Updaters />
+                  <ThemeProvider>
+                    <ThemedGlobalStyle />
+                    <App />
+                  </ThemeProvider>
+                </BlockNumberProvider>
+              </ApolloProvider>
+            </VioletProvider>
           </Web3Provider>
         </HashRouter>
       </QueryClientProvider>
