@@ -27,6 +27,9 @@ import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
 import MauveBases from './MauveBases'
 import { PaddedColumn, Separator } from './styleds'
+import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
+import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
+import TokenRestrictionModal from 'components/TokenRestriction/TokenRestrictionModal'
 
 const ContentWrapper = styled(Column)`
   background-color: ${({ theme }) => theme.backgroundSurface};
@@ -56,7 +59,7 @@ export function CurrencySearch({
   onDismiss,
   isOpen,
 }: CurrencySearchProps) {
-  const { chainId } = useWeb3React()
+  const { chainId, account } = useWeb3React()
   const theme = useTheme()
 
   const [tokenLoaderTimerElapsed, setTokenLoaderTimerElapsed] = useState(false)
@@ -69,6 +72,10 @@ export function CurrencySearch({
   const isAddressSearch = isAddress(debouncedQuery)
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
+  const searchTokenWithRestrictions = searchToken ? useTokenRestriction(account, searchToken ? [searchToken] : [])[0] : null
+
+  const [restrictedTokenClicked, setRestrictedTokenClicked] = useState(TOKEN_RESTRICTION_TYPE.NONE)
+  const [openTokenRestrictionModal, setOpenTokenRestrictionModal] = useState(false)
 
   useEffect(() => {
     if (isAddressSearch) {
@@ -105,27 +112,37 @@ export function CurrencySearch({
   const isLoading = Boolean(balancesAreLoading && !tokenLoaderTimerElapsed)
 
   const filteredSortedTokens = useSortTokensByQuery(debouncedQuery, sortedTokens)
+  const filteredSortedTokensWithRestrictions = useTokenRestriction(account, filteredSortedTokens)
 
   const native = useNativeCurrency()
   const wrapped = native.wrapped
 
-  const searchCurrencies: Currency[] = useMemo(() => {
+  const searchCurrencies: CurrencyWithRestriction[] = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
 
-    const tokens = filteredSortedTokens.filter((t) => !(t.equals(wrapped) || (disableNonToken && t.isNative)))
+    const tokens = filteredSortedTokensWithRestrictions.filter((t) => !(t.currency.equals(wrapped) || (disableNonToken && t.currency.isNative)))
     const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
       (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
     )
-    return [...natives, ...tokens]
-  }, [debouncedQuery, filteredSortedTokens, wrapped, disableNonToken, native])
+    return [...(natives.map(n => {return {currency: n, restriction: TOKEN_RESTRICTION_TYPE.NONE, isPermitted: true}})), ...tokens]
+  }, [debouncedQuery, filteredSortedTokensWithRestrictions, wrapped, disableNonToken, native])
 
   const handleCurrencySelect = useCallback(
-    (currency: Currency, hasWarning?: boolean) => {
-      onCurrencySelect(currency, hasWarning)
-      if (!hasWarning) onDismiss()
+    (currency: CurrencyWithRestriction, hasWarning?: boolean) => {
+      if (!currency.isPermitted) {
+        setRestrictedTokenClicked(currency.restriction)
+        setOpenTokenRestrictionModal(true)
+      } else {
+        onCurrencySelect(currency.currency, hasWarning)
+        if (!hasWarning) onDismiss()
+      }
     },
     [onDismiss, onCurrencySelect]
   )
+
+  const handleCloseRestrictionWarning = () => {
+    setOpenTokenRestrictionModal(false)
+  }
 
   // clear the input on open
   useEffect(() => {
@@ -168,9 +185,9 @@ export function CurrencySearch({
   useOnClickOutside(node, open ? toggle : undefined)
 
   // if no results on main list, show option to expand into inactive
-  const filteredInactiveTokens = useSearchInactiveTokenLists(
-    filteredTokens.length === 0 || (debouncedQuery.length > 2 && !isAddressSearch) ? debouncedQuery : undefined
-  )
+  // const filteredInactiveTokens = useSearchInactiveTokenLists(
+  //   filteredTokens.length === 0 || (debouncedQuery.length > 2 && !isAddressSearch) ? debouncedQuery : undefined
+  // )
 
   // Timeout token loader after 3 seconds to avoid hanging in a loading state.
   useEffect(() => {
@@ -219,31 +236,33 @@ export function CurrencySearch({
           )}
         </PaddedColumn>
         <Separator />
-        {searchToken && !searchTokenIsAdded ? (
+        {searchTokenWithRestrictions && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
-            <CurrencyRow
-              currency={searchToken}
-              isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
-              onSelect={(hasWarning: boolean) => searchToken && handleCurrencySelect(searchToken, hasWarning)}
-              otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
-              showCurrencyAmount={showCurrencyAmount}
-              eventProperties={formatAnalyticsEventProperties(
-                searchToken,
-                0,
-                [searchToken],
-                searchQuery,
-                isAddressSearch
-              )}
-            />
+              <CurrencyRow
+                currency={searchTokenWithRestrictions.currency}
+                isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
+                isPermitted={searchTokenWithRestrictions.isPermitted}
+                restriction={searchTokenWithRestrictions.restriction}
+                onSelect={(hasWarning: boolean) => searchToken && handleCurrencySelect(searchTokenWithRestrictions, hasWarning)}
+                otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
+                showCurrencyAmount={showCurrencyAmount}
+                eventProperties={formatAnalyticsEventProperties(
+                  searchTokenWithRestrictions.currency as Token,
+                  0,
+                  [searchTokenWithRestrictions.currency as Token],
+                  searchQuery,
+                  isAddressSearch
+                )}
+              />
           </Column>
-        ) : searchCurrencies?.length > 0 || filteredInactiveTokens?.length > 0 || isLoading ? (
+        ) : searchCurrencies?.length > 0 || isLoading ? (
           <div style={{ flex: '1' }}>
             <AutoSizer disableWidth>
               {({ height }: { height: number }) => (
                 <CurrencyList
                   height={height}
                   currencies={searchCurrencies}
-                  otherListTokens={filteredInactiveTokens}
+                  // otherListTokens={filteredInactiveTokens}
                   onCurrencySelect={handleCurrencySelect}
                   otherCurrency={otherSelectedCurrency}
                   selectedCurrency={selectedCurrency}
@@ -263,6 +282,7 @@ export function CurrencySearch({
             </ThemedText.DeprecatedMain>
           </Column>
         )}
+        <TokenRestrictionModal restriction={restrictedTokenClicked} isOpen={openTokenRestrictionModal} onCancel={handleCloseRestrictionWarning}/>
       </Trace>
     </ContentWrapper>
   )
