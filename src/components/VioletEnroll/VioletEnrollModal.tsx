@@ -3,7 +3,7 @@ import { useWeb3React } from '@web3-react/core'
 import useDebounce from 'hooks/useDebounce'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state/hooks'
-import { useIsUserRegisteredWithViolet } from 'state/registration/hooks'
+import { useLocalStorageWalletRegistrationStatus } from 'state/registration/hooks'
 import { updateRegistrationState } from 'state/registration/reducer'
 
 import Modal from '../Modal'
@@ -14,7 +14,7 @@ export default function VioletEnrollModal() {
   const walletFinishedLoading = useDebounce(isActive, 600)
   const dispatch = useAppDispatch()
   const { isEnrolled } = useEnrollment({ userAddress: account })
-  const alreadyRegistered = useIsUserRegisteredWithViolet(account)
+  const alreadyRegistered = useLocalStorageWalletRegistrationStatus(account)
 
   const [keepOpen, setKeepOpen] = useState(false)
   const [peruseAppWithoutWallet, setPeruseAppWithoutWallet] = useState(false)
