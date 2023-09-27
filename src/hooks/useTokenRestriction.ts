@@ -24,12 +24,14 @@ export function useTokenRestriction(address: string | null | undefined, tokens: 
         if (!token) return
 
         const isNative = token.isNative
+        // Checks if the token has any usage restrictions
         const restriction = checkRestriction(
           chainId,
           isNative ? (token as NativeCurrency).wrapped.address : (token as Token).address
         )
 
         if (!restriction) return
+        // Checks if the provided address has the required status to be permitted to use token
         const isPermitted =
           restriction === TOKEN_RESTRICTION_TYPE.NONE
             ? true
