@@ -107,18 +107,18 @@ export default function VioletEnrollContent({
     setRegistering(true)
     keepModalOpen(true)
 
-    const violetEnrollResult = await getVioletEnrollmentCall({
+    const successfulEnrollmentTxId = await getVioletEnrollmentCall({
       account,
       chainId,
     })
 
-    if (!violetEnrollResult) {
+    if (!successfulEnrollmentTxId) {
       console.error(`Failed to enroll user`)
       logErrorWithNewRelic({ errorString: 'Failed to enroll user' })
       return
     }
 
-    setEnrollmentResult(violetEnrollResult)
+    setEnrollmentResult(successfulEnrollmentTxId)
     setRegistering(false)
   }
 
