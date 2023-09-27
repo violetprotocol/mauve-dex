@@ -21,6 +21,8 @@ export function useTokenRestriction(address: string | null | undefined, tokens: 
       if (!chainId || !address || !violetIdContract || !tokens) return
 
       const promises = (tokens as Currency[]).map(async (token) => {
+        if (!token) return
+
         const isNative = token.isNative
         const restriction = checkRestriction(
           chainId,
