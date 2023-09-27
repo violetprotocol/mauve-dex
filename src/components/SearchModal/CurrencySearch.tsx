@@ -4,9 +4,12 @@ import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-event
 import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 // import { sendEvent } from 'components/analytics'
+import TokenRestrictionModal from 'components/TokenRestriction/TokenRestrictionModal'
+import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import useDebounce from 'hooks/useDebounce'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
 import useToggle from 'hooks/useToggle'
+import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
 import { tokenComparator, useSortTokensByQuery } from 'lib/hooks/useTokenList/sorting'
@@ -18,7 +21,7 @@ import { useAllTokenBalances } from 'state/connection/hooks'
 import styled, { useTheme } from 'styled-components/macro'
 import { UserAddedToken } from 'types/tokens'
 
-import { useAllTokens, useIsUserAddedToken, useSearchInactiveTokenLists, useToken } from '../../hooks/Tokens'
+import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import { CloseIcon, ThemedText } from '../../theme'
 import { isAddress } from '../../utils'
 import Column from '../Column'
@@ -27,9 +30,6 @@ import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
 import MauveBases from './MauveBases'
 import { PaddedColumn, Separator } from './styleds'
-import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
-import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
-import TokenRestrictionModal from 'components/TokenRestriction/TokenRestrictionModal'
 
 const ContentWrapper = styled(Column)`
   background-color: ${({ theme }) => theme.backgroundSurface};
@@ -72,7 +72,11 @@ export function CurrencySearch({
   const isAddressSearch = isAddress(debouncedQuery)
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
-  const searchTokenWithRestrictions = searchToken ? useTokenRestriction(account, searchToken ? [searchToken] : [])[0] : null
+
+  // TO-DO find out why non-conditional usage of this hook blocks the UI thread
+  const searchTokenWithRestrictions = searchToken
+    ? useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
+    : null
 
   const [restrictedTokenClicked, setRestrictedTokenClicked] = useState(TOKEN_RESTRICTION_TYPE.NONE)
   const [openTokenRestrictionModal, setOpenTokenRestrictionModal] = useState(false)
@@ -120,11 +124,18 @@ export function CurrencySearch({
   const searchCurrencies: CurrencyWithRestriction[] = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
 
-    const tokens = filteredSortedTokensWithRestrictions.filter((t) => !(t.currency.equals(wrapped) || (disableNonToken && t.currency.isNative)))
+    const tokens = filteredSortedTokensWithRestrictions.filter(
+      (t) => !(t.currency.equals(wrapped) || (disableNonToken && t.currency.isNative))
+    )
     const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
       (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
     )
-    return [...(natives.map(n => {return {currency: n, restriction: TOKEN_RESTRICTION_TYPE.NONE, isPermitted: true}})), ...tokens]
+    return [
+      ...natives.map((n) => {
+        return { currency: n, restriction: TOKEN_RESTRICTION_TYPE.NONE, isPermitted: true }
+      }),
+      ...tokens,
+    ]
   }, [debouncedQuery, filteredSortedTokensWithRestrictions, wrapped, disableNonToken, native])
 
   const handleCurrencySelect = useCallback(
@@ -238,22 +249,24 @@ export function CurrencySearch({
         <Separator />
         {searchTokenWithRestrictions && !searchTokenIsAdded ? (
           <Column style={{ padding: '20px 0', height: '100%' }}>
-              <CurrencyRow
-                currency={searchTokenWithRestrictions.currency}
-                isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
-                isPermitted={searchTokenWithRestrictions.isPermitted}
-                restriction={searchTokenWithRestrictions.restriction}
-                onSelect={(hasWarning: boolean) => searchToken && handleCurrencySelect(searchTokenWithRestrictions, hasWarning)}
-                otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
-                showCurrencyAmount={showCurrencyAmount}
-                eventProperties={formatAnalyticsEventProperties(
-                  searchTokenWithRestrictions.currency as Token,
-                  0,
-                  [searchTokenWithRestrictions.currency as Token],
-                  searchQuery,
-                  isAddressSearch
-                )}
-              />
+            <CurrencyRow
+              currency={searchTokenWithRestrictions.currency}
+              isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
+              isPermitted={searchTokenWithRestrictions.isPermitted}
+              restriction={searchTokenWithRestrictions.restriction}
+              onSelect={(hasWarning: boolean) =>
+                searchToken && handleCurrencySelect(searchTokenWithRestrictions, hasWarning)
+              }
+              otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
+              showCurrencyAmount={showCurrencyAmount}
+              eventProperties={formatAnalyticsEventProperties(
+                searchTokenWithRestrictions.currency as Token,
+                0,
+                [searchTokenWithRestrictions.currency as Token],
+                searchQuery,
+                isAddressSearch
+              )}
+            />
           </Column>
         ) : searchCurrencies?.length > 0 || isLoading ? (
           <div style={{ flex: '1' }}>
@@ -282,7 +295,11 @@ export function CurrencySearch({
             </ThemedText.DeprecatedMain>
           </Column>
         )}
-        <TokenRestrictionModal restriction={restrictedTokenClicked} isOpen={openTokenRestrictionModal} onCancel={handleCloseRestrictionWarning}/>
+        <TokenRestrictionModal
+          restriction={restrictedTokenClicked}
+          isOpen={openTokenRestrictionModal}
+          onCancel={handleCloseRestrictionWarning}
+        />
       </Trace>
     </ContentWrapper>
   )

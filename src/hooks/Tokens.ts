@@ -2,14 +2,11 @@ import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedChainId } from 'constants/chains'
-import { DEFAULT_INACTIVE_LIST_URLS } from 'constants/lists'
 import { useCurrencyFromMap, useTokenFromMapOrNetwork } from 'lib/hooks/useCurrency'
-import { getTokenFilter } from 'lib/hooks/useTokenList/filtering'
 import { useMemo } from 'react'
 import { isL2ChainId } from 'utils/chains'
 
 import { useAllLists, useCombinedActiveList } from '../state/lists/hooks'
-import { WrappedTokenInfo } from '../state/lists/wrappedTokenInfo'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { TokenAddressMap, useUnsupportedTokenList } from './../state/lists/hooks'
 
@@ -101,37 +98,37 @@ export function useUnsupportedTokens(): { [address: string]: Token } {
   return { ...unsupportedTokens, ...l2InferredBlockedTokens }
 }
 
-export function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
-  const lists = useAllLists()
-  const inactiveUrls = DEFAULT_INACTIVE_LIST_URLS
-  const { chainId } = useWeb3React()
-  const activeTokens = useAllTokens()
-  return useMemo(() => {
-    if (!search || search.trim().length === 0) return []
-    const tokenFilter = getTokenFilter(search)
-    const result: WrappedTokenInfo[] = []
-    const addressSet: { [address: string]: true } = {}
-    for (const url of inactiveUrls) {
-      const list = lists[url].current
-      if (!list) continue
-      for (const tokenInfo of list.tokens) {
-        if (tokenInfo.chainId === chainId && tokenFilter(tokenInfo)) {
-          try {
-            const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, list)
-            if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
-              addressSet[wrapped.address] = true
-              result.push(wrapped)
-              if (result.length >= minResults) return result
-            }
-          } catch {
-            continue
-          }
-        }
-      }
-    }
-    return result
-  }, [activeTokens, chainId, inactiveUrls, lists, minResults, search])
-}
+// export function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
+//   const lists = useAllLists()
+//   const inactiveUrls = DEFAULT_INACTIVE_LIST_URLS
+//   const { chainId } = useWeb3React()
+//   const activeTokens = useAllTokens()
+//   return useMemo(() => {
+//     if (!search || search.trim().length === 0) return []
+//     const tokenFilter = getTokenFilter(search)
+//     const result: WrappedTokenInfo[] = []
+//     const addressSet: { [address: string]: true } = {}
+//     for (const url of inactiveUrls) {
+//       const list = lists[url].current
+//       if (!list) continue
+//       for (const tokenInfo of list.tokens) {
+//         if (tokenInfo.chainId === chainId && tokenFilter(tokenInfo)) {
+//           try {
+//             const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, list)
+//             if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
+//               addressSet[wrapped.address] = true
+//               result.push(wrapped)
+//               if (result.length >= minResults) return result
+//             }
+//           } catch {
+//             continue
+//           }
+//         }
+//       }
+//     }
+//     return result
+//   }, [activeTokens, chainId, inactiveUrls, lists, minResults, search])
+// }
 
 // Check if currency is included in custom list from user storage
 export function useIsUserAddedToken(currency: Currency | undefined | null): boolean {

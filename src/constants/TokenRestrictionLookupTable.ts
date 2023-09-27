@@ -1,16 +1,17 @@
 import { SupportedChainId } from './chains'
-import { TOKEN_RESTRICTIONS, TOKEN_RESTRICTION_TYPE } from './tokenRestrictions'
+import { TOKEN_RESTRICTION_TYPE, TOKEN_RESTRICTIONS } from './tokenRestrictions'
 
 class TokenRestrictionLookupTable {
-  dict: { [chainId: number]: { [key: string]: TOKEN_RESTRICTION_TYPE }  | null }  | null  = null
+  dict: { [chainId: number]: { [key: string]: TOKEN_RESTRICTION_TYPE } | null } | null = null
 
   createMap() {
-    const dict: { [chainId: number]: { [key: string]: TOKEN_RESTRICTION_TYPE }  | null }  | null  = {}
+    const dict: { [chainId: number]: { [key: string]: TOKEN_RESTRICTION_TYPE } | null } | null = {}
 
-    for (const chain of Object.keys(TOKEN_RESTRICTIONS).map(t => parseInt(t))) {
-      const tokens = Object.keys(TOKEN_RESTRICTIONS[chain as SupportedChainId]?? {})
+    for (const chain of Object.keys(TOKEN_RESTRICTIONS).map((t) => parseInt(t))) {
+      const tokens = Object.keys(TOKEN_RESTRICTIONS[chain as SupportedChainId] ?? {})
       for (const token of tokens) {
         if (!dict[chain]) dict[chain] = {}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         dict[chain]![token.toLowerCase()] = TOKEN_RESTRICTIONS[chain as SupportedChainId]![token]
       }
     }
