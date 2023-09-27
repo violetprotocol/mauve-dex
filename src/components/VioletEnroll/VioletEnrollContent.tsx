@@ -91,7 +91,7 @@ const ConnectButton = styled(ButtonPrimary)`
   font-weight: 600;
 `
 
-export default function VioletEnroll({
+export default function VioletEnrollContent({
   onClose,
   keepModalOpen,
 }: {

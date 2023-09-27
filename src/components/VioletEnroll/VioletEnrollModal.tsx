@@ -7,7 +7,7 @@ import { useLocalStorageWalletRegistrationStatus } from 'state/registration/hook
 import { updateRegistrationState } from 'state/registration/reducer'
 
 import Modal from '../Modal'
-import VioletEnroll from './VioletEnroll'
+import VioletEnrollContent from './VioletEnrollContent'
 
 export default function VioletEnrollModal() {
   const { account, isActive } = useWeb3React()
@@ -73,7 +73,7 @@ export default function VioletEnrollModal() {
 
   return (
     <Modal isOpen={keepOpen || showModal} onDismiss={dismissModal} maxWidth={350}>
-      <VioletEnroll onClose={dismissModal} keepModalOpen={setKeepOpen} />
+      <VioletEnrollContent onClose={dismissModal} keepModalOpen={setKeepOpen} />
     </Modal>
   )
 }
