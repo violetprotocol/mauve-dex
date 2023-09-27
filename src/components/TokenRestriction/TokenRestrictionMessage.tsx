@@ -1,11 +1,12 @@
 import { AutoColumn } from 'components/Column'
 import { getRestrictionCopy, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
-import { getWarningCopy, TOKEN_SAFETY_ARTICLE, Warning, WARNING_LEVEL } from 'constants/tokenSafety'
+import { WARNING_LEVEL } from 'constants/tokenSafety'
 import { useTokenWarningColor, useTokenWarningTextColor } from 'hooks/useTokenWarningColor'
-import { AlertTriangle, Slash } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components/macro'
 import { ExternalLink } from 'theme'
+
+import TokenRestrictionIcon from './TokenRestrictionIcon'
 
 const Label = styled.div<{ color: string; backgroundColor: string }>`
   width: 100%;
@@ -35,11 +36,6 @@ const DetailsRow = styled.div`
   color: ${({ theme }) => theme.textSecondary};
 `
 
-// const StyledLink = styled(ExternalLink)`
-//   color: ${({ theme }) => theme.textSecondary};
-//   font-weight: 700;
-// `
-
 const StyledLink = styled(ExternalLink)`
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.backgroundContrast};
@@ -64,7 +60,7 @@ export default function TokenRestrictionMessage({ restriction }: TokenRestrictio
   return (
     <Label color={textColor} backgroundColor={backgroundColor}>
       <TitleRow>
-        <AlertTriangle size="16px" />
+        <TokenRestrictionIcon restriction={restriction} />
         <Title marginLeft="7px">{heading} </Title>
       </TitleRow>
 
@@ -74,7 +70,7 @@ export default function TokenRestrictionMessage({ restriction }: TokenRestrictio
         {Boolean(description) && ' '}
       </DetailsRow>
       <AutoColumn>
-        <StyledLink href={link ?? ""}>
+        <StyledLink href={link ?? ''}>
           <>{action}</>
         </StyledLink>
       </AutoColumn>

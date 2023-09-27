@@ -1,7 +1,7 @@
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { MouseoverTooltip } from 'components/Tooltip'
-import { TOKEN_RESTRICTION_TYPE, getRestrictionCopy } from 'constants/tokenRestrictions'
+import { getRestrictionCopy, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import { useTokenInfoFromActiveList } from 'hooks/useTokenInfoFromActiveList'
 import { CurrencyWithRestriction } from 'hooks/useTokenRestriction'
 import { Text } from 'rebass'
@@ -30,7 +30,7 @@ export default function MauveBaseButton({
   onSelect,
   isSelected,
   isPermitted,
-  restriction
+  restriction,
 }: {
   currency: Currency
   onSelect: (currency: CurrencyWithRestriction) => void
@@ -40,22 +40,22 @@ export default function MauveBaseButton({
 }) {
   const { heading } = getRestrictionCopy(restriction)
 
-  const tokenButton = (<BaseWrapper
-    tabIndex={0}
-    onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect({currency, isPermitted, restriction})}
-    onClick={() => !isSelected && onSelect({currency, isPermitted, restriction})}
-    disable={isSelected}
-    key={currencyId(currency)}
-  >
-    <CurrencyLogoFromList currency={currency} />
-    <Text fontWeight={500} fontSize={16}>
-      {currency.symbol}
-    </Text>
-  </BaseWrapper>)
+  const tokenButton = (
+    <BaseWrapper
+      tabIndex={0}
+      onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect({ currency, isPermitted, restriction })}
+      onClick={() => !isSelected && onSelect({ currency, isPermitted, restriction })}
+      disable={isSelected}
+      key={currencyId(currency)}
+    >
+      <CurrencyLogoFromList currency={currency} />
+      <Text fontWeight={500} fontSize={16}>
+        {currency.symbol}
+      </Text>
+    </BaseWrapper>
+  )
 
-  const tooltipWrapper = (<MouseoverTooltip
-    text={<>{heading}</>}
-  >{tokenButton}</MouseoverTooltip>)
+  const tooltipWrapper = <MouseoverTooltip text={<>{heading}</>}>{tokenButton}</MouseoverTooltip>
 
   return isPermitted ? tokenButton : tooltipWrapper
 }

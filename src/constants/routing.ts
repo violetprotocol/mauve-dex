@@ -1,9 +1,11 @@
 // a list of tokens by chain
 import { Token } from '@violetprotocol/mauve-sdk-core'
+import { USDC_OPTIMISM_GOERLI } from '@violetprotocol/mauve-smart-order-router'
 
 import { SupportedChainId } from './chains'
 import {
   AMPL,
+  CBETH_MAINNET,
   CEUR_CELO,
   CMC02_CELO,
   CUSD_CELO,
@@ -12,19 +14,23 @@ import {
   DAI_OPTIMISM,
   DAI_POLYGON,
   ETH2X_FLI,
+  EUROC_MAINNET,
   FEI,
   FRAX,
   FXS,
+  LSETH_MAINNET,
+  OUT1,
+  OUT2,
   PORTAL_ETH_CELO,
   PORTAL_USDC_CELO,
   renBTC,
   rETH2,
   sETH2,
+  STETH_MAINNET,
   SWISE,
   TRIBE,
   USDC_MAINNET,
   USDC_POLYGON,
-  USDT,
   USDT_ARBITRUM_ONE,
   USDT_OPTIMISM,
   USDT_POLYGON,
@@ -54,16 +60,23 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WRAPPED_NATIVE_CURRENCIES_ONLY,
   [SupportedChainId.MAINNET]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.MAINNET],
-    DAI,
     USDC_MAINNET,
-    USDT,
-    WBTC,
+    EUROC_MAINNET,
+    STETH_MAINNET,
+    CBETH_MAINNET,
+    LSETH_MAINNET,
   ],
   [SupportedChainId.OPTIMISM]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM],
     DAI_OPTIMISM,
     USDT_OPTIMISM,
     WBTC_OPTIMISM,
+  ],
+  [SupportedChainId.OPTIMISM_GOERLI]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM],
+    USDC_OPTIMISM_GOERLI,
+    OUT1,
+    OUT2,
   ],
   [SupportedChainId.ARBITRUM_ONE]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.ARBITRUM_ONE],

@@ -24,7 +24,7 @@ export const getMauveActiveList = () => {
   if (isProductionEnv()) return [MAUVE_MAINNETS_LIST_URL]
   return [MAUVE_TESTNETS_LIST_URL]
 }
-export const DEFAULT_INACTIVE_LIST_URLS: string[] = [
+const DEFAULT_INACTIVE_LIST_URLS: string[] = [
   // UNI_EXTENDED_LIST,
   COMPOUND_LIST,
   AAVE_LIST,

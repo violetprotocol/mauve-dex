@@ -1,17 +1,18 @@
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
-import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
+import { Currency } from '@violetprotocol/mauve-sdk-core'
+import { useWeb3React } from '@web3-react/core'
 import { AutoColumn } from 'components/Column'
 import { AutoRow } from 'components/Row'
 import { useAllTokens } from 'hooks/Tokens'
+import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenAddress } from 'lib/utils/analytics'
 import { WrappedTokenInfo } from 'state/lists/wrappedTokenInfo'
 import styled from 'styled-components/macro'
 import { currencyId } from 'utils/currencyId'
+
 import MauveBaseButton from './MauveBaseButton'
-import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
-import { useWeb3React } from '@web3-react/core'
 
 const MobileWrapper = styled(AutoColumn)`
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
@@ -64,7 +65,7 @@ export default function MauveBases({
       <AutoRow gap="4px">
         {basesWithRestrictions.map((baseWithRestriction: CurrencyWithRestriction) => {
           const isSelected = selectedCurrency?.equals(baseWithRestriction.currency)
-          
+
           return (
             <TraceEvent
               events={[BrowserEvent.onClick, BrowserEvent.onKeyPress]}
@@ -73,7 +74,13 @@ export default function MauveBases({
               element={InterfaceElementName.COMMON_BASES_CURRENCY_BUTTON}
               key={currencyId(baseWithRestriction.currency)}
             >
-              <MauveBaseButton currency={baseWithRestriction.currency} onSelect={onSelect} isPermitted={baseWithRestriction.isPermitted} restriction={baseWithRestriction.restriction} isSelected={isSelected ?? false}/>
+              <MauveBaseButton
+                currency={baseWithRestriction.currency}
+                onSelect={onSelect}
+                isPermitted={baseWithRestriction.isPermitted}
+                restriction={baseWithRestriction.restriction}
+                isSelected={isSelected ?? false}
+              />
             </TraceEvent>
           )
         })}
