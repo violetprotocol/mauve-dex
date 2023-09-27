@@ -114,7 +114,7 @@ export default function VioletEnrollContent({
         account,
         chainId,
       })
-  
+
       if (!successfulEnrollmentTxId) {
         console.error(`Failed to enroll user`)
         logErrorWithNewRelic({ errorString: 'Failed to enroll user' })
@@ -129,10 +129,16 @@ export default function VioletEnrollContent({
     }
   }
 
-  return (
-    enrollmentError ? (
-      <TransactionErrorContent message={enrollmentError} onDismiss={() => { setEnrollmentError('') }} dismissText={'Retry'}/>
-    ) : (<Wrapper>
+  return enrollmentError ? (
+    <TransactionErrorContent
+      message={enrollmentError}
+      onDismiss={() => {
+        setEnrollmentError('')
+      }}
+      dismissText="Retry"
+    />
+  ) : (
+    <Wrapper>
       <Container>
         {enrollmentResult ? (
           <Label color="black" backgroundColor="light-grey">
@@ -204,6 +210,6 @@ export default function VioletEnrollContent({
           <ArrowRight size={16} style={{ flex: 'end' }} />
         </StyledCloseButton>
       </Container>
-    </Wrapper>)
+    </Wrapper>
   )
 }

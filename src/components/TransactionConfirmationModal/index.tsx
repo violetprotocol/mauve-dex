@@ -196,7 +196,15 @@ const DiscordIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export function TransactionErrorContent({ message, onDismiss, dismissText = 'Dismiss' }: { message: ReactNode; onDismiss: () => void, dismissText: string }) {
+export function TransactionErrorContent({
+  message,
+  onDismiss,
+  dismissText = 'Dismiss',
+}: {
+  message: ReactNode
+  onDismiss: () => void
+  dismissText: string
+}) {
   const theme = useTheme()
 
   return (
