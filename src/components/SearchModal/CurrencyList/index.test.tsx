@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount as mockCurrencyAmount, Token as mockToken } from '@violetprotocol/mauve-sdk-core'
+import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import { DAI, USDC_MAINNET, WBTC } from 'constants/tokens'
 import * as mockJSBI from 'jsbi'
 import { render } from 'test-utils'
@@ -63,7 +64,11 @@ it('renders currency rows correctly when currencies list is non-empty', () => {
   const { asFragment } = render(
     <CurrencyList
       height={10}
-      currencies={[DAI, USDC_MAINNET, WBTC]}
+      currencies={[
+        { currency: DAI, isPermitted: true, restriction: TOKEN_RESTRICTION_TYPE.NONE },
+        { currency: USDC_MAINNET, isPermitted: true, restriction: TOKEN_RESTRICTION_TYPE.NONE },
+        { currency: WBTC, isPermitted: true, restriction: TOKEN_RESTRICTION_TYPE.NONE },
+      ]}
       otherListTokens={[]}
       selectedCurrency={null}
       onCurrencySelect={noOp}
