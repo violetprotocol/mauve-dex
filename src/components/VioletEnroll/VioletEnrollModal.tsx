@@ -1,10 +1,10 @@
+import { useEnrollment } from '@violetprotocol/sdk'
 import { useWeb3React } from '@web3-react/core'
 import useDebounce from 'hooks/useDebounce'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppDispatch } from 'state/hooks'
 import { useIsUserRegisteredWithViolet } from 'state/registration/hooks'
 import { updateRegistrationState } from 'state/registration/reducer'
-import { useIsRegisteredWithViolet } from 'utils/temporary/useIsRegistered'
 
 import Modal from '../Modal'
 import VioletEnroll from './VioletEnroll'
@@ -13,16 +13,16 @@ export default function VioletEnrollModal() {
   const { account, isActive } = useWeb3React()
   const walletFinishedLoading = useDebounce(isActive, 600)
   const dispatch = useAppDispatch()
-  const { isRegistered } = useIsRegisteredWithViolet({ ethereumAddress: account })
-  const alreadyRegistered = useIsUserRegisteredWithViolet()
+  const { isEnrolled } = useEnrollment({ userAddress: account })
+  const alreadyRegistered = useIsUserRegisteredWithViolet(account)
 
   const [keepOpen, setKeepOpen] = useState(false)
   const [peruseAppWithoutWallet, setPeruseAppWithoutWallet] = useState(false)
 
   const saveRegistrationStatus = useCallback(() => {
     // now we have seen this wallet for the first time, save the registration status
-    if (account) dispatch(updateRegistrationState({ address: account, registrationState: isRegistered ?? undefined }))
-  }, [account, isRegistered, dispatch])
+    if (account) dispatch(updateRegistrationState({ address: account, registrationState: isEnrolled ?? undefined }))
+  }, [account, isEnrolled, dispatch])
 
   const dismissModal = () => {
     saveRegistrationStatus()
@@ -62,14 +62,14 @@ export default function VioletEnrollModal() {
     if (alreadyRegistered !== undefined) return false
 
     // do not show modal if this newly seen wallet is registered with violet and save
-    if (isRegistered) {
+    if (isEnrolled) {
       saveRegistrationStatus()
       return false
     }
 
     // otherwise show modal
     return true
-  }, [account, walletFinishedLoading, alreadyRegistered, isRegistered, peruseAppWithoutWallet, saveRegistrationStatus])
+  }, [account, walletFinishedLoading, alreadyRegistered, isEnrolled, peruseAppWithoutWallet, saveRegistrationStatus])
 
   return (
     <Modal isOpen={keepOpen || showModal} onDismiss={dismissModal} maxWidth={350}>
