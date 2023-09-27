@@ -1,6 +1,7 @@
 import { useWeb3React } from '@web3-react/core'
 import { ButtonPrimary, VioletProtected } from 'components/Button'
 import { AutoColumn } from 'components/Column'
+import { TransactionErrorContent } from 'components/TransactionConfirmationModal'
 import { getVioletEnrollmentCall } from 'hooks/useVioletAuthorize'
 import { MauveIcon } from 'nft/components/icons'
 import { useState } from 'react'
@@ -101,29 +102,37 @@ export default function VioletEnrollContent({
   const { account, chainId } = useWeb3React()
   const [registering, setRegistering] = useState(false)
   const [enrollmentResult, setEnrollmentResult] = useState<string>('')
+  const [enrollmentError, setEnrollmentError] = useState<string>('')
   const toggleWalletModal = useToggleWalletModal()
 
   const onEnroll = async () => {
     setRegistering(true)
     keepModalOpen(true)
 
-    const successfulEnrollmentTxId = await getVioletEnrollmentCall({
-      account,
-      chainId,
-    })
+    try {
+      const successfulEnrollmentTxId = await getVioletEnrollmentCall({
+        account,
+        chainId,
+      })
+  
+      if (!successfulEnrollmentTxId) {
+        console.error(`Failed to enroll user`)
+        logErrorWithNewRelic({ errorString: 'Failed to enroll user' })
+        throw new Error('Failed to enrol user')
+      }
 
-    if (!successfulEnrollmentTxId) {
-      console.error(`Failed to enroll user`)
-      logErrorWithNewRelic({ errorString: 'Failed to enroll user' })
-      return
+      setEnrollmentResult(successfulEnrollmentTxId)
+    } catch (e) {
+      setEnrollmentError(e.message)
+    } finally {
+      setRegistering(false)
     }
-
-    setEnrollmentResult(successfulEnrollmentTxId)
-    setRegistering(false)
   }
 
   return (
-    <Wrapper>
+    enrollmentError ? (
+      <TransactionErrorContent message={enrollmentError} onDismiss={() => { setEnrollmentError('') }} dismissText={'Retry'}/>
+    ) : (<Wrapper>
       <Container>
         {enrollmentResult ? (
           <Label color="black" backgroundColor="light-grey">
@@ -195,6 +204,6 @@ export default function VioletEnrollContent({
           <ArrowRight size={16} style={{ flex: 'end' }} />
         </StyledCloseButton>
       </Container>
-    </Wrapper>
+    </Wrapper>)
   )
 }

@@ -72,7 +72,7 @@ export default function VioletEnrollModal() {
   }, [account, walletFinishedLoading, alreadyRegistered, isEnrolled, peruseAppWithoutWallet, saveRegistrationStatus])
 
   return (
-    <Modal isOpen={keepOpen || showModal} onDismiss={dismissModal} maxWidth={350}>
+    <Modal isOpen={keepOpen || showModal} onDismiss={dismissModal} maxWidth={400}>
       <VioletEnrollContent onClose={dismissModal} keepModalOpen={setKeepOpen} />
     </Modal>
   )
