@@ -17,6 +17,48 @@ export const USDC_MAINNET = new Token(
   'USDC',
   'USD//C'
 )
+export const EUROC_MAINNET = new Token(
+  SupportedChainId.MAINNET,
+  '0x1aBaEA1f7C830bD89Acc67eC4af516284b1bC33c',
+  6,
+  'EUROC',
+  'Euro Coin'
+)
+export const CBETH_MAINNET = new Token(
+  SupportedChainId.MAINNET,
+  '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
+  18,
+  'cbETH',
+  'Coinbase Wrapped Staked ETH'
+)
+export const LSETH_MAINNET = new Token(
+  SupportedChainId.MAINNET,
+  '0x8c1BEd5b9a0928467c9B1341Da1D7BD5e10b6549',
+  18,
+  'LsETH',
+  'Liquid Staked ETH'
+)
+export const STETH_MAINNET = new Token(
+  SupportedChainId.MAINNET,
+  '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
+  18,
+  'stETH',
+  'Liquid staked Ether 2.0'
+)
+export const OUT1 = new Token(
+  SupportedChainId.OPTIMISM_GOERLI,
+  '0x32307adfFE088e383AFAa721b06436aDaBA47DBE',
+  18,
+  'OUT-1',
+  'OptimismUselessToken-1'
+)
+export const OUT2 = new Token(
+  SupportedChainId.OPTIMISM_GOERLI,
+  '0xb378eD8647D67b5dB6fD41817fd7a0949627D87a',
+  18,
+  'OUT-2',
+  'OptimismUselessToken-2'
+)
 const USDC_ROPSTEN = new Token(
   SupportedChainId.ROPSTEN,
   '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
