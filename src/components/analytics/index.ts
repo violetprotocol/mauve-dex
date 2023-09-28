@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { UaEventOptions } from 'react-ga4/types/ga4'
 import { isMobile } from 'utils/userAgent'
 
@@ -53,3 +54,6 @@ const installed = Boolean(window.navigator.serviceWorker?.controller)
 const hit = Boolean((window as any).__isDocumentCached)
 const action = installed ? (hit ? 'Cache hit' : 'Cache miss') : 'Not installed'
 sendEvent({ category: 'Service Worker', action, nonInteraction: true })
+
+export { AnalyticsContext } from './segmentContext'
+export { AnalyticsProvider } from './segmentProvider'
