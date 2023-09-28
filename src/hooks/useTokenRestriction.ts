@@ -1,12 +1,11 @@
 import { Currency, NativeCurrency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
+import { SupportedChainId } from 'constants/chains'
 import { checkRestriction, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Contract } from 'ethers'
+import { useEffect, useState } from 'react'
 
 import { useVioletID } from './useVioletID'
-import { Contract } from 'ethers'
-import { SupportedChainId } from 'constants/chains'
-import { keccak256 } from 'ethers/lib/utils'
 
 export interface CurrencyWithRestriction {
   currency: Currency
@@ -15,43 +14,43 @@ export interface CurrencyWithRestriction {
 }
 
 const getTokenRestrictions = async ({
-  chainId, 
-  address, 
-  violetIdContract, 
-  tokens
+  chainId,
+  address,
+  violetIdContract,
+  tokens,
 }: {
-  chainId: SupportedChainId, 
-  address: string, 
-  violetIdContract: Contract, 
+  chainId: SupportedChainId
+  address: string
+  violetIdContract: Contract
   tokens: Currency[]
 }) => {
-    const promises = (tokens as Currency[]).map(async (token) => {
-      if (!token) return
+  const promises = (tokens as Currency[]).map(async (token) => {
+    if (!token) return
 
-      const isNative = token.isNative
-      // Checks if the token has any usage restrictions
-      const restriction = checkRestriction(
-        chainId,
-        isNative ? (token as NativeCurrency).wrapped.address : (token as Token).address
-      )
+    const isNative = token.isNative
+    // Checks if the token has any usage restrictions
+    const restriction = checkRestriction(
+      chainId,
+      isNative ? (token as NativeCurrency).wrapped.address : (token as Token).address
+    )
 
-      if (!restriction) return
-      // Checks if the provided address has the required status to be permitted to use token
-      const isPermitted =
-        restriction === TOKEN_RESTRICTION_TYPE.NONE
-          ? true
-          : <boolean>await violetIdContract?.callStatic.hasStatus(address, restriction)
+    if (!restriction) return
+    // Checks if the provided address has the required status to be permitted to use token
+    const isPermitted =
+      restriction === TOKEN_RESTRICTION_TYPE.NONE
+        ? true
+        : <boolean>await violetIdContract?.callStatic.hasStatus(address, restriction)
 
-      return { currency: token, restriction, isPermitted }
-    })
+    return { currency: token, restriction, isPermitted }
+  })
 
-    function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
-      return value !== null && value !== undefined
-    }
+  function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+    return value !== null && value !== undefined
+  }
 
-    const tokensRestriction = (await Promise.all(promises)).filter(notEmpty)
+  const tokensRestriction = (await Promise.all(promises)).filter(notEmpty)
 
-    return tokensRestriction
+  return tokensRestriction
 }
 
 export function useTokenRestriction(address: string | null | undefined, tokens: Currency[]) {
@@ -74,8 +73,8 @@ export function useTokenRestriction(address: string | null | undefined, tokens: 
   useEffect(() => {
     if (!chainId || !address || !violetIdContract || !tokens || tokens.length == 0) return
     // console.log(keccak256(Buffer.from(JSON.stringify(tokens))))
-    
-    getTokenRestrictions({chainId, address, violetIdContract, tokens}).then((tokenRestrictions) => {
+
+    getTokenRestrictions({ chainId, address, violetIdContract, tokens }).then((tokenRestrictions) => {
       // console.log(tokenRestrictions)
       setTokensWithRestriction(tokenRestrictions)
     })
