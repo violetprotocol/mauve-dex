@@ -74,9 +74,7 @@ export function CurrencySearch({
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
   // TO-DO find out why non-conditional usage of this hook blocks the UI thread
-  const searchTokenWithRestrictions = searchToken
-    ? useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
-    : null
+  const searchTokenWithRestrictions = useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
 
   const [restrictedTokenClicked, setRestrictedTokenClicked] = useState(TOKEN_RESTRICTION_TYPE.NONE)
   const [openTokenRestrictionModal, setOpenTokenRestrictionModal] = useState(false)
