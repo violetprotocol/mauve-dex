@@ -203,7 +203,7 @@ export function TransactionErrorContent({
 }: {
   message: ReactNode
   onDismiss: () => void
-  dismissText: string
+  dismissText?: string
 }) {
   const theme = useTheme()
 
