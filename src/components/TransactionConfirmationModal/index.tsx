@@ -29,7 +29,7 @@ const Wrapper = styled.div`
   border-radius: 20px;
   outline: 1px solid ${({ theme }) => theme.backgroundOutline};
   width: 100%;
-  padding: 1rem;
+  padding: 1.5rem;
 `
 const Section = styled(AutoColumn)<{ inline?: boolean }>`
   padding: ${({ inline }) => (inline ? '0' : '0')};
@@ -196,7 +196,15 @@ const DiscordIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
-export function TransactionErrorContent({ message, onDismiss }: { message: ReactNode; onDismiss: () => void }) {
+export function TransactionErrorContent({
+  message,
+  onDismiss,
+  dismissText = 'Dismiss',
+}: {
+  message: ReactNode
+  onDismiss: () => void
+  dismissText?: string
+}) {
   const theme = useTheme()
 
   return (
@@ -219,7 +227,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: React
           <DiscordIcon width={16} height={16} style={{ marginLeft: 10 }} />
         </ButtonSecondary>
         <ButtonPrimary onClick={onDismiss}>
-          <>Dismiss</>
+          <>{dismissText}</>
         </ButtonPrimary>
       </BottomSection>
     </Wrapper>

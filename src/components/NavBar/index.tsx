@@ -1,3 +1,4 @@
+import VioletEnrollModal from 'components/VioletEnroll/VioletEnrollModal'
 import Web3Status from 'components/Web3Status'
 import { Box } from 'nft/components/Box'
 import { Row } from 'nft/components/Flex'
@@ -99,6 +100,7 @@ const Navbar = () => {
             </Box>
 
             <DocsLink href="https://docs.mauve.org">Docs</DocsLink>
+            <VioletEnrollModal />
           </Box>
 
           <Box className={styles.centerSideContainer} display={{ sm: 'none', lg: 'flex' }}>
