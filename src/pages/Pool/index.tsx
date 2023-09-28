@@ -1,6 +1,7 @@
 import { Trace, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName, InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { ButtonGray, ButtonPrimary, ButtonText } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { FlyoutAlignment, Menu } from 'components/Menu'
@@ -9,6 +10,7 @@ import { RowBetween, RowFixed } from 'components/Row'
 import { SwitchLocaleLink } from 'components/SwitchLocaleLink'
 import { isSupportedChain } from 'constants/chains'
 import { useV3Positions } from 'hooks/useV3Positions'
+import { useEffect } from 'react'
 import { AlertTriangle, BookOpen, ChevronDown, Inbox, PlusCircle } from 'react-feather'
 import { Link } from 'react-router-dom'
 import { useToggleWalletModal } from 'state/application/hooks'
@@ -193,6 +195,12 @@ function WrongNetworkCard() {
 export default function Pool() {
   const { account, chainId } = useWeb3React()
   const toggleWalletModal = useToggleWalletModal()
+  const { analytics } = useAnalyticsContext()
+
+  // Segment Page view analytics
+  useEffect(() => {
+    analytics.track('Swap Page viewed')
+  }, [analytics])
 
   const theme = useTheme()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()

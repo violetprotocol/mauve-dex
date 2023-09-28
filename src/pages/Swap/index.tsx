@@ -155,7 +155,9 @@ export default function Swap({ className }: { className?: string }) {
   const { analytics } = useAnalyticsContext()
 
   // Segment Page view analytics
-  // analytics.track('Swap Page viewed')
+  useEffect(() => {
+    analytics.track('Swap Page viewed')
+  }, [analytics])
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [

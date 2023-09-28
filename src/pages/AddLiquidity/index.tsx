@@ -8,6 +8,7 @@ import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@vi
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
@@ -111,6 +112,12 @@ export default function AddLiquidity() {
     userAddress: account,
   })
   const embeddedAuthRef = useEmbeddedAuthorizationRef()
+  const { analytics } = useAnalyticsContext()
+
+  // Segment Page view analytics
+  useEffect(() => {
+    analytics.track('Add Liquidity Page viewed')
+  }, [analytics])
 
   const theme = useTheme()
 

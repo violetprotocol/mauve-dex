@@ -6,6 +6,7 @@ import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@vi
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import RangeBadge from 'components/Badge/RangeBadge'
 import { ButtonConfirmed, VioletProtectedButtonPrimary } from 'components/Button'
 import { LightCard } from 'components/Card'
@@ -24,7 +25,7 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useV3PositionFromTokenId } from 'hooks/useV3Positions'
 import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation, useParams } from 'react-router-dom'
 import { Text } from 'rebass'
 import { useBurnV3ActionHandlers, useBurnV3State, useDerivedV3BurnInfo } from 'state/burn/v3/hooks'
@@ -115,6 +116,12 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const [txnHash, setTxnHash] = useState<string | undefined>()
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
+  const { analytics } = useAnalyticsContext()
+
+  // Segment Page view analytics
+  useEffect(() => {
+    analytics.track('Remove Liquidity page viewed')
+  }, [analytics])
 
   const authorizeProps = useMemo(() => {
     if (!account || !chainId || !call) {
