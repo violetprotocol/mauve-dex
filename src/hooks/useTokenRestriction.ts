@@ -1,8 +1,8 @@
+import { Contract } from '@ethersproject/contracts'
 import { Currency, NativeCurrency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { SupportedChainId } from 'constants/chains'
 import { checkRestriction, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
-import { Contract } from 'ethers'
 import { useEffect, useState } from 'react'
 
 import { useVioletID } from './useVioletID'
