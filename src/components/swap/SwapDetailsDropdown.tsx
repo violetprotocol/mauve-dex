@@ -153,7 +153,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                     placement="bottom"
                     disableHover={showDetails}
                   >
-                    <StyledInfoIcon color={trade ? theme.textTertiary : theme.deprecated_bg3} />
+                    <StyledInfoIcon color={trade ? theme.textTertiary : theme.textSoft} />
                   </MouseoverTooltipContent>
                 </HideSmall>
               )}
@@ -180,7 +180,7 @@ export default function SwapDetailsDropdown({ trade, syncing, loading, allowedSl
                 />
               )}
               <RotatingArrow
-                stroke={trade ? theme.textTertiary : theme.deprecated_bg3}
+                stroke={trade ? theme.textTertiary : theme.textSoft}
                 open={Boolean(trade && showDetails)}
               />
             </RowFixed>

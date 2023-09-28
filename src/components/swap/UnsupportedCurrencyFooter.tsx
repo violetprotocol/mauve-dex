@@ -25,7 +25,7 @@ const DetailsFooter = styled.div<{ show: boolean }>`
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
   color: ${({ theme }) => theme.textSecondary};
-  background-color: ${({ theme }) => theme.deprecated_advancedBG};
+  background-color: ${({ theme }) => theme.backgroundScrim};
   z-index: ${Z_INDEX.deprecated_zero};
 
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};

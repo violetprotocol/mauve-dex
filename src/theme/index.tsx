@@ -3,7 +3,6 @@ import React from 'react'
 import { createGlobalStyle, css, ThemeProvider as StyledComponentsThemeProvider } from 'styled-components/macro'
 
 import { lightTheme, tw } from './colors'
-import { deprecatedColors } from './deprecatedColors'
 
 // todo - remove and replace imports with a new path
 export * from './components'
@@ -95,7 +94,6 @@ function getSettings() {
 export function getTheme() {
   return {
     ...lightTheme,
-    ...deprecatedColors,
     ...getSettings(),
     tw,
   }

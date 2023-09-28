@@ -41,7 +41,7 @@ const Fader = styled.div`
   left: 0px;
   width: 100%;
   height: 2px;
-  background-color: ${({ theme }) => theme.deprecated_bg3};
+  background-color: ${({ theme }) => theme.textSoft};
 `
 
 const AnimatedFader = animated(Fader)

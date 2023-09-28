@@ -57,7 +57,7 @@ const Container = styled.div<{ hideInput: boolean; disabled: boolean }>`
     `
     :focus,
     :hover {
-      border: 1px solid ${hideInput ? ' transparent' : theme.deprecated_bg3};
+      border: 1px solid ${hideInput ? ' transparent' : theme.textSoft};
     }
   `}
 `
@@ -88,8 +88,7 @@ const CurrencySelect = styled(ButtonGray)<{
   margin-left: ${({ hideInput }) => (hideInput ? '0' : '12px')};
   :focus,
   :hover {
-    background-color: ${({ selected, theme }) =>
-      selected ? theme.deprecated_bg3 : darken(0.05, theme.backgroundContrast)};
+    background-color: ${({ selected, theme }) => (selected ? theme.textSoft : darken(0.05, theme.backgroundContrast))};
   }
   visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `
@@ -144,7 +143,7 @@ const StyledTokenName = styled.span<{ active?: boolean }>`
 
 const StyledBalanceMax = styled.button<{ disabled?: boolean }>`
   background-color: transparent;
-  background-color: ${({ theme }) => theme.deprecated_primary5};
+  background-color: ${({ theme }) => theme.accentActionSoft};
   border: none;
   border-radius: 12px;
   color: ${({ theme }) => theme.textPrimary};

@@ -281,7 +281,7 @@ export const ButtonText = styled(BaseButton)`
 `
 
 const ButtonConfirmedStyle = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.deprecated_bg3};
+  background-color: ${({ theme }) => theme.textSoft};
   color: ${({ theme }) => theme.textPrimary};
   /* border: 1px solid ${({ theme }) => theme.accentSuccess}; */
 
