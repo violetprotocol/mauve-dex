@@ -49,7 +49,7 @@ const DottedLine = styled.div`
 
 const DotColor = styled(DotLine)`
   path {
-    stroke: ${({ theme }) => theme.deprecated_bg4};
+    stroke: ${({ theme }) => theme.textTertiary};
   }
 `
 
@@ -66,7 +66,7 @@ const OpaqueBadge = styled(Badge)`
 `
 
 const ProtocolBadge = styled(Badge)`
-  background-color: ${({ theme }) => theme.deprecated_bg3};
+  background-color: ${({ theme }) => theme.textSoft};
   border-radius: 4px;
   color: ${({ theme }) => theme.textSecondary};
   font-size: 10px;

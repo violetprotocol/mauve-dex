@@ -33,7 +33,7 @@ import {
   ButtonYellow,
   VioletProtectedButtonPrimary,
 } from '../../components/Button'
-import { BlueCard, OutlineCard, YellowCard } from '../../components/Card'
+import { OutlineCard, YellowCard } from '../../components/Card'
 import { AutoColumn } from '../../components/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import FeeSelector from '../../components/FeeSelector'
@@ -938,7 +938,7 @@ export default function AddLiquidity() {
                             </ThemedText.DeprecatedLabel>
                           </RowBetween>
                           {noLiquidity && (
-                            <BlueCard
+                            <OutlineCard
                               style={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -958,7 +958,7 @@ export default function AddLiquidity() {
                                   amount. Gas fees will be higher than usual due to the initialization transaction.
                                 </>
                               </ThemedText.DeprecatedBody>
-                            </BlueCard>
+                            </OutlineCard>
                           )}
                           <OutlineCard padding="12px">
                             <StyledInput
@@ -1046,13 +1046,13 @@ export default function AddLiquidity() {
                               $borderRadius="12px"
                               height="100%"
                               style={{
-                                borderColor: theme.deprecated_yellow3,
+                                borderColor: theme.accentWarning,
                                 border: '1px solid',
                               }}
                             >
                               <AutoColumn gap="sm" style={{ height: '100%' }}>
                                 <RowFixed>
-                                  <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                                  <AlertTriangle stroke={theme.accentWarning} size="16px" />
                                   <ThemedText.DeprecatedYellow ml="12px" fontSize="15px">
                                     <>Efficiency Comparison</>
                                   </ThemedText.DeprecatedYellow>
@@ -1087,7 +1087,7 @@ export default function AddLiquidity() {
                       {outOfRange ? (
                         <YellowCard padding="8px 12px" $borderRadius="12px">
                           <RowBetween>
-                            <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                            <AlertTriangle stroke={theme.accentWarning} size="16px" />
                             <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
                               <>
                                 Your position will not earn fees or be used in trades until the market price moves into
@@ -1101,7 +1101,7 @@ export default function AddLiquidity() {
                       {invalidRange ? (
                         <YellowCard padding="8px 12px" $borderRadius="12px">
                           <RowBetween>
-                            <AlertTriangle stroke={theme.deprecated_yellow3} size="16px" />
+                            <AlertTriangle stroke={theme.accentWarning} size="16px" />
                             <ThemedText.DeprecatedYellow ml="12px" fontSize="12px">
                               <>Invalid range selected. The min price must be lower than the max price.</>
                             </ThemedText.DeprecatedYellow>

@@ -1,5 +1,4 @@
 import { TooltipContainer } from 'components/Tooltip'
-import { transparentize } from 'polished'
 import { ReactNode } from 'react'
 import { AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
@@ -62,7 +61,7 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
     severity === 3 || severity === 4
       ? theme.accentFailure
       : severity === 2
-      ? theme.deprecated_yellow2
+      ? theme.accentWarning
       : severity === 1
       ? theme.textPrimary
       : theme.textSecondary};
@@ -138,7 +137,7 @@ export function SwapCallbackError({ error }: { error: ReactNode }) {
 }
 
 export const SwapShowAcceptChanges = styled(AutoColumn)`
-  background-color: ${({ theme }) => transparentize(0.95, theme.deprecated_primary3)};
+  background-color: ${({ theme }) => theme.accentActionSoft};
   color: ${({ theme }) => theme.accentAction};
   padding: 0.5rem;
   border-radius: 12px;

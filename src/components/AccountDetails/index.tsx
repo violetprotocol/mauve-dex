@@ -51,7 +51,7 @@ const UpperSection = styled.div`
 
 const InfoCard = styled.div`
   padding: 1rem;
-  border: 1px solid ${({ theme }) => theme.deprecated_bg3};
+  border: 1px solid ${({ theme }) => theme.textSoft};
   border-radius: 20px;
   position: relative;
   display: grid;
@@ -151,7 +151,7 @@ const CloseIcon = styled.div`
 
 const CloseColor = styled(Close)`
   path {
-    stroke: ${({ theme }) => theme.deprecated_text4};
+    stroke: ${({ theme }) => theme.textTertiary};
   }
 `
 

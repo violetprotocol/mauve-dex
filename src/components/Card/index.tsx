@@ -18,16 +18,11 @@ export const DarkCard = styled(Card)`
 `
 
 export const OutlineCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.deprecated_bg3};
+  border: 1px solid ${({ theme }) => theme.textSoft};
 `
 
 export const YellowCard = styled(Card)`
   background-color: rgba(243, 132, 30, 0.05);
-  color: ${({ theme }) => theme.deprecated_yellow3};
+  color: ${({ theme }) => theme.accentWarning};
   font-weight: 500;
-`
-
-export const BlueCard = styled(Card)`
-  background-color: ${({ theme }) => theme.deprecated_primary5};
-  color: ${({ theme }) => theme.accentAction};
 `

@@ -47,7 +47,7 @@ const CurrencyName = styled(Text)`
 `
 
 const Tag = styled.div`
-  background-color: ${({ theme }) => theme.deprecated_bg3};
+  background-color: ${({ theme }) => theme.textSoft};
   color: ${({ theme }) => theme.textSecondary};
   font-size: 14px;
   border-radius: 4px;

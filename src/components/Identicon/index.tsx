@@ -8,7 +8,7 @@ const StyledIdenticon = styled.div<{ iconSize: number }>`
   height: ${({ iconSize }) => `${iconSize}px`};
   width: ${({ iconSize }) => `${iconSize}px`};
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.deprecated_bg4};
+  background-color: ${({ theme }) => theme.textTertiary};
   font-size: initial;
 `
 
