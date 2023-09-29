@@ -18,6 +18,7 @@ import { useUserHideClosedPositions } from 'state/user/hooks'
 import styled, { css, useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { PositionDetails } from 'types/position'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import { LoadingRows } from './styleds'
 
@@ -199,7 +200,7 @@ export default function Pool() {
 
   // Segment Page view analytics
   useEffect(() => {
-    analytics.track('Swap Page viewed')
+    analytics.track(AnalyticsEvent.POOL_PAGE_VIEWED)
   }, [analytics])
 
   const theme = useTheme()

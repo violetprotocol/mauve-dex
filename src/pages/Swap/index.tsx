@@ -35,6 +35,7 @@ import { TradeState } from 'state/routing/types'
 import styled, { useTheme } from 'styled-components/macro'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/formatNumbers'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -156,7 +157,7 @@ export default function Swap({ className }: { className?: string }) {
 
   // Segment Page view analytics
   useEffect(() => {
-    analytics.track('Swap Page viewed')
+    analytics.track(AnalyticsEvent.SWAP_PAGE_VIEWED)
   }, [analytics])
 
   // token warning stuff

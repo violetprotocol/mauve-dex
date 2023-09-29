@@ -34,6 +34,7 @@ import { useUserSlippageToleranceWithDefault } from 'state/user/hooks'
 import { useTheme } from 'styled-components/macro'
 import { ThemedText } from 'theme'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 
 import TransactionConfirmationModal, {
@@ -120,7 +121,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   // Segment Page view analytics
   useEffect(() => {
-    analytics.track('Remove Liquidity page viewed')
+    analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_PAGE_VIEWED)
   }, [analytics])
 
   const authorizeProps = useMemo(() => {

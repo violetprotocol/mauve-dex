@@ -24,6 +24,7 @@ import {
 } from 'state/mint/v3/hooks'
 import { useTheme } from 'styled-components/macro'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 
 import {
@@ -116,7 +117,7 @@ export default function AddLiquidity() {
 
   // Segment Page view analytics
   useEffect(() => {
-    analytics.track('Add Liquidity Page viewed')
+    analytics.track(AnalyticsEvent.ADD_LIQUIDITY_PAGE_VIEWED)
   }, [analytics])
 
   const theme = useTheme()
