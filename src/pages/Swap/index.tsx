@@ -11,6 +11,7 @@ import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import PriceImpactWarning from 'components/swap/PriceImpactWarning'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -34,6 +35,7 @@ import { TradeState } from 'state/routing/types'
 import styled, { useTheme } from 'styled-components/macro'
 import { currencyAmountToPreciseFloat, formatTransactionAmount } from 'utils/formatNumbers'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
@@ -151,6 +153,12 @@ export default function Swap({ className }: { className?: string }) {
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
   const { setEatPayload, eatPayload, onTransactionSuccess, onTransactionDismiss } = useVioletEAT()
+  const { analytics } = useAnalyticsContext()
+
+  // Segment Page view analytics
+  useEffect(() => {
+    analytics.track(AnalyticsEvent.SWAP_PAGE_VIEWED)
+  }, [analytics])
 
   // token warning stuff
   const [loadedInputCurrency, loadedOutputCurrency] = [

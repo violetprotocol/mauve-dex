@@ -7,6 +7,7 @@ import '@violetprotocol/sdk/styles.css'
 import { ApolloProvider } from '@apollo/client'
 import * as Sentry from '@sentry/react'
 import { createVioletClient, VioletProvider } from '@violetprotocol/sdk'
+import { AnalyticsProvider } from 'components/analytics'
 import { apolloClient } from 'graphql/data/apollo'
 import { BlockNumberProvider } from 'lib/hooks/useBlockNumber'
 import { MulticallUpdater } from 'lib/state/multicall'
@@ -75,13 +76,15 @@ createRoot(container).render(
           <Web3Provider>
             <VioletProvider client={client}>
               <ApolloProvider client={apolloClient}>
-                <BlockNumberProvider>
-                  <Updaters />
-                  <ThemeProvider>
-                    <ThemedGlobalStyle />
-                    <App />
-                  </ThemeProvider>
-                </BlockNumberProvider>
+                <AnalyticsProvider>
+                  <BlockNumberProvider>
+                    <Updaters />
+                    <ThemeProvider>
+                      <ThemedGlobalStyle />
+                      <App />
+                    </ThemeProvider>
+                  </BlockNumberProvider>
+                </AnalyticsProvider>
               </ApolloProvider>
             </VioletProvider>
           </Web3Provider>
