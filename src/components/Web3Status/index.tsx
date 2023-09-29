@@ -81,6 +81,7 @@ const Web3StatusConnected = styled(Web3StatusGeneric)<{
 
 const AddressAndChevronContainer = styled.div`
   display: flex;
+  align-items: center;
 
   @media only screen and (max-width: ${({ theme }) => `${theme.breakpoint.lg}px`}) {
     display: none;

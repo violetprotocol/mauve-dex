@@ -159,7 +159,7 @@
     "@web3-react/network": "8.2.2",
     "@web3-react/types": "8.2.2",
     "@web3-react/url": "8.2.2",
-    "@web3-react/walletconnect": "8.2.2",
+    "@web3-react/walletconnect-v2": "^8.5.0",
     "array.prototype.flat": "^1.2.4",
     "array.prototype.flatmap": "^1.2.4",
     "cids": "^1.0.0",
@@ -224,6 +224,9 @@
     "workbox-precaching": "^6.1.0",
     "workbox-routing": "^6.1.0",
     "zustand": "^4.0.0-rc.1"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   },
   "engines": {
     "npm": "please-use-yarn",

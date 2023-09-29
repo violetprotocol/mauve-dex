@@ -172,14 +172,11 @@ export default function LiquidityChartRangeInput({
       {isUninitialized ? (
         <InfoBox message="Your position will appear here." icon={<Inbox size={56} stroke={theme.textPrimary} />} />
       ) : isLoading ? (
-        <InfoBox icon={<Loader size="40px" stroke={theme.deprecated_text4} />} />
+        <InfoBox icon={<Loader size="40px" stroke={theme.textTertiary} />} />
       ) : error ? (
-        <InfoBox
-          message="Liquidity data not available."
-          icon={<CloudOff size={56} stroke={theme.deprecated_text4} />}
-        />
+        <InfoBox message="Liquidity data not available." icon={<CloudOff size={56} stroke={theme.textTertiary} />} />
       ) : !formattedData || formattedData.length === 0 || !price ? (
-        <InfoBox message="There is no liquidity data." icon={<BarChart2 size={56} stroke={theme.deprecated_text4} />} />
+        <InfoBox message="There is no liquidity data." icon={<BarChart2 size={56} stroke={theme.textTertiary} />} />
       ) : (
         <ChartWrapper>
           <Chart

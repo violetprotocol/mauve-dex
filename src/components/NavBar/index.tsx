@@ -29,7 +29,7 @@ const DocsLink = styled(ExternalLink)`
   cursor: pointer;
   font-weight: 600;
   font-size: 16px;
-  padding: 10px 16px;
+  padding: 0.5rem 1rem;
 `
 
 interface MenuItemProps {

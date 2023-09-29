@@ -14,8 +14,8 @@ import styled from 'styled-components/macro'
 // `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;
-  background-color: ${({ theme }) => theme.deprecated_primary5};
-  border: 1px solid ${({ theme }) => theme.deprecated_primary5};
+  background-color: ${({ theme }) => theme.accentActionSoft};
+  border: 1px solid ${({ theme }) => theme.accentAction};
   border-radius: 0.5rem;
   font-size: 1rem;
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`

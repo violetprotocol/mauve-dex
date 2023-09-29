@@ -232,6 +232,7 @@ export const lightTheme = {
   textSecondary: tw.neutral[600],
   textTertiary: tw.neutral[400],
   textContrast: tw.neutral[50],
+  textSoft: tw.neutral[200],
 
   accentAction: tw.primary[600],
   accentActive: tw.neutral[800],

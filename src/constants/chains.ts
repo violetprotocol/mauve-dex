@@ -111,3 +111,5 @@ export const L2_CHAIN_IDS = [
 ] as const
 
 export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number]
+
+export const DEFAULT_CHAIN_ID = SupportedChainId.MAINNET

@@ -176,8 +176,8 @@ function WrongNetworkCard() {
 
             <MainContentWrapper>
               <ErrorContainer>
+                <NetworkIcon strokeWidth={1.2} />
                 <ThemedText.DeprecatedBody color={theme.textTertiary} textAlign="center">
-                  <NetworkIcon strokeWidth={1.2} />
                   <div data-testid="pools-unsupported-err">
                     <>Your connected network is unsupported.</>
                   </div>

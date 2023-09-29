@@ -67,7 +67,7 @@ const StyledRangeInput = styled.input<{ size: number }>`
   }
 
   &::-moz-range-track {
-    background: linear-gradient(90deg, ${({ theme }) => theme.deprecated_bg5}, ${({ theme }) => theme.deprecated_bg3});
+    background: linear-gradient(90deg, ${({ theme }) => theme.textTertiary}, ${({ theme }) => theme.textSoft});
     height: 2px;
   }
 
@@ -76,14 +76,14 @@ const StyledRangeInput = styled.input<{ size: number }>`
     border-color: transparent;
     color: transparent;
 
-    background: ${({ theme }) => theme.deprecated_bg5};
+    background: ${({ theme }) => theme.textTertiary};
     height: 2px;
   }
   &::-ms-fill-lower {
-    background: ${({ theme }) => theme.deprecated_bg5};
+    background: ${({ theme }) => theme.textTertiary};
   }
   &::-ms-fill-upper {
-    background: ${({ theme }) => theme.deprecated_bg3};
+    background: ${({ theme }) => theme.textSoft};
   }
 `
 
