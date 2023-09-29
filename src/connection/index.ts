@@ -4,8 +4,9 @@ import { GnosisSafe } from '@web3-react/gnosis-safe'
 import { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import { Connector } from '@web3-react/types'
-import { WalletConnect } from '@web3-react/walletconnect'
-import { SupportedChainId } from 'constants/chains'
+import { WalletConnect } from '@web3-react/walletconnect-v2'
+import { DEFAULT_CHAIN_ID, L1_CHAIN_IDS, L2_CHAIN_IDS, SupportedChainId } from 'constants/chains'
+import { Z_INDEX } from 'theme/zIndex'
 
 import MAUVE_LOGO_URL from '../assets/svg/logo.svg'
 import { RPC_URLS } from '../constants/networks'
@@ -75,11 +76,21 @@ const [web3WalletConnect, web3WalletConnectHooks] = initializeConnector<WalletCo
     }),
     {}
   )
+
   return new WalletConnect({
     actions,
     options: {
-      rpc: RPC_URLS_WITHOUT_FALLBACKS,
-      qrcode: true,
+      rpcMap: RPC_URLS_WITHOUT_FALLBACKS,
+      showQrModal: true,
+      projectId: '2c22b74a3313db29ebf0418e946c5ddc',
+      chains: [DEFAULT_CHAIN_ID],
+      optionalChains: [...L1_CHAIN_IDS, ...L2_CHAIN_IDS],
+      qrModalOptions: {
+        themeVariables: {
+          '--wcm-font-family': '"Inter custom", sans-serif',
+          '--wcm-z-index': Z_INDEX.modal.toString(),
+        },
+      },
     },
     onError,
   })
