@@ -1,12 +1,12 @@
 import { Contract } from '@ethersproject/contracts'
+import { JsonRpcProvider } from '@ethersproject/providers'
 import { useWeb3React } from '@web3-react/core'
 import { VIOLET_ID_ADDRESSES } from 'constants/addresses'
+import { SupportedChainId } from 'constants/chains'
+import { RPC_URLS } from 'constants/networks'
 import { useMemo } from 'react'
-import { JsonRpcProvider } from '@ethersproject/providers'
 
 import VioletIDABI from '../abis/violetid.json'
-import { RPC_URLS } from 'constants/networks'
-import { SupportedChainId } from 'constants/chains'
 
 export function useVioletID() {
   const { chainId, provider } = useWeb3React()
