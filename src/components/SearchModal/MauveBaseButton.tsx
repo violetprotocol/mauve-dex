@@ -39,9 +39,11 @@ export default function MauveBaseButton({
   restriction: TOKEN_RESTRICTION_TYPE
 }) {
   const { heading } = getRestrictionCopy(restriction)
+  const blockedTokenOpacity = '0.6'
 
   const tokenButton = (
-    <BaseWrapper
+    <BaseWrapper 
+      style={{ opacity: !isPermitted ? blockedTokenOpacity : '1' }}
       tabIndex={0}
       onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect({ currency, isPermitted, restriction })}
       onClick={() => !isSelected && onSelect({ currency, isPermitted, restriction })}

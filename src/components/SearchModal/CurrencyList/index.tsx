@@ -48,6 +48,15 @@ const CurrencyName = styled(Text)`
   text-overflow: ellipsis;
 `
 
+
+
+const Restriction = styled(Text)`
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
 const Tag = styled.div`
   background-color: ${({ theme }) => theme.textSoft};
   color: ${({ theme }) => theme.textSecondary};
@@ -150,13 +159,13 @@ export function CurrencyRow({
         onClick={() => (isSelected ? null : onSelect(!!warning))}
         disabled={isSelected}
         selected={otherSelected}
-        dim={isBlockedToken}
+        dim={!isPermitted}
       >
         <Column>
           <CurrencyLogo
             currency={currency}
             size="36px"
-            style={{ opacity: isBlockedToken ? blockedTokenOpacity : '1' }}
+            style={{ opacity: !isPermitted ? blockedTokenOpacity : '1' }}
           />
         </Column>
         <AutoColumn style={{ opacity: isBlockedToken ? blockedTokenOpacity : '1' }}>
@@ -167,7 +176,7 @@ export function CurrencyRow({
             </WarningContainer>
           </Row>
           <ThemedText.DeprecatedDarkGray ml="0px" fontSize="12px" fontWeight={300}>
-            {currency.symbol}
+            {currency.symbol} {heading}
           </ThemedText.DeprecatedDarkGray>
         </AutoColumn>
         <Column>
