@@ -8,8 +8,8 @@ import { Text } from 'rebass'
 import styled from 'styled-components/macro'
 import { currencyId } from 'utils/currencyId'
 
-const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? theme.accentActive : theme.backgroundOutline)};
+const BaseWrapper = styled.div<{ restricted?: boolean; disable?: boolean }>`
+  border: 1px ${({restricted }) => (restricted ? 'dotted' : 'solid')} ${({ theme, disable, restricted }) => (restricted ? theme.accentWarning : disable ? theme.accentActive : theme.backgroundOutline)};
   border-radius: 16px;
   display: flex;
   padding: 6px;
@@ -46,6 +46,7 @@ export default function MauveBaseButton({
       onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect({ currency, isPermitted, restriction })}
       onClick={() => !isSelected && onSelect({ currency, isPermitted, restriction })}
       disable={isSelected}
+      restricted={!isPermitted}
       key={currencyId(currency)}
     >
       <CurrencyLogoFromList currency={currency} />
