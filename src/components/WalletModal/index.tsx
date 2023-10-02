@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Connector } from '@web3-react/types'
-import { sendEvent } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import { AutoColumn } from 'components/Column'
 import { AutoRow } from 'components/Row'
 import { networkConnection } from 'connection'
@@ -216,11 +216,11 @@ export default function WalletModal({
       const connectionType = getConnection(connector).type
 
       // log selected wallet
-      sendEvent({
-        category: 'Wallet',
-        action: 'Change Wallet',
-        label: connectionType,
-      })
+      // sendEvent({
+      //   category: 'Wallet',
+      //   action: 'Change Wallet',
+      //   label: connectionType,
+      // })
 
       try {
         setPendingConnector(connector)

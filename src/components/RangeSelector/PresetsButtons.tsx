@@ -1,4 +1,4 @@
-import { sendEvent } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import { ButtonOutlined } from 'components/Button'
 import { AutoRow } from 'components/Row'
 import React from 'react'
@@ -19,10 +19,10 @@ export default function PresetsButtons({ setFullRange }: { setFullRange: () => v
       <Button
         onClick={() => {
           setFullRange()
-          sendEvent({
-            category: 'Liquidity',
-            action: 'Full Range Clicked',
-          })
+          // sendEvent({
+          //   category: 'Liquidity',
+          //   action: 'Full Range Clicked',
+          // })
         }}
       >
         <ThemedText.DeprecatedBody fontSize={12}>

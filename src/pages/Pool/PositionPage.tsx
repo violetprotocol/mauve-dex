@@ -7,7 +7,7 @@ import { EATMulticall, NonfungiblePositionManager, Pool, Position } from '@viole
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import Badge from 'components/Badge'
 import { ButtonConfirmed, ButtonGray, ButtonPrimary, VioletProtectedButtonPrimary } from 'components/Button'
 import { DarkCard, LightCard } from 'components/Card'
@@ -503,11 +503,11 @@ export function PositionPage() {
             setCollectMigrationHash(response.hash)
             setCollecting(false)
 
-            sendEvent({
-              category: 'Liquidity',
-              action: 'CollectV3',
-              label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
-            })
+            // sendEvent({
+            //   category: 'Liquidity',
+            //   action: 'CollectV3',
+            //   label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
+            // })
 
             addTransaction(response, {
               type: TransactionType.COLLECT_FEES,

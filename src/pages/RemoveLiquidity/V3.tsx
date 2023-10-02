@@ -5,8 +5,8 @@ import { EATMulticall, NonfungiblePositionManager } from '@violetprotocol/mauve-
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
-import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
+import { useAnalytics } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import RangeBadge from 'components/Badge/RangeBadge'
 import { ButtonConfirmed, VioletProtectedButtonPrimary } from 'components/Button'
 import { LightCard } from 'components/Card'
@@ -117,7 +117,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const [txnHash, setTxnHash] = useState<string | undefined>()
   const addTransaction = useTransactionAdder()
   const positionManager = useV3NFTPositionManagerContract()
-  const { analytics } = useAnalyticsContext()
+  const { analytics } = useAnalytics()
 
   // Segment Page view analytics
   useEffect(() => {
@@ -171,11 +171,11 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           .getSigner()
           .sendTransaction(newTxn)
           .then((response: TransactionResponse) => {
-            sendEvent({
-              category: 'Liquidity',
-              action: 'RemoveV3',
-              label: [liquidityValue0.currency.symbol, liquidityValue1.currency.symbol].join('/'),
-            })
+            // sendEvent({
+            //   category: 'Liquidity',
+            //   action: 'RemoveV3',
+            //   label: [liquidityValue0.currency.symbol, liquidityValue1.currency.symbol].join('/'),
+            // })
             setTxnHash(response.hash)
             setAttemptingTxn(false)
             addTransaction(response, {
