@@ -14,11 +14,13 @@ import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext
 import PriceImpactWarning from 'components/swap/PriceImpactWarning'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import TokenSwapRestrictionModal from 'components/TokenRestriction/TokenSwapRestrictionModal'
 import TokenSafetyModal from 'components/TokenSafety/TokenSafetyModal'
 import { MouseoverTooltip } from 'components/Tooltip'
 import { VioletCTA } from 'components/VioletCTA.tsx/VioletCTA'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
+import { useTokenRestriction } from 'hooks/useTokenRestriction'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import JSBI from 'jsbi'
@@ -208,6 +210,10 @@ export default function Swap({ className }: { className?: string }) {
     currencies,
     inputError: swapInputError,
   } = useDerivedSwapInfo()
+  const permittedToSwap = useTokenRestriction(
+    account,
+    currencies.INPUT && currencies.OUTPUT ? [currencies.INPUT, currencies.OUTPUT] : []
+  ).every((token) => token.isPermitted == true)
 
   const {
     wrapType,
@@ -524,6 +530,21 @@ export default function Swap({ className }: { className?: string }) {
     !showWrap && userHasSpecifiedInputOutput && (trade || routeIsLoading || routeIsSyncing)
   )
 
+  const [showSwapRestriction, setShowSwapRestriction] = useState(false)
+  const confirmSwap = () => {
+    if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
+      return
+    }
+    setSwapState({
+      attemptingTxn: true,
+      tradeToConfirm,
+      showConfirm,
+      swapErrorMessage: undefined,
+      txHash: undefined,
+    })
+    setEatPayload({ status: 'authorizing' })
+  }
+
   return (
     <Trace page={InterfacePageName.SWAP_PAGE} shouldLogImpression>
       <>
@@ -534,6 +555,17 @@ export default function Swap({ className }: { className?: string }) {
           onContinue={handleConfirmTokenWarning}
           onCancel={handleDismissTokenWarning}
           showCancel={true}
+        />
+        <TokenSwapRestrictionModal
+          isOpen={showSwapRestriction}
+          onCancel={() => {
+            setShowSwapRestriction(false)
+            handleConfirmDismiss()
+          }}
+          onConfirm={() => {
+            setShowSwapRestriction(false)
+            confirmSwap()
+          }}
         />
         <PageWrapper>
           <SwapWrapper className={className} id="swap-page">
@@ -548,18 +580,12 @@ export default function Swap({ className }: { className?: string }) {
               recipient={recipient}
               allowedSlippage={allowedSlippage}
               onConfirm={() => {
-                if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
-                  return
-                }
                 analytics.track(AnalyticsEvent.SWAP_CONFIRM_SWAP_CLICKED)
-                setSwapState({
-                  attemptingTxn: true,
-                  tradeToConfirm,
-                  showConfirm,
-                  swapErrorMessage: undefined,
-                  txHash: undefined,
-                })
-                setEatPayload({ status: 'authorizing' })
+                if (!permittedToSwap) {
+                  setShowSwapRestriction(true)
+                } else {
+                  confirmSwap()
+                }
               }}
               swapErrorMessage={swapErrorMessage}
               onDismiss={handleConfirmDismiss}
