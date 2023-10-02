@@ -40,9 +40,7 @@ export default function TokenSelectRestrictionModal({
   const buttons = (
     <>
       <StyledButton onClick={() => onCancel(true)}>I understand</StyledButton>
-      <StyledLink onClick={() => onCancel(false)}>
-        Select a different token
-      </StyledLink>
+      <StyledLink onClick={() => onCancel(false)}>Select a different token</StyledLink>
     </>
   )
 
