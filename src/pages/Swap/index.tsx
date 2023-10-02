@@ -20,7 +20,7 @@ import { MouseoverTooltip } from 'components/Tooltip'
 import { VioletCTA } from 'components/VioletCTA.tsx/VioletCTA'
 import { isSupportedChain } from 'constants/chains'
 import { useSwapCallback } from 'hooks/useSwapCallback'
-import { useTokenRestriction } from 'hooks/useTokenRestriction'
+import { useTokenPermit } from 'hooks/useTokenPermit'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import JSBI from 'jsbi'
@@ -210,10 +210,8 @@ export default function Swap({ className }: { className?: string }) {
     currencies,
     inputError: swapInputError,
   } = useDerivedSwapInfo()
-  const permittedToSwap = useTokenRestriction(
-    account,
-    currencies.INPUT && currencies.OUTPUT ? [currencies.INPUT, currencies.OUTPUT] : []
-  ).every((token) => token.isPermitted == true)
+  const permittedToSwapInput = useTokenPermit(account, chainId, currencies.INPUT)
+  const permittedToSwapOutput = useTokenPermit(account, chainId, currencies.OUTPUT)
 
   const {
     wrapType,
@@ -581,7 +579,7 @@ export default function Swap({ className }: { className?: string }) {
               allowedSlippage={allowedSlippage}
               onConfirm={() => {
                 analytics.track(AnalyticsEvent.SWAP_CONFIRM_SWAP_CLICKED)
-                if (!permittedToSwap) {
+                if (!permittedToSwapInput || !permittedToSwapOutput) {
                   setShowSwapRestriction(true)
                 } else {
                   confirmSwap()

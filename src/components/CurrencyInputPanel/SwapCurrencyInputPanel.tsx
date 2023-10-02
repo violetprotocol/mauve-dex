@@ -7,6 +7,7 @@ import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { isSupportedChain } from 'constants/chains'
+import { useTokenPermit } from 'hooks/useTokenPermit'
 import { darken } from 'polished'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { AlertTriangle, Lock } from 'react-feather'
@@ -23,7 +24,6 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { RowBetween, RowFixed } from '../Row'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { FiatValue } from './FiatValue'
-import { useTokenPermit } from 'hooks/useTokenPermit'
 
 const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${flexColumnNoWrap};
@@ -223,10 +223,8 @@ export default function SwapCurrencyInputPanel({
   const [fiatValueIsLoading, setFiatValueIsLoading] = useState(false)
   const { account, chainId } = useWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const isCurrencyPermitted = useTokenPermit(account, chainId, currency)
   const theme = useTheme()
-
-  // const currencyIsPermitted = useTokenPermit(account, chainId, currency)
-  // console.log(currency)
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -296,8 +294,9 @@ export default function SwapCurrencyInputPanel({
                           currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
                         : currency?.symbol) || <>Select token</>}
                     </StyledTokenName>
-                    {/* {currency && !currencyIsPermitted == true ? 
-                      <AlertTriangle color={theme.accentWarning} size="16px" /> : null} */}
+                    {currency && !isCurrencyPermitted == true ? (
+                      <AlertTriangle color={theme.accentWarning} size="16px" />
+                    ) : null}
                   </>
                 )}
               </RowFixed>
