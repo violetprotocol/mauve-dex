@@ -4,7 +4,7 @@ import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-event
 import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import { sendEvent } from 'components/analytics'
-import TokenRestrictionModal from 'components/TokenRestriction/TokenRestrictionModal'
+import TokenRestrictionModal from 'components/TokenRestriction/TokenSelectRestrictionModal'
 import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import useDebounce from 'hooks/useDebounce'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
@@ -76,7 +76,7 @@ export function CurrencySearch({
   // TO-DO find out why non-conditional usage of this hook blocks the UI thread
   const searchTokenWithRestrictions = useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
 
-  const [restrictedTokenClicked, setRestrictedTokenClicked] = useState(TOKEN_RESTRICTION_TYPE.NONE)
+  const [restrictedTokenClicked, setRestrictedTokenClicked] = useState<CurrencyWithRestriction>()
   const [openTokenRestrictionModal, setOpenTokenRestrictionModal] = useState(false)
 
   useEffect(() => {
@@ -138,19 +138,22 @@ export function CurrencySearch({
 
   const handleCurrencySelect = useCallback(
     (currency: CurrencyWithRestriction, hasWarning?: boolean) => {
-      if (!currency.isPermitted) {
-        setRestrictedTokenClicked(currency.restriction)
+      if (!currency.isPermitted && !openTokenRestrictionModal) {
+        setRestrictedTokenClicked(currency)
         setOpenTokenRestrictionModal(true)
       } else {
         onCurrencySelect(currency.currency, hasWarning)
         if (!hasWarning) onDismiss()
       }
     },
-    [onDismiss, onCurrencySelect]
+    [onDismiss, onCurrencySelect, openTokenRestrictionModal]
   )
 
-  const handleCloseRestrictionWarning = () => {
+  const handleCloseRestrictionWarning = (understood: boolean) => {
     setOpenTokenRestrictionModal(false)
+    if (understood && restrictedTokenClicked) {
+      handleCurrencySelect(restrictedTokenClicked)
+    }
   }
 
   // clear the input on open
@@ -294,7 +297,7 @@ export function CurrencySearch({
           </Column>
         )}
         <TokenRestrictionModal
-          restriction={restrictedTokenClicked}
+          restriction={restrictedTokenClicked?.restriction ?? TOKEN_RESTRICTION_TYPE.NONE}
           isOpen={openTokenRestrictionModal}
           onCancel={handleCloseRestrictionWarning}
         />

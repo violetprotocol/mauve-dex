@@ -37,8 +37,8 @@ const DetailsRow = styled.div`
 `
 
 const StyledLink = styled(ExternalLink)`
-  background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.backgroundContrast};
+  background-color: ${({ theme }) => theme.accentWarning};
+  border: 1px solid ${({ theme }) => theme.accentWarning};
   border-radius: ${20}px;
   color: ${({ theme }) => theme.textPrimary};
   cursor: pointer;
@@ -50,9 +50,10 @@ const StyledLink = styled(ExternalLink)`
 
 type TokenRestrictionMessageProps = {
   restriction: TOKEN_RESTRICTION_TYPE
+  content?: React.ReactElement
 }
 
-export default function TokenRestrictionMessage({ restriction }: TokenRestrictionMessageProps) {
+export default function TokenRestrictionMessage({ restriction, content }: TokenRestrictionMessageProps) {
   const backgroundColor = useTokenWarningColor(WARNING_LEVEL.MEDIUM)
   const textColor = useTokenWarningTextColor(WARNING_LEVEL.MEDIUM)
   const { heading, description, action, link } = getRestrictionCopy(restriction)
@@ -74,6 +75,7 @@ export default function TokenRestrictionMessage({ restriction }: TokenRestrictio
           <>{action}</>
         </StyledLink>
       </AutoColumn>
+      <AutoColumn>{content}</AutoColumn>
     </Label>
   )
 }
