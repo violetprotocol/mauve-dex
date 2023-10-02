@@ -1,7 +1,7 @@
 import { Trace, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName, InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
-import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
+import { useAnalytics } from 'components/analytics'
 import { ButtonGray, ButtonPrimary, ButtonText } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { FlyoutAlignment, Menu } from 'components/Menu'
@@ -196,7 +196,7 @@ function WrongNetworkCard() {
 export default function Pool() {
   const { account, chainId } = useWeb3React()
   const toggleWalletModal = useToggleWalletModal()
-  const { analytics } = useAnalyticsContext()
+  const { analytics } = useAnalytics()
 
   // Segment Page view analytics
   useEffect(() => {

@@ -7,8 +7,7 @@ import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprot
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
-import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
+import { useAnalytics } from 'components/analytics'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
@@ -113,7 +112,7 @@ export default function AddLiquidity() {
     userAddress: account,
   })
   const embeddedAuthRef = useEmbeddedAuthorizationRef()
-  const { analytics } = useAnalyticsContext()
+  const { analytics } = useAnalytics()
 
   // Segment Page view analytics
   useEffect(() => {
@@ -325,11 +324,11 @@ export default function AddLiquidity() {
               feeAmount: position.pool.fee,
             })
             setTxHash(response.hash)
-            sendEvent({
-              category: 'Liquidity',
-              action: 'Add',
-              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
-            })
+            // sendEvent({
+            //   category: 'Liquidity',
+            //   action: 'Add',
+            //   label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
+            // })
           })
       })
       .catch((error) => {
