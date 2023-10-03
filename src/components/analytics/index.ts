@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { UaEventOptions } from 'react-ga4/types/ga4'
 import { isMobile } from 'utils/userAgent'
 

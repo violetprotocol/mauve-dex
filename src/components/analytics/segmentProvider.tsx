@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { AnalyticsBrowser } from '@segment/analytics-next'
 import React, { useMemo } from 'react'
 
