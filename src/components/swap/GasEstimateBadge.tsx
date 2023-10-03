@@ -1,5 +1,5 @@
 import { Currency, TradeType } from '@violetprotocol/mauve-sdk-core'
-import { sendEvent } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer } from 'components/Loader/styled'
 import { RowFixed } from 'components/Row'
@@ -83,12 +83,12 @@ export default function GasEstimateBadge({
         )
       }
       placement="bottom"
-      onOpen={() =>
-        sendEvent({
-          category: 'Gas',
-          action: 'Gas Details Tooltip Open',
-        })
-      }
+      // onOpen={() =>
+      //   sendEvent({
+      //     category: 'Gas',
+      //     action: 'Gas Details Tooltip Open',
+      //   })
+      // }
     >
       <LoadingOpacityContainer $loading={loading}>
         <GasWrapper>

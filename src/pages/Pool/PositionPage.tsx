@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { Trace } from '@uniswap/analytics'
@@ -7,7 +8,6 @@ import { EATMulticall, NonfungiblePositionManager, Pool, Position } from '@viole
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
 import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import Badge from 'components/Badge'
 import { ButtonConfirmed, ButtonGray, ButtonPrimary, VioletProtectedButtonPrimary } from 'components/Button'
@@ -504,12 +504,6 @@ export function PositionPage() {
           .then((response: TransactionResponse) => {
             setCollectMigrationHash(response.hash)
             setCollecting(false)
-
-            sendEvent({
-              category: 'Liquidity',
-              action: 'CollectV3',
-              label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
-            })
 
             addTransaction(response, {
               type: TransactionType.COLLECT_FEES,

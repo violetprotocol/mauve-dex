@@ -1,4 +1,4 @@
-import { sendEvent } from 'components/analytics'
+/* eslint-disable import/no-unused-modules */
 import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { ButtonOutlined } from 'components/Button'
 import { AutoRow } from 'components/Row'
@@ -22,10 +22,6 @@ export default function PresetsButtons({ setFullRange }: { setFullRange: () => v
       <Button
         onClick={() => {
           setFullRange()
-          sendEvent({
-            category: 'Liquidity',
-            action: 'Full Range Clicked',
-          })
           analytics.track(AnalyticsEvent.POOL_NEW_POSITION_FULL_RANGE_CLICKED)
         }}
       >

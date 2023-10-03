@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
@@ -5,7 +6,6 @@ import { EATMulticall, NonfungiblePositionManager } from '@violetprotocol/mauve-
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
 import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import RangeBadge from 'components/Badge/RangeBadge'
 import { ButtonConfirmed, VioletProtectedButtonPrimary } from 'components/Button'
@@ -171,11 +171,6 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           .getSigner()
           .sendTransaction(newTxn)
           .then((response: TransactionResponse) => {
-            sendEvent({
-              category: 'Liquidity',
-              action: 'RemoveV3',
-              label: [liquidityValue0.currency.symbol, liquidityValue1.currency.symbol].join('/'),
-            })
             setTxnHash(response.hash)
             setAttemptingTxn(false)
             addTransaction(response, {

@@ -1,7 +1,7 @@
 import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
+// import { sendEvent } from 'components/analytics'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import { RowBetween } from 'components/Row'
@@ -98,10 +98,10 @@ export default function FeeSelector({
 
   const handleFeePoolSelectWithEvent = useCallback(
     (fee: FeeAmount) => {
-      sendEvent({
-        category: 'FeePoolSelect',
-        action: 'Manual',
-      })
+      // sendEvent({
+      //   category: 'FeePoolSelect',
+      //   action: 'Manual',
+      // })
       handleFeePoolSelect(fee)
     },
     [handleFeePoolSelect]

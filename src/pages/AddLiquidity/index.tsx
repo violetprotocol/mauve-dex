@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unused-modules */
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { TraceEvent } from '@uniswap/analytics'
@@ -7,7 +8,6 @@ import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprot
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { sendEvent } from 'components/analytics'
 import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
@@ -325,11 +325,6 @@ export default function AddLiquidity() {
               feeAmount: position.pool.fee,
             })
             setTxHash(response.hash)
-            sendEvent({
-              category: 'Liquidity',
-              action: 'Add',
-              label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
-            })
             hasExistingPosition
               ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_TRANSACTION_SUCCESSFUL)
               : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_TRANSACTION_SUCCESSFUL)
