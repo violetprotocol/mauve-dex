@@ -2,11 +2,13 @@ import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/provid
 import { sendAnalyticsEvent } from '@uniswap/analytics'
 import { SwapEventName } from '@uniswap/analytics-events'
 import { EATMulticallExtended } from '@violetprotocol/mauve-router-sdk'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { useVioletEAT } from 'hooks/useVioletSwapEAT'
 import { formatSwapSignedAnalyticsEventProperties } from 'lib/utils/analytics'
 import { useMemo } from 'react'
 import isZero from 'utils/isZero'
 import { swapErrorToUserReadableMessage } from 'utils/swapErrorToUserReadableMessage'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 class InvalidSwapError extends Error {}
 
@@ -21,6 +23,7 @@ export default function useSendSwapTransaction({
   provider?: JsonRpcProvider
 }): { callback: null | (() => Promise<TransactionResponse>) } {
   const { eatPayload, call, trade } = useVioletEAT()
+  const { analytics } = useAnalyticsContext()
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId) {
       return { callback: null }
@@ -91,15 +94,18 @@ export default function useSendSwapTransaction({
                 `Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.`
               )
             }
+            analytics.track(AnalyticsEvent.SWAP_WALLET_CONFIRM_TRANSACTION_CLICKED)
             return response
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001) {
+            if (error?.code === 4001 || error.reason === 'user rejected transaction') {
+              analytics.track(AnalyticsEvent.SWAP_WALLET_USER_REJECTED_TRANSACTION)
               throw new Error(`Transaction rejected`)
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, address, calldata, value)
+              analytics.track(AnalyticsEvent.SWAP_WALLET_TRANSACTION_FAILED)
 
               if (error instanceof InvalidSwapError) {
                 throw error
@@ -110,5 +116,5 @@ export default function useSendSwapTransaction({
           })
       },
     }
-  }, [account, chainId, provider, trade, call, eatPayload])
+  }, [account, chainId, provider, trade, call, eatPayload, analytics])
 }

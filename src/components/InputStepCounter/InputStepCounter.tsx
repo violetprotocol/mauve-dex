@@ -1,4 +1,5 @@
 import { FeeAmount } from '@violetprotocol/mauve-v3-sdk'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { ButtonGray } from 'components/Button'
 import { OutlineCard } from 'components/Card'
 import { AutoColumn } from 'components/Column'
@@ -6,6 +7,7 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Minus, Plus } from 'react-feather'
 import styled, { keyframes } from 'styled-components/macro'
 import { ThemedText } from 'theme'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import { Input as NumericalInput } from '../NumericalInput'
 
@@ -105,6 +107,8 @@ const StepCounter = ({
   // animation if parent value updates local value
   const [pulsing, setPulsing] = useState<boolean>(false)
 
+  const { analytics } = useAnalyticsContext()
+
   const handleOnFocus = () => {
     setUseLocalValue(true)
     setActive(true)
@@ -120,12 +124,14 @@ const StepCounter = ({
   const handleDecrement = useCallback(() => {
     setUseLocalValue(false)
     onUserInput(decrement())
-  }, [decrement, onUserInput])
+    analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CHANGED_PRICE_RANGE)
+  }, [decrement, onUserInput, analytics])
 
   const handleIncrement = useCallback(() => {
     setUseLocalValue(false)
     onUserInput(increment())
-  }, [increment, onUserInput])
+    analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CHANGED_PRICE_RANGE)
+  }, [increment, onUserInput, analytics])
 
   useEffect(() => {
     if (localValue !== value && !useLocalValue) {

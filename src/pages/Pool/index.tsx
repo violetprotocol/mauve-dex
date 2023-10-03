@@ -272,7 +272,15 @@ export default function Pool() {
                     )}
                   />
                 )}
-                <ResponsiveButtonPrimary data-cy="join-pool-button" id="join-pool-button" as={Link} to="/add/ETH">
+                <ResponsiveButtonPrimary
+                  data-cy="join-pool-button"
+                  id="join-pool-button"
+                  as={Link}
+                  to="/add/ETH"
+                  onClick={() => {
+                    analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CLICKED)
+                  }}
+                >
                   + <>New Position</>
                 </ResponsiveButtonPrimary>
               </ButtonRow>

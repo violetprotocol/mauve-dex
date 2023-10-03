@@ -185,11 +185,13 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               expectedAmountBaseRaw: liquidityValue0.quotient.toString(),
               expectedAmountQuoteRaw: liquidityValue1.quotient.toString(),
             })
+            analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_TRANSACTION_SUCCESSFUL)
           })
       })
       .catch((error) => {
         setAttemptingTxn(false)
         console.error(error)
+        analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_TRANSACTION_FAILED)
         logErrorWithNewRelic({
           error,
           errorString: 'error removing liquidity with violet EAT',
@@ -233,6 +235,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
     const calldata = EATMulticall.encodePostsignMulticall(v, r, s, expiry, calls)
     if (!calldata) {
+      analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
       throw new Error('Failed to generate calldata from violet EAT')
     }
 
@@ -240,6 +243,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   }
 
   const onBurn = async () => {
+    analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_CONFIRM_CLICKED)
     if (
       !positionManager ||
       !liquidityValue0 ||
@@ -305,6 +309,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
       if (!response) {
         setVioletError('FAILED_CALL')
+        analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
         return
       }
 
@@ -313,12 +318,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       if (!violet) {
         console.error(error)
         setVioletError(error?.code ?? 'FAILED_CALL')
+        analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
         return
       }
       const eat = violet.eat
 
       if (!eat?.signature || !eat?.expiry) {
         setVioletError(error?.code ?? 'FAILED_CALL')
+        analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
         return
       }
 
@@ -332,6 +339,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     } catch (error) {
       console.error('Error generating an EAT: ', error)
       setVioletError(error)
+      analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
       logErrorWithNewRelic({
         error,
         errorString: 'Failed generating a Violet EAT',
@@ -346,9 +354,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     if (txnHash) {
       onPercentSelectForSlider(0)
     }
+    analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_PREVIEW_DISMISSED)
     setAttemptingTxn(false)
     setTxnHash('')
-  }, [onPercentSelectForSlider, txnHash])
+  }, [onPercentSelectForSlider, txnHash, analytics])
 
   const pendingText = (
     <>
@@ -455,6 +464,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 }}
                 onFailed={(response: any) => {
                   console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                  analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_VIOLET_FAILED_CALL)
                   setVioletError(JSON.stringify(response?.code))
                 }}
               />
@@ -587,7 +597,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   <Toggle
                     id="receive-as-weth"
                     isActive={receiveWETH}
-                    toggle={() => setReceiveWETH((receiveWETH) => !receiveWETH)}
+                    toggle={() => {
+                      setReceiveWETH((receiveWETH) => !receiveWETH)
+                      analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_TOGGLE_WETH_COLLECT)
+                    }}
                   />
                 </RowBetween>
               )}
@@ -597,7 +610,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   <ButtonConfirmed
                     confirmed={false}
                     disabled={removed || percent === 0 || !liquidityValue0}
-                    onClick={() => setShowConfirm(true)}
+                    onClick={() => {
+                      setShowConfirm(true)
+                      analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_PREVIEW_CLICKED)
+                    }}
                     violetProtected
                   >
                     {removed ? <>Closed</> : error ?? <>Remove</>}
