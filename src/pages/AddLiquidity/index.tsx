@@ -7,7 +7,7 @@ import { EATMulticall, FeeAmount, NonfungiblePositionManager } from '@violetprot
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-import { useAnalytics } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import useParsedQueryString from 'hooks/useParsedQueryString'
 import { Call, handleErrorCodes } from 'hooks/useVioletAuthorize'
@@ -112,7 +112,7 @@ export default function AddLiquidity() {
     userAddress: account,
   })
   const embeddedAuthRef = useEmbeddedAuthorizationRef()
-  const { analytics } = useAnalytics()
+  const { analytics } = useAnalyticsContext()
 
   // Segment Page view analytics
   useEffect(() => {
@@ -324,11 +324,9 @@ export default function AddLiquidity() {
               feeAmount: position.pool.fee,
             })
             setTxHash(response.hash)
-            // sendEvent({
-            //   category: 'Liquidity',
-            //   action: 'Add',
-            //   label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/'),
-            // })
+            hasExistingPosition
+              ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_TRANSACTION_SUCCESSFUL)
+              : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_TRANSACTION_SUCCESSFUL)
           })
       })
       .catch((error) => {
@@ -338,7 +336,13 @@ export default function AddLiquidity() {
         if (error?.code !== 4001) {
           // TODO: Handle error gracefully if the EAT is expired
           console.error(error)
+          hasExistingPosition
+            ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_TRANSACTION_USER_REJECTED)
+            : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_TRANSACTION_USER_REJECTED)
         }
+        hasExistingPosition
+          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_TRANSACTION_FAILED)
+          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_TRANSACTION_FAILED)
         logErrorWithNewRelic({ error, errorString: 'violet add liquidity' })
       })
       .finally(() => {
@@ -461,6 +465,9 @@ export default function AddLiquidity() {
 
       if (!violet) {
         console.error(error)
+        hasExistingPosition
+          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_VIOLET_FAILED_CALL)
+          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_VIOLET_FAILED_CALL)
         setVioletError(error?.code ?? 'FAILED_CALL')
         return
       }
@@ -468,6 +475,9 @@ export default function AddLiquidity() {
 
       if (!eat?.signature || !eat?.expiry) {
         setVioletError(error?.code ?? 'FAILED_CALL')
+        hasExistingPosition
+          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_VIOLET_FAILED_CALL)
+          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_VIOLET_FAILED_CALL)
         return
       }
 
@@ -475,6 +485,9 @@ export default function AddLiquidity() {
     } catch (error) {
       console.error('Error generating an EAT: ', error)
       setVioletError(error)
+      hasExistingPosition
+        ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_VIOLET_FAILED_CALL)
+        : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_VIOLET_FAILED_CALL)
       logErrorWithNewRelic({ error, errorString: 'Failed generating a Violet EAT' })
       return
     }
@@ -515,8 +528,9 @@ export default function AddLiquidity() {
       } else {
         navigate(`/add/${idA}/${idB}`)
       }
+      analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CURRENCY_A_SELECTED)
     },
-    [handleCurrencySelect, currencyIdB, navigate]
+    [handleCurrencySelect, currencyIdB, navigate, analytics]
   )
 
   const handleCurrencyBSelect = useCallback(
@@ -527,8 +541,9 @@ export default function AddLiquidity() {
       } else {
         navigate(`/add/${idA}/${idB}`)
       }
+      analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CURRENCY_B_SELECTED)
     },
-    [handleCurrencySelect, currencyIdA, navigate]
+    [handleCurrencySelect, currencyIdA, navigate, analytics]
   )
 
   const handleFeePoolSelect = useCallback(
@@ -541,6 +556,10 @@ export default function AddLiquidity() {
   )
 
   const handleDismissConfirmation = useCallback(() => {
+    hasExistingPosition
+      ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_PREVIEW_DISMISSED)
+      : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_PREVIEW_DISMISSED)
+
     setShowConfirm(false)
     // if there was a tx hash, we want to clear the input
     if (txHash) {
@@ -551,7 +570,7 @@ export default function AddLiquidity() {
     setTxHash('')
     setPendingVioletAuth(false)
     setVioletError('')
-  }, [navigate, onFieldAInput, txHash])
+  }, [navigate, onFieldAInput, txHash, analytics, hasExistingPosition])
 
   const addIsUnsupported = useIsSwapUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
@@ -659,6 +678,9 @@ export default function AddLiquidity() {
         <ButtonError
           onClick={() => {
             setShowConfirm(true)
+            hasExistingPosition
+              ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_PREVIEW_CLICKED)
+              : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_PREVIEW_CLICKED)
           }}
           disabled={
             !isValid ||
@@ -729,7 +751,15 @@ export default function AddLiquidity() {
                   />
                 )}
                 bottomContent={() => (
-                  <VioletProtectedButtonPrimary style={{ marginTop: '1rem' }} onClick={onAdd}>
+                  <VioletProtectedButtonPrimary
+                    style={{ marginTop: '1rem' }}
+                    onClick={() => {
+                      hasExistingPosition
+                        ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_CONFIRM_CLICKED)
+                        : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_CONFIRM_CLICKED)
+                      onAdd()
+                    }}
+                  >
                     <Text fontWeight={500} fontSize={20}>
                       <>Add</>
                     </Text>
@@ -849,9 +879,17 @@ export default function AddLiquidity() {
 
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.CURRENCY_A]}
-                      onUserInput={onFieldAInput}
+                      onUserInput={(value: string) => {
+                        onFieldAInput(value)
+                        hasExistingPosition
+                          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_DEPOSIT_CURRENCY_A_INPUT)
+                          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_DEPOSIT_CURRENCY_A_INPUT)
+                      }}
                       onMax={() => {
                         onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                        hasExistingPosition
+                          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_DEPOSIT_CURRENCY_A_MAX)
+                          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_DEPOSIT_CURRENCY_A_MAX)
                       }}
                       showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
                       currency={currencies[Field.CURRENCY_A] ?? null}
@@ -863,9 +901,17 @@ export default function AddLiquidity() {
 
                     <CurrencyInputPanel
                       value={formattedAmounts[Field.CURRENCY_B]}
-                      onUserInput={onFieldBInput}
+                      onUserInput={(value: string) => {
+                        onFieldBInput(value)
+                        hasExistingPosition
+                          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_DEPOSIT_CURRENCY_B_INPUT)
+                          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_DEPOSIT_CURRENCY_B_INPUT)
+                      }}
                       onMax={() => {
                         onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                        hasExistingPosition
+                          ? analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_DEPOSIT_CURRENCY_B_MAX)
+                          : analytics.track(AnalyticsEvent.ADD_LIQUIDITY_DEPOSIT_CURRENCY_B_MAX)
                       }}
                       showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                       fiatValue={usdcValues[Field.CURRENCY_B]}

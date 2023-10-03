@@ -2,6 +2,7 @@ import { Currency } from '@violetprotocol/mauve-sdk-core'
 import { EmbeddedAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import Badge from 'components/Badge'
 import { getChainInfo } from 'constants/chainInfo'
 import { SupportedL2ChainId } from 'constants/chains'
@@ -12,6 +13,7 @@ import { AlertCircle, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { useIsTransactionConfirmed, useTransaction } from 'state/transactions/hooks'
 import styled, { useTheme } from 'styled-components/macro'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import Circle from '../../assets/images/blue-loader.svg'
 import { ExternalLink, ThemedText } from '../../theme'
@@ -251,6 +253,7 @@ function L2Content({
   isEnrolled?: boolean | null
 }) {
   const theme = useTheme()
+  const { analytics } = useAnalyticsContext()
 
   const transaction = useTransaction(hash)
   const confirmed = useIsTransactionConfirmed(hash)
@@ -262,6 +265,12 @@ function L2Content({
     : undefined
 
   const info = getChainInfo(chainId)
+
+  useEffect(() => {
+    if (confirmed) {
+      analytics.track(AnalyticsEvent.SWAP_TRANSACTION_SUCCESSFUL)
+    }
+  }, [confirmed, analytics])
 
   return (
     <Wrapper>

@@ -1,7 +1,7 @@
 import { Trace, TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName, InterfacePageName } from '@uniswap/analytics-events'
 import { useWeb3React } from '@web3-react/core'
-import { useAnalytics } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { ButtonGray, ButtonPrimary, ButtonText } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { FlyoutAlignment, Menu } from 'components/Menu'
@@ -196,7 +196,7 @@ function WrongNetworkCard() {
 export default function Pool() {
   const { account, chainId } = useWeb3React()
   const toggleWalletModal = useToggleWalletModal()
-  const { analytics } = useAnalytics()
+  const { analytics } = useAnalyticsContext()
 
   // Segment Page view analytics
   useEffect(() => {
@@ -272,7 +272,15 @@ export default function Pool() {
                     )}
                   />
                 )}
-                <ResponsiveButtonPrimary data-cy="join-pool-button" id="join-pool-button" as={Link} to="/add/ETH">
+                <ResponsiveButtonPrimary
+                  data-cy="join-pool-button"
+                  id="join-pool-button"
+                  as={Link}
+                  to="/add/ETH"
+                  onClick={() => {
+                    analytics.track(AnalyticsEvent.POOL_NEW_POSITION_CLICKED)
+                  }}
+                >
                   + <>New Position</>
                 </ResponsiveButtonPrimary>
               </ButtonRow>

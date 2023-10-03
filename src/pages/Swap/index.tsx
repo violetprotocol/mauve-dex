@@ -10,8 +10,7 @@ import {
 import { Trade } from '@violetprotocol/mauve-router-sdk'
 import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
-import { useAnalytics } from 'components/analytics'
-// import { sendEvent } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import PriceImpactWarning from 'components/swap/PriceImpactWarning'
 import SwapDetailsDropdown from 'components/swap/SwapDetailsDropdown'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
@@ -152,7 +151,7 @@ export default function Swap({ className }: { className?: string }) {
   const [newSwapQuoteNeedsLogging, setNewSwapQuoteNeedsLogging] = useState(true)
   const [fetchingSwapQuoteStartTime, setFetchingSwapQuoteStartTime] = useState<Date | undefined>()
   const { setEatPayload, eatPayload, onTransactionSuccess, onTransactionDismiss } = useVioletEAT()
-  const { analytics } = useAnalytics()
+  const { analytics } = useAnalyticsContext()
 
   // Segment Page view analytics
   useEffect(() => {
@@ -307,6 +306,7 @@ export default function Swap({ className }: { className?: string }) {
 
   const [approvalPending, setApprovalPending] = useState<boolean>(false)
   const handleApprove = useCallback(async () => {
+    analytics.track(AnalyticsEvent.SWAP_BASE_CURRENCY_APPROVAL_CLICKED)
     setApprovalPending(true)
     try {
       if (signatureState === UseERC20PermitState.NOT_SIGNED && gatherPermitSignature) {
@@ -320,17 +320,11 @@ export default function Swap({ className }: { className?: string }) {
         }
       } else {
         await approveCallback()
-
-        // sendEvent({
-        //   category: 'Swap',
-        //   action: 'Approve',
-        //   label: [TRADE_STRING, trade?.inputAmount?.currency.symbol].join('/'),
-        // })
       }
     } finally {
       setApprovalPending(false)
     }
-  }, [signatureState, gatherPermitSignature, approveCallback])
+  }, [signatureState, gatherPermitSignature, approveCallback, analytics])
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -454,7 +448,8 @@ export default function Swap({ className }: { className?: string }) {
       onUserInput(Field.INPUT, '')
     }
     onTransactionDismiss()
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, onTransactionDismiss])
+    analytics.track(AnalyticsEvent.SWAP_CLOSE_CONFIRMATION_CLICKED)
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, onTransactionDismiss, analytics])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn, showConfirm })
@@ -462,10 +457,11 @@ export default function Swap({ className }: { className?: string }) {
 
   const handleInputSelect = useCallback(
     (inputCurrency: Currency) => {
+      analytics.track(AnalyticsEvent.SWAP_INPUT_CURRENCY_SELECTED + inputCurrency.symbol)
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, inputCurrency)
     },
-    [onCurrencySelection]
+    [onCurrencySelection, analytics]
   )
 
   const handleMaxInput = useCallback(() => {
@@ -477,8 +473,11 @@ export default function Swap({ className }: { className?: string }) {
   }, [maxInputAmount, onUserInput])
 
   const handleOutputSelect = useCallback(
-    (outputCurrency: Currency) => onCurrencySelection(Field.OUTPUT, outputCurrency),
-    [onCurrencySelection]
+    (outputCurrency: Currency) => {
+      analytics.track(AnalyticsEvent.SWAP_OUTPUT_CURRENCY_SELECTED + outputCurrency.symbol)
+      onCurrencySelection(Field.OUTPUT, outputCurrency)
+    },
+    [onCurrencySelection, analytics]
   )
 
   const swapIsUnsupported = useIsSwapUnsupported(currencies[Field.INPUT], currencies[Field.OUTPUT])
@@ -552,6 +551,7 @@ export default function Swap({ className }: { className?: string }) {
                 if (stablecoinPriceImpact && !confirmPriceImpactWithoutFee(stablecoinPriceImpact)) {
                   return
                 }
+                analytics.track(AnalyticsEvent.SWAP_CONFIRM_SWAP_CLICKED)
                 setSwapState({
                   attemptingTxn: true,
                   tradeToConfirm,

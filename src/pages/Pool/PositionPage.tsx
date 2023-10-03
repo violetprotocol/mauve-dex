@@ -7,7 +7,7 @@ import { EATMulticall, NonfungiblePositionManager, Pool, Position } from '@viole
 import { EAT, EmbeddedAuthorization, useAuthorization, useEnrollment } from '@violetprotocol/sdk'
 import { useEmbeddedAuthorizationRef } from '@violetprotocol/sdk-web3-react'
 import { useWeb3React } from '@web3-react/core'
-// import { sendEvent } from 'components/analytics'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import Badge from 'components/Badge'
 import { ButtonConfirmed, ButtonGray, ButtonPrimary, VioletProtectedButtonPrimary } from 'components/Button'
 import { DarkCard, LightCard } from 'components/Card'
@@ -46,6 +46,7 @@ import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { formatTickPrice } from 'utils/formatTickPrice'
 import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 import { unwrappedToken } from 'utils/unwrappedToken'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 import { getVioletAuthzPayloadFromCall } from 'utils/violet/authorizeProps'
 
 import RangeBadge from '../../components/Badge/RangeBadge'
@@ -503,12 +504,6 @@ export function PositionPage() {
             setCollectMigrationHash(response.hash)
             setCollecting(false)
 
-            // sendEvent({
-            //   category: 'Liquidity',
-            //   action: 'CollectV3',
-            //   label: [currency0ForFeeCollectionPurposes.symbol, currency1ForFeeCollectionPurposes.symbol].join('/'),
-            // })
-
             addTransaction(response, {
               type: TransactionType.COLLECT_FEES,
               currencyId0: currencyId(currency0ForFeeCollectionPurposes),
@@ -516,11 +511,13 @@ export function PositionPage() {
               expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
               expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
             })
+            analytics.track(AnalyticsEvent.POOL_COLLECT_TRANSACTION_SUCCESSFUL)
           })
       })
       .catch((error) => {
         setCollecting(false)
         console.error(error)
+        analytics.track(AnalyticsEvent.POOL_COLLECT_TRANSACTION_FAILED)
         logErrorWithNewRelic({ error, errorString: 'Failed to collect fees with violet EAT' })
       })
   }
@@ -561,6 +558,7 @@ export function PositionPage() {
 
     const calldata = EATMulticall.encodePostsignMulticall(v, r, s, expiry, calls)
     if (!calldata) {
+      analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
       throw new Error('Failed to generate calldata from violet EAT')
     }
 
@@ -579,6 +577,7 @@ export function PositionPage() {
     ) {
       return
     }
+    analytics.track(AnalyticsEvent.POOL_COLLECT_CONFIRM_CLICKED)
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
@@ -627,6 +626,7 @@ export function PositionPage() {
 
       if (!response) {
         setVioletError('FAILED_CALL')
+        analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
         return
       }
 
@@ -635,12 +635,14 @@ export function PositionPage() {
       if (!violet) {
         console.error(error)
         setVioletError(error?.code ?? 'FAILED_CALL')
+        analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
         return
       }
       const eat = violet.eat
 
       if (!eat?.signature || !eat?.expiry) {
         setVioletError(error?.code ?? 'FAILED_CALL')
+        analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
         return
       }
 
@@ -654,6 +656,7 @@ export function PositionPage() {
     } catch (error) {
       console.error('Error generating an EAT: ', error)
       setVioletError(error)
+      analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
       logErrorWithNewRelic({
         error,
         errorString: 'Failed generating a Violet EAT',
@@ -719,7 +722,10 @@ export function PositionPage() {
 
   const pendingText = 'Collecting fees'
 
+  const { analytics } = useAnalyticsContext()
+
   const handleDismissConfirmation = () => {
+    analytics.track(AnalyticsEvent.POOL_COLLECT_PREVIEW_DISMISSED)
     setShowConfirm(false)
   }
 
@@ -744,7 +750,10 @@ export function PositionPage() {
         <PageWrapper>
           <TransactionConfirmationModal
             isOpen={showConfirm}
-            onDismiss={() => setShowConfirm(false)}
+            onDismiss={() => {
+              setShowConfirm(false)
+              analytics.track(AnalyticsEvent.POOL_COLLECT_PREVIEW_DISMISSED)
+            }}
             attemptingTxn={collecting}
             hash={collectMigrationHash ?? ''}
             content={() =>
@@ -772,6 +781,7 @@ export function PositionPage() {
                     }}
                     onFailed={(response: any) => {
                       console.error(`Violet Embedded Auth failed: ${JSON.stringify(response, null, 2)}`)
+                      analytics.track(AnalyticsEvent.POOL_COLLECT_VIOLET_FAILED_CALL)
                       setVioletError(JSON.stringify(response?.code))
                     }}
                   />
@@ -796,6 +806,9 @@ export function PositionPage() {
           <AutoColumn gap="md">
             <AutoColumn gap="sm">
               <Link
+                onClick={() => {
+                  analytics.track(AnalyticsEvent.POSITION_BACK_BUTTON_CLICKED)
+                }}
                 data-cy="visit-pool"
                 style={{
                   textDecoration: 'none',
@@ -826,6 +839,9 @@ export function PositionPage() {
                   <RowFixed>
                     {currency0 && currency1 && feeAmount && tokenId ? (
                       <ButtonGray
+                        onClick={() => {
+                          analytics.track(AnalyticsEvent.POOL_INCREASE_LIQUIDITY_CLICKED)
+                        }}
                         as={Link}
                         to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                         width="fit-content"

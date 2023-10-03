@@ -1,6 +1,7 @@
 import { Currency, CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'
 import { Position } from '@violetprotocol/mauve-v3-sdk'
 import { useWeb3React } from '@web3-react/core'
+import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { useToken } from 'hooks/Tokens'
 import { usePool } from 'hooks/usePools'
 import { useV3PositionFees } from 'hooks/useV3PositionFees'
@@ -8,6 +9,7 @@ import { ReactNode, useCallback, useMemo } from 'react'
 import { useAppDispatch, useAppSelector } from 'state/hooks'
 import { PositionDetails } from 'types/position'
 import { unwrappedToken } from 'utils/unwrappedToken'
+import { AnalyticsEvent } from 'utils/violet/analyticsEvents'
 
 import { AppState } from '../../index'
 import { selectPercent } from './actions'
@@ -96,12 +98,30 @@ export function useBurnV3ActionHandlers(): {
   onPercentSelect: (percent: number) => void
 } {
   const dispatch = useAppDispatch()
+  const { analytics } = useAnalyticsContext()
 
   const onPercentSelect = useCallback(
     (percent: number) => {
       dispatch(selectPercent({ percent }))
+      switch (percent) {
+        case 25:
+          analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_25_PERCENT_CLICKED)
+          break
+        case 50:
+          analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_50_PERCENT_CLICKED)
+          break
+        case 75:
+          analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_75_PERCENT_CLICKED)
+          break
+        case 100:
+          analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_MAX_CLICKED)
+          break
+        default:
+          analytics.track(AnalyticsEvent.REMOVE_LIQUIDITY_CHANGED_SLIDER)
+          break
+      }
     },
-    [dispatch]
+    [dispatch, analytics]
   )
 
   return {
