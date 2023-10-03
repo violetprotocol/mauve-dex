@@ -4,7 +4,7 @@ import { InterfaceEventName, InterfaceModalName } from '@uniswap/analytics-event
 import { Currency, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 // import { sendEvent } from 'components/analytics'
-import TokenRestrictionModal from 'components/TokenRestriction/TokenSelectRestrictionModal'
+import TokenSelectRestrictionModal from 'components/TokenRestriction/TokenSelectRestrictionModal'
 import { TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import useDebounce from 'hooks/useDebounce'
 import { useOnClickOutside } from 'hooks/useOnClickOutside'
@@ -73,7 +73,6 @@ export function CurrencySearch({
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
-  // TO-DO find out why non-conditional usage of this hook blocks the UI thread
   const searchTokenWithRestrictions = useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
 
   const [restrictedTokenClicked, setRestrictedTokenClicked] = useState<CurrencyWithRestriction>()
@@ -300,7 +299,7 @@ export function CurrencySearch({
             </ThemedText.DeprecatedMain>
           </Column>
         )}
-        <TokenRestrictionModal
+        <TokenSelectRestrictionModal
           restriction={restrictedTokenClicked?.restriction ?? TOKEN_RESTRICTION_TYPE.NONE}
           isOpen={openTokenRestrictionModal}
           onCancel={handleCloseRestrictionWarning}
