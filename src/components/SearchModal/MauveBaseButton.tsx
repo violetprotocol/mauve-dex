@@ -9,7 +9,9 @@ import styled from 'styled-components/macro'
 import { currencyId } from 'utils/currencyId'
 
 const BaseWrapper = styled.div<{ restricted?: boolean; disable?: boolean }>`
-  border: 1px ${({restricted }) => (restricted ? 'dotted' : 'solid')} ${({ theme, disable, restricted }) => (restricted ? theme.accentWarning : disable ? theme.accentActive : theme.backgroundOutline)};
+  border: 1px ${({ restricted }) => (restricted ? 'dotted' : 'solid')}
+    ${({ theme, disable, restricted }) =>
+      restricted ? theme.accentWarning : disable ? theme.accentActive : theme.backgroundOutline};
   border-radius: 16px;
   display: flex;
   padding: 6px;
@@ -42,7 +44,7 @@ export default function MauveBaseButton({
   const blockedTokenOpacity = '0.6'
 
   const tokenButton = (
-    <BaseWrapper 
+    <BaseWrapper
       style={{ opacity: !isPermitted ? blockedTokenOpacity : '1' }}
       tabIndex={0}
       onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect({ currency, isPermitted, restriction })}

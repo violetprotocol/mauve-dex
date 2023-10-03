@@ -48,13 +48,6 @@ const CurrencyName = styled(Text)`
   text-overflow: ellipsis;
 `
 
-const Restriction = styled(Text)`
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
-
 const Tag = styled.div`
   background-color: ${({ theme }) => theme.textSoft};
   color: ${({ theme }) => theme.textSecondary};
