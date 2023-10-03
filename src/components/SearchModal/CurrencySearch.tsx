@@ -30,6 +30,9 @@ import { CurrencyRow, formatAnalyticsEventProperties } from './CurrencyList'
 import CurrencyList from './CurrencyList'
 import MauveBases from './MauveBases'
 import { PaddedColumn, Separator } from './styleds'
+import usePrevious from 'hooks/usePrevious'
+import { keccak256 } from 'ethers/lib/utils'
+import { useTokenPermit } from 'hooks/useTokenPermit'
 
 const ContentWrapper = styled(Column)`
   background-color: ${({ theme }) => theme.backgroundSurface};
@@ -59,7 +62,8 @@ export function CurrencySearch({
   onDismiss,
   isOpen,
 }: CurrencySearchProps) {
-  const { chainId, account } = useWeb3React()
+  console.log("CurrencySearch")
+  const { account, chainId } = useWeb3React()
   const theme = useTheme()
 
   const [tokenLoaderTimerElapsed, setTokenLoaderTimerElapsed] = useState(false)
@@ -74,7 +78,7 @@ export function CurrencySearch({
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
 
   // TO-DO find out why non-conditional usage of this hook blocks the UI thread
-  const searchTokenWithRestrictions = useTokenRestriction(account, searchToken ? [searchToken] : [])[0]
+  const { isPermitted: searchTokenIsPermitted, restriction: searchTokenRestriction } = useTokenPermit(account, chainId, searchToken)
 
   const [restrictedTokenClicked, setRestrictedTokenClicked] = useState<CurrencyWithRestriction>()
   const [openTokenRestrictionModal, setOpenTokenRestrictionModal] = useState(false)
@@ -116,192 +120,194 @@ export function CurrencySearch({
   const filteredSortedTokens = useSortTokensByQuery(debouncedQuery, sortedTokens)
   const filteredSortedTokensWithRestrictions = useTokenRestriction(account, filteredSortedTokens)
 
-  const native = useNativeCurrency()
-  const wrapped = native.wrapped
+  // const native = useNativeCurrency()
+  // const wrapped = native.wrapped
 
-  const searchCurrencies: CurrencyWithRestriction[] = useMemo(() => {
-    const s = debouncedQuery.toLowerCase().trim()
+  return <>placeholder</>
 
-    const tokens = filteredSortedTokensWithRestrictions.filter(
-      (t) => !(t.currency.equals(wrapped) || (disableNonToken && t.currency.isNative))
-    )
-    const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
-      (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
-    )
-    return [
-      ...natives.map((n) => {
-        return { currency: n, restriction: TOKEN_RESTRICTION_TYPE.NONE, isPermitted: true }
-      }),
-      ...tokens,
-    ]
-  }, [debouncedQuery, filteredSortedTokensWithRestrictions, wrapped, disableNonToken, native])
+  // const searchCurrencies: CurrencyWithRestriction[] = useMemo(() => {
+  //   const s = debouncedQuery.toLowerCase().trim()
 
-  const handleCurrencySelect = useCallback(
-    (currency: CurrencyWithRestriction, hasWarning?: boolean) => {
-      if (!currency.isPermitted && !openTokenRestrictionModal) {
-        setRestrictedTokenClicked(currency)
-        setOpenTokenRestrictionModal(true)
-      } else {
-        onCurrencySelect(currency.currency, hasWarning)
-        if (!hasWarning) onDismiss()
-      }
-    },
-    [onDismiss, onCurrencySelect, openTokenRestrictionModal]
-  )
+  //   const tokens = filteredSortedTokensWithRestrictions.filter(
+  //     (t) => !(t.currency.equals(wrapped) || (disableNonToken && t.currency.isNative))
+  //   )
+  //   const natives = (disableNonToken || native.equals(wrapped) ? [wrapped] : [native, wrapped]).filter(
+  //     (n) => n.symbol?.toLowerCase()?.indexOf(s) !== -1 || n.name?.toLowerCase()?.indexOf(s) !== -1
+  //   )
+  //   return [
+  //     ...natives.map((n) => {
+  //       return { currency: n, restriction: TOKEN_RESTRICTION_TYPE.NONE, isPermitted: true }
+  //     }),
+  //     ...tokens,
+  //   ]
+  // }, [debouncedQuery, filteredSortedTokensWithRestrictions, wrapped, disableNonToken, native])
 
-  const handleCloseRestrictionWarning = (understood: boolean) => {
-    setOpenTokenRestrictionModal(false)
-    if (understood && restrictedTokenClicked) {
-      handleCurrencySelect(restrictedTokenClicked)
-    }
-  }
-
-  // clear the input on open
-  useEffect(() => {
-    if (isOpen) setSearchQuery('')
-  }, [isOpen])
-
-  // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
-  // // manage focus on modal show
-  // const inputRef = useRef<HTMLInputElement>();
-  // const handleInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-  //   const input = event.target.value;
-  //   const checksummedInput = isAddress(input);
-  //   setSearchQuery(checksummedInput || input);
-  //   fixedList.current?.scrollTo(0);
-  // }, []);
-
-  // const handleEnter = useCallback(
-  //   (e: KeyboardEvent<HTMLInputElement>) => {
-  //     if (e.key === "Enter") {
-  //       const s = debouncedQuery.toLowerCase().trim();
-  //       if (s === native?.symbol?.toLowerCase()) {
-  //         handleCurrencySelect(native);
-  //       } else if (searchCurrencies.length > 0) {
-  //         if (
-  //           searchCurrencies[0].symbol?.toLowerCase() ===
-  //             debouncedQuery.trim().toLowerCase() ||
-  //           searchCurrencies.length === 1
-  //         ) {
-  //           handleCurrencySelect(searchCurrencies[0]);
-  //         }
-  //       }
+  // const handleCurrencySelect = useCallback(
+  //   (currency: CurrencyWithRestriction, hasWarning?: boolean) => {
+  //     if (!currency.isPermitted && !openTokenRestrictionModal) {
+  //       setRestrictedTokenClicked(currency)
+  //       setOpenTokenRestrictionModal(true)
+  //     } else {
+  //       onCurrencySelect(currency.currency, hasWarning)
+  //       if (!hasWarning) onDismiss()
   //     }
   //   },
-  //   [debouncedQuery, native, searchCurrencies, handleCurrencySelect]
-  // );
-
-  // menu ui
-  const [open, toggle] = useToggle(false)
-  const node = useRef<HTMLDivElement>()
-  useOnClickOutside(node, open ? toggle : undefined)
-
-  // if no results on main list, show option to expand into inactive
-  // const filteredInactiveTokens = useSearchInactiveTokenLists(
-  //   filteredTokens.length === 0 || (debouncedQuery.length > 2 && !isAddressSearch) ? debouncedQuery : undefined
+  //   [onDismiss, onCurrencySelect, openTokenRestrictionModal]
   // )
 
-  // Timeout token loader after 3 seconds to avoid hanging in a loading state.
-  useEffect(() => {
-    const tokenLoaderTimer = setTimeout(() => {
-      setTokenLoaderTimerElapsed(true)
-    }, 3000)
-    return () => clearTimeout(tokenLoaderTimer)
-  }, [])
+  // const handleCloseRestrictionWarning = (understood: boolean) => {
+  //   setOpenTokenRestrictionModal(false)
+  //   if (understood && restrictedTokenClicked) {
+  //     handleCurrencySelect(restrictedTokenClicked)
+  //   }
+  // }
 
-  return (
-    <ContentWrapper>
-      <Trace
-        name={InterfaceEventName.TOKEN_SELECTOR_OPENED}
-        modal={InterfaceModalName.TOKEN_SELECTOR}
-        shouldLogImpression
-      >
-        <PaddedColumn gap="16px">
-          <RowBetween>
-            <Text fontWeight={500} fontSize={16}>
-              <>Select a token</>
-            </Text>
-            <CloseIcon onClick={onDismiss} />
-          </RowBetween>
-          {/*   
-          // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
-              <Row>
-                <SearchInput
-                  type="text"
-                  id="token-search-input"
-                  placeholder={t`Search name or paste address`}
-                  autoComplete="off"
-                  value={searchQuery}
-                  ref={inputRef as RefObject<HTMLInputElement>}
-                  onChange={handleInput}
-                  onKeyDown={handleEnter}
-                />
-              </Row> */}
-          {showCommonBases && (
-            <MauveBases
-              chainId={chainId}
-              onSelect={handleCurrencySelect}
-              selectedCurrency={selectedCurrency}
-              searchQuery={searchQuery}
-              isAddressSearch={isAddressSearch}
-            />
-          )}
-        </PaddedColumn>
-        <Separator />
-        {searchTokenWithRestrictions && !searchTokenIsAdded ? (
-          <Column style={{ padding: '20px 0', height: '100%' }}>
-            <CurrencyRow
-              currency={searchTokenWithRestrictions.currency}
-              isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
-              isPermitted={searchTokenWithRestrictions.isPermitted}
-              restriction={searchTokenWithRestrictions.restriction}
-              onSelect={(hasWarning: boolean) =>
-                searchToken && handleCurrencySelect(searchTokenWithRestrictions, hasWarning)
-              }
-              otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
-              showCurrencyAmount={showCurrencyAmount}
-              eventProperties={formatAnalyticsEventProperties(
-                searchTokenWithRestrictions.currency as Token,
-                0,
-                [searchTokenWithRestrictions.currency as Token],
-                searchQuery,
-                isAddressSearch
-              )}
-            />
-          </Column>
-        ) : searchCurrencies?.length > 0 || isLoading ? (
-          <div style={{ flex: '1' }}>
-            <AutoSizer disableWidth>
-              {({ height }: { height: number }) => (
-                <CurrencyList
-                  height={height}
-                  currencies={searchCurrencies}
-                  // otherListTokens={filteredInactiveTokens}
-                  onCurrencySelect={handleCurrencySelect}
-                  otherCurrency={otherSelectedCurrency}
-                  selectedCurrency={selectedCurrency}
-                  fixedListRef={fixedList}
-                  showCurrencyAmount={showCurrencyAmount}
-                  isLoading={isLoading}
-                  searchQuery={searchQuery}
-                  isAddressSearch={isAddressSearch}
-                />
-              )}
-            </AutoSizer>
-          </div>
-        ) : (
-          <Column style={{ padding: '20px', height: '100%' }}>
-            <ThemedText.DeprecatedMain color={theme.textTertiary} textAlign="center" mb="20px">
-              <>No results found.</>
-            </ThemedText.DeprecatedMain>
-          </Column>
-        )}
-        <TokenRestrictionModal
-          restriction={restrictedTokenClicked?.restriction ?? TOKEN_RESTRICTION_TYPE.NONE}
-          isOpen={openTokenRestrictionModal}
-          onCancel={handleCloseRestrictionWarning}
-        />
-      </Trace>
-    </ContentWrapper>
-  )
+  // // clear the input on open
+  // // useEffect(() => {
+  // //   if (isOpen) setSearchQuery('')
+  // // }, [isOpen])
+
+  // // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
+  // // // manage focus on modal show
+  // // const inputRef = useRef<HTMLInputElement>();
+  // // const handleInput = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+  // //   const input = event.target.value;
+  // //   const checksummedInput = isAddress(input);
+  // //   setSearchQuery(checksummedInput || input);
+  // //   fixedList.current?.scrollTo(0);
+  // // }, []);
+
+  // // const handleEnter = useCallback(
+  // //   (e: KeyboardEvent<HTMLInputElement>) => {
+  // //     if (e.key === "Enter") {
+  // //       const s = debouncedQuery.toLowerCase().trim();
+  // //       if (s === native?.symbol?.toLowerCase()) {
+  // //         handleCurrencySelect(native);
+  // //       } else if (searchCurrencies.length > 0) {
+  // //         if (
+  // //           searchCurrencies[0].symbol?.toLowerCase() ===
+  // //             debouncedQuery.trim().toLowerCase() ||
+  // //           searchCurrencies.length === 1
+  // //         ) {
+  // //           handleCurrencySelect(searchCurrencies[0]);
+  // //         }
+  // //       }
+  // //     }
+  // //   },
+  // //   [debouncedQuery, native, searchCurrencies, handleCurrencySelect]
+  // // );
+
+  // // menu ui
+  // const [open, toggle] = useToggle(false)
+  // const node = useRef<HTMLDivElement>()
+  // useOnClickOutside(node, open ? toggle : undefined)
+
+  // // if no results on main list, show option to expand into inactive
+  // // const filteredInactiveTokens = useSearchInactiveTokenLists(
+  // //   filteredTokens.length === 0 || (debouncedQuery.length > 2 && !isAddressSearch) ? debouncedQuery : undefined
+  // // )
+
+  // // Timeout token loader after 3 seconds to avoid hanging in a loading state.
+  // // useEffect(() => {
+  // //   const tokenLoaderTimer = setTimeout(() => {
+  // //     setTokenLoaderTimerElapsed(true)
+  // //   }, 3000)
+  // //   return () => clearTimeout(tokenLoaderTimer)
+  // // }, [])
+
+  // return (
+  //   <ContentWrapper>
+  //     <Trace
+  //       name={InterfaceEventName.TOKEN_SELECTOR_OPENED}
+  //       modal={InterfaceModalName.TOKEN_SELECTOR}
+  //       shouldLogImpression
+  //     >
+  //       <PaddedColumn gap="16px">
+  //         <RowBetween>
+  //           <Text fontWeight={500} fontSize={16}>
+  //             <>Select a token</>
+  //           </Text>
+  //           <CloseIcon onClick={onDismiss} />
+  //         </RowBetween>
+  //         {/*   
+  //         // [MAUVE-DISABLED] We don't have a search input, as we don't have many tokens yet
+  //             <Row>
+  //               <SearchInput
+  //                 type="text"
+  //                 id="token-search-input"
+  //                 placeholder={t`Search name or paste address`}
+  //                 autoComplete="off"
+  //                 value={searchQuery}
+  //                 ref={inputRef as RefObject<HTMLInputElement>}
+  //                 onChange={handleInput}
+  //                 onKeyDown={handleEnter}
+  //               />
+  //             </Row> */}
+  //         {/* {showCommonBases && (
+  //           <MauveBases
+  //             chainId={chainId}
+  //             onSelect={handleCurrencySelect}
+  //             selectedCurrency={selectedCurrency}
+  //             searchQuery={searchQuery}
+  //             isAddressSearch={isAddressSearch}
+  //           />
+  //         )} */}
+  //       </PaddedColumn>
+  //       <Separator />
+  //       {searchToken && !searchTokenIsAdded ? (
+  //         <Column style={{ padding: '20px 0', height: '100%' }}>
+  //           <CurrencyRow
+  //             currency={searchToken}
+  //             isSelected={Boolean(searchToken && selectedCurrency && selectedCurrency.equals(searchToken))}
+  //             isPermitted={searchTokenIsPermitted}
+  //             restriction={searchTokenRestriction}
+  //             onSelect={(hasWarning: boolean) =>
+  //               searchToken && handleCurrencySelect({currency: searchToken, isPermitted: searchTokenIsPermitted, restriction: searchTokenRestriction}, hasWarning)
+  //             }
+  //             otherSelected={Boolean(searchToken && otherSelectedCurrency && otherSelectedCurrency.equals(searchToken))}
+  //             showCurrencyAmount={showCurrencyAmount}
+  //             eventProperties={formatAnalyticsEventProperties(
+  //               searchToken as Token,
+  //               0,
+  //               [searchToken as Token],
+  //               searchQuery,
+  //               isAddressSearch
+  //             )}
+  //           />
+  //         </Column>
+  //       ) : searchCurrencies?.length > 0 || isLoading ? (
+  //         <div style={{ flex: '1' }}>
+  //           <AutoSizer disableWidth>
+  //             {({ height }: { height: number }) => (
+  //               <CurrencyList
+  //                 height={height}
+  //                 currencies={searchCurrencies}
+  //                 // otherListTokens={filteredInactiveTokens}
+  //                 onCurrencySelect={handleCurrencySelect}
+  //                 otherCurrency={otherSelectedCurrency}
+  //                 selectedCurrency={selectedCurrency}
+  //                 fixedListRef={fixedList}
+  //                 showCurrencyAmount={showCurrencyAmount}
+  //                 isLoading={isLoading}
+  //                 searchQuery={searchQuery}
+  //                 isAddressSearch={isAddressSearch}
+  //               />
+  //             )}
+  //           </AutoSizer>
+  //         </div>
+  //       ) : (
+  //         <Column style={{ padding: '20px', height: '100%' }}>
+  //           <ThemedText.DeprecatedMain color={theme.textTertiary} textAlign="center" mb="20px">
+  //             <>No results found.</>
+  //           </ThemedText.DeprecatedMain>
+  //         </Column>
+  //       )}
+  //       <TokenRestrictionModal
+  //         restriction={restrictedTokenClicked?.restriction ?? TOKEN_RESTRICTION_TYPE.NONE}
+  //         isOpen={openTokenRestrictionModal}
+  //         onCancel={handleCloseRestrictionWarning}
+  //       />
+  //     </Trace>
+  //   </ContentWrapper>
+  // )
 }
