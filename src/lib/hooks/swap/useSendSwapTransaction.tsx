@@ -99,7 +99,7 @@ export default function useSendSwapTransaction({
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001 || error.reason === 'user rejected transaction') {
+            if (error?.code === 4001 || error.reason.toLowerCase().includes('user rejected transaction')) {
               analytics.track(AnalyticsEvent.SWAP_WALLET_USER_REJECTED_TRANSACTION)
               throw new Error(`Transaction rejected`)
             } else {
