@@ -223,7 +223,7 @@ export default function SwapCurrencyInputPanel({
   const [fiatValueIsLoading, setFiatValueIsLoading] = useState(false)
   const { account, chainId } = useWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const isCurrencyPermitted = useTokenPermit(account, chainId, currency)
+  const { isPermitted: isCurrencyPermitted } = useTokenPermit(account, chainId, currency)
   const theme = useTheme()
 
   const handleDismissSearch = useCallback(() => {

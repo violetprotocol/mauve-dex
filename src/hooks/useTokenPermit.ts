@@ -10,6 +10,7 @@ export const useTokenPermit = (
   currency: Currency | null | undefined
 ) => {
   const [isPermitted, setIsPermitted] = useState(false)
+  const [restriction, setRestriction] = useState<TOKEN_RESTRICTION_TYPE>(TOKEN_RESTRICTION_TYPE.NONE)
 
   useEffect(() => {
     const getStatus = async () => {
@@ -24,10 +25,12 @@ export const useTokenPermit = (
 
         setIsPermitted(hasStatus)
       }
+
+      setRestriction(restriction)
     }
 
     getStatus()
   }, [account, chainId, currency])
 
-  return isPermitted
+  return { isPermitted, restriction }
 }

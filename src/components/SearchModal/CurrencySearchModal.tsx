@@ -74,6 +74,7 @@ export default memo(function CurrencySearchModal({
         // Converts pixel units to vh for Modal component
         modalHeight = Math.min(Math.round((680 / windowHeight) * 100), 80)
       }
+      console.log("making currency search content")
       content = (
         <CurrencySearch
           isOpen={isOpen}
