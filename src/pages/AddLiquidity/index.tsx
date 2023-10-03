@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { TraceEvent } from '@uniswap/analytics'

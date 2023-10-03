@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Percent } from '@violetprotocol/mauve-sdk-core'

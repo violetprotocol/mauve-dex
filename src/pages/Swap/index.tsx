@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import { sendAnalyticsEvent, Trace, TraceEvent } from '@uniswap/analytics'
 import {
   BrowserEvent,

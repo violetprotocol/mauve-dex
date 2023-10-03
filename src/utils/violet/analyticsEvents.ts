@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 export enum AnalyticsEvent {
   SWAP_PAGE_VIEWED = 'Swap page viewed',
   ADD_LIQUIDITY_PAGE_VIEWED = 'Add Liquidity page viewed',

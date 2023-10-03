@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unused-modules */
 import useAnalyticsContext from 'components/analytics/useSegmentAnalyticsContext'
 import { ButtonOutlined } from 'components/Button'
 import { AutoRow } from 'components/Row'
