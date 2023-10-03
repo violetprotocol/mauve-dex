@@ -210,8 +210,8 @@ export default function Swap({ className }: { className?: string }) {
     currencies,
     inputError: swapInputError,
   } = useDerivedSwapInfo()
-  const { restriction: permittedToSwapInput } = useTokenPermit(account, chainId, currencies.INPUT)
-  const { restriction: permittedToSwapOutput } = useTokenPermit(account, chainId, currencies.OUTPUT)
+  const { isPermitted: permittedToSwapInput } = useTokenPermit(account, chainId, currencies.INPUT)
+  const { isPermitted: permittedToSwapOutput } = useTokenPermit(account, chainId, currencies.OUTPUT)
 
   const {
     wrapType,
