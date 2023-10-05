@@ -28,7 +28,9 @@ export function useV3SwapPools(
       allCurrencyCombinations.reduce<[Token, Token, FeeAmount][]>((list, [tokenA, tokenB]) => {
         return chainId === SupportedChainId.MAINNET
           ? list.concat([
+              [tokenA, tokenB, FeeAmount.LOWEST],
               [tokenA, tokenB, FeeAmount.LOW],
+              [tokenA, tokenB, FeeAmount.LOWER],
               [tokenA, tokenB, FeeAmount.MEDIUM],
               [tokenA, tokenB, FeeAmount.HIGH],
             ])
