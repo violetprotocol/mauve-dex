@@ -6,7 +6,7 @@ import TopLevelModals from 'components/TopLevelModals'
 import { opacify } from 'polished'
 import { Suspense, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import styled from 'styled-components/macro'
+import styled, { useTheme } from 'styled-components/macro'
 import { flexRowNoWrap } from 'theme/styles'
 import { Z_INDEX } from 'theme/zIndex'
 
@@ -24,6 +24,8 @@ import RemoveLiquidityV3 from './RemoveLiquidity/V3'
 import Swap from './Swap'
 import { RedirectPathToSwapOnly } from './Swap/redirects'
 import VioletCallback from './VioletCallback'
+import CookieConsent from "react-cookie-consent";
+import { MAUVE_LANDING } from 'constants/violet'
 
 // [MAUVE-DISABLED]
 // const TokenDetails = lazy(() => import('./TokenDetails'))
@@ -146,6 +148,7 @@ export default function App() {
   const { pathname } = useLocation()
   const currentPage = getCurrentPageFromLocation(pathname)
   const [scrolledState, setScrolledState] = useState(false)
+  const theme = useTheme()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -235,6 +238,25 @@ export default function App() {
         <MobileBottomBar>
           <PageTabs />
         </MobileBottomBar>
+        <CookieConsent
+          location="bottom"
+          buttonText="I understand"
+          cookieName="acceptance"
+          style={{ background: "rgba(0,0,0, 0.5)" }}
+          buttonStyle={{ color: theme.white, borderRadius: '0.5rem', fontWeight: 500, fontSize: "12px", backgroundColor: theme.accentAction }}
+          expires={150}
+          enableDeclineButton
+          declineButtonText="I decline"
+          onDecline={() => {
+            window.location.href = MAUVE_LANDING
+          }}
+          declineButtonStyle={{ color: theme.white, borderRadius: '0.5rem', fontWeight: 500, fontSize: "12px", backgroundColor: theme.accentFailure }}
+          flipButtons
+          setDeclineCookie={false}
+        >
+          <span style={{fontSize: "12px", fontWeight: 600}}>This website uses cookies to enhance the user experience.{"   "}</span>
+          <span style={{fontSize: "10px", paddingLeft: '10px'}}>By continuing to use Mauve, you are agreeing to usage of cookies.{" "}</span>
+        </CookieConsent>
       </Trace>
     </ErrorBoundary>
   )
