@@ -10,7 +10,12 @@ interface AnalyticsProviderProps {
 export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
   const writeKey = process.env.REACT_APP_SEGMENT_WRITE_KEY ?? ''
 
-  const value: AnalyticsContextProps = useMemo(() => ({ analytics: AnalyticsBrowser.load({ writeKey }) }), [writeKey])
+  const value: AnalyticsContextProps = useMemo(
+    () => ({
+      analytics: AnalyticsBrowser.load({ writeKey }, { disableClientPersistence: true }),
+    }),
+    [writeKey]
+  )
 
   return <AnalyticsContext.Provider value={value}>{children}</AnalyticsContext.Provider>
 }
