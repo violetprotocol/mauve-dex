@@ -77,7 +77,7 @@ const BackgroundGlowInner = styled.div`
 `
 
 const MobileBottomBar = styled.div`
-  z-index: ${Z_INDEX.sticky};
+  z-index: 0;
   position: fixed;
   display: flex;
   bottom: 0;
@@ -242,20 +242,21 @@ export default function App() {
           location="bottom"
           buttonText="I understand"
           cookieName="acceptance"
-          style={{ background: "rgba(0,0,0, 0.5)" }}
-          buttonStyle={{ color: theme.white, borderRadius: '0.5rem', fontWeight: 500, fontSize: "12px", backgroundColor: theme.accentAction }}
+          style={{ background: "#f5f5f5" }}
+          buttonStyle={{ color: theme.white, borderRadius: '1rem', fontWeight: 500, fontSize: "12px", backgroundColor: theme.accentAction }}
           expires={150}
           enableDeclineButton
           declineButtonText="I decline"
           onDecline={() => {
             window.location.href = MAUVE_LANDING
           }}
-          declineButtonStyle={{ color: theme.white, borderRadius: '0.5rem', fontWeight: 500, fontSize: "12px", backgroundColor: theme.accentFailure }}
+          declineButtonStyle={{ color: theme.white, borderRadius: '1rem', fontWeight: 500, fontSize: "12px", backgroundColor: opacify(24, theme.accentFailure) }}
           flipButtons
           setDeclineCookie={false}
         >
-          <span style={{fontSize: "12px", fontWeight: 600}}>This website uses cookies to enhance the user experience.{"   "}</span>
-          <span style={{fontSize: "10px", paddingLeft: '10px'}}>By continuing to use Mauve, you are agreeing to usage of cookies.{" "}</span>
+          <span style={{fontSize: "12px", fontWeight: 600, color: theme.textPrimary}}>This website uses cookies to enhance the user experience.{"   "}</span>
+          <span style={{fontSize: "10px", paddingLeft: '10px', color: theme.textPrimary}}>By continuing to use Mauve, you are agreeing to usage of cookies.{" "}</span>
+          <link href=''>Read our terms of use.</link>
         </CookieConsent>
       </Trace>
     </ErrorBoundary>
