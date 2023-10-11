@@ -20,10 +20,14 @@ export const useTokenPermit = (
       if (restriction === TOKEN_RESTRICTION_TYPE.NONE) {
         setIsPermitted(true)
       } else {
-        const violetIdContract = getVioletIDContract(chainId)
-        const hasStatus = await violetIdContract.callStatic.hasStatus(account, restriction)
+        try {
+          const violetIdContract = getVioletIDContract(chainId)
+          const hasStatus = await violetIdContract.callStatic.hasStatus(account, restriction)
 
-        setIsPermitted(hasStatus)
+          setIsPermitted(hasStatus)
+        } catch (e) {
+          console.error("useTokenPermit: checking violetId status failed")
+        }
       }
 
       setRestriction(restriction)
