@@ -26,7 +26,7 @@ export const useTokenPermit = (
 
           setIsPermitted(hasStatus)
         } catch (e) {
-          console.error("useTokenPermit: checking violetId status failed")
+          console.error('useTokenPermit: checking violetId status failed')
         }
       }
 
