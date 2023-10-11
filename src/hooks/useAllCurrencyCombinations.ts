@@ -22,7 +22,7 @@ export function useAllCurrencyCombinations(
     return [...common, ...additionalA, ...additionalB].filter((base) =>
       excludeTokens?.find((ex) => ex == base.address) ? false : true
     )
-  }, [chainId, tokenA, tokenB])
+  }, [chainId, tokenA, tokenB, excludeTokens])
 
   const basePairs: [Token, Token][] = useMemo(
     () =>
