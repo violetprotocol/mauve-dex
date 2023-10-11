@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core'
 import { SupportedChainId } from 'constants/chains'
 import { useMemo } from 'react'
 
+import { useTokensToExclude } from './Tokens'
 import { useAllCurrencyCombinations } from './useAllCurrencyCombinations'
 import { PoolState, usePools } from './usePools'
 
@@ -20,8 +21,8 @@ export function useV3SwapPools(
   loading: boolean
 } {
   const { chainId } = useWeb3React()
-
-  const allCurrencyCombinations = useAllCurrencyCombinations(currencyIn, currencyOut)
+  const excludeTokens = useTokensToExclude()
+  const allCurrencyCombinations = useAllCurrencyCombinations(currencyIn, currencyOut, excludeTokens)
 
   const allCurrencyCombinationsWithAllFees: [Token, Token, FeeAmount][] = useMemo(
     () =>
