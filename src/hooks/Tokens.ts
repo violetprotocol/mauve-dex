@@ -106,38 +106,6 @@ export function useUnsupportedTokens(): { [address: string]: Token } {
   return { ...unsupportedTokens, ...l2InferredBlockedTokens }
 }
 
-// export function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
-//   const lists = useAllLists()
-//   const inactiveUrls = DEFAULT_INACTIVE_LIST_URLS
-//   const { chainId } = useWeb3React()
-//   const activeTokens = useAllTokens()
-//   return useMemo(() => {
-//     if (!search || search.trim().length === 0) return []
-//     const tokenFilter = getTokenFilter(search)
-//     const result: WrappedTokenInfo[] = []
-//     const addressSet: { [address: string]: true } = {}
-//     for (const url of inactiveUrls) {
-//       const list = lists[url].current
-//       if (!list) continue
-//       for (const tokenInfo of list.tokens) {
-//         if (tokenInfo.chainId === chainId && tokenFilter(tokenInfo)) {
-//           try {
-//             const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo, list)
-//             if (!(wrapped.address in activeTokens) && !addressSet[wrapped.address]) {
-//               addressSet[wrapped.address] = true
-//               result.push(wrapped)
-//               if (result.length >= minResults) return result
-//             }
-//           } catch {
-//             continue
-//           }
-//         }
-//       }
-//     }
-//     return result
-//   }, [activeTokens, chainId, inactiveUrls, lists, minResults, search])
-// }
-
 // Check if currency is included in custom list from user storage
 export function useIsUserAddedToken(currency: Currency | undefined | null): boolean {
   const userAddedTokens = useUserAddedTokens()
