@@ -5,6 +5,7 @@ import { SupportedChainId } from 'constants/chains'
 import { checkRestriction, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import { useCallback, useEffect, useState } from 'react'
 
+import { useAllTokensList } from './Tokens'
 import { useVioletID } from './useVioletID'
 
 export interface CurrencyWithRestriction {
@@ -67,6 +68,34 @@ export function useTokenRestriction(address: string | null | undefined, tokens: 
 
     setTokensWithRestriction(updatedTokenWithRestrictions)
   }, [chainId, address, violetIdContract, tokens, tokensWithRestriction])
+
+  useEffect(() => {
+    fetchTokenRestrictions()
+  }, [fetchTokenRestrictions])
+
+  return tokensWithRestriction
+}
+
+export function useRestrictedTokens() {
+  const tokens = useAllTokensList()
+  const { chainId, account } = useWeb3React()
+  const [tokensWithRestriction, setTokensWithRestriction] = useState<CurrencyWithRestriction[]>([])
+  const violetIdContract = useVioletID()
+
+  const fetchTokenRestrictions = useCallback(async () => {
+    if (!chainId || !account || !violetIdContract || tokens.length == 0) return
+
+    const updatedTokenWithRestrictions = await getTokenRestrictions({
+      chainId,
+      address: account,
+      violetIdContract,
+      tokens,
+    })
+
+    if (JSON.stringify(updatedTokenWithRestrictions) === JSON.stringify(tokensWithRestriction)) return
+
+    setTokensWithRestriction(updatedTokenWithRestrictions)
+  }, [chainId, account, violetIdContract, tokens, tokensWithRestriction])
 
   useEffect(() => {
     fetchTokenRestrictions()

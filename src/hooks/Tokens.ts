@@ -9,6 +9,7 @@ import { isL2ChainId } from 'utils/chains'
 import { useAllLists, useCombinedActiveList } from '../state/lists/hooks'
 import { useUserAddedTokens } from '../state/user/hooks'
 import { TokenAddressMap, useUnsupportedTokenList } from './../state/lists/hooks'
+import { useRestrictedTokens } from './useTokenRestriction'
 
 // reduce token map into standard address <-> Token mapping, optionally include user added tokens
 function useTokensFromMap(tokenMap: TokenAddressMap): { [address: string]: Token } {
@@ -43,6 +44,13 @@ export function useAllTokens(): { [address: string]: Token } {
         )
     )
   }, [tokensFromMap, userAddedTokens])
+}
+
+export function useAllTokensList(): Token[] {
+  const allTokens = useAllTokens()
+  return useMemo(() => {
+    return Object.values(allTokens)
+  }, [allTokens])
 }
 
 type BridgeInfo = Record<
@@ -152,4 +160,14 @@ export function useToken(tokenAddress?: string | null): Token | null | undefined
 export function useCurrency(currencyId?: string | null): Currency | null | undefined {
   const tokens = useAllTokens()
   return useCurrencyFromMap(tokens, currencyId)
+}
+
+export function useTokensToExclude(): string[] | undefined {
+  const tokensWithRestriction = useRestrictedTokens()
+
+  return useMemo(() => {
+    return tokensWithRestriction
+      .filter((t) => !t.isPermitted)
+      .map((t) => (t.currency.isNative ? t.currency.wrapped.address : t.currency.address))
+  }, [tokensWithRestriction])
 }
