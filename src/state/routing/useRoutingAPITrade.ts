@@ -21,7 +21,8 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
   tradeType: TTradeType,
   amountSpecified: CurrencyAmount<Currency> | undefined,
   otherCurrency: Currency | undefined,
-  routerPreference: RouterPreference
+  routerPreference: RouterPreference,
+  excludeTokens?: string[]
 ): {
   state: TradeState
   trade: InterfaceTrade<Currency, Currency, TTradeType> | undefined
@@ -40,6 +41,7 @@ export function useRoutingAPITrade<TTradeType extends TradeType>(
     amount: amountSpecified,
     tradeType,
     routerPreference,
+    excludeTokens,
   })
 
   const {
