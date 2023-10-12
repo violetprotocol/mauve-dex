@@ -10,7 +10,9 @@ class TokenRestrictionLookupTable {
     for (const chain of Object.keys(TOKEN_RESTRICTIONS).map((t) => parseInt(t))) {
       const tokens = Object.keys(TOKEN_RESTRICTIONS[chain as SupportedChainId] ?? {})
       for (const token of tokens) {
-        if (!dict[chain]) dict[chain] = {}
+        if (!dict[chain]) {
+          dict[chain] = {}
+        }
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         dict[chain]![token.toLowerCase()] = TOKEN_RESTRICTIONS[chain as SupportedChainId]![token]
       }
