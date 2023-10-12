@@ -5,6 +5,7 @@ import { OUT2 } from './tokens'
 export enum TOKEN_RESTRICTION_TYPE {
   NONE = -1,
   IS_ENROLLED = 1,
+  IS_US = 3,
   ACCREDITED_INVESTOR = 5,
 }
 
