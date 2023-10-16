@@ -7,9 +7,10 @@ import { AutoColumn } from 'components/Column'
 import { LoadingOpacityContainer, loadingOpacityMixin } from 'components/Loader/styled'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { isSupportedChain } from 'constants/chains'
+import { useTokenPermit } from 'hooks/useTokenPermit'
 import { darken } from 'polished'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
-import { Lock } from 'react-feather'
+import { AlertTriangle, Lock } from 'react-feather'
 import styled, { useTheme } from 'styled-components/macro'
 import { flexColumnNoWrap, flexRowNoWrap } from 'theme/styles'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -222,6 +223,7 @@ export default function SwapCurrencyInputPanel({
   const [fiatValueIsLoading, setFiatValueIsLoading] = useState(false)
   const { account, chainId } = useWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const { isPermitted: isCurrencyPermitted } = useTokenPermit(account, chainId, currency)
   const theme = useTheme()
 
   const handleDismissSearch = useCallback(() => {
@@ -284,13 +286,18 @@ export default function SwapCurrencyInputPanel({
                     {pair?.token0.symbol}:{pair?.token1.symbol}
                   </StyledTokenName>
                 ) : (
-                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                    {(currency && currency.symbol && currency.symbol.length > 20
-                      ? currency.symbol.slice(0, 4) +
-                        '...' +
-                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || <>Select token</>}
-                  </StyledTokenName>
+                  <>
+                    <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                      {(currency && currency.symbol && currency.symbol.length > 20
+                        ? currency.symbol.slice(0, 4) +
+                          '...' +
+                          currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                        : currency?.symbol) || <>Select token</>}
+                    </StyledTokenName>
+                    {currency && !isCurrencyPermitted == true ? (
+                      <AlertTriangle color={theme.accentWarning} size="16px" />
+                    ) : null}
+                  </>
                 )}
               </RowFixed>
               {onCurrencySelect && <StyledDropDown selected={!!currency} />}

@@ -8,6 +8,7 @@ import { useRoutingAPITrade } from 'state/routing/useRoutingAPITrade'
 
 import { SupportedChainId } from '../constants/chains'
 import { CUSD_CELO, DAI_OPTIMISM, USDC_ARBITRUM, USDC_MAINNET, USDC_POLYGON } from '../constants/tokens'
+import { useTokensToExclude } from './Tokens'
 
 // Stablecoin amounts used when calculating spot price for a given currency.
 // The amount is large enough to filter low liquidity pairs.
@@ -25,12 +26,20 @@ const STABLECOIN_AMOUNT_OUT: { [chainId: number]: CurrencyAmount<Token> } = {
  * @param currency currency to compute the USDC price of
  */
 export default function useStablecoinPrice(currency?: Currency): Price<Currency, Token> | undefined {
+  const excludeTokens = useTokensToExclude()
+
   const chainId = currency?.chainId
 
   const amountOut = chainId ? STABLECOIN_AMOUNT_OUT[chainId] : undefined
   const stablecoin = amountOut?.currency
 
-  const { trade } = useRoutingAPITrade(TradeType.EXACT_OUTPUT, amountOut, currency, RouterPreference.CLIENT)
+  const { trade } = useRoutingAPITrade(
+    TradeType.EXACT_OUTPUT,
+    amountOut,
+    currency,
+    RouterPreference.CLIENT,
+    excludeTokens
+  )
   const price = useMemo(() => {
     if (!currency || !stablecoin) {
       return undefined

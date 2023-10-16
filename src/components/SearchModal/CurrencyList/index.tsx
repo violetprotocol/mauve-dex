@@ -3,7 +3,9 @@ import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap
 import { Currency, CurrencyAmount, Token } from '@violetprotocol/mauve-sdk-core'
 import { useWeb3React } from '@web3-react/core'
 import TokenSafetyIcon from 'components/TokenSafety/TokenSafetyIcon'
+import { getRestrictionCopy, TOKEN_RESTRICTION_TYPE } from 'constants/tokenRestrictions'
 import { checkWarning } from 'constants/tokenSafety'
+import { CurrencyWithRestriction } from 'hooks/useTokenRestriction'
 import { CSSProperties, MutableRefObject, useCallback, useMemo } from 'react'
 import { Check } from 'react-feather'
 import { FixedSizeList } from 'react-window'
@@ -106,6 +108,8 @@ export function CurrencyRow({
   currency,
   onSelect,
   isSelected,
+  isPermitted,
+  restriction,
   otherSelected,
   style,
   showCurrencyAmount,
@@ -114,6 +118,8 @@ export function CurrencyRow({
   currency: Currency
   onSelect: (hasWarning: boolean) => void
   isSelected: boolean
+  isPermitted: boolean
+  restriction: TOKEN_RESTRICTION_TYPE
   otherSelected: boolean
   style?: CSSProperties
   showCurrencyAmount?: boolean
@@ -126,9 +132,10 @@ export function CurrencyRow({
   const warning = currency.isNative ? null : checkWarning(currency.address)
   const isBlockedToken = !!warning && !warning.canProceed
   const blockedTokenOpacity = '0.6'
+  const { heading } = getRestrictionCopy(restriction)
 
   // only show add or remove buttons if not on selected list
-  return (
+  const content = (
     <TraceEvent
       events={[BrowserEvent.onClick, BrowserEvent.onKeyPress]}
       name={InterfaceEventName.TOKEN_SELECTED}
@@ -143,14 +150,10 @@ export function CurrencyRow({
         onClick={() => (isSelected ? null : onSelect(!!warning))}
         disabled={isSelected}
         selected={otherSelected}
-        dim={isBlockedToken}
+        dim={!isPermitted}
       >
         <Column>
-          <CurrencyLogo
-            currency={currency}
-            size="36px"
-            style={{ opacity: isBlockedToken ? blockedTokenOpacity : '1' }}
-          />
+          <CurrencyLogo currency={currency} size="36px" style={{ opacity: !isPermitted ? blockedTokenOpacity : '1' }} />
         </Column>
         <AutoColumn style={{ opacity: isBlockedToken ? blockedTokenOpacity : '1' }}>
           <Row>
@@ -160,7 +163,7 @@ export function CurrencyRow({
             </WarningContainer>
           </Row>
           <ThemedText.DeprecatedDarkGray ml="0px" fontSize="12px" fontWeight={300}>
-            {currency.symbol}
+            {isPermitted ? currency.symbol : heading}
           </ThemedText.DeprecatedDarkGray>
         </AutoColumn>
         <Column>
@@ -183,10 +186,15 @@ export function CurrencyRow({
       </MenuItem>
     </TraceEvent>
   )
+
+  const tooltipWrapper = <MouseoverTooltip text={<>{heading}</>}>{content}</MouseoverTooltip>
+
+  // only show tooltip if current wallet is not permitted to use token
+  return isPermitted ? content : tooltipWrapper
 }
 
 interface TokenRowProps {
-  data: Array<Currency>
+  data: Array<CurrencyWithRestriction>
   index: number
   style: CSSProperties
 }
@@ -232,10 +240,10 @@ export default function CurrencyList({
   isAddressSearch,
 }: {
   height: number
-  currencies: Currency[]
+  currencies: CurrencyWithRestriction[]
   otherListTokens?: WrappedTokenInfo[]
   selectedCurrency?: Currency | null
-  onCurrencySelect: (currency: Currency, hasWarning?: boolean) => void
+  onCurrencySelect: (currency: CurrencyWithRestriction, hasWarning?: boolean) => void
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
   showCurrencyAmount?: boolean
@@ -243,22 +251,24 @@ export default function CurrencyList({
   searchQuery: string
   isAddressSearch: string | false
 }) {
-  const itemData: Currency[] = useMemo(() => {
+  const itemData: CurrencyWithRestriction[] = useMemo(() => {
     if (otherListTokens && otherListTokens?.length > 0) {
-      return [...currencies, ...otherListTokens]
+      return [...currencies /* , ...otherListTokens*/]
     }
     return currencies
   }, [currencies, otherListTokens])
 
   const Row = useCallback(
     function TokenRow({ data, index, style }: TokenRowProps) {
-      const row: Currency = data[index]
+      const row: CurrencyWithRestriction = data[index]
 
-      const currency = row
+      const currency = row.currency
 
+      const isPermitted = row.isPermitted
+      const restriction = row.restriction
       const isSelected = Boolean(currency && selectedCurrency && selectedCurrency.equals(currency))
       const otherSelected = Boolean(currency && otherCurrency && otherCurrency.equals(currency))
-      const handleSelect = (hasWarning: boolean) => currency && onCurrencySelect(currency, hasWarning)
+      const handleSelect = (hasWarning: boolean) => currency && onCurrencySelect(row, hasWarning)
 
       const token = currency?.wrapped
 
@@ -270,6 +280,8 @@ export default function CurrencyList({
             style={style}
             currency={currency}
             isSelected={isSelected}
+            isPermitted={isPermitted}
+            restriction={restriction}
             onSelect={handleSelect}
             otherSelected={otherSelected}
             showCurrencyAmount={showCurrencyAmount}
@@ -285,7 +297,7 @@ export default function CurrencyList({
 
   const itemKey = useCallback((index: number, data: typeof itemData) => {
     const currency = data[index]
-    return currencyKey(currency)
+    return currencyKey(currency.currency)
   }, [])
 
   return isLoading ? (

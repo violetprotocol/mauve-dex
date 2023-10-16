@@ -13,12 +13,14 @@ export function useRoutingAPIArguments({
   amount,
   tradeType,
   routerPreference,
+  excludeTokens,
 }: {
   tokenIn: Currency | undefined
   tokenOut: Currency | undefined
   amount: CurrencyAmount<Currency> | undefined
   tradeType: TradeType
   routerPreference: RouterPreference
+  excludeTokens?: string[]
 }) {
   return useMemo(
     () =>
@@ -35,8 +37,9 @@ export function useRoutingAPIArguments({
             tokenOutDecimals: tokenOut.wrapped.decimals,
             tokenOutSymbol: tokenOut.wrapped.symbol,
             routerPreference,
+            excludeTokens,
             type: (tradeType === TradeType.EXACT_INPUT ? 'exactIn' : 'exactOut') as 'exactIn' | 'exactOut',
           },
-    [amount, routerPreference, tokenIn, tokenOut, tradeType]
+    [amount, routerPreference, tokenIn, tokenOut, tradeType, excludeTokens]
   )
 }

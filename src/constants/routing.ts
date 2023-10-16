@@ -1,34 +1,28 @@
 // a list of tokens by chain
 import { Token } from '@violetprotocol/mauve-sdk-core'
+import { USDC_OPTIMISM_GOERLI } from '@violetprotocol/mauve-smart-order-router'
 
 import { SupportedChainId } from './chains'
 import {
-  AMPL,
+  CBETH_MAINNET,
   CEUR_CELO,
   CMC02_CELO,
   CUSD_CELO,
-  DAI,
   DAI_ARBITRUM_ONE,
   DAI_OPTIMISM,
   DAI_POLYGON,
-  ETH2X_FLI,
-  FEI,
-  FRAX,
-  FXS,
+  EUROC_MAINNET,
+  LSETH_MAINNET,
+  OUT1,
+  OUT2,
   PORTAL_ETH_CELO,
   PORTAL_USDC_CELO,
-  renBTC,
-  rETH2,
-  sETH2,
-  SWISE,
-  TRIBE,
+  STETH_MAINNET,
   USDC_MAINNET,
   USDC_POLYGON,
-  USDT,
   USDT_ARBITRUM_ONE,
   USDT_OPTIMISM,
   USDT_POLYGON,
-  WBTC,
   WBTC_ARBITRUM_ONE,
   WBTC_OPTIMISM,
   WETH_POLYGON,
@@ -54,16 +48,23 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ...WRAPPED_NATIVE_CURRENCIES_ONLY,
   [SupportedChainId.MAINNET]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.MAINNET],
-    DAI,
     USDC_MAINNET,
-    USDT,
-    WBTC,
+    EUROC_MAINNET,
+    STETH_MAINNET,
+    CBETH_MAINNET,
+    LSETH_MAINNET,
   ],
   [SupportedChainId.OPTIMISM]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM],
     DAI_OPTIMISM,
     USDT_OPTIMISM,
     WBTC_OPTIMISM,
+  ],
+  [SupportedChainId.OPTIMISM_GOERLI]: [
+    ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.OPTIMISM_GOERLI],
+    USDC_OPTIMISM_GOERLI,
+    OUT1,
+    OUT2,
   ],
   [SupportedChainId.ARBITRUM_ONE]: [
     ...WRAPPED_NATIVE_CURRENCIES_ONLY[SupportedChainId.ARBITRUM_ONE],
@@ -82,15 +83,15 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
 }
 export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [SupportedChainId.MAINNET]: {
-    '0xF16E4d813f4DcfDe4c5b44f305c908742De84eF0': [ETH2X_FLI],
-    [rETH2.address]: [sETH2],
-    [SWISE.address]: [sETH2],
-    [FEI.address]: [TRIBE],
-    [TRIBE.address]: [FEI],
-    [FRAX.address]: [FXS],
-    [FXS.address]: [FRAX],
-    [WBTC.address]: [renBTC],
-    [renBTC.address]: [WBTC],
+    // '0xF16E4d813f4DcfDe4c5b44f305c908742De84eF0': [ETH2X_FLI],
+    // [rETH2.address]: [sETH2],
+    // [SWISE.address]: [sETH2],
+    // [FEI.address]: [TRIBE],
+    // [TRIBE.address]: [FEI],
+    // [FRAX.address]: [FXS],
+    // [FXS.address]: [FRAX],
+    // [WBTC.address]: [renBTC],
+    // [renBTC.address]: [WBTC],
   },
 }
 /**
@@ -99,7 +100,7 @@ export const ADDITIONAL_BASES: { [chainId: number]: { [tokenAddress: string]: To
  */
 export const CUSTOM_BASES: { [chainId: number]: { [tokenAddress: string]: Token[] } } = {
   [SupportedChainId.MAINNET]: {
-    [AMPL.address]: [DAI, WRAPPED_NATIVE_CURRENCY[SupportedChainId.MAINNET] as Token],
+    // [AMPL.address]: [DAI, WRAPPED_NATIVE_CURRENCY[SupportedChainId.MAINNET] as Token],
   },
 }
 

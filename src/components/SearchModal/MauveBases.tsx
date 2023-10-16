@@ -1,39 +1,23 @@
 import { TraceEvent } from '@uniswap/analytics'
 import { BrowserEvent, InterfaceElementName, InterfaceEventName } from '@uniswap/analytics-events'
 import { Currency } from '@violetprotocol/mauve-sdk-core'
+import { useWeb3React } from '@web3-react/core'
 import { AutoColumn } from 'components/Column'
-import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { AutoRow } from 'components/Row'
 import { useAllTokens } from 'hooks/Tokens'
-import { useTokenInfoFromActiveList } from 'hooks/useTokenInfoFromActiveList'
+import { CurrencyWithRestriction, useTokenRestriction } from 'hooks/useTokenRestriction'
 import useNativeCurrency from 'lib/hooks/useNativeCurrency'
 import { getTokenAddress } from 'lib/utils/analytics'
-import { Text } from 'rebass'
 import { WrappedTokenInfo } from 'state/lists/wrappedTokenInfo'
 import styled from 'styled-components/macro'
 import { currencyId } from 'utils/currencyId'
+
+import MauveBaseButton from './MauveBaseButton'
 
 const MobileWrapper = styled(AutoColumn)`
   ${({ theme }) => theme.deprecated_mediaWidth.deprecated_upToSmall`
     display: none;
   `};
-`
-
-const BaseWrapper = styled.div<{ disable?: boolean }>`
-  border: 1px solid ${({ theme, disable }) => (disable ? theme.accentActive : theme.backgroundOutline)};
-  border-radius: 16px;
-  display: flex;
-  padding: 6px;
-  padding-right: 12px;
-
-  align-items: center;
-  :hover {
-    cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme }) => theme.hoverDefault};
-  }
-
-  color: ${({ theme, disable }) => disable && theme.accentActive};
-  background-color: ${({ theme, disable }) => disable && theme.accentActiveSoft};
 `
 
 const formatAnalyticsEventProperties = (currency: Currency, searchQuery: string, isAddressSearch: string | false) => ({
@@ -57,10 +41,11 @@ export default function MauveBases({
 }: {
   chainId?: number
   selectedCurrency?: Currency | null
-  onSelect: (currency: Currency) => void
+  onSelect: (currency: CurrencyWithRestriction) => void
   searchQuery: string
   isAddressSearch: string | false
 }) {
+  const { account } = useWeb3React()
   const defaultTokens = useAllTokens()
   const tokens = Object.values(defaultTokens).map((token) => {
     return {
@@ -73,44 +58,33 @@ export default function MauveBases({
 
   const native = useNativeCurrency()
   const bases = typeof chainId !== 'undefined' ? [native, ...tokens] ?? [] : []
+  const basesWithRestrictions = useTokenRestriction(account, bases)
 
   return bases.length > 0 ? (
     <MobileWrapper gap="md">
       <AutoRow gap="4px">
-        {bases.map((currency: Currency) => {
-          const isSelected = selectedCurrency?.equals(currency)
+        {basesWithRestrictions.map((baseWithRestriction: CurrencyWithRestriction) => {
+          const isSelected = selectedCurrency?.equals(baseWithRestriction.currency)
 
           return (
             <TraceEvent
               events={[BrowserEvent.onClick, BrowserEvent.onKeyPress]}
               name={InterfaceEventName.TOKEN_SELECTED}
-              properties={formatAnalyticsEventProperties(currency, searchQuery, isAddressSearch)}
+              properties={formatAnalyticsEventProperties(baseWithRestriction.currency, searchQuery, isAddressSearch)}
               element={InterfaceElementName.COMMON_BASES_CURRENCY_BUTTON}
-              key={currencyId(currency)}
+              key={currencyId(baseWithRestriction.currency)}
             >
-              <BaseWrapper
-                tabIndex={0}
-                onKeyPress={(e) => !isSelected && e.key === 'Enter' && onSelect(currency)}
-                onClick={() => !isSelected && onSelect(currency)}
-                disable={isSelected}
-                key={currencyId(currency)}
-              >
-                <CurrencyLogoFromList currency={currency} />
-                <Text fontWeight={500} fontSize={16}>
-                  {currency.symbol}
-                </Text>
-              </BaseWrapper>
+              <MauveBaseButton
+                currency={baseWithRestriction.currency}
+                onSelect={onSelect}
+                isPermitted={baseWithRestriction.isPermitted}
+                restriction={baseWithRestriction.restriction}
+                isSelected={isSelected ?? false}
+              />
             </TraceEvent>
           )
         })}
       </AutoRow>
     </MobileWrapper>
   ) : null
-}
-
-/** helper component to retrieve a base currency from the active token lists */
-function CurrencyLogoFromList({ currency }: { currency: Currency }) {
-  const token = useTokenInfoFromActiveList(currency)
-
-  return <CurrencyLogo currency={token} style={{ marginRight: 8 }} />
 }

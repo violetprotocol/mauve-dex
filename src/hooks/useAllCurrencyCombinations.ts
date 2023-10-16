@@ -3,7 +3,11 @@ import { useMemo } from 'react'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../constants/routing'
 
-export function useAllCurrencyCombinations(currencyA?: Currency, currencyB?: Currency): [Token, Token][] {
+export function useAllCurrencyCombinations(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  excludeTokens?: string[]
+): [Token, Token][] {
   const chainId = currencyA?.chainId
 
   const [tokenA, tokenB] = chainId ? [currencyA?.wrapped, currencyB?.wrapped] : [undefined, undefined]
@@ -15,8 +19,10 @@ export function useAllCurrencyCombinations(currencyA?: Currency, currencyB?: Cur
     const additionalA = tokenA ? ADDITIONAL_BASES[chainId]?.[tokenA.address] ?? [] : []
     const additionalB = tokenB ? ADDITIONAL_BASES[chainId]?.[tokenB.address] ?? [] : []
 
-    return [...common, ...additionalA, ...additionalB]
-  }, [chainId, tokenA, tokenB])
+    return [...common, ...additionalA, ...additionalB].filter((base) =>
+      excludeTokens?.find((ex) => ex == base.address) ? false : true
+    )
+  }, [chainId, tokenA, tokenB, excludeTokens])
 
   const basePairs: [Token, Token][] = useMemo(
     () =>

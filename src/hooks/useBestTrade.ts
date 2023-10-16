@@ -18,7 +18,8 @@ import useIsWindowVisible from './useIsWindowVisible'
 export function useBestTrade(
   tradeType: TradeType,
   amountSpecified?: CurrencyAmount<Currency>,
-  otherCurrency?: Currency
+  otherCurrency?: Currency,
+  excludeTokens?: string[]
 ): {
   state: TradeState
   trade: InterfaceTrade<Currency, Currency, TradeType> | undefined
@@ -35,7 +36,8 @@ export function useBestTrade(
     tradeType,
     autoRouterSupported && isWindowVisible ? debouncedAmount : undefined,
     debouncedOtherCurrency,
-    RouterPreference.CLIENT // Hardcoded to only use Mauve Router API
+    RouterPreference.CLIENT, // Hardcoded to only use Mauve Router API
+    excludeTokens
   )
 
   const isLoading = routingAPITrade.state === TradeState.LOADING

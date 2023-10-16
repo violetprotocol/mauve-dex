@@ -191,9 +191,18 @@ export function ExternalLink({
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
+  onClick,
   ...rest
-}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
-  return <StyledLink target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest} />
+}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href?: string; onClick?: () => void }) {
+  return (
+    <StyledLink
+      target={target}
+      rel={rel}
+      href={onClick ? undefined : href}
+      onClick={onClick ?? handleClickExternalLink}
+      {...rest}
+    />
+  )
 }
 
 export function ExternalLinkIcon({

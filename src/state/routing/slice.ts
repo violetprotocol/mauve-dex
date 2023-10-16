@@ -81,12 +81,21 @@ export const routingApi = createApi({
         tokenOutSymbol?: string
         amount: string
         routerPreference: RouterPreference
+        excludeTokens?: string[]
         type: 'exactIn' | 'exactOut'
       }
     >({
       async queryFn(args, _api, _extraOptions, fetch) {
-        const { tokenInAddress, tokenInChainId, tokenOutAddress, tokenOutChainId, amount, routerPreference, type } =
-          args
+        const {
+          tokenInAddress,
+          tokenInChainId,
+          tokenOutAddress,
+          tokenOutChainId,
+          amount,
+          routerPreference,
+          type,
+          excludeTokens,
+        } = args
 
         let result
 
@@ -110,7 +119,10 @@ export const routingApi = createApi({
               router,
               // TODO(zzmp): Use PRICE_PARAMS for RouterPreference.PRICE.
               // This change is intentionally being deferred to first see what effect router caching has.
-              CLIENT_PARAMS
+              {
+                ...CLIENT_PARAMS,
+                excludeTokens,
+              }
             )
           }
 
