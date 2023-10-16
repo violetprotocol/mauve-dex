@@ -20,8 +20,8 @@ export const TOKEN_RESTRICTIONS: {
 }
 
 const SUMSUB_ACCREDITED_INVESTOR_FORM_URL = isProductionEnv()
-  ? "https://in.sumsub.com/idensic/l/#/uni_SRgSopqyDykTKcJv"
-  : "https://in.sumsub.com/idensic/l/#/sbx_uni_qgu29asFjKyJPMAU"
+  ? 'https://in.sumsub.com/idensic/l/#/uni_SRgSopqyDykTKcJv'
+  : 'https://in.sumsub.com/idensic/l/#/sbx_uni_qgu29asFjKyJPMAU'
 
 export function getRestrictionCopy(restriction: TOKEN_RESTRICTION_TYPE) {
   let heading = null,
