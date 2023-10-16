@@ -1,3 +1,4 @@
+import { isProductionEnv } from 'utils/env'
 import { SupportedChainId } from './chains'
 import TokenRestrictionCache from './TokenRestrictionLookupTable'
 import { OUT2 } from './tokens'
@@ -18,6 +19,10 @@ export const TOKEN_RESTRICTIONS: {
   },
 }
 
+const SUMSUB_ACCREDITED_INVESTOR_FORM_URL = isProductionEnv()
+  ? "https://in.sumsub.com/idensic/l/#/uni_SRgSopqyDykTKcJv"
+  : "https://in.sumsub.com/idensic/l/#/sbx_uni_qgu29asFjKyJPMAU"
+
 export function getRestrictionCopy(restriction: TOKEN_RESTRICTION_TYPE) {
   let heading = null,
     description = null,
@@ -30,7 +35,7 @@ export function getRestrictionCopy(restriction: TOKEN_RESTRICTION_TYPE) {
         <>You must undergo additional verification for the accredited investor status in order to use this token.</>
       )
       action = <>Fill out accredited investor form</>
-      link = 'https://in.sumsub.com/idensic/l/#/sbx_uni_qgu29asFjKyJPMAU'
+      link = SUMSUB_ACCREDITED_INVESTOR_FORM_URL
       break
   }
   return { heading, description, action, link }
