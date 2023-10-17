@@ -51,6 +51,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "6.4.3",
     "@ethersproject/experimental": "^5.4.0",
     "@testing-library/jest-dom": "^5.16.4",
