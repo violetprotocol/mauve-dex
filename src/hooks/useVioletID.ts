@@ -14,7 +14,10 @@ export function useVioletID() {
   return useMemo(() => {
     if (!chainId) return
 
-    const contract = new Contract(VIOLET_ID_ADDRESSES[chainId], VioletIDABI, provider)
+    const violetIdAddress = VIOLET_ID_ADDRESSES[chainId]
+    if (!violetIdAddress) return
+
+    const contract = new Contract(violetIdAddress, VioletIDABI, provider)
     return contract
   }, [chainId, provider])
 }
