@@ -18,6 +18,10 @@ export const TOKEN_RESTRICTIONS: {
   },
 }
 
+if (!process.env.REACT_APP_SUMSUB_ACCREDITED_INVESTOR_FORM_URL) {
+  throw new Error('Missing env variable for SumSub accredited investor form URL')
+}
+
 export function getRestrictionCopy(restriction: TOKEN_RESTRICTION_TYPE) {
   let heading = null,
     description = null,
@@ -30,7 +34,7 @@ export function getRestrictionCopy(restriction: TOKEN_RESTRICTION_TYPE) {
         <>You must undergo additional verification for the accredited investor status in order to use this token.</>
       )
       action = <>Fill out accredited investor form</>
-      link = 'https://in.sumsub.com/idensic/l/#/sbx_uni_qgu29asFjKyJPMAU'
+      link = process.env.REACT_APP_SUMSUB_ACCREDITED_INVESTOR_FORM_URL
       break
   }
   return { heading, description, action, link }
