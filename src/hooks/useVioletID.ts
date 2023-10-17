@@ -16,7 +16,7 @@ export function useVioletID() {
 
     const violetIdAddress = VIOLET_ID_ADDRESSES[chainId]
     if (!violetIdAddress) return
-    
+
     const contract = new Contract(violetIdAddress, VioletIDABI, provider)
     return contract
   }, [chainId, provider])
