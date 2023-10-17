@@ -1,4 +1,5 @@
 import { isProductionEnv } from 'utils/env'
+
 import { SupportedChainId } from './chains'
 import TokenRestrictionCache from './TokenRestrictionLookupTable'
 import { OUT2 } from './tokens'
