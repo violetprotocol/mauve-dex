@@ -11,7 +11,6 @@ describe('env', () => {
       PUBLIC_URL: 'http://example.com',
       NODE_ENV: 'test',
       REACT_APP_VIOLET_ENV: 'development',
-      REACT_APP_SUMSUB_ACCREDITED_INVESTOR_FORM_URL: 'https://sumsub.com',
       ...env,
     }
   }
