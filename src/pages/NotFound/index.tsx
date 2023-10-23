@@ -2,6 +2,7 @@ import { Trace } from '@uniswap/analytics'
 import { InterfacePageName } from '@uniswap/analytics-events'
 import { SmallButtonPrimary } from 'components/Button'
 import { useIsMobile } from 'nft/hooks'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { ThemedText } from 'theme'
@@ -40,6 +41,10 @@ export default function NotFound() {
 
   const Title = isMobile ? ThemedText.LargeHeader : ThemedText.Hero
   const Paragraph = isMobile ? ThemedText.HeadlineMedium : ThemedText.HeadlineLarge
+
+  useEffect(() => {
+    throw new Error('ERROR BOUNDARY TEST')
+  }, [])
 
   return (
     <PageWrapper>
