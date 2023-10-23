@@ -1,12 +1,13 @@
-import * as Sentry from '@sentry/react'
 import { ButtonLight, SmallButtonPrimary } from 'components/Button'
 import { MAUVE_DISCORD_LINK } from 'constants/violet'
 import { ChevronUpIcon } from 'nft/components/icons'
 import { useIsMobile } from 'nft/hooks'
 import { PropsWithChildren, useState } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Copy } from 'react-feather'
 import styled from 'styled-components/macro'
 import { isSentryEnabled } from 'utils/env'
+import { logErrorWithNewRelic } from 'utils/newRelicErrorIngestion'
 
 import { CopyToClipboard, ExternalLink, ThemedText } from '../../theme'
 import { Column } from '../Column'
@@ -90,7 +91,7 @@ const CodeTitle = styled.div`
   word-break: break-word;
 `
 
-const Fallback = ({ error, eventId }: { error: Error; eventId: string | null }) => {
+const Fallback = ({ error, eventId }: { error: Error; eventId?: string | null }) => {
   const [isExpanded, setExpanded] = useState(false)
   const isMobile = useIsMobile()
 
@@ -216,16 +217,15 @@ const updateServiceWorkerInBackground = async () => {
   }
 }
 
-export default function ErrorBoundary({ children }: PropsWithChildren): JSX.Element {
+const onError = async (error: Error) => {
+  logErrorWithNewRelic({ error })
+  updateServiceWorkerInBackground()
+}
+
+export default function TopLevelErrorBoundary({ children }: PropsWithChildren): JSX.Element {
   return (
-    <Sentry.ErrorBoundary
-      fallback={({ error, eventId }) => <Fallback error={error} eventId={eventId} />}
-      beforeCapture={(scope) => {
-        scope.setLevel('fatal')
-      }}
-      onError={updateServiceWorkerInBackground}
-    >
+    <ErrorBoundary FallbackComponent={Fallback} onError={onError}>
       {children}
-    </Sentry.ErrorBoundary>
+    </ErrorBoundary>
   )
 }
