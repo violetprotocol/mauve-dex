@@ -62,7 +62,7 @@ export const baseUrlByEnvironment = (environment: string) => {
     case 'local':
       return 'http://localhost:4000'
     case 'staging':
-      return 'https://staging.k8s.app.violet.co'
+      return 'https://sandbox.violet.co'
     case 'development':
       return 'https://dev.k8s.app.violet.co'
     case 'production':
