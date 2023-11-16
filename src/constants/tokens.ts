@@ -80,6 +80,13 @@ const USDC_GOERLI = new Token(
   'USDC',
   'USD//C'
 )
+export const USDC_SEPOLIA = new Token(
+  SupportedChainId.SEPOLIA,
+  '0x94a9D9AC8a22534E3FaCa9F4e7F2E2cf85d5E4C8',
+  6,
+  'USDC',
+  'USD//C'
+)
 const USDC_KOVAN = new Token(SupportedChainId.KOVAN, '0x31eeb2d0f9b6fd8642914ab10f4dd473677d80df', 6, 'USDC', 'USD//C')
 const USDC_OPTIMISM = new Token(
   SupportedChainId.OPTIMISM,
@@ -161,6 +168,13 @@ export const DAI_OPTIMISM = new Token(
 export const DAI_POLYGON = new Token(
   SupportedChainId.POLYGON,
   '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+  18,
+  'DAI',
+  'Dai Stablecoin'
+)
+export const DAI_SEPOLIA = new Token(
+  SupportedChainId.SEPOLIA,
+  '0xFF34B3d4Aee8ddCd6F9AFFFB6Fe49bD371b8a357',
   18,
   'DAI',
   'Dai Stablecoin'
@@ -408,6 +422,14 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId: number]: Token | undefined } =
     'CELO',
     'Celo native asset'
   ),
+  // This should technically be in mauve-sdk-core
+  [SupportedChainId.SEPOLIA]: new Token(
+    SupportedChainId.SEPOLIA,
+    '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
+    18,
+    'WETH',
+    'Wrapped Ether'
+  ),
 }
 
 export function isCelo(chainId: number): chainId is SupportedChainId.CELO | SupportedChainId.CELO_ALFAJORES {
@@ -490,5 +512,6 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: { [chainId in SupportedCha
     [SupportedChainId.RINKEBY]: USDC_RINKEBY.address,
     [SupportedChainId.KOVAN]: USDC_KOVAN.address,
     [SupportedChainId.ROPSTEN]: USDC_ROPSTEN.address,
+    [SupportedChainId.SEPOLIA]: USDC_SEPOLIA.address,
   },
 }

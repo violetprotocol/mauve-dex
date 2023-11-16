@@ -38,6 +38,17 @@ export const FALLBACK_URLS: { [key in SupportedChainId]: string[] } = {
     // "Fallback" URLs
     'https://rpc.ankr.com/eth_goerli',
   ],
+  [SupportedChainId.SEPOLIA]: [
+    // "Safe" URLs
+    'https://rpc.sepolia.dev/',
+    // "Fallback" URLs
+    'https://rpc.sepolia.org/',
+    'https://rpc2.sepolia.org/',
+    'https://rpc.sepolia.online/',
+    'https://www.sepoliarpc.space/',
+    'https://rpc-sepolia.rockx.com/',
+    'https://rpc.bordel.wtf/sepolia',
+  ],
   [SupportedChainId.KOVAN]: [
     // "Safe" URLs
     'https://kovan.poa.network',
@@ -107,6 +118,10 @@ export const RPC_URLS: { [key in SupportedChainId]: string[] } = {
     ...FALLBACK_URLS[SupportedChainId.ROPSTEN],
   ],
   [SupportedChainId.GOERLI]: [`https://goerli.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[SupportedChainId.GOERLI]],
+  [SupportedChainId.SEPOLIA]: [
+    `https://sepolia.infura.io/v3/${INFURA_KEY}`,
+    ...FALLBACK_URLS[SupportedChainId.SEPOLIA],
+  ],
   [SupportedChainId.KOVAN]: [`https://kovan.infura.io/v3/${INFURA_KEY}`, ...FALLBACK_URLS[SupportedChainId.KOVAN]],
   [SupportedChainId.OPTIMISM]: [
     `https://optimism-mainnet.infura.io/v3/${INFURA_KEY}`,
