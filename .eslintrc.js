@@ -3,7 +3,10 @@
 require('@uniswap/eslint-config/load')
 
 module.exports = {
-  extends: '@uniswap/eslint-config/react',
+  extends: ['@uniswap/eslint-config/react'],
+  rules: {
+    'prettier/prettier': 'off',
+  },
   overrides: [
     {
       files: [
@@ -13,11 +16,6 @@ module.exports = {
         'src/utils/violet/authorizeProps.ts',
         'src/utils/unwrappedToken.ts',
         'src/utils/prices.ts',
-        'src/components/AccountDetails/Transaction.tsx',
-        'src/components/AccountDetails/TransactionSummary.tsx',
-        'src/components/AccountDetails/index.tsx',
-        'src/components/AccountDetailsV2/LogoView.tsx',
-        'src/components/AccountDetailsV2/TransactionBody.tsx',
       ],
       rules: {
         'prettier/prettier': 'off',
