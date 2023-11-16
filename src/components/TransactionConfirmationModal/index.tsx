@@ -415,8 +415,8 @@ export default function TransactionConfirmationModal({
       {eatPayload.status === 'authorizing' && !!authorizeProps && isEnrolled ? (
         <EmbeddedAuthorization
           ref={embeddedAuthorizationRef}
-          authorizeProps={authorizeProps}
-          onIssued={onIssued}
+          authorizationParameters={authorizeProps}
+          onAuthorized={onIssued}
           onFailed={onFailed}
         />
       ) : hash || attemptingTxn ? (
