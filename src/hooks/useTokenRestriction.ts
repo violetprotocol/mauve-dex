@@ -36,11 +36,17 @@ const getTokenRestrictions = async ({
     )
 
     if (!restriction) return
-    // Checks if the provided address has the required status to be permitted to use token
-    const isPermitted =
-      restriction === TOKEN_RESTRICTION_TYPE.NONE
-        ? true
-        : <boolean>await violetIdContract?.callStatic.hasStatus(address, restriction)
+    let isPermitted
+    if (restriction === TOKEN_RESTRICTION_TYPE.NONE) {
+      isPermitted = true
+    } else {
+      try {
+        // Checks if the provided address has the required status to be permitted to use token
+        isPermitted = await violetIdContract?.callStatic.hasStatus(address, restriction)
+      } catch (error) {
+        throw new Error(`Error getting status from VioletID registry ${violetIdContract.address}: `, error)
+      }
+    }
 
     return { currency: token, restriction, isPermitted }
   })
