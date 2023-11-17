@@ -443,8 +443,8 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             ) : (
               <EmbeddedAuthorization
                 ref={embeddedAuthorizationRef}
-                authorizeProps={authorizeProps}
-                onIssued={({ signature, expiry }: any) => {
+                authorizationParameters={authorizeProps}
+                onAuthorized={({ signature, expiry }: any) => {
                   if (!call) {
                     throw new Error('Missing call following EAT issuance')
                   }
