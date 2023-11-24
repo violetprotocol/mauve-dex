@@ -87,6 +87,15 @@ export const USDC_SEPOLIA = new Token(
   'USDC',
   'USD//C'
 )
+// eslint-disable-next-line import/no-unused-modules
+export const EURS = new Token(
+  SupportedChainId.SEPOLIA,
+  '0x6d906e526a4e2Ca02097BA9d0caA3c382F52278E',
+  2,
+  'EURS',
+  'EURS'
+)
+
 const USDC_KOVAN = new Token(SupportedChainId.KOVAN, '0x31eeb2d0f9b6fd8642914ab10f4dd473677d80df', 6, 'USDC', 'USD//C')
 const USDC_OPTIMISM = new Token(
   SupportedChainId.OPTIMISM,
