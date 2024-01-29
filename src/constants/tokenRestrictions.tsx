@@ -1,6 +1,6 @@
 import { SupportedChainId } from './chains'
 import TokenRestrictionCache from './TokenRestrictionLookupTable'
-import { EURS, OUT2 } from './tokens'
+import { bIB01_MAINNET,EURS, OUT2 } from './tokens'
 
 export enum TOKEN_RESTRICTION_TYPE {
   NONE = -1,
@@ -18,6 +18,9 @@ export const TOKEN_RESTRICTIONS: {
   },
   [SupportedChainId.SEPOLIA]: {
     [EURS.address]: TOKEN_RESTRICTION_TYPE.ACCREDITED_INVESTOR,
+  },
+  [SupportedChainId.MAINNET]: {
+    [bIB01_MAINNET.address]: TOKEN_RESTRICTION_TYPE.ACCREDITED_INVESTOR,
   },
 }
 
