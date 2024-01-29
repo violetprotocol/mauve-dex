@@ -45,6 +45,13 @@ export const STETH_MAINNET = new Token(
   'stETH',
   'Liquid staked Ether 2.0'
 )
+export const bIB01_MAINNET = new Token(
+  SupportedChainId.MAINNET,
+  "0xca30c93b02514f86d5c86a6e375e3a330b435fb5",
+  18,
+  'bIB01',
+  'Backed IB01 $ Treasury Bond 0-1yr'
+)
 export const OUT1 = new Token(
   SupportedChainId.OPTIMISM_GOERLI,
   '0x32307adfFE088e383AFAa721b06436aDaBA47DBE',
