@@ -82,7 +82,7 @@ const [web3WalletConnect, web3WalletConnectHooks] = initializeConnector<WalletCo
     options: {
       rpcMap: RPC_URLS_WITHOUT_FALLBACKS,
       showQrModal: true,
-      projectId: '2c22b74a3313db29ebf0418e946c5ddc',
+      projectId: 'd105ffe1bcecd9b717091c0b9018aaa7',
       chains: [DEFAULT_CHAIN_ID],
       optionalChains: [...L1_CHAIN_IDS, ...L2_CHAIN_IDS],
       qrModalOptions: {
