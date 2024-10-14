@@ -16,7 +16,7 @@ const FULL_BORDER_RADIUS = 9999
 
 const Nav = styled.nav`
   padding: 20px 12px;
-  width: 100%;
+  width: 100vw;
   height: ${({ theme }) => theme.navHeight}px;
   z-index: 2;
 `
@@ -30,6 +30,17 @@ const DocsLink = styled(ExternalLink)`
   font-weight: 600;
   font-size: 16px;
   padding: 0.5rem 1rem;
+`
+
+const Banner = styled.div`
+  width: 100%;
+  text-align: center;
+  background-color: red;
+  color: white;
+  font-size: large;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  font-weight: 600;
 `
 
 interface MenuItemProps {
@@ -80,7 +91,8 @@ const Navbar = () => {
   const navigate = useNavigate()
 
   return (
-    <>
+    <div>
+      <Banner>Mauve is no longer operational and will be closing down permanently in the near future.</Banner>
       <Nav>
         <Box display="flex" height="full" flexWrap="nowrap">
           <Box className={styles.leftSideContainer}>
@@ -116,7 +128,7 @@ const Navbar = () => {
           </Box>
         </Box>
       </Nav>
-    </>
+    </div>
   )
 }
 
